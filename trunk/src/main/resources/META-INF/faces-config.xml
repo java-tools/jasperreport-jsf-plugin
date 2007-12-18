@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
+    version="1.2">
+    
+    <lifecycle>
+    	<phase-listener>
+    		net.sf.jasperreports.jsf.JasperReportPhaseListener
+    	</phase-listener>
+    </lifecycle>
+    
+    <component>
+    	<component-type>
+    		net.sf.jasperreports.HtmlReport
+    	</component-type>
+    	<component-class>
+    		net.sf.jasperreports.jsf.component.html.HtmlReport
+    	</component-class>
+    </component>
+    
+    <component>
+    	<component-type>
+    		net.sf.jasperreports.HtmlReportLink
+    	</component-type>
+    	<component-class>
+    		net.sf.jasperreports.jsf.component.html.HtmlReportLink
+    	</component-class>
+    </component>
+    
+    <render-kit>
+    	<renderer>
+    		<component-family>
+    			net.sf.jasperreports.Report
+    		</component-family>
+    		<renderer-type>
+    			net.sf.jasperreports.HtmlReport
+    		</renderer-type>
+    		<renderer-class>
+    			net.sf.jasperreports.jsf.renderkit.ReportRenderer
+    		</renderer-class>
+    	</renderer>
+    	
+    	<renderer>
+    		<component-family>
+    			net.sf.jasperreports.Report
+    		</component-family>
+    		<renderer-type>
+    			net.sf.jasperreports.HtmlReportLink
+    		</renderer-type>
+    		<renderer-class>
+    			net.sf.jasperreports.jsf.renderkit.ReportLinkRenderer
+    		</renderer-class>
+    	</renderer>
+    </render-kit>
+    
+</faces-config>
