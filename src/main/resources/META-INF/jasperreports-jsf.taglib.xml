@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE facelet-taglib PUBLIC
+  "-//Sun Microsystems, Inc.//DTD Facelet Taglib 1.0//EN"
+  "http://java.sun.com/dtd/facelet-taglib_1_0.dtd">
+
+<facelet-taglib>
+	<namespace>http://jasperforge.org/jasperreports/jsf</namespace>
+
+	<tag>
+		<tag-name>report</tag-name>
+		<component>
+			<component-type>
+				net.sf.jasperreports.Report
+			</component-type>
+			<renderer-type>
+				net.sf.jasperreports.HtmlReport
+			</renderer-type>
+		</component>
+	</tag>
+	
+	<tag>
+		<tag-name>reportLink</tag-name>
+		<component>
+			<component-type>
+				net.sf.jasperreports.ReportLink
+			</component-type>
+			<renderer-type>
+				net.sf.jasperreports.HtmlReportLink
+			</renderer-type>
+		</component>
+	</tag>
+
+</facelet-taglib>
