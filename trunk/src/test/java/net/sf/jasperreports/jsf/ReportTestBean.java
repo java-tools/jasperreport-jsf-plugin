@@ -18,23 +18,30 @@
  * A. Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.taglib;
+package net.sf.jasperreports.jsf;
 
-import net.sf.jasperreports.jsf.component.html.HtmlReportLink;
-import net.sf.jasperreports.jsf.renderkit.ReportLinkRenderer;
+import net.sf.jasperreports.jsf.component.UIReport;
 
-public class ReportLinkTag extends AbstractReportTag {
+public class ReportTestBean {
+
+	private Long facturaId;
 	
-	// UIComponentELTag
+	private UIReport report;
 	
-	@Override
-	public String getComponentType() {
-		return HtmlReportLink.COMPONENT_TYPE;
+	public Long getFacturaId() {
+		return facturaId;
 	}
-	
-	@Override
-	public String getRendererType() {
-		return ReportLinkRenderer.RENDERER_TYPE;
+
+	public void setFacturaId(Long facturaId) {
+		this.facturaId = facturaId;
+	}
+
+	public UIReport getReport() {
+		return report;
+	}
+
+	public void setReport(UIReport report) {
+		this.report = report;
 	}
 	
 }

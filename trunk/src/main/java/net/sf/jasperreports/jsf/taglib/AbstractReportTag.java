@@ -1,3 +1,23 @@
+/* JaspertReports JSF Plugin
+ * Copyright (C) 2008 A. Alonso Dominguez
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ * 
+ * A. Alonso Dominguez
+ * alonsoft@users.sf.net
+ */
 package net.sf.jasperreports.jsf.taglib;
 
 import javax.el.ValueExpression;
@@ -11,13 +31,13 @@ public abstract class AbstractReportTag extends UIComponentELTag {
 	private ValueExpression dataSource = null;
 	private ValueExpression path = null;
 	private ValueExpression subreportDir = null;
-	private ValueExpression type = null;
+	private ValueExpression format = null;
 	
 	public void setDataSource(ValueExpression dataSource) {
 		this.dataSource = dataSource;
 	}
 
-	public void setReport(ValueExpression report) {
+	public void setPath(ValueExpression report) {
 		this.path = report;
 	}
 	
@@ -25,8 +45,8 @@ public abstract class AbstractReportTag extends UIComponentELTag {
 		this.subreportDir = subreportDir;
 	}
 
-	public void setType(ValueExpression type) {
-		this.type = type;
+	public void setFormat(ValueExpression type) {
+		this.format = type;
 	}
 
 	// TagSupport
@@ -37,7 +57,7 @@ public abstract class AbstractReportTag extends UIComponentELTag {
 		dataSource = null;
 		path = null;
 		subreportDir = null;
-		type = null;
+		format = null;
 	}
 	
 	@Override
@@ -52,7 +72,7 @@ public abstract class AbstractReportTag extends UIComponentELTag {
 				component.setValueExpression("dataSource", dataSource);
 			}
 		}
-		
+				
 		if(path != null) {
 			if(path.isLiteralText()) {
 				jreport.setPath(path.getExpressionString());
@@ -69,11 +89,11 @@ public abstract class AbstractReportTag extends UIComponentELTag {
 			}
 		}
 		
-		if(type != null) {
-			if(type.isLiteralText()) {
-				jreport.setType(type.getExpressionString());
+		if(format != null) {
+			if(format.isLiteralText()) {
+				jreport.setFormat(format.getExpressionString());
 			} else {
-				component.setValueExpression("type", type);
+				component.setValueExpression("format", format);
 			}
 		}
 	}

@@ -8,7 +8,7 @@
     <managed-bean>
     	<managed-bean-name>ReportLinkTest</managed-bean-name>
     	<managed-bean-class>
-    		net.sf.jasperreports.jsf.ReportLinkTestBean
+    		net.sf.jasperreports.jsf.ReportTestBean
     	</managed-bean-class>
     	<managed-bean-scope>request</managed-bean-scope>
     	

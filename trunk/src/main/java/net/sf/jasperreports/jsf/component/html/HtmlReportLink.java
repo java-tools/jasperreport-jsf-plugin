@@ -1,3 +1,23 @@
+/* JaspertReports JSF Plugin
+ * Copyright (C) 2008 A. Alonso Dominguez
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ * 
+ * A. Alonso Dominguez
+ * alonsoft@users.sf.net
+ */
 package net.sf.jasperreports.jsf.component.html;
 
 import javax.el.ELException;
@@ -15,10 +35,10 @@ implements UIReport {
 	public static final String COMPONENT_TYPE =
 		"net.sf.jasperreports.HtmlReportLink";
 	
-	private String dataSource = null;
+	private String dataSource = null;	
 	private String path = null;
 	private String subreportDir = null;
-	private String type = null;
+	private String format = null;
 	
 	public HtmlReportLink() {
 		super();
@@ -88,11 +108,11 @@ implements UIReport {
 		this.subreportDir = subreportDir;
 	}
 	
-	public String getType() {
-		if(type != null) {
-			return type;
+	public String getFormat() {
+		if(format != null) {
+			return format;
 		}
-		ValueExpression ve = getValueExpression("type");
+		ValueExpression ve = getValueExpression("format");
 		if(ve != null) {
 			try {
 				return (String) ve.getValue(
@@ -101,12 +121,12 @@ implements UIReport {
 				throw new FacesException(e);
 			}
 		} else {
-			return type;
+			return format;
 		}
 	}
 	
-	public void setType(String type) {
-		this.type = type;
+	public void setFormat(String type) {
+		this.format = type;
 	}
 	
 	@Override
@@ -123,7 +143,7 @@ implements UIReport {
 		dataSource = (String) values[1];
 		path = (String) values[2];
 		subreportDir = (String) values[3];
-		type = (String) values[4];
+		format = (String) values[4];
 	}
 	
 	@Override
@@ -133,7 +153,7 @@ implements UIReport {
 		values[1] = dataSource;
 		values[2] = path;
 		values[3] = subreportDir;
-		values[4] = type;
+		values[4] = format;
 		return values;
 	}
 	

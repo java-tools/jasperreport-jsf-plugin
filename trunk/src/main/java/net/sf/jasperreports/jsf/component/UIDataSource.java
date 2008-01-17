@@ -18,38 +18,51 @@
  * A. Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.component.html;
+package net.sf.jasperreports.jsf.component;
 
 import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.component.html.HtmlPanelGroup;
+import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
+public class UIDataSource extends UIComponentBase {
 
-public class HtmlReport extends HtmlPanelGroup 
-implements UIReport {
-
+	public static final String COMPONENT_FAMILY =
+		"net.sf.jasperreports.DataSource";
 	public static final String COMPONENT_TYPE =
-		"net.sf.jasperreports.HtmlReport";
+		"net.sf.jasperreports.DataSource";
 	
-	private String dataSource = null;	
-	private String path = null;
-	private String subreportDir = null;
-	private String format = null;
+	public static final String CSV = "csv";
+	public static final String DEFAULT = "default";
+	public static final String EMPTY = "empty";
+	public static final String JNDI = "jndi";
+	public static final String RESULT_SET = "resultSet";
+	public static final String XML = "xml";
 	
-	public HtmlReport() {
+	// Fields
+	
+	private String driverClass = null;
+	
+	private String query = null;
+	
+	private String type = DEFAULT;
+	private boolean typeSet = false;
+	
+	private Object value = null;
+
+	public UIDataSource() {
 		super();
-		setRendererType(ReportRenderer.RENDERER_TYPE);
+		setRendererType(null);
 	}
 	
-	public String getDataSource() {
-		if(dataSource != null) {
-			return dataSource;
+	// Properties
+	
+	public String getDriverClass() {
+		if(driverClass != null) {
+			return driverClass;
 		}
-		ValueExpression ve = getValueExpression("dataSource");
+		ValueExpression ve = getValueExpression("driverClass");
 		if(ve != null) {
 			try {
 				return (String) ve.getValue(
@@ -58,19 +71,19 @@ implements UIReport {
 				throw new FacesException(e);
 			}
 		} else {
-			return dataSource;
+			return driverClass;
 		}
 	}
 	
-	public void setDataSource(String dataSource) {
-		this.dataSource = dataSource;
+	public void setDriverClass(String driverClass) {
+		this.driverClass = driverClass;
 	}
 	
-	public String getPath() {
-		if(path != null) {
-			return path;
+	public String getQuery() {
+		if(query != null) {
+			return query;
 		}
-		ValueExpression ve = getValueExpression("path");
+		ValueExpression ve = getValueExpression("query");
 		if(ve != null) {
 			try {
 				return (String) ve.getValue(
@@ -79,81 +92,81 @@ implements UIReport {
 				throw new FacesException(e);
 			}
 		} else {
-			return path;
+			return query;
+		}
+	}
+	
+	public void setQuery(String query) {
+		this.query = query;
+	}
+	
+	public String getType() {
+		if(typeSet) {
+			return type;
+		}
+		ValueExpression ve = getValueExpression("type");
+		if(ve != null) {
+			try {
+				return (String) ve.getValue(
+						getFacesContext().getELContext());
+			} catch(ELException e) {
+				throw new FacesException(e);
+			}
+		} else {
+			return type;
 		}
 	}
 
-	public void setPath(String path) {
-		this.path = path;
+	public void setType(String type) {
+		this.type = type;
+		this.typeSet = true;
 	}
 	
-	public String getSubreportDir() {
-		if(subreportDir != null) {
-			return subreportDir;
+	public Object getValue() {
+		if(value != null) {
+			return value;
 		}
-		ValueExpression ve = getValueExpression("subreportDir");
+		ValueExpression ve = getValueExpression("value");
 		if(ve != null) {
 			try {
-				return (String) ve.getValue(
+				return ve.getValue(
 						getFacesContext().getELContext());
 			} catch(ELException e) {
 				throw new FacesException(e);
 			}
 		} else {
-			return subreportDir;
+			return value;
 		}
 	}
 	
-	public void setSubreportDir(String subreportDir) {
-		this.subreportDir = subreportDir;
+	public void setValue(Object value) {
+		this.value = value;
 	}
 	
-	public String getFormat() {
-		if(format != null) {
-			return format;
-		}
-		ValueExpression ve = getValueExpression("format");
-		if(ve != null) {
-			try {
-				return (String) ve.getValue(
-						getFacesContext().getELContext());
-			} catch(ELException e) {
-				throw new FacesException(e);
-			}
-		} else {
-			return format;
-		}
-	}
+	// UIComponent
 	
-	public void setFormat(String type) {
-		this.format = type;
-	}
-	
-	@Override
 	public String getFamily() {
-		return UIReport.COMPONENT_FAMILY;
+		return COMPONENT_FAMILY;
 	}
 	
-	// State saving/restoring methods
-	
-	@Override
 	public void restoreState(FacesContext context, Object state) {
 		Object[] values = (Object[]) state;
 		super.restoreState(context, values[0]);
-		dataSource = (String) values[1];
-		path = (String) values[2];
-		subreportDir = (String) values[3];
-		format = (String) values[4];
+		driverClass = (String) values[1];
+		query = (String) values[2];
+		type = (String) values[3];
+		typeSet = ((Boolean) values[4]).booleanValue();
+		value = values[5];
 	}
 	
-	@Override
 	public Object saveState(FacesContext context) {
-		Object[] values = new Object[5];
+		Object[] values = new Object[6];
 		values[0] = super.saveState(context);
-		values[1] = dataSource;
-		values[2] = path;
-		values[3] = subreportDir;
-		values[4] = format;
+		values[1] = driverClass;
+		values[2] = query;
+		values[3] = type;
+		values[4] = Boolean.valueOf(typeSet);
+		values[5] = value;
 		return values;
 	}
 	
