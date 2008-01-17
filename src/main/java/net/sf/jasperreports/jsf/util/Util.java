@@ -1,9 +1,30 @@
-package net.sf.jasperreports.jsf;
+/* JaspertReports JSF Plugin
+ * Copyright (C) 2008 A. Alonso Dominguez
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ * 
+ * A. Alonso Dominguez
+ * alonsoft@users.sf.net
+ */
+package net.sf.jasperreports.jsf.util;
 
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.faces.component.*;
 
 public final class Util {
 
@@ -63,7 +84,18 @@ public final class Util {
         
         return mapping;
     }
-
+    
+    /**
+     * <p>Returns true if the provided <code>url-mapping</code> is
+     * a prefix path mapping (starts with <code>/</code>).</p>
+     *
+     * @param mapping a <code>url-pattern</code>
+     * @return true if the mapping starts with <code>/</code>
+     */
+    public static boolean isPrefixMapped(String mapping) {
+        return (mapping.charAt(0) == '/');
+    }
+    
     /**
      * <p>Return the appropriate {@link javax.faces.webapp.FacesServlet} mapping
      * based on the servlet path of the current request.</p>
@@ -103,18 +135,6 @@ public final class Util {
         }
     }
     
-    
-    /**
-     * <p>Returns true if the provided <code>url-mapping</code> is
-     * a prefix path mapping (starts with <code>/</code>).</p>
-     *
-     * @param mapping a <code>url-pattern</code>
-     * @return true if the mapping starts with <code>/</code>
-     */
-    public static boolean isPrefixMapped(String mapping) {
-        return (mapping.charAt(0) == '/');
-    }
-	
 	private Util() { }
 	
 }

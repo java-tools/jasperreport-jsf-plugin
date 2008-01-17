@@ -1,3 +1,23 @@
+/* JaspertReports JSF Plugin
+ * Copyright (C) 2008 A. Alonso Dominguez
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ * 
+ * A. Alonso Dominguez
+ * alonsoft@users.sf.net
+ */
 package net.sf.jasperreports.jsf.renderkit;
 
 import java.io.IOException;
@@ -9,8 +29,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import net.sf.jasperreports.jsf.JasperReportPhaseListener;
-import net.sf.jasperreports.jsf.UIJasperReport;
+import net.sf.jasperreports.jsf.ReportPhaseListener;
+import net.sf.jasperreports.jsf.component.UIReport;
 
 /**
  * 
@@ -27,21 +47,22 @@ public class ReportRenderer extends AbstractReportRenderer {
 			"net.sf.jasperreports.jsf.LogMessages");
 	
 	@Override
+	@SuppressWarnings("unused")
 	public void encodeBegin(FacesContext context, UIComponent component)
 	throws IOException {
 		ViewHandler viewHandler = context.getApplication().getViewHandler();
 		UIReport report = (UIReport) component;
 		String reportURI = viewHandler.getResourceURL(context, 
-				buildReportURI(context, report));
+				buildReportURI(context, component));
 		
-		logger.log(Level.FINE, "JRJSF_0002", report.getClientId(context));
+		logger.log(Level.FINE, "JRJSF_0002", component.getClientId(context));
 		
 		ResponseWriter writer = context.getResponseWriter();
-		writer.startElement("iframe", report);
-		renderIdAttribute(context, report);
+		writer.startElement("iframe", component);
+		renderIdAttribute(context, component);
 		writer.writeURIAttribute("src", reportURI, null);
 				
-		renderAttributes(writer, report);
+		renderAttributes(writer, component);
 	}
 	
 	@Override
@@ -56,7 +77,7 @@ public class ReportRenderer extends AbstractReportRenderer {
 		
 		String clientId = component.getClientId(context);
 		context.getExternalContext().getSessionMap().put(
-				JasperReportPhaseListener.REPORT_COMPONENT_KEY_PREFIX + clientId, component);
+				ReportPhaseListener.REPORT_COMPONENT_KEY_PREFIX + clientId, component);
 	}
 	
 }
