@@ -20,10 +20,25 @@
  */
 package net.sf.jasperreports.jsf.taglib;
 
+import javax.el.*;
+import javax.faces.component.*;
 import net.sf.jasperreports.jsf.component.html.HtmlReportLink;
 import net.sf.jasperreports.jsf.renderkit.ReportLinkRenderer;
 
 public class ReportLinkTag extends AbstractReportTag {
+	
+	private ValueExpression target = null;
+	
+	public void setTarget(ValueExpression target) {
+		this.target = target;
+	}
+	
+	// TagSupport
+	
+	public void release() {
+		super.release();
+		target = null;
+	}
 	
 	// UIComponentELTag
 	
@@ -35,6 +50,20 @@ public class ReportLinkTag extends AbstractReportTag {
 	@Override
 	public String getRendererType() {
 		return ReportLinkRenderer.RENDERER_TYPE;
+	}
+	
+	@Override
+	protected void setProperties(UIComponent component) {
+		super.setProperties(component);
+		HtmlReportLink report = (HtmlReportLink) component;
+		
+		if(target != null) {
+			if(target.isLiteralText()) {
+				report.setTarget(target.getExpressionString());
+			} else {
+				report.setValueExpression("target", target);
+			}
+		}
 	}
 	
 }

@@ -1,0 +1,78 @@
+~~ 
+~~ JasperReports JSF Plugin
+~~ Copyright (C) 2008 A. Alonso Dominguez
+~~
+~~ This library is free software; you can redistribute it and/or
+~~ modify it under the terms of the GNU Lesser General Public
+~~ License as published by the Free Software Foundation; either
+~~ version 2.1 of the License, or (at your option) any later version.
+~~ 
+~~ This library is distributed in the hope that it will be useful,
+~~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+~~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+~~ Lesser General Public License for more details.
+~~ 
+~~ You should have received a copy of the GNU Lesser General Public
+~~ License along with this library; if not, write to the Free Software
+~~ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+~~ 
+~~ A. Alonso Dominguez
+~~ alonsoft@users.sf.net
+~~ 
+
+			---
+			Using the report components
+			---
+			A. Alonso Dominguez
+			
+
+Using the report components
+
+  Actually there are only two kind of components available: 
+  
+  * An inline component that can be embbeded in any page.
+  
+  * A link that when clicked navigates to a full page with the
+    report rendered.
+    
+* Inline reports
+
+  An inline report is rendered using the {{{tlddoc/jr/report.html}jr:report}}
+tag. When this component is used, an <<<iframe>>> HTML element
+will be rendered, so many of the attributes available for the <<<iframe>>>
+tag are also available with this component.
+
+* Report Links
+
+  An inline report is rendered using the {{{tlddoc/jr/reportLink.html}jr:reportLink}}
+tag. When this component is used, an <<<a>>> HTML element
+will be rendered, every attribute available for the <<<a>>> tag
+is also available with this component.
+
+* Common Usage
+
+  There are some attributes you must specify when using any of the
+report components. This attributes are shown in the following table:
+
+*--------------+----------*-----------------------------------------------------------------------------+
+| Attribute    | Optional | Description                                                                 |
+*--------------+----------*-----------------------------------------------------------------------------+
+| path         | false    | Context relative path to the report compiled file (.jasper)                 |
+*--------------+----------*-----------------------------------------------------------------------------+
+| subreportDir | true     | Context relative path to the directory where subreports are inside.         |
+*--------------+----------*-----------------------------------------------------------------------------+
+| format       | true     | Output format of the report                                                 |
+*--------------+----------*-----------------------------------------------------------------------------+
+| dataSource   | true     | DataSource reference id (See {{{datasources.html}DataSource documentation}} |
+*--------------+----------*-----------------------------------------------------------------------------+
+
+** Report Parameters
+
+  Report parameters are specified using the JSF <<<f:param>>> tag 
+nested inside the report component tag you are using.
+
++---
+<jr:report path="/reports/orders.jasper">
+	<f:param name="CITY" value="Melbourne" />
+</jr:report>
++---

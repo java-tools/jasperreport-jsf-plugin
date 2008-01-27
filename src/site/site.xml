@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--  
+  JasperReports JSF Plugin
+  Copyright (C) 2008 A. Alonso Dominguez
+ 
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+ 
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  Lesser General Public License for more details.
+ 
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ 
+  A. Alonso Dominguez
+  alonsoft@users.sf.net
+-->
+
+<project name="JasperReports JSF Plugin">
+  <bannerLeft>
+    <name>SourceForge.net Logo</name>
+    <src>http://sflogo.sourceforge.net/sflogo.php?group_id=212447&amp;type=5</src>
+    <href>http://www.sourceforge.net</href>
+  </bannerLeft>
+  <bannerRight>
+    <name>JasperReports JSF</name>
+    <href>http://jasperreportjsf.sf.net</href>
+  </bannerRight>
+  
+  <poweredBy>
+    <logo name="Maven" href="http://maven.apache.org/"
+          img="http://maven.apache.org/images/logos/maven-feather.png"/>
+  </poweredBy>
+  
+  <body>
+    <links>
+      <item name="SF Project Page" href="http://sf.net/projects/jasperreportjsf" />
+      <item name="JasperReports" href="http://jasperreports.sf.net" />
+    </links>
+    
+    <menu name="Main Menu">
+      <item name="Overview" href="index.html" />
+      <item name="License" href="license.html" />
+      <item name="Downloads" href="downloads.html" />
+    </menu>
+    
+    <menu name="Documentation">
+      <item name="Getting Started" href="getting_started.html" />
+      <item name="Rendering Reports" href="rendering_reports.html" />
+      <item name="Data Sources" href="datasources.html">
+        <item name="JDBC" href="datasources/jdbc.html" />
+        <item name="JNDI" href="datasources/jndi.html" />
+        <item name="XML" href="datasources/xml.html" />
+        <item name="Others" href="datasources/others.html" />
+      </item>
+    </menu>
+    
+    <menu name="Reference">
+      <item name="API Docs" href="apidocs/index.html" />
+      <item name="TLD Docs" href="tlddoc/index.html" />
+    </menu>
+    
+    <menu ref="reports" />
+  </body>
+</project>

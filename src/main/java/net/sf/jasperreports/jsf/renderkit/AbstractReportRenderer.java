@@ -36,7 +36,7 @@ public abstract class AbstractReportRenderer extends Renderer {
 	private static final String[] PASSTHRU_ATTRS = {
 		"dir", "lang", "title", "style", "datafld", "datasrc", "dataformatas", 
 		"ondblclick", "onmousedown", "onmousemove", "onmouseout", "onmouseover", "onmouseup", 
-		"accesskey", "tabindex", "height", "width"
+		"accesskey", "tabindex"
 	};
 	
 	@Override
@@ -69,7 +69,7 @@ public abstract class AbstractReportRenderer extends Renderer {
 		}
 	}
 	
-	protected final void renderAttributes(ResponseWriter writer, UIComponent report)
+	protected void renderAttributes(ResponseWriter writer, UIComponent report)
 	throws IOException {
 		String styleClass = (String) report.getAttributes().get("styleClass");
 		if(styleClass != null) {

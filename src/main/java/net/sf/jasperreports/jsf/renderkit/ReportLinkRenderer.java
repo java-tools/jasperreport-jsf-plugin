@@ -61,7 +61,6 @@ public class ReportLinkRenderer extends AbstractReportRenderer {
 		writer.startElement("a", component);
 		renderIdAttribute(context, component);
 		writer.writeURIAttribute("href", reportURI, null);
-		writer.writeAttribute("target", "_blank", null);
 		
 		renderAttributes(writer, component);
 	}
@@ -75,6 +74,16 @@ public class ReportLinkRenderer extends AbstractReportRenderer {
 		String clientId = component.getClientId(context);
 		context.getExternalContext().getSessionMap().put(
 				ReportPhaseListener.REPORT_COMPONENT_KEY_PREFIX + clientId, component);
+	}
+
+	protected void renderAttributes(ResponseWriter writer, UIComponent report)
+	throws IOException {
+		super.renderAttributes(writer, report);
+		
+		String target = (String) report.getAttributes().get("target");
+		if(target != null) {
+			writer.writeAttribute("target", target, null);
+		}
 	}
 	
 }

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
-<%@ taglib uri="http://jasperforge.org/jasperreports/jsf" prefix="jr" %>
+<%@ taglib uri="http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_0.tld" prefix="jr" %>
 
 <%--  
   JasperReports JSF Plugin
