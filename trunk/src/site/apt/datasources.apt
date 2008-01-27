@@ -1,0 +1,82 @@
+~~ 
+~~ JasperReports JSF Plugin
+~~ Copyright (C) 2008 A. Alonso Dominguez
+~~
+~~ This library is free software; you can redistribute it and/or
+~~ modify it under the terms of the GNU Lesser General Public
+~~ License as published by the Free Software Foundation; either
+~~ version 2.1 of the License, or (at your option) any later version.
+~~ 
+~~ This library is distributed in the hope that it will be useful,
+~~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+~~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+~~ Lesser General Public License for more details.
+~~ 
+~~ You should have received a copy of the GNU Lesser General Public
+~~ License along with this library; if not, write to the Free Software
+~~ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+~~ 
+~~ A. Alonso Dominguez
+~~ alonsoft@users.sf.net
+~~ 
+
+			---
+			Using Data Sources
+			---
+			A. Alonso Dominguez
+			
+
+Using Report Data Sources
+
+  JasperReports JSF Plugin supports many of the data sources supported
+by the {{{http://jasperreports.sf.net}JasperReports}} engine. This is
+done through the {{{tlddoc/jr/dataSource.html}jr:dataSource}} component.
+Following is an example of how this component can be used. There are some
+issues that affect to each kind of data source, you should go forward to
+the documentation of the one you are planning to use if you need more information.
+
+* The <<<jr:dataSource>>> component
+
+  There are two ways of using the data source component. When only a report
+or report link is to be rendered in the same page you can include the data
+source component nested inside the report component. Following is an example:
+
++---
+<jr:report id="ordersReportLink"
+	...
+>
+	<jr:dataSource ... />
+</jr:report>
++---
+
+  But, if you want to render more than one report or report link, you can
+define the data source somewhere in the page and specify the <<<id>>> attribute.
+Then, the report component must reference the <<<id>>> of the data source using
+the <<<dataSource>>> attribute:
+
++---
+<jr:dataSource id="myDataSource" ... />
+...
+<jr:reportLink id="orderReportLink" dataSource="myDataSource" ... />
+<jr:reportLink id="customerReportLink" dataSource="myDataSource" ... />
++---
+
+  <<Note>>: The data source component and the report component must be inside the
+same <<<javax.faces.component.NamingContainer>>> component instance.
+
+* Available datasources
+
+  Following is a table of the current available data sources and the value
+that must be used for the <<<type>>> attribute of the data source component.
+
+*---------------------------------------------------------+---------*
+| DataSource                                              | Type    |
+*---------------------------------------------------------+---------*
+| {{{datasources/jdbc.html}JDBC DataSource}}              | default |
+*---------------------------------------------------------+---------*
+| {{{datasources/jndi.html}JNDI DataSource}}              | jndi    |
+*---------------------------------------------------------+---------*
+| {{{datasources/xml.html}XML DataSource}}                | xml     |
+*---------------------------------------------------------+---------*
+| {{{datasources/other.html}Other Supported DataSources}} | other   |
+*---------------------------------------------------------+---------*

@@ -31,7 +31,7 @@
     <display-name>JasperReports JSF TagLib</display-name>
 	<tlib-version>1.0</tlib-version>
 	<short-name>jr</short-name>
-	<uri>http://jasperforge.org/jasperreports/jsf</uri>
+	<uri>http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_0.tld</uri>
 	
 	<tag>
 		<name>dataSource</name>
@@ -134,6 +134,41 @@
 				<type>java.lang.String</type>
 			</deferred-value>
 		</attribute>
+		<attribute>
+			<name>frameborder</name>
+			<required>false</required>
+			<deferred-value>
+				<type>boolean</type>
+			</deferred-value>
+		</attribute>
+		<attribute>
+			<name>marginheight</name>
+			<required>false</required>
+			<deferred-value>
+				<type>java.lang.String</type>
+			</deferred-value>
+		</attribute>
+		<attribute>
+			<name>marginwidth</name>
+			<required>false</required>
+			<deferred-value>
+				<type>java.lang.String</type>
+			</deferred-value>
+		</attribute>
+		<attribute>
+			<name>height</name>
+			<required>false</required>
+			<deferred-value>
+				<type>java.lang.String</type>
+			</deferred-value>
+		</attribute>
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<deferred-value>
+				<type>java.lang.String</type>
+			</deferred-value>
+		</attribute>
 	</tag>
 	
 	<tag>
@@ -184,6 +219,13 @@
 		</attribute>
 		<attribute>
 			<name>format</name>
+			<required>false</required>
+			<deferred-value>
+				<type>java.lang.String</type>
+			</deferred-value>
+		</attribute>
+		<attribute>
+			<name>target</name>
 			<required>false</required>
 			<deferred-value>
 				<type>java.lang.String</type>

@@ -49,6 +49,12 @@
 			<set name="path" bindingType="VB" />
 			<set name="subreportDir" bindingType="VB" />
 			<set name="format" bindingType="VB" />
+			<!-- HTML iframe attributes -->
+			<set name="frameborder" bindingType="VB" />
+			<set name="marginheight" bindingType="VB" />
+			<set name="marginwidth" bindingType="VB" />
+			<set name="height" bindingType="VB" />
+			<set name="width" bindingType="VB" />
 		</attributes>
 	</component>
 	

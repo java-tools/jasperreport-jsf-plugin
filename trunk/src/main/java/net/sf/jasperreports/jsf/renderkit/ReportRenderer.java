@@ -31,6 +31,7 @@ import javax.faces.context.ResponseWriter;
 
 import net.sf.jasperreports.jsf.ReportPhaseListener;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.component.html.*;
 
 /**
  * 
@@ -41,6 +42,11 @@ public class ReportRenderer extends AbstractReportRenderer {
 
 	public static final String RENDERER_TYPE = 
 		"net.sf.jasperreports.Report";
+	
+	private static final String[] PASSTHRU_ATTRS = {
+		"marginheight", "marginwidth",
+		"height", "width"
+	};
 	
 	private final Logger logger = Logger.getLogger(
 			ReportRenderer.class.getPackage().getName(),
@@ -78,6 +84,25 @@ public class ReportRenderer extends AbstractReportRenderer {
 		String clientId = component.getClientId(context);
 		context.getExternalContext().getSessionMap().put(
 				ReportPhaseListener.REPORT_COMPONENT_KEY_PREFIX + clientId, component);
+	}
+
+	protected void renderAttributes(ResponseWriter writer, UIComponent report)
+	throws IOException {
+		super.renderAttributes(writer, report);
+		
+		HtmlReport htmlReport = (HtmlReport) report;
+		if(htmlReport.getFrameborder()) {
+			writer.writeAttribute("frameborder", "1", null);
+		} else {
+			writer.writeAttribute("frameborder", "0", null);
+		}
+		
+		for(String attrName : PASSTHRU_ATTRS) {
+			Object value = report.getAttributes().get(attrName);
+			if(value != null) {
+				writer.writeAttribute(attrName, value, null);
+			}
+		}
 	}
 	
 }
