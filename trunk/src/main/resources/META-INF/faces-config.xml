@@ -66,10 +66,10 @@
     			net.sf.jasperreports.Report
     		</component-family>
     		<renderer-type>
-    			net.sf.jasperreports.HtmlReport
+    			net.sf.jasperreports.Embed
     		</renderer-type>
     		<renderer-class>
-    			net.sf.jasperreports.jsf.renderkit.ReportRenderer
+    			net.sf.jasperreports.jsf.renderkit.EmbedRenderer
     		</renderer-class>
     	</renderer>
     	
@@ -78,10 +78,10 @@
     			net.sf.jasperreports.Report
     		</component-family>
     		<renderer-type>
-    			net.sf.jasperreports.HtmlReportLink
+    			net.sf.jasperreports.Link
     		</renderer-type>
     		<renderer-class>
-    			net.sf.jasperreports.jsf.renderkit.ReportLinkRenderer
+    			net.sf.jasperreports.jsf.renderkit.LinkRenderer
     		</renderer-class>
     	</renderer>
     </render-kit>

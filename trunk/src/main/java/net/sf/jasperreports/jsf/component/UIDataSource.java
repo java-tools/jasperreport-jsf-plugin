@@ -33,10 +33,12 @@ public class UIDataSource extends UIComponentBase {
 	public static final String COMPONENT_TYPE =
 		"net.sf.jasperreports.DataSource";
 	
+	public static final String BEAN = "bean";
 	public static final String CSV = "csv";
 	public static final String DEFAULT = "default";
 	public static final String EMPTY = "empty";
 	public static final String JNDI = "jndi";
+	public static final String MAP = "map";
 	public static final String RESULT_SET = "resultSet";
 	public static final String XML = "xml";
 	

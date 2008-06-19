@@ -24,7 +24,7 @@ import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 
 import net.sf.jasperreports.jsf.component.html.HtmlReport;
-import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
+import net.sf.jasperreports.jsf.renderkit.EmbedRenderer;
 
 public class ReportTag extends AbstractReportTag {
 	
@@ -89,7 +89,7 @@ public class ReportTag extends AbstractReportTag {
 	
 	@Override
 	public String getRendererType() {
-		return ReportRenderer.RENDERER_TYPE;
+		return EmbedRenderer.RENDERER_TYPE;
 	}
 	
 	@Override

@@ -20,16 +20,52 @@
  */
 package net.sf.jasperreports.jsf.util;
 
+import java.io.IOException;
+
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.portlet.PortletContext;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.faces.component.*;
+import javax.servlet.http.HttpServletResponse;
 
 public final class Util {
 
 	private static final String INVOCATION_PATH =
 		"net.sf.jasperreports.jsf.INVOCATION_PATH";
+	
+	private static final String PORTLET_CLASS = 
+		"javax.portlet.Portlet";
+	
+	private static final String PORTLET_RESOURCEURL_CLASS =
+		"javax.portlet.ResourceURL";
+	
+	public static final boolean PORTLET_AVAILABLE;
+	
+	public static final String PORTLET_VERSION;
+	
+	static {
+		boolean portletAvailable = false;
+		try {
+			Class.forName(PORTLET_CLASS);
+			portletAvailable = true;
+		} catch(ClassNotFoundException e) {
+			portletAvailable = false;
+		}
+		
+		String portletVersion = null;
+		try {
+			Class.forName(PORTLET_RESOURCEURL_CLASS);
+			portletVersion = "2.0";
+		} catch(ClassNotFoundException e) {
+			portletVersion = (portletAvailable ? "1.0" : null);
+		}
+		
+		PORTLET_AVAILABLE = portletAvailable;
+		PORTLET_VERSION = portletVersion;
+	}
 	
 	public static ClassLoader getClassLoader(Object fallback) {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -85,6 +121,29 @@ public final class Util {
         return mapping;
     }
     
+	public static boolean isPortletContext(FacesContext facesContext) {
+		if(!PORTLET_AVAILABLE) return false;
+		
+		Object context = facesContext.getExternalContext().getContext();
+		return (context instanceof PortletContext);
+	}
+	
+	public static String getRequestURI(FacesContext context) {
+		if(isPortletContext(context)) {
+			if("2.0".equals(PORTLET_VERSION)) {
+				ResourceRequest request = (ResourceRequest) context
+					.getExternalContext().getRequest();
+				return request.getResourceID();
+			} else {
+				return null;
+			}
+		} else {
+			HttpServletRequest request = (HttpServletRequest) context
+				.getExternalContext().getRequest();
+			return request.getRequestURI();
+		}
+	}
+	
     /**
      * <p>Returns true if the provided <code>url-mapping</code> is
      * a prefix path mapping (starts with <code>/</code>).</p>
@@ -94,6 +153,35 @@ public final class Util {
      */
     public static boolean isPrefixMapped(String mapping) {
         return (mapping.charAt(0) == '/');
+    }
+    
+    public static void writeResponse(FacesContext context, 
+    		String contentType, byte[] data) 
+    throws IOException {
+    	if(isPortletContext(context)) {
+    		if("2.0".equals(PORTLET_VERSION)) {
+    			ResourceResponse response = (ResourceResponse) context
+						.getExternalContext().getResponse();
+    			response.setContentType(contentType);
+    			response.setContentLength(data.length);
+    			response.getPortletOutputStream().write(data);
+    			
+    			response.setProperty("Cache-Type", "no-cache");
+    			response.setProperty("Expires", "0");
+    		} else {
+    			throw new IllegalStateException(
+    					"Only Resource Request/Response state is allowed");
+    		}
+    	} else {
+    		HttpServletResponse response = (HttpServletResponse) context
+    				.getExternalContext().getResponse();
+    		response.setContentType(contentType);
+			response.setContentLength(data.length);
+			response.getOutputStream().write(data);
+			
+			response.setHeader("Cache-Type", "no-cache");
+			response.setHeader("Expires", "0");
+    	}
     }
     
     /**

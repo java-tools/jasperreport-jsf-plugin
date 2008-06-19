@@ -31,25 +31,19 @@ import javax.faces.context.ResponseWriter;
 
 import net.sf.jasperreports.jsf.ReportPhaseListener;
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.component.html.*;
 
 /**
  * 
  * @author A. Alonso Dominguez
  *
  */
-public class ReportRenderer extends AbstractReportRenderer {
+public class LinkRenderer extends AbstractReportRenderer {
 
 	public static final String RENDERER_TYPE = 
-		"net.sf.jasperreports.Report";
-	
-	private static final String[] PASSTHRU_ATTRS = {
-		"marginheight", "marginwidth",
-		"height", "width"
-	};
+		"net.sf.jasperreports.Link";
 	
 	private final Logger logger = Logger.getLogger(
-			ReportRenderer.class.getPackage().getName(),
+			LinkRenderer.class.getPackage().getName(),
 			"net.sf.jasperreports.jsf.LogMessages");
 	
 	@Override
@@ -61,25 +55,21 @@ public class ReportRenderer extends AbstractReportRenderer {
 		String reportURI = viewHandler.getResourceURL(context, 
 				buildReportURI(context, component));
 		
-		logger.log(Level.FINE, "JRJSF_0002", component.getClientId(context));
-		
 		ResponseWriter writer = context.getResponseWriter();
-		writer.startElement("iframe", component);
+		logger.log(Level.FINE, "JRJSF_0001", component.getClientId(context));
+		
+		writer.startElement("a", component);
 		renderIdAttribute(context, component);
-		writer.writeURIAttribute("src", reportURI, null);
-				
+		writer.writeURIAttribute("href", reportURI, null);
+		
 		renderAttributes(writer, component);
 	}
-	
-	@Override
-	public void encodeChildren(FacesContext context, UIComponent component)
-	throws IOException { }
-	
+		
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component)
 	throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-		writer.endElement("iframe");
+		writer.endElement("a");
 		
 		String clientId = component.getClientId(context);
 		context.getExternalContext().getSessionMap().put(
@@ -90,18 +80,9 @@ public class ReportRenderer extends AbstractReportRenderer {
 	throws IOException {
 		super.renderAttributes(writer, report);
 		
-		HtmlReport htmlReport = (HtmlReport) report;
-		if(htmlReport.getFrameborder()) {
-			writer.writeAttribute("frameborder", "1", null);
-		} else {
-			writer.writeAttribute("frameborder", "0", null);
-		}
-		
-		for(String attrName : PASSTHRU_ATTRS) {
-			Object value = report.getAttributes().get(attrName);
-			if(value != null) {
-				writer.writeAttribute(attrName, value, null);
-			}
+		String target = (String) report.getAttributes().get("target");
+		if(target != null) {
+			writer.writeAttribute("target", target, null);
 		}
 	}
 	

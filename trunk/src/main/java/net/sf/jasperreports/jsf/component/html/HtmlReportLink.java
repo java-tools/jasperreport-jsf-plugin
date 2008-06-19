@@ -27,7 +27,7 @@ import javax.faces.component.html.HtmlOutputLink;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.renderkit.ReportLinkRenderer;
+import net.sf.jasperreports.jsf.renderkit.LinkRenderer;
 
 public class HtmlReportLink extends HtmlOutputLink 
 implements UIReport {
@@ -39,10 +39,10 @@ implements UIReport {
 	private String path = null;
 	private String subreportDir = null;
 	private String format = null;
-	
+		
 	public HtmlReportLink() {
 		super();
-		setRendererType(ReportLinkRenderer.RENDERER_TYPE);
+		setRendererType(LinkRenderer.RENDERER_TYPE);
 	}
 	
 	public String getDataSource() {
