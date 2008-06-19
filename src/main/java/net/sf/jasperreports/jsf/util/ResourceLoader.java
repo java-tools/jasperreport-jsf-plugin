@@ -26,7 +26,6 @@ import java.net.URL;
 
 import javax.faces.context.FacesContext;
 
-
 public abstract class ResourceLoader {
 	
 	public static ResourceLoader getResourceLoader(FacesContext context, String name) {

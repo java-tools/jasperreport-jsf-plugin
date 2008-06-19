@@ -20,10 +20,11 @@
  */
 package net.sf.jasperreports.jsf.taglib;
 
-import javax.el.*;
-import javax.faces.component.*;
+import javax.el.ValueExpression;
+import javax.faces.component.UIComponent;
+
 import net.sf.jasperreports.jsf.component.html.HtmlReportLink;
-import net.sf.jasperreports.jsf.renderkit.ReportLinkRenderer;
+import net.sf.jasperreports.jsf.renderkit.LinkRenderer;
 
 public class ReportLinkTag extends AbstractReportTag {
 	
@@ -49,7 +50,7 @@ public class ReportLinkTag extends AbstractReportTag {
 	
 	@Override
 	public String getRendererType() {
-		return ReportLinkRenderer.RENDERER_TYPE;
+		return LinkRenderer.RENDERER_TYPE;
 	}
 	
 	@Override

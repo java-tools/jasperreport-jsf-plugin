@@ -22,6 +22,7 @@ package net.sf.jasperreports.jsf.renderkit;
 
 import java.io.IOException;
 
+import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
@@ -31,8 +32,8 @@ import javax.faces.render.Renderer;
 import net.sf.jasperreports.jsf.ReportPhaseListener;
 import net.sf.jasperreports.jsf.util.Util;
 
-public abstract class AbstractReportRenderer extends Renderer {
-
+abstract class AbstractReportRenderer extends Renderer {
+	
 	private static final String[] PASSTHRU_ATTRS = {
 		"dir", "lang", "title", "style", "datafld", "datasrc", "dataformatas", 
 		"ondblclick", "onmousedown", "onmousemove", "onmouseout", "onmouseover", "onmouseup", 
@@ -57,7 +58,9 @@ public abstract class AbstractReportRenderer extends Renderer {
 		reportURI.append("?").append(ReportPhaseListener.PARAM_CLIENTID);
 		reportURI.append("=").append(report.getClientId(context));
 		
-		return context.getExternalContext().encodeResourceURL(reportURI.toString());
+		ViewHandler viewHandler = context.getApplication().getViewHandler();
+		return context.getExternalContext().encodeResourceURL(
+				viewHandler.getResourceURL(context, reportURI.toString()));
 	}
 	
 	protected final void renderIdAttribute(FacesContext context, UIComponent report)

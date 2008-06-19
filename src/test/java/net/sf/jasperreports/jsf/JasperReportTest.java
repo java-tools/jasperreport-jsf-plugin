@@ -60,8 +60,8 @@ public class JasperReportTest extends TestCase {
 				"http://localhost" + contextPath 
 				+ "/ReportLinkTest.jsf");
 		WebLink link = response.getLinkWithID("reportLink");
-		//link.click();
-		
+		assertNotNull("Link 'reportLink' is null", link);
+		link.click();
 	}
 	
 }

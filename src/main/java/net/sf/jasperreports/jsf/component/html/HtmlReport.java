@@ -27,7 +27,7 @@ import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
+import net.sf.jasperreports.jsf.renderkit.EmbedRenderer;
 
 public class HtmlReport extends HtmlPanelGroup 
 implements UIReport {
@@ -53,7 +53,7 @@ implements UIReport {
 	
 	public HtmlReport() {
 		super();
-		setRendererType(ReportRenderer.RENDERER_TYPE);
+		setRendererType(EmbedRenderer.RENDERER_TYPE);
 	}
 	
 	public String getDataSource() {

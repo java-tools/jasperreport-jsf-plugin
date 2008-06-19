@@ -44,10 +44,10 @@
 		<tag-name>report</tag-name>
 		<component>
 			<component-type>
-				net.sf.jasperreports.Report
+				net.sf.jasperreports.HtmlReport
 			</component-type>
 			<renderer-type>
-				net.sf.jasperreports.HtmlReport
+				net.sf.jasperreports.Embed
 			</renderer-type>
 		</component>
 	</tag>
@@ -56,10 +56,10 @@
 		<tag-name>reportLink</tag-name>
 		<component>
 			<component-type>
-				net.sf.jasperreports.ReportLink
+				net.sf.jasperreports.HtmlReportLink
 			</component-type>
 			<renderer-type>
-				net.sf.jasperreports.HtmlReportLink
+				net.sf.jasperreports.Link
 			</renderer-type>
 		</component>
 	</tag>

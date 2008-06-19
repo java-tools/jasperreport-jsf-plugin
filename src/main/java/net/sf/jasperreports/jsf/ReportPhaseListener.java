@@ -20,9 +20,9 @@
  */
 package net.sf.jasperreports.jsf;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.faces.FacesException;
@@ -31,16 +31,16 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.util.ReportUtil;
+import net.sf.jasperreports.jsf.util.Util;
 
 public class ReportPhaseListener implements PhaseListener {
 	
-	public static final String BASE_URI = "/jasperreports";
+	public static final String BASE_URI = "/___jasperreportsjsf";
 	
 	public static final String PARAM_CLIENTID = "clientId";
 		
@@ -55,43 +55,55 @@ public class ReportPhaseListener implements PhaseListener {
 	public void beforePhase(PhaseEvent event) 
 	throws FacesException {		
 		FacesContext context = event.getFacesContext();
-		HttpServletRequest request = (HttpServletRequest) context
-			.getExternalContext().getRequest();
-		String uri = request.getRequestURI();
+		String uri = Util.getRequestURI(context);
 		if(uri != null && uri.indexOf(BASE_URI) > -1) {
 			ExternalContext extContext = context.getExternalContext();
 			
-			String clientId = request.getParameter(PARAM_CLIENTID);
+			String clientId = context.getExternalContext()
+					.getRequestParameterMap().get(PARAM_CLIENTID);
+			if(clientId == null) {
+				Throwable cause = new MalformedReportURLException(
+						"Missed parameter: " + PARAM_CLIENTID);
+				throw new FacesException(cause);
+			}
+			
 			UIReport report = (UIReport) extContext.getSessionMap()
 				.remove(REPORT_COMPONENT_KEY_PREFIX + clientId);
 			if(report == null) {
-				throw new FacesException("UIJasperReport component not found: " + clientId);
+				throw new FacesException("UIReport component not found: " + clientId);
 			}
 			
-			String reportType = report.getFormat();
-			if(reportType == null) reportType = "pdf";
-			if(!ReportUtil.CONTENT_TYPE_MAP.containsKey(reportType)) {
-				throw new FacesException("Illegal report type: " + reportType);
+			String format = report.getFormat();
+			if(format == null) {
+				format = ReportUtil.FORMAT_PDF;
+				report.setFormat(format);
 			}
-			
-			JasperPrint filledReport = ReportUtil.fillReport(context, report);
 			
 			try {
-				HttpServletResponse response = (HttpServletResponse) extContext.getResponse();
+				String mimeType = ReportUtil.CONTENT_TYPE_MAP.get(format);
+				if(mimeType == null) {
+					throw new IllegalOutputFormatException(format);
+				}
+				
+				logger.log(Level.FINE, "JRJSF_0006", clientId);
+				JasperPrint filledReport = ReportUtil.fillReport(context, report);
+				
 				ByteArrayOutputStream reportData = new ByteArrayOutputStream();
 				try {
-					ReportUtil.exportReport(report, filledReport, reportData);
-					
-					response.setContentType(ReportUtil.CONTENT_TYPE_MAP.get(reportType));
-					response.setContentLength(reportData.size());
-					response.getOutputStream().write(reportData.toByteArray());
-					
-					context.responseComplete();
+					if(logger.isLoggable(Level.FINE)) {
+						logger.log(Level.FINE, "JRJSF_0010", new Object[]{ clientId, mimeType });
+					}
+					ReportUtil.exportReport(context, report, filledReport, reportData);
+					Util.writeResponse(context, mimeType, reportData.toByteArray());
 				} finally {
 					reportData.close();
 				}
+			} catch(JRException e) {
+				throw new FacesException(e);
 			} catch(IOException e) {
 				throw new FacesException(e);
+			} finally {
+				context.responseComplete();
 			}
 		}
 	}
