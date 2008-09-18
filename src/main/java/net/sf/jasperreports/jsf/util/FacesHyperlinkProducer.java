@@ -22,16 +22,23 @@ package net.sf.jasperreports.jsf.util;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.Writer;
 
+import javax.faces.FactoryFinder;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.render.RenderKit;
+import javax.faces.render.RenderKitFactory;
 
 import net.sf.jasperreports.engine.JRHyperlinkParameter;
 import net.sf.jasperreports.engine.JRPrintHyperlink;
 import net.sf.jasperreports.engine.export.JRHyperlinkProducer;
 
 public class FacesHyperlinkProducer implements JRHyperlinkProducer {
+
+	private static final String ACCEPT_REQUEST_HEADER = "Accept";
 
 	private FacesContext context;
 	private UIComponent report;
@@ -50,7 +57,7 @@ public class FacesHyperlinkProducer implements JRHyperlinkProducer {
 	public String getHyperlink(JRPrintHyperlink link) {
 		StringWriter sw = new StringWriter();
 		try {
-			ResponseWriter writer = context.getResponseWriter().cloneWithWriter(sw);
+			ResponseWriter writer = getResponseWriter(context, sw);
 			writer.startElement("a", report);
 			writer.writeAttribute("href", buildHref(link), null);
 			if(null != link.getHyperlinkAnchor()) {
@@ -71,6 +78,20 @@ public class FacesHyperlinkProducer implements JRHyperlinkProducer {
 			try {
 				sw.close();
 			} catch(IOException e) { }
+		}
+	}
+	
+	private ResponseWriter getResponseWriter(FacesContext context, Writer writer) {
+		ResponseWriter current = context.getResponseWriter();
+		if(current == null) {
+			UIViewRoot viewRoot = context.getViewRoot();
+			RenderKitFactory rkf = (RenderKitFactory) FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
+			RenderKit rk = rkf.getRenderKit(context, viewRoot.getRenderKitId());
+			return rk.createResponseWriter(writer, 
+					context.getExternalContext().getRequestHeaderMap().get(ACCEPT_REQUEST_HEADER),
+					context.getExternalContext().getResponseCharacterEncoding());
+		} else {
+			return current.cloneWithWriter(writer);
 		}
 	}
 

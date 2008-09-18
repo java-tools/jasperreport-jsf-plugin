@@ -9,16 +9,18 @@
   </formats>
   <fileSets>
     <fileSet>
-      <includes>
+      <directory>.</directory>
+      <outputDirectory>/</outputDirectory>
+	  <useDefaultExcludes>true</useDefaultExcludes>
+	  <includes>
         <include>LICENSE*</include>
         <include>README*</include>
         <include>NOTICE*</include>
         <include>pom.xml</include>
       </includes>
-    </fileSet>
-    <fileSet>
-      <directory>src</directory>
-      <outputDirectory>/</outputDirectory>
+	  <excludes>
+		<exclude>**/target/**</exclude>
+	  </excludes>
     </fileSet>
   </fileSets>
 </assembly>
