@@ -34,25 +34,25 @@ public interface Exporter {
 
     /**
      * Gets the component.
-     * 
+     *
      * @return the component
      */
     public UIComponent getComponent();
 
     /**
      * Sets the component.
-     * 
+     *
      * @param component the new component
      */
     public void setComponent(final UIComponent component);
 
     /**
      * Export.
-     * 
+     *
      * @param context the context
      * @param print the print
      * @param stream the stream
-     * 
+     *
      * @throws IOException Signals that an I/O exception has occurred.
      * @throws ExporterException the exporter exception
      */

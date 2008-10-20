@@ -33,7 +33,6 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.export.Exporter;
@@ -109,7 +108,7 @@ public class ReportPhaseListener implements PhaseListener {
     /** The logger. */
     private static final Logger logger = Logger.getLogger(
             ReportPhaseListener.class.getPackage().getName(),
-            "net.sf.jasperreports.jsf.LogMessages");
+    "net.sf.jasperreports.jsf.LogMessages");
 
     /*
      * (non-Javadoc)
@@ -130,17 +129,17 @@ public class ReportPhaseListener implements PhaseListener {
             final ExternalContext extContext = context.getExternalContext();
 
             final String clientId = context.getExternalContext()
-                    .getRequestParameterMap().get(PARAM_CLIENTID);
+            .getRequestParameterMap().get(PARAM_CLIENTID);
             if (clientId == null) {
                 final Throwable cause = new MalformedReportURLException(
                         "Missed parameter: " + PARAM_CLIENTID);
-                throw new FacesException(cause);
+                throw new JRFacesException(cause);
             }
 
             final UIReport report = (UIReport) extContext.getSessionMap()
-                    .remove(REPORT_COMPONENT_KEY_PREFIX + clientId);
+            .remove(REPORT_COMPONENT_KEY_PREFIX + clientId);
             if (report == null) {
-                throw new FacesException("UIReport component not found: "
+                throw new JRFacesException("UIReport component not found: "
                         + clientId);
             }
 
@@ -158,7 +157,8 @@ public class ReportPhaseListener implements PhaseListener {
 
                 logger.log(Level.FINE, "JRJSF_0006", clientId);
                 final Filler filler = FillerFactory.getFiller(context, report);
-                final JasperPrint filledReport = filler.fill(context, report);
+                final JasperPrint filledReport = filler.fill(context,
+                        report);
 
                 final ByteArrayOutputStream reportData = new ByteArrayOutputStream();
                 try {
@@ -167,8 +167,10 @@ public class ReportPhaseListener implements PhaseListener {
                                 clientId, mimeType
                         });
                     }
+
                     final Exporter exporter = ExporterFactory.getExporter(
-                            context, report);
+                            context,
+                            report);
                     exporter.export(context, filledReport, reportData);
                     Util.writeResponse(context, mimeType, reportData
                             .toByteArray());
@@ -179,10 +181,8 @@ public class ReportPhaseListener implements PhaseListener {
                         // ignore
                     }
                 }
-            } catch (final JRException e) {
-                throw new FacesException(e);
             } catch (final IOException e) {
-                throw new FacesException(e);
+                throw new JRFacesException(e);
             } finally {
                 context.responseComplete();
             }
