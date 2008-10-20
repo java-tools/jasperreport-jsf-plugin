@@ -1,21 +1,19 @@
-/* JaspertReports JSF Plugin
- * Copyright (C) 2008 A. Alonso Dominguez
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- * 
- * A. Alonso Dominguez
+/*
+ * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ *
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1 of the License, or (at
+ * your option) any later version. This library is distributed in the hope
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place, Suite 330, Boston, MA 02111-1307 USA A.
+ *
+ * Alonso Dominguez
  * alonsoft@users.sf.net
  */
 package net.sf.jasperreports.jsf.renderkit;
@@ -31,78 +29,106 @@ import javax.faces.context.ResponseWriter;
 
 import net.sf.jasperreports.jsf.ReportPhaseListener;
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.component.html.*;
+import net.sf.jasperreports.jsf.component.html.HtmlReport;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class EmbedRenderer.
  * 
  * @author A. Alonso Dominguez
- *
  */
 public class EmbedRenderer extends AbstractReportRenderer {
 
-	public static final String RENDERER_TYPE = 
-		"net.sf.jasperreports.Embed";
-	
-	private static final String[] PASSTHRU_ATTRS = {
-		"marginheight", "marginwidth",
-		"height", "width"
-	};
-	
-	private final Logger logger = Logger.getLogger(
-			EmbedRenderer.class.getPackage().getName(),
-			"net.sf.jasperreports.jsf.LogMessages");
-	
-	@Override
-	@SuppressWarnings("unused")
-	public void encodeBegin(FacesContext context, UIComponent component)
-	throws IOException {
-		ViewHandler viewHandler = context.getApplication().getViewHandler();
-		UIReport report = (UIReport) component;
-		String reportURI = viewHandler.getResourceURL(context, 
-				buildReportURI(context, component));
-		
-		logger.log(Level.FINE, "JRJSF_0002", component.getClientId(context));
-		
-		ResponseWriter writer = context.getResponseWriter();
-		writer.startElement("iframe", component);
-		renderIdAttribute(context, component);
-		writer.writeURIAttribute("src", reportURI, null);
-				
-		renderAttributes(writer, component);
-	}
-	
-	@Override
-	public void encodeChildren(FacesContext context, UIComponent component)
-	throws IOException { }
-	
-	@Override
-	public void encodeEnd(FacesContext context, UIComponent component)
-	throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		writer.endElement("iframe");
-		
-		String clientId = component.getClientId(context);
-		context.getExternalContext().getSessionMap().put(
-				ReportPhaseListener.REPORT_COMPONENT_KEY_PREFIX + clientId, component);
-	}
+    /** The Constant RENDERER_TYPE. */
+    public static final String RENDERER_TYPE = "net.sf.jasperreports.Embed";
 
-	protected void renderAttributes(ResponseWriter writer, UIComponent report)
-	throws IOException {
-		super.renderAttributes(writer, report);
-		
-		HtmlReport htmlReport = (HtmlReport) report;
-		if(htmlReport.getFrameborder()) {
-			writer.writeAttribute("frameborder", "1", null);
-		} else {
-			writer.writeAttribute("frameborder", "0", null);
-		}
-		
-		for(String attrName : PASSTHRU_ATTRS) {
-			Object value = report.getAttributes().get(attrName);
-			if(value != null) {
-				writer.writeAttribute(attrName, value, null);
-			}
-		}
-	}
-	
+    /** The Constant PASSTHRU_ATTRS. */
+    private static final String[] PASSTHRU_ATTRS = {
+            "marginheight", "marginwidth", "height", "width"
+    };
+
+    /** The logger. */
+    private static final Logger logger = Logger.getLogger(EmbedRenderer.class
+            .getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * javax.faces.render.Renderer#encodeBegin(javax.faces.context.FacesContext,
+     * javax.faces.component.UIComponent)
+     */
+    @Override
+    @SuppressWarnings("unused")
+    public void encodeBegin(final FacesContext context,
+            final UIComponent component) throws IOException {
+        final ViewHandler viewHandler = context.getApplication()
+                .getViewHandler();
+        final UIReport report = (UIReport) component;
+        final String reportURI = viewHandler.getResourceURL(context,
+                buildReportURI(context, component));
+
+        logger.log(Level.FINE, "JRJSF_0002", component.getClientId(context));
+
+        final ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("iframe", component);
+        renderIdAttribute(context, component);
+        writer.writeURIAttribute("src", reportURI, null);
+
+        renderAttributes(writer, component);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * javax.faces.render.Renderer#encodeChildren(javax.faces.context.FacesContext
+     * , javax.faces.component.UIComponent)
+     */
+    @Override
+    public void encodeChildren(final FacesContext context,
+            final UIComponent component) throws IOException {}
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * javax.faces.render.Renderer#encodeEnd(javax.faces.context.FacesContext,
+     * javax.faces.component.UIComponent)
+     */
+    @Override
+    public void encodeEnd(final FacesContext context,
+            final UIComponent component) throws IOException {
+        final ResponseWriter writer = context.getResponseWriter();
+        writer.endElement("iframe");
+
+        final String clientId = component.getClientId(context);
+        context.getExternalContext().getSessionMap().put(
+                ReportPhaseListener.REPORT_COMPONENT_KEY_PREFIX + clientId,
+                component);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * net.sf.jasperreports.jsf.renderkit.AbstractReportRenderer#renderAttributes
+     * (javax.faces.context.ResponseWriter, javax.faces.component.UIComponent)
+     */
+    @Override
+    protected void renderAttributes(final ResponseWriter writer,
+            final UIComponent report) throws IOException {
+        super.renderAttributes(writer, report);
+
+        final HtmlReport htmlReport = (HtmlReport) report;
+        if (htmlReport.getFrameborder()) {
+            writer.writeAttribute("frameborder", "1", null);
+        } else {
+            writer.writeAttribute("frameborder", "0", null);
+        }
+
+        for (final String attrName : PASSTHRU_ATTRS) {
+            final Object value = report.getAttributes().get(attrName);
+            if (value != null) {
+                writer.writeAttribute(attrName, value, null);
+            }
+        }
+    }
+
 }

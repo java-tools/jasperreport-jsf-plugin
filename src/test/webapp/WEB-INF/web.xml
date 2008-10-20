@@ -4,20 +4,14 @@
 	     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	     version="2.5">
-  
+
 	<display-name>JasperReports JSF Test App</display-name>
-	
+
 	<context-param>
 		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
 		<param-value>server</param-value>
 	</context-param>
-	
-	<listener>
-		<listener-class>
-			com.sun.faces.config.ConfigureListener
-		</listener-class>
-	</listener>
-	
+
 	<!-- Faces Servlet -->
 	<servlet>
 		<servlet-name>FacesServlet</servlet-name>
@@ -26,18 +20,18 @@
 		</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	  
+
 	<!-- Faces Servlet Mapping -->
 	<servlet-mapping>
 		<servlet-name>FacesServlet</servlet-name>
 		<url-pattern>*.jsf</url-pattern>
 	</servlet-mapping>
-	
+
 	<jsp-config>
 		<taglib>
 			<taglib-uri>http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_0.tld</taglib-uri>
 			<taglib-location>/WEB-INF/tld/jasperreports-jsf.tld</taglib-location>
 		</taglib>
 	</jsp-config>
-	
+
 </web-app>
