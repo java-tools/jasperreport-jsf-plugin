@@ -18,22 +18,31 @@
  */
 package net.sf.jasperreports.jsf.fill;
 
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
+import javax.faces.context.FacesContext;
 
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.JRFacesException;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class QueryFiller.
  */
-public abstract class AbstractQueryFiller extends AbstractFiller {
+public abstract class AbstractSQLFiller extends AbstractFiller {
 
+	protected abstract Connection getConnection() throws Exception;
+	
     /**
      * Execute query.
      * 
@@ -71,5 +80,39 @@ public abstract class AbstractQueryFiller extends AbstractFiller {
             }
         }
     }
+
+	@Override
+	protected final JasperPrint doFill(FacesContext context,
+			InputStream reportStream, Map<String, Object> params)
+			throws FillerException {
+		Connection conn = null;
+		try {
+			conn = getConnection();
+		} catch(Exception e) {
+			throw new FillerException(e);
+		}
+		
+		ResultSet rs = null;
+        JRDataSource dataSource = null;
+        final String query = getDataSourceComponent().getQuery();
+        if ((query != null) && (query.length() > 0)) {
+            rs = executeQuery(conn);
+            dataSource = new JRResultSetDataSource(rs);
+        }
+
+        JasperPrint result = null;
+        try {
+            if (dataSource == null) {
+                result = JasperFillManager.fillReport(reportStream, params,
+                        conn);
+            } else {
+                result = JasperFillManager.fillReport(reportStream, params,
+                        dataSource);
+            }
+        } catch (final JRException e) {
+            throw new FillerException(e);
+        }
+        return result;
+	}
 
 }

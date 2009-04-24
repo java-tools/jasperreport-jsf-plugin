@@ -16,44 +16,31 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.export;
+package net.sf.jasperreports.jsf.resource;
 
-import net.sf.jasperreports.jsf.JRFacesException;
+import java.io.IOException;
+
+import javax.faces.context.FacesContext;
 
 /**
- * The Class ExporterException.
+ * Resource instantiator.
+ * <p>
+ * Helper interface used internally to create <tt>Resource</tt> instances
+ * 
+ * @author antonio.alonso
+ *
  */
-public class ExporterException extends JRFacesException {
+public interface ResourceFactory {
 
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = 3447264929238791580L;
-
-    /**
-     * Instantiates a new exporter exception.
-     * 
-     * @param msg the msg
-     * @param t the t
-     */
-    public ExporterException(final String msg, final Throwable t) {
-        super(msg, t);
-    }
-
-    /**
-     * Instantiates a new exporter exception.
-     * 
-     * @param msg the msg
-     */
-    public ExporterException(final String msg) {
-        super(msg);
-    }
-
-    /**
-     * Instantiates a new exporter exception.
-     * 
-     * @param t the t
-     */
-    public ExporterException(final Throwable t) {
-        super(t);
-    }
-
+	/**
+	 * Creates a new <tt>Resource</tt> instance
+	 * 
+	 * @param context the current <tt>FacesContext</tt>
+	 * @param name the resource name
+	 * @return a new <tt>Resource</tt> instance
+	 * @throws IOException if the resource can't be loaded.
+	 */
+	public Resource createResource(FacesContext context, String name)
+	throws IOException;
+	
 }

@@ -28,7 +28,6 @@ import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.component.UIReportImplementor;
 import net.sf.jasperreports.jsf.renderkit.EmbedRenderer;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class HtmlReport.
  */

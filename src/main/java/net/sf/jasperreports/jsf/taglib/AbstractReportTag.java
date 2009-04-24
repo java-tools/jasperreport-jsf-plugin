@@ -24,7 +24,6 @@ import javax.faces.webapp.UIComponentELTag;
 
 import net.sf.jasperreports.jsf.component.UIReport;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class AbstractReportTag.
  */

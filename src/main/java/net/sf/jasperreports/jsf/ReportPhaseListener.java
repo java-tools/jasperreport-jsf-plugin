@@ -41,7 +41,6 @@ import net.sf.jasperreports.jsf.fill.Filler;
 import net.sf.jasperreports.jsf.fill.FillerFactory;
 import net.sf.jasperreports.jsf.util.Util;
 
-// TODO: Auto-generated Javadoc
 /**
  * The listener interface for receiving reportPhase events. The class that is
  * interested in processing a reportPhase event implements this interface, and
@@ -108,7 +107,7 @@ public class ReportPhaseListener implements PhaseListener {
     /** The logger. */
     private static final Logger logger = Logger.getLogger(
             ReportPhaseListener.class.getPackage().getName(),
-    "net.sf.jasperreports.jsf.LogMessages");
+    		"net.sf.jasperreports.jsf.LogMessages");
 
     /*
      * (non-Javadoc)

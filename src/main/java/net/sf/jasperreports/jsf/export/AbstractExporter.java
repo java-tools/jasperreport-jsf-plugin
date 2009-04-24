@@ -32,7 +32,6 @@ import net.sf.jasperreports.engine.export.JRHyperlinkProducerFactory;
 import net.sf.jasperreports.jsf.util.FacesHyperlinkProducerFactory;
 import net.sf.jasperreports.jsf.util.Util;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Exporter.
  */

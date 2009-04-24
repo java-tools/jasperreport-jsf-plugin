@@ -16,44 +16,22 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.export;
+package net.sf.jasperreports.jsf.resource.provider;
 
-import net.sf.jasperreports.jsf.JRFacesException;
+import java.io.IOException;
+import java.net.URL;
 
-/**
- * The Class ExporterException.
- */
-public class ExporterException extends JRFacesException {
+import javax.faces.context.FacesContext;
 
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = 3447264929238791580L;
+import net.sf.jasperreports.jsf.resource.Resource;
+import net.sf.jasperreports.jsf.resource.ResourceFactory;
 
-    /**
-     * Instantiates a new exporter exception.
-     * 
-     * @param msg the msg
-     * @param t the t
-     */
-    public ExporterException(final String msg, final Throwable t) {
-        super(msg, t);
-    }
+public class URLResourceFactory implements ResourceFactory {
 
-    /**
-     * Instantiates a new exporter exception.
-     * 
-     * @param msg the msg
-     */
-    public ExporterException(final String msg) {
-        super(msg);
-    }
-
-    /**
-     * Instantiates a new exporter exception.
-     * 
-     * @param t the t
-     */
-    public ExporterException(final Throwable t) {
-        super(t);
-    }
+	public Resource createResource(FacesContext context, String name) 
+	throws IOException {
+		URL location = new URL(name);
+		return new URLResource(location.getFile(), location);
+	}
 
 }

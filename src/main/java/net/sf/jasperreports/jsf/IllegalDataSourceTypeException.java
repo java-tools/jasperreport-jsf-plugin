@@ -18,7 +18,6 @@
  */
 package net.sf.jasperreports.jsf;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class IllegalDataSourceTypeException.
  */

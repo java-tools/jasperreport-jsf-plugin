@@ -24,7 +24,6 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.component.UIDataSource;
 import net.sf.jasperreports.jsf.component.UIReport;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Interface Filler.
  */

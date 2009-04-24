@@ -66,13 +66,67 @@ report components. This attributes are shown in the following table:
 | dataSource   | true     | DataSource reference id (See {{{datasources.html}DataSource documentation}} |
 *--------------+----------*-----------------------------------------------------------------------------+
 
+** Resources
+
+  Report resources can be loaded from the classpath, from the web application context or,
+from an external URL. Following there are some examples:
+
+*** Classpath Resources
+
+  When loading classpath resources we need to use the prefix <<<classpath:>>> in the <<<path>>> attribute:
+
++--
+<jr:report path="classpath:reports/orders.jasper">
+	...
+</jr:report>
++-- 
+
+*** External URL Resources
+
+  When loading resources from an URL simply use any normal URL as the value of the <<<path>>> attribute:
+
++--
+<jr:report path="http://www.example.com/reports/orders.jasper">
+	...
+</jr:report>
++--
+
+*** Context-relative Resources 
+
+  Context-relative resources are the default way of loading reports. When loading this kind of resources
+just use an absolute path to the given resource. This path will be resolved inside the application context.
+
++--
+<jr:report path="/reports/orders.jasper">
+	...
+</jr:report>
++--
+
 ** Report Parameters
 
-  Report parameters are specified using the JSF <<<f:param>>> tag 
-nested inside the report component tag you are using.
+  Report parameters are specified using the JSF <<<f:param>>> tag nested inside 
+the report component tag you are using.
 
 +---
 <jr:report path="/reports/orders.jasper">
 	<f:param name="CITY" value="Melbourne" />
 </jr:report>
 +---
+
+* Output Formats
+
+  JasperReports JSF-Plugin supports many output formats for your reports. Advanced users
+can also provide its own supported output formats, take a look to {{{exporter.html}this link}}
+to get more information about that.
+
+  Apart from that, each of the output formats can be cutomized providing some component
+attributes using the <<<f:attribute>>> tag nested inside the report component you are using.
+
++---
+<jr:report path="..." format="csv">
+	<f:attribute name="FIELD_DELIMITER" value=":" />
+</jr:report>
++---
+
+  Take a look to the {{{apidocs/index.html}Javadocs}} to get specific information about each
+exporter and its specific attributes.

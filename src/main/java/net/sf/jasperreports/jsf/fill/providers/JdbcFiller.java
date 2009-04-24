@@ -18,30 +18,19 @@
  */
 package net.sf.jasperreports.jsf.fill.providers;
 
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.faces.context.FacesContext;
-
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRResultSetDataSource;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.jsf.fill.AbstractSQLFiller;
 import net.sf.jasperreports.jsf.fill.FillerException;
-import net.sf.jasperreports.jsf.fill.AbstractQueryFiller;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class JdbcFiller.
  */
-public class JdbcFiller extends AbstractQueryFiller {
+public class JdbcFiller extends AbstractSQLFiller {
 
     /** The Constant REQUIRED_DATASOURCE_ATTRS. */
     public static final String[] REQUIRED_DATASOURCE_ATTRS = {
@@ -61,12 +50,11 @@ public class JdbcFiller extends AbstractQueryFiller {
     }
 
     /* (non-Javadoc)
-     * @see net.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.FacesContext, java.io.InputStream, java.util.Map)
+     * @see net.sf.jasperreports.jsf.fill.AbstractQueryFiller#getConnection()
      */
     @Override
-    protected JasperPrint doFill(final FacesContext context,
-            final InputStream reportStream, final Map<String, Object> params)
-            throws FillerException {
+    protected Connection getConnection()
+            throws SQLException {
         final String driverClass = getDataSourceComponent().getDriverClass();
         if ((driverClass == null) || (driverClass.length() == 0)) {
             throw new FillerException(
@@ -89,8 +77,6 @@ public class JdbcFiller extends AbstractQueryFiller {
                 .getAttributes().get("password");
 
         Connection conn = null;
-        ResultSet rs = null;
-        JRDataSource dataSource = null;
         try {
             if (username == null) {
                 logger.log(Level.FINE, "JRJSF_0007", connectionURL);
@@ -107,26 +93,7 @@ public class JdbcFiller extends AbstractQueryFiller {
         } catch (final SQLException e) {
             throw new FillerException(e);
         }
-
-        final String query = getDataSourceComponent().getQuery();
-        if ((query != null) && (query.length() > 0)) {
-            rs = executeQuery(conn);
-            dataSource = new JRResultSetDataSource(rs);
-        }
-
-        JasperPrint result = null;
-        try {
-            if (dataSource == null) {
-                result = JasperFillManager.fillReport(reportStream, params,
-                        conn);
-            } else {
-                result = JasperFillManager.fillReport(reportStream, params,
-                        dataSource);
-            }
-        } catch (final JRException e) {
-            throw new FillerException(e);
-        }
-        return result;
+        return conn;
     }
 
 }

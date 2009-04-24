@@ -31,7 +31,6 @@ import net.sf.jasperreports.jsf.ReportPhaseListener;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.component.html.HtmlReport;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class EmbedRenderer.
  * 

@@ -25,7 +25,6 @@ import net.sf.jasperreports.engine.export.JRTextExporter;
 import net.sf.jasperreports.engine.export.JRTextExporterParameter;
 import net.sf.jasperreports.jsf.export.AbstractExporter;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class TextExporter.
  */

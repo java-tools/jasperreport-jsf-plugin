@@ -25,7 +25,6 @@ import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
 import net.sf.jasperreports.jsf.export.AbstractExporter;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class PdfExporter.
  */

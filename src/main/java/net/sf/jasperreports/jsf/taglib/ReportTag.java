@@ -24,7 +24,6 @@ import javax.faces.component.UIComponent;
 import net.sf.jasperreports.jsf.component.html.HtmlReport;
 import net.sf.jasperreports.jsf.renderkit.EmbedRenderer;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ReportTag.
  */

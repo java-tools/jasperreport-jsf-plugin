@@ -26,7 +26,6 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.util.Util;
 
-// TODO: Auto-generated Javadoc
 /**
  * A factory for creating Exporter objects.
  */
@@ -34,10 +33,11 @@ public final class ExporterFactory {
 
     /** The Constant SERVICES_RESOURCE. */
     private static final String SERVICES_RESOURCE = "META-INF/services/"
-            + AbstractExporter.class.getName();
+            + Exporter.class.getName();
 
     /** The exporter cache map. */
-    private static Map<String, Class<Exporter>> exporterCacheMap;
+    private static final Map<String, Class<Exporter>> exporterCacheMap =
+    	Util.loadServiceMap(SERVICES_RESOURCE);
 
     /**
      * Gets the single instance of Exporter.
@@ -53,10 +53,6 @@ public final class ExporterFactory {
             final UIReport report) throws ExporterException {
         if (!(report instanceof UIComponent)) {
             throw new IllegalArgumentException();
-        }
-
-        if (exporterCacheMap == null) {
-            exporterCacheMap = Util.loadServiceMap(SERVICES_RESOURCE);
         }
 
         final Class<Exporter> exporterClass = exporterCacheMap.get(report

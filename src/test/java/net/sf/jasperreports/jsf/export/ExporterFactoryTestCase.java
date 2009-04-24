@@ -19,6 +19,7 @@
 package net.sf.jasperreports.jsf.export;
 
 import junit.framework.TestCase;
+import net.sf.jasperreports.jsf.ReportPhaseListener;
 import net.sf.jasperreports.jsf.component.html.HtmlReport;
 
 /**
@@ -33,12 +34,14 @@ public class ExporterFactoryTestCase extends TestCase {
     }
 
     public void testCreateExporter() {
-
+    	
     }
 
     @Override
     protected void setUp() throws Exception {
         component = new HtmlReport();
+        component.setFormat(ReportPhaseListener.FORMAT_CSV);
+        
         super.setUp();
     }
 

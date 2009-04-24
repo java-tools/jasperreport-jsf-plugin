@@ -30,7 +30,6 @@ import javax.faces.render.Renderer;
 import net.sf.jasperreports.jsf.ReportPhaseListener;
 import net.sf.jasperreports.jsf.util.Util;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class AbstractReportRenderer.
  */

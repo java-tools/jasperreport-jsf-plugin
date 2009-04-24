@@ -16,21 +16,25 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.util;
+package net.sf.jasperreports.jsf.resource.provider;
 
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.faces.context.ExternalContext;
+import javax.portlet.PortletContext;
 import javax.servlet.ServletContext;
 
-// TODO: Auto-generated Javadoc
+import net.sf.jasperreports.jsf.resource.AbstractResource;
+import net.sf.jasperreports.jsf.resource.Resource;
+
 /**
  * The Class ContextResourceLoader.
  */
-public class ContextResourceLoader extends ResourceLoader {
-
+public class ContextResource extends AbstractResource 
+implements Resource {
+	
     /** The context. */
     private final ExternalContext context;
 
@@ -39,7 +43,8 @@ public class ContextResourceLoader extends ResourceLoader {
      * 
      * @param servletContext the servlet context
      */
-    public ContextResourceLoader(final ExternalContext servletContext) {
+    public ContextResource(final String name, final ExternalContext servletContext) {
+    	super(name);
         if (servletContext == null) {
             throw new IllegalArgumentException();
         }
@@ -49,25 +54,11 @@ public class ContextResourceLoader extends ResourceLoader {
     /*
      * (non-Javadoc)
      * @see
-     * net.sf.jasperreports.jsf.util.ResourceLoader#getRealPath(java.lang.String
-     * )
-     */
-    @Override
-    public String getRealPath(final String name) {
-        final ServletContext servletContext = (ServletContext) context
-                .getContext();
-        return servletContext.getRealPath(name);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see
      * net.sf.jasperreports.jsf.util.ResourceLoader#getResource(java.lang.String
      * )
      */
-    @Override
-    public URL getResource(final String name) throws MalformedURLException {
-        return context.getResource(name);
+    public URL getLocation() throws MalformedURLException {
+        return context.getResource(getName());
     }
 
     /*
@@ -76,9 +67,20 @@ public class ContextResourceLoader extends ResourceLoader {
      * net.sf.jasperreports.jsf.util.ResourceLoader#getResourceAsStream(java
      * .lang.String)
      */
-    @Override
-    public InputStream getResourceAsStream(final String name) {
-        return context.getResourceAsStream(name);
+    public InputStream getInputStream() {
+        return context.getResourceAsStream(getName());
+    }
+    
+    public String getPath() {
+    	Object wrappedContext = context.getContext();
+    	if(wrappedContext instanceof ServletContext) {
+    		return ((ServletContext) wrappedContext).getRealPath(getName());
+    	} else if(wrappedContext instanceof PortletContext) {
+    		return ((PortletContext) wrappedContext).getRealPath(getName());
+    	} else {
+    		throw new IllegalStateException("Unrecognized context class: " + 
+    				wrappedContext.getClass().getName());
+    	}
     }
 
 }

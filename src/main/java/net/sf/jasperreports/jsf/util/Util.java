@@ -26,6 +26,7 @@ import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import javax.faces.FacesException;
@@ -64,8 +65,9 @@ public final class Util {
     public static final String PORTLET_VERSION;
 
     /** The logger. */
-    private static final Logger logger = Logger.getLogger(Util.class
-            .getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
+    private static final Logger logger = Logger.getLogger(
+    		Util.class.getPackage().getName(), 
+    		"net.sf.jasperreports.jsf.LogMessages");
 
     static {
         boolean portletAvailable = false;
@@ -280,9 +282,10 @@ public final class Util {
                     try {
                         serviceClass = (Class<T>) loader.loadClass(record[1]);
                     } catch (final ClassNotFoundException e) {
-                        logger.log(Level.SEVERE,
-                                "Exporter service class not found: {0}",
-                                record[1]);
+                    	LogRecord logRecord = new LogRecord(Level.SEVERE, "JRJSF_0011");
+                    	logRecord.setParameters(new Object[]{ record[1], record[0] });
+                    	logRecord.setThrown(e);
+                        logger.log(logRecord);
                         continue;
                     }
 
@@ -291,7 +294,10 @@ public final class Util {
                             serviceClass);
                 }
             } catch (final IOException e) {
-                logger.log(Level.SEVERE, "Error reading service file {0}", url);
+            	LogRecord logRecord = new LogRecord(Level.SEVERE, "JRJSF_0012");
+            	logRecord.setParameters(new Object[]{ url });
+            	logRecord.setThrown(e);
+            	logger.log(logRecord);
                 continue;
             } finally {
                 if (reader != null) {

@@ -24,7 +24,6 @@ import javax.faces.component.UIComponent;
 import net.sf.jasperreports.jsf.component.html.HtmlReportLink;
 import net.sf.jasperreports.jsf.renderkit.LinkRenderer;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ReportLinkTag.
  */

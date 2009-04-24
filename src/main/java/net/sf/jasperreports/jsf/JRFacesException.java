@@ -20,7 +20,6 @@ package net.sf.jasperreports.jsf;
 
 import javax.faces.FacesException;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class JRFacesException.
  */

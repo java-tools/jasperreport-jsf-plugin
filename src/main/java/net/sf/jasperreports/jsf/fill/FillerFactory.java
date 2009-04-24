@@ -27,7 +27,6 @@ import net.sf.jasperreports.jsf.component.UIDataSource;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.util.Util;
 
-// TODO: Auto-generated Javadoc
 /**
  * A factory for creating Filler objects.
  */
@@ -35,10 +34,11 @@ public final class FillerFactory {
 
     /** The Constant SERVICES_RESOURCE. */
     private static final String SERVICES_RESOURCE = "META-INF/services/"
-            + AbstractFiller.class.getName();
+            + Filler.class.getName();
 
     /** The exporter cache map. */
-    private static Map<String, Class<Filler>> fillerCacheMap;
+    private static final Map<String, Class<Filler>> fillerCacheMap =
+    	Util.loadServiceMap(SERVICES_RESOURCE);
 
     /** The Constant DEFAULT_FILLER_INSTANCE. */
     private static final Filler DEFAULT_FILLER_INSTANCE = new StaticFiller();
@@ -59,10 +59,6 @@ public final class FillerFactory {
             throw new IllegalArgumentException();
         }
 
-        if (fillerCacheMap == null) {
-            fillerCacheMap = Util.loadServiceMap(SERVICES_RESOURCE);
-        }
-
         Filler result;
         final UIDataSource dataSource = Util.getDataSourceComponent(context,
                 report);
@@ -72,7 +68,7 @@ public final class FillerFactory {
             final Class<Filler> fillerClass = fillerCacheMap.get(dataSource
                     .getType());
             if (fillerClass == null) {
-                throw new FillerException(dataSource.getType());
+                throw new FillerNotFoundException(dataSource.getType());
             }
 
             try {
