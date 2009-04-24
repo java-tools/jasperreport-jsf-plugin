@@ -16,23 +16,35 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.fill;
+package net.sf.jasperreports.jsf.resource.provider;
 
-/**
- * The Class FillerNotFoundException.
- */
-public class FillerNotFoundException extends FillerException {
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = -35231220672091774L;
+import net.sf.jasperreports.jsf.resource.AbstractResource;
+import net.sf.jasperreports.jsf.resource.Resource;
 
-    /**
-     * Instantiates a new filler not found exception.
-     * 
-     * @param msg the msg
-     */
-    public FillerNotFoundException(final String msg) {
-        super(msg);
-    }
+public class URLResource extends AbstractResource 
+implements Resource {	
+	
+	private final URL location;
+	
+	public URLResource(String name, URL location) {
+		super(name);
+		this.location = location;
+	}
+
+	public InputStream getInputStream() throws IOException {
+		return location.openStream();
+	}
+
+	public URL getLocation() throws IOException {
+		return location;
+	}
+
+	public String getPath() {
+		return location.getPath();
+	}
 
 }

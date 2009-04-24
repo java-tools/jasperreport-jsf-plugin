@@ -33,7 +33,6 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.jsf.fill.AbstractFiller;
 import net.sf.jasperreports.jsf.fill.FillerException;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class BeanFiller.
  */

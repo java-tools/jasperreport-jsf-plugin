@@ -18,7 +18,6 @@
  */
 package net.sf.jasperreports.jsf.export;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ExporterNotFoundException.
  */
@@ -34,7 +33,6 @@ public class ExporterNotFoundException extends ExporterException {
      */
     public ExporterNotFoundException(final String msg) {
         super(msg);
-        // TODO Auto-generated constructor stub
     }
 
 }

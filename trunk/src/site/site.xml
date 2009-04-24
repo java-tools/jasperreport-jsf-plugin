@@ -59,6 +59,10 @@
         <item name="XML" href="datasources/xml.html" />
         <item name="Others" href="datasources/others.html" />
       </item>
+      <item name="Extending Functionality">
+        <item name="Output Formats" href="exporter.html" />
+        <item name="Data Sources" href="filler.html" />
+      </item>
     </menu>
     
     <menu name="Reference">

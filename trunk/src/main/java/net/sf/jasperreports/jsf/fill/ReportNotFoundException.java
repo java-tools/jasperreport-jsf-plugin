@@ -35,5 +35,14 @@ public class ReportNotFoundException extends FillerException {
     public ReportNotFoundException(final String msg) {
         super(msg);
     }
+    
+    /**
+     * Instantiates a new report not found exception.
+     * 
+     * @param msg the msg
+     */
+    public ReportNotFoundException(final String msg, Throwable t) {
+        super(msg, t);
+    }
 
 }

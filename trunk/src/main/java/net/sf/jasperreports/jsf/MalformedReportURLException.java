@@ -20,7 +20,6 @@ package net.sf.jasperreports.jsf;
 
 import net.sf.jasperreports.engine.JRException;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class MalformedReportURLException.
  */

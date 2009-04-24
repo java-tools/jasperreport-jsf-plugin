@@ -24,7 +24,6 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.engine.export.JRHyperlinkProducer;
 import net.sf.jasperreports.engine.export.JRHyperlinkProducerFactory;
 
-// TODO: Auto-generated Javadoc
 /**
  * A factory for creating FacesHyperlinkProducer objects.
  */
@@ -52,12 +51,6 @@ public class FacesHyperlinkProducerFactory extends JRHyperlinkProducerFactory {
         this.report = report;
     }
 
-    /*
-     * (sin Javadoc)
-     * @see
-     * net.sf.jasperreports.engine.export.JRHyperlinkProducerFactory#getHandler
-     * (java.lang.String)
-     */
     /*
      * (non-Javadoc)
      * @see

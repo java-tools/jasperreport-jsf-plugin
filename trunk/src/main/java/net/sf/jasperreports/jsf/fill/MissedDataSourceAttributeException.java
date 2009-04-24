@@ -18,7 +18,6 @@
  */
 package net.sf.jasperreports.jsf.fill;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class MissedDataSourceAttributeException.
  */
@@ -34,7 +33,6 @@ public class MissedDataSourceAttributeException extends FillerException {
      */
     public MissedDataSourceAttributeException(final String msg) {
         super(msg);
-        // TODO Auto-generated constructor stub
     }
 
 }

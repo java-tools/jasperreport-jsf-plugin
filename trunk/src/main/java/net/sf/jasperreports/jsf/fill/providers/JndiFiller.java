@@ -18,33 +18,20 @@
  */
 package net.sf.jasperreports.jsf.fill.providers;
 
-import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRResultSetDataSource;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.jsf.fill.FillerException;
-import net.sf.jasperreports.jsf.fill.AbstractQueryFiller;
+import net.sf.jasperreports.jsf.fill.AbstractSQLFiller;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class JndiFiller.
  */
-public class JndiFiller extends AbstractQueryFiller {
+public class JndiFiller extends AbstractSQLFiller {
 
     /** The Constant logger. */
     private static final Logger logger = Logger.getLogger(JndiFiller.class
@@ -59,48 +46,18 @@ public class JndiFiller extends AbstractQueryFiller {
     }
 
     /* (non-Javadoc)
-     * @see net.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.FacesContext, java.io.InputStream, java.util.Map)
+     * @see net.sf.jasperreports.jsf.fill.AbstractQueryFiller#getConnection()
      */
     @Override
-    protected JasperPrint doFill(final FacesContext context,
-            final InputStream reportStream, final Map<String, Object> params)
-            throws FillerException {
-        Connection conn = null;
-        ResultSet rs = null;
-        JRDataSource dataSource = null;
-
+    protected Connection getConnection()
+            throws Exception {
         final String dataSourceName = (String) getDataSourceComponent()
                 .getValue();
         logger.log(Level.FINE, "JRJSF_0005", dataSourceName);
-        try {
-            final Context jndi = new InitialContext();
-            final DataSource ds = (DataSource) jndi.lookup(dataSourceName);
-            conn = ds.getConnection();
-        } catch (final NamingException e) {
-            throw new FillerException(e);
-        } catch (final SQLException e) {
-            throw new FillerException(e);
-        }
-
-        final String query = getDataSourceComponent().getQuery();
-        if ((query != null) && (query.length() > 0)) {
-            rs = executeQuery(conn);
-            dataSource = new JRResultSetDataSource(rs);
-        }
-
-        JasperPrint result = null;
-        try {
-            if (dataSource == null) {
-                result = JasperFillManager.fillReport(reportStream, params,
-                        conn);
-            } else {
-                result = JasperFillManager.fillReport(reportStream, params,
-                        dataSource);
-            }
-        } catch (final JRException e) {
-            throw new FillerException(e);
-        }
-        return result;
+        
+        final Context jndi = new InitialContext();
+        final DataSource ds = (DataSource) jndi.lookup(dataSourceName);
+        return ds.getConnection();        
     }
 
 }

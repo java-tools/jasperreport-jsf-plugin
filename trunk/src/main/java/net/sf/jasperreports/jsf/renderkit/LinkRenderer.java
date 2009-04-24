@@ -30,7 +30,6 @@ import javax.faces.context.ResponseWriter;
 import net.sf.jasperreports.jsf.ReportPhaseListener;
 import net.sf.jasperreports.jsf.component.UIReport;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class LinkRenderer.
  * 

@@ -16,23 +16,19 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.fill;
+package net.sf.jasperreports.jsf.resource;
 
-/**
- * The Class FillerNotFoundException.
- */
-public class FillerNotFoundException extends FillerException {
+public abstract class AbstractResource implements Resource {
 
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = -35231220672091774L;
+	private String name;
 
-    /**
-     * Instantiates a new filler not found exception.
-     * 
-     * @param msg the msg
-     */
-    public FillerNotFoundException(final String msg) {
-        super(msg);
-    }
+	public AbstractResource(String name) {
+		super();
+		this.name = name;
+	}
 
+	public String getName() {
+		return name;
+	}
+	
 }

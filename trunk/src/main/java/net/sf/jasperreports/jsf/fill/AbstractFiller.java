@@ -18,6 +18,7 @@
  */
 package net.sf.jasperreports.jsf.fill;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,13 +29,14 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 
+import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.component.UIDataSource;
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.util.ResourceLoader;
+import net.sf.jasperreports.jsf.resource.Resource;
+import net.sf.jasperreports.jsf.resource.ResourceLoader;
 import net.sf.jasperreports.jsf.util.Util;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Filler.
  */
@@ -94,10 +96,16 @@ public abstract class AbstractFiller implements Filler {
     public final JasperPrint fill(final FacesContext context,
             final UIReport report) throws FillerException {
         final String reportName = report.getPath();
-        final ResourceLoader resourceLoader = ResourceLoader.getResourceLoader(
-                context, reportName);
-        final InputStream reportStream = resourceLoader
-                .getResourceAsStream(reportName);
+        
+        InputStream reportStream = null;
+        try {
+        	final Resource resource = ResourceLoader.getResource(
+        			context, reportName);
+        	reportStream = resource.getInputStream();
+        } catch(IOException e) {
+        	throw new ReportNotFoundException(reportName, e);
+        }
+        
         if (reportStream == null) {
             throw new ReportNotFoundException(reportName);
         }
@@ -106,7 +114,7 @@ public abstract class AbstractFiller implements Filler {
         final Map<String, Object> params = buildParamMap(context, report);
         return doFill(context, reportStream, params);
     }
-
+    
     /**
      * Do fill.
      * 
@@ -130,8 +138,9 @@ public abstract class AbstractFiller implements Filler {
      * 
      * @return the map< string, object>
      */
-    protected Map<String, Object> buildParamMap(final FacesContext context,
-            final UIReport report) {
+    protected final Map<String, Object> buildParamMap(final FacesContext context,
+            final UIReport report) 
+    throws FillerException {
         // Build param map using component's child parameters
         final Map<String, Object> parameters = new HashMap<String, Object>();
         for (final UIComponent component : ((UIComponent) report).getChildren()) {
@@ -149,10 +158,13 @@ public abstract class AbstractFiller implements Filler {
         // Subreport directory
         final String subreportDir = report.getSubreportDir();
         if (subreportDir != null) {
-            final ResourceLoader resourceLoader = ResourceLoader
-                    .getResourceLoader(context, subreportDir);
-            parameters.put("SUBREPORT_DIR", resourceLoader
-                    .getRealPath(subreportDir));
+            Resource resource = null;
+            try {
+            	resource = ResourceLoader.getResource(context, subreportDir);
+            } catch(IOException e) {
+            	throw new FillerException(e);
+            }
+            parameters.put("SUBREPORT_DIR", resource.getPath());
         }
 
         return parameters;

@@ -24,7 +24,6 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class UIDataSource.
  */

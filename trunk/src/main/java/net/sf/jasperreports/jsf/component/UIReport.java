@@ -20,7 +20,6 @@ package net.sf.jasperreports.jsf.component;
 
 import javax.faces.component.StateHolder;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Interface UIReport.
  */

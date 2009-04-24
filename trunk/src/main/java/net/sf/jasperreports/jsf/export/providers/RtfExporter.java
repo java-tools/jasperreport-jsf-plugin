@@ -24,7 +24,6 @@ import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRRtfExporter;
 import net.sf.jasperreports.jsf.export.AbstractExporter;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class RtfExporter.
  */
