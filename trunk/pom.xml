@@ -48,9 +48,9 @@
 
   <distributionManagement>
     <site>
-      <id>shell.sf.net</id>
+    	<id>jasperreportjsf.web.sourceforge.net</id>
       <name>JasperReports JSF Plugin Website</name>
-      <url>scp://shell.sf.net/home/groups/j/ja/jasperreportjsf/htdocs/web</url>
+      <url>scp://web.sourceforge.net/home/groups/j/ja/jasperreportjsf/htdocs/web</url>
     </site>
   </distributionManagement>
 
