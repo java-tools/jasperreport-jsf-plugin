@@ -45,6 +45,8 @@ public interface Exporter {
      */
     public void setComponent(final UIComponent component);
 
+    public String getContentType();
+    
     /**
      * Export.
      *

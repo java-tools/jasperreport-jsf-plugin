@@ -30,13 +30,19 @@ import net.sf.jasperreports.jsf.export.AbstractExporter;
  */
 public class CsvExporter extends AbstractExporter {
 
+	public static final String CONTENT_TYPE = "text/plain";
+	
     /** The Constant ATTR_FIELD_DELIMITER. */
     public static final String ATTR_FIELD_DELIMITER = "FIELD_DELIMITER";
 
     /** The Constant ATTR_RECORD_DELIMITER. */
     public static final String ATTR_RECORD_DELIMITER = "RECORD_DELIMITER";
 
-    /* (non-Javadoc)
+    public String getContentType() {
+		return CONTENT_TYPE;
+	}
+
+	/* (non-Javadoc)
      * @see net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces.context.FacesContext)
      */
     @Override

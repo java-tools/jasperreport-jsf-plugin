@@ -36,7 +36,7 @@
 
 <body>
 <f:view>
-	<jr:reportLink id="reportLink"
+	<jr:reportLink id="reportLink" format="html"
 		path="/WEB-INF/report/Factura.jasper"
 		subreportDir="/WEB-INF/report/"
 	>

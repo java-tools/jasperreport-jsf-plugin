@@ -98,10 +98,7 @@ public class EmbedRenderer extends AbstractReportRenderer {
         final ResponseWriter writer = context.getResponseWriter();
         writer.endElement("iframe");
 
-        final String clientId = component.getClientId(context);
-        context.getExternalContext().getSessionMap().put(
-                ReportPhaseListener.REPORT_COMPONENT_KEY_PREFIX + clientId,
-                component);
+        registerComponent(context, component);
     }
 
     /*

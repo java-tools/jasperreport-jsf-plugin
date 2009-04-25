@@ -30,6 +30,8 @@ import net.sf.jasperreports.jsf.export.AbstractExporter;
  */
 public class HtmlExporter extends AbstractExporter {
 
+	public static final String CONTENT_TYPE = "text/html";
+	
     /** The Constant ATTR_HTML_HEADER. */
     public static final String ATTR_HTML_HEADER = "HTML_HEADER";
 
@@ -45,6 +47,10 @@ public class HtmlExporter extends AbstractExporter {
     /** The Constant ATTR_IMAGES_URI. */
     public static final String ATTR_IMAGES_URI = "IMAGES_URI";
 
+    public String getContentType() {
+		return CONTENT_TYPE;
+	}
+    
     /* (non-Javadoc)
      * @see net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces.context.FacesContext)
      */

@@ -19,6 +19,7 @@
 package net.sf.jasperreports.jsf;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 import junit.framework.TestCase;
 
@@ -27,12 +28,14 @@ import com.meterware.httpunit.WebResponse;
 import com.meterware.servletunit.ServletRunner;
 import com.meterware.servletunit.ServletUnitClient;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class JasperReportTest.
  */
 public class JasperReportTest extends TestCase {
 
+	private static final Logger logger = Logger.getLogger(
+			JasperReportTest.class.getPackage() + ".test");
+	
     /** The context dir. */
     private File contextDir;
 
@@ -86,6 +89,9 @@ public class JasperReportTest extends TestCase {
         contextDir = new File(System.getProperty("context-dir"));
         contextPath = System.getProperty("context-path");
 
+        logger.info("Starting web application '" + contextPath 
+        		+ "' from directory: " + contextDir);
+        
         final File webXml = new File(contextDir, "WEB-INF/web.xml");
         runner = new ServletRunner(webXml, contextPath);
     }

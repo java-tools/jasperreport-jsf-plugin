@@ -29,6 +29,12 @@ import net.sf.jasperreports.jsf.export.AbstractExporter;
  */
 public class XlsExporter extends AbstractExporter {
 
+	public static final String CONTENT_TYPE = "application/vnd.ms-excel";
+	
+	public String getContentType() {
+		return CONTENT_TYPE;
+	}
+	
     /* (non-Javadoc)
      * @see net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces.context.FacesContext)
      */

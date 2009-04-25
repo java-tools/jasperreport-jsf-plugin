@@ -30,12 +30,18 @@ import net.sf.jasperreports.jsf.export.AbstractExporter;
  */
 public class XmlExporter extends AbstractExporter {
 
+	public static final String CONTENT_TYPE = "text/xml";
+	
     /** The Constant ATTR_DTD_LOCATION. */
     public static final String ATTR_DTD_LOCATION = "DTD_LOCATION";
 
     /** The Constant ATTR_IS_EMBEDDING_IMAGES. */
     public static final String ATTR_IS_EMBEDDING_IMAGES = "IS_EMBEDDING_IMAGES";
 
+    public String getContentType() {
+		return CONTENT_TYPE;
+	}
+    
     /* (non-Javadoc)
      * @see net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces.context.FacesContext)
      */
