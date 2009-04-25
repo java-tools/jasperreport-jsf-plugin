@@ -6,7 +6,7 @@
 
   <groupId>net.sf.jasperreports</groupId>
   <artifactId>jasperreports-jsf</artifactId>
-  <version>1.0-beta-1</version>
+  <version>1.0-beta-2-SNAPSHOT</version>
 
   <packaging>jar</packaging>
 
@@ -23,9 +23,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/tags/1.0-beta-1</connection>
-    <developerConnection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/tags/1.0-beta-1</developerConnection>
-    <url>http://jasperreportjsf.svn.sourceforge.net/viewvc/jasperreportjsf/tags/1.0-beta-1</url>
+    <connection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/trunk</connection>
+    <developerConnection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/trunk</developerConnection>
+    <url>http://jasperreportjsf.svn.sourceforge.net/viewvc/jasperreportjsf/trunk</url>
   </scm>
 
   <issueManagement>
@@ -48,7 +48,7 @@
 
   <distributionManagement>
     <site>
-    	<id>jasperreportjsf.web.sourceforge.net</id>
+      <id>jasperreportjsf.web.sourceforge.net</id>
       <name>JasperReports JSF Plugin Website</name>
       <url>scp://web.sourceforge.net/home/groups/j/ja/jasperreportjsf/htdocs/web</url>
     </site>
