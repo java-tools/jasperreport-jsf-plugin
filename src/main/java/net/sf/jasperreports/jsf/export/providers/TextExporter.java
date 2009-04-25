@@ -30,6 +30,8 @@ import net.sf.jasperreports.jsf.export.AbstractExporter;
  */
 public class TextExporter extends AbstractExporter {
 
+	public static final String CONTENT_TYPE = "text/plain";
+	
     /** The Constant ATTR_BETWEEN_PAGES_TEXT. */
     public static final String ATTR_BETWEEN_PAGES_TEXT = "BETWEEN_PAGES_TEXT";
 
@@ -48,6 +50,10 @@ public class TextExporter extends AbstractExporter {
     /** The Constant ATTR_PAGE_WIDTH. */
     public static final String ATTR_PAGE_WIDTH = "PAGE_WIDTH";
 
+	public String getContentType() {
+		return CONTENT_TYPE;
+	}
+    
     /* (non-Javadoc)
      * @see net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces.context.FacesContext)
      */

@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
 <%@ taglib uri="http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_0.tld" prefix="jr" %>
 
 <%--  
@@ -36,7 +35,8 @@
 
 <body>
 <f:view>
-	<jr:report path="/WEB-INF/report/Factura.jasper"
+	<jr:report format="html" 
+		path="/WEB-INF/report/Factura.jasper"
 		subreportDir="/WEB-INF/report/"
 	>
 	</jr:report>

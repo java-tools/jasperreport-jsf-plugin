@@ -34,5 +34,9 @@ public class IllegalOutputFormatException extends JRFacesException {
     public IllegalOutputFormatException(final String msg) {
         super(msg);
     }
+    
+    public IllegalOutputFormatException(final String msg, Throwable t) {
+    	super(msg, t);
+    }
 
 }

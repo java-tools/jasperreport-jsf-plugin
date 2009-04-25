@@ -5,6 +5,12 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
     version="1.2">
     
+    <lifecycle>
+    	<phase-listener>
+    		net.sf.jasperreports.jsf.ReportPhaseListener
+    	</phase-listener>
+    </lifecycle>
+    
     <managed-bean>
     	<managed-bean-name>ReportLinkTest</managed-bean-name>
     	<managed-bean-class>

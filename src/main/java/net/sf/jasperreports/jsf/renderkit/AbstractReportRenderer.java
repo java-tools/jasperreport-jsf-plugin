@@ -19,6 +19,8 @@
 package net.sf.jasperreports.jsf.renderkit;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
@@ -41,6 +43,10 @@ abstract class AbstractReportRenderer extends Renderer {
             "dataformatas", "ondblclick", "onmousedown", "onmousemove",
             "onmouseout", "onmouseover", "onmouseup", "accesskey", "tabindex"
     };
+    
+    private static final Logger logger = Logger.getLogger(
+    		AbstractReportRenderer.class.getPackage().getName(), 
+    		"net.sf.jasperreports.jsf.LogMessages");
 
     /*
      * (non-Javadoc)
@@ -79,6 +85,17 @@ abstract class AbstractReportRenderer extends Renderer {
                 .getViewHandler();
         return context.getExternalContext().encodeResourceURL(
                 viewHandler.getResourceURL(context, reportURI.toString()));
+    }
+    
+    protected final void registerComponent(final FacesContext context,
+    		final UIComponent report) {
+    	String clientId = report.getClientId(context);
+    	context.getExternalContext().getSessionMap().put(
+                ReportPhaseListener.REPORT_COMPONENT_KEY_PREFIX + clientId,
+                report);
+    	if(logger.isLoggable(Level.FINEST)) {
+    		logger.log(Level.FINEST, "JRJSF_0013", clientId);
+    	}
     }
 
     /**

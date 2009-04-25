@@ -37,6 +37,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.export.Exporter;
 import net.sf.jasperreports.jsf.export.ExporterFactory;
+import net.sf.jasperreports.jsf.export.ExporterNotFoundException;
 import net.sf.jasperreports.jsf.fill.Filler;
 import net.sf.jasperreports.jsf.fill.FillerFactory;
 import net.sf.jasperreports.jsf.util.Util;
@@ -51,11 +52,6 @@ import net.sf.jasperreports.jsf.util.Util;
  * @see ReportPhaseEvent
  */
 public class ReportPhaseListener implements PhaseListener {
-
-    // Content-Type map
-
-    /** The Constant CONTENT_TYPE_MAP. */
-    public static final Map<String, String> CONTENT_TYPE_MAP;
 
     // Available formats
 
@@ -80,18 +76,6 @@ public class ReportPhaseListener implements PhaseListener {
     /** The Constant FORMAT_CSV. */
     public static final String FORMAT_CSV = "csv";
 
-    static {
-        final Map<String, String> contentTypeMap = new HashMap<String, String>();
-        contentTypeMap.put(FORMAT_TEXT, "text/plain");
-        contentTypeMap.put(FORMAT_PDF, "application/pdf");
-        contentTypeMap.put(FORMAT_HTML, "text/html");
-        contentTypeMap.put(FORMAT_XML, "text/xml");
-        contentTypeMap.put(FORMAT_RTF, "application/rtf");
-        contentTypeMap.put(FORMAT_XLS, "application/vnd.ms-excel");
-        contentTypeMap.put(FORMAT_CSV, "text/plain");
-        CONTENT_TYPE_MAP = Collections.unmodifiableMap(contentTypeMap);
-    }
-
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = -124696216613450702L;
 
@@ -102,7 +86,8 @@ public class ReportPhaseListener implements PhaseListener {
     public static final String PARAM_CLIENTID = "clientId";
 
     /** The Constant REPORT_COMPONENT_KEY_PREFIX. */
-    public static final String REPORT_COMPONENT_KEY_PREFIX = "UIJasperReport-";
+    public static final String REPORT_COMPONENT_KEY_PREFIX = 
+    	UIReport.COMPONENT_FAMILY + "/";
 
     /** The logger. */
     private static final Logger logger = Logger.getLogger(
@@ -148,12 +133,15 @@ public class ReportPhaseListener implements PhaseListener {
                 report.setFormat(format);
             }
 
+            Exporter exporter = null;
             try {
-                final String mimeType = CONTENT_TYPE_MAP.get(format);
-                if (mimeType == null) {
-                    throw new IllegalOutputFormatException(format);
-                }
-
+            	exporter = ExporterFactory.getExporter(
+                        context, report);
+            } catch (ExporterNotFoundException e) {
+				throw new IllegalOutputFormatException(format, e);
+			}
+            
+            try {
                 logger.log(Level.FINE, "JRJSF_0006", clientId);
                 final Filler filler = FillerFactory.getFiller(context, report);
                 final JasperPrint filledReport = filler.fill(context,
@@ -163,16 +151,13 @@ public class ReportPhaseListener implements PhaseListener {
                 try {
                     if (logger.isLoggable(Level.FINE)) {
                         logger.log(Level.FINE, "JRJSF_0010", new Object[] {
-                                clientId, mimeType
+                                clientId, exporter.getContentType()
                         });
                     }
 
-                    final Exporter exporter = ExporterFactory.getExporter(
-                            context,
-                            report);
                     exporter.export(context, filledReport, reportData);
-                    Util.writeResponse(context, mimeType, reportData
-                            .toByteArray());
+                    Util.writeResponse(context, exporter.getContentType(), 
+                    		reportData.toByteArray());
                 } finally {
                     try {
                         reportData.close();
