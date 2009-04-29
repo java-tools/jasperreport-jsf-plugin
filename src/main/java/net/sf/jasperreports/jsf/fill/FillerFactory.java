@@ -76,8 +76,8 @@ public final class FillerFactory {
             } catch (final Exception e) {
                 throw new FillerException(e);
             }
-            validate(result);
             result.setDataSourceComponent(dataSource);
+            validate(result);
         }
         return result;
     }
