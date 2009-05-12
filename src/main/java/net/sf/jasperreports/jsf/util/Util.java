@@ -43,7 +43,6 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.jsf.component.UIDataSource;
 import net.sf.jasperreports.jsf.component.UIReport;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Util.
  */
@@ -52,6 +51,8 @@ public final class Util {
     /** The Constant INVOCATION_PATH. */
     private static final String INVOCATION_PATH = "net.sf.jasperreports.jsf.INVOCATION_PATH";
 
+    private static final String SERVICES_ROOT = "META-INF/services/";
+    
     /** The Constant PORTLET_CLASS. */
     private static final String PORTLET_CLASS = "javax.portlet.Portlet";
 
@@ -259,11 +260,13 @@ public final class Util {
      * @return the map< string, class< t>>
      */
     @SuppressWarnings("unchecked")
-    public static <T> Map<String, Class<T>> loadServiceMap(final String resource) {
+    public static <T> Map<String, Class<T>> loadServiceMap(final Class<T> clazz) {
         final ClassLoader loader = Util.getClassLoader(null);
+        
         Enumeration<URL> resources;
+        String serviceConf = SERVICES_ROOT + clazz.getName();
         try {
-            resources = loader.getResources(resource);
+            resources = loader.getResources(serviceConf);
         } catch (final IOException e) {
             throw new ExceptionInInitializerError(e);
         }

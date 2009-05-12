@@ -27,7 +27,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import net.sf.jasperreports.jsf.ReportPhaseListener;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.component.html.HtmlReport;
 
