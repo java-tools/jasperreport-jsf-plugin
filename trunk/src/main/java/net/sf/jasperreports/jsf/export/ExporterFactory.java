@@ -31,13 +31,9 @@ import net.sf.jasperreports.jsf.util.Util;
  */
 public final class ExporterFactory {
 
-    /** The Constant SERVICES_RESOURCE. */
-    private static final String SERVICES_RESOURCE = "META-INF/services/"
-            + Exporter.class.getName();
-
     /** The exporter cache map. */
     private static final Map<String, Class<Exporter>> exporterCacheMap =
-    	Util.loadServiceMap(SERVICES_RESOURCE);
+    	Util.loadServiceMap(Exporter.class);
 
     /**
      * Gets the single instance of Exporter.

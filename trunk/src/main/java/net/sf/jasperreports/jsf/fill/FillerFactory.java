@@ -32,13 +32,9 @@ import net.sf.jasperreports.jsf.util.Util;
  */
 public final class FillerFactory {
 
-    /** The Constant SERVICES_RESOURCE. */
-    private static final String SERVICES_RESOURCE = "META-INF/services/"
-            + Filler.class.getName();
-
     /** The exporter cache map. */
     private static final Map<String, Class<Filler>> fillerCacheMap =
-    	Util.loadServiceMap(SERVICES_RESOURCE);
+    	Util.loadServiceMap(Filler.class);
 
     /** The Constant DEFAULT_FILLER_INSTANCE. */
     private static final Filler DEFAULT_FILLER_INSTANCE = new StaticFiller();
