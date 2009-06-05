@@ -18,7 +18,6 @@
  */
 package net.sf.jasperreports.jsf.component.html;
 
-import javax.el.ValueExpression;
 import javax.faces.component.html.HtmlOutputLink;
 import javax.faces.context.FacesContext;
 
@@ -44,26 +43,7 @@ public class HtmlReportLink extends HtmlOutputLink implements UIReport {
      */
     public HtmlReportLink() {
         super();
-        impl = new UIReportImplementor(
-                new UIReportImplementor.ComponentCallback() {
-
-                    public FacesContext getFacesContext() {
-                        return HtmlReportLink.this.getFacesContext();
-                    }
-
-                    public ValueExpression getValueExpression(final String key) {
-                        return HtmlReportLink.this.getValueExpression(key);
-                    }
-
-                    public boolean isTransient() {
-                        return HtmlReportLink.this.isTransient();
-                    }
-
-                    public void setTransient(final boolean transientFlag) {
-                        HtmlReportLink.this.setTransient(transientFlag);
-                    }
-
-                });
+        impl = new UIReportImplementor(this);
         setRendererType(LinkRenderer.RENDERER_TYPE);
     }
 
