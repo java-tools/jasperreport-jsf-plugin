@@ -66,26 +66,7 @@ public class HtmlReport extends HtmlPanelGroup implements UIReport {
      */
     public HtmlReport() {
         super();
-        impl = new UIReportImplementor(
-                new UIReportImplementor.ComponentCallback() {
-
-                    public FacesContext getFacesContext() {
-                        return HtmlReport.this.getFacesContext();
-                    }
-
-                    public ValueExpression getValueExpression(final String key) {
-                        return HtmlReport.this.getValueExpression(key);
-                    }
-
-                    public boolean isTransient() {
-                        return HtmlReport.this.isTransient();
-                    }
-
-                    public void setTransient(final boolean transientFlag) {
-                        HtmlReport.this.setTransient(transientFlag);
-                    }
-
-                });
+        impl = new UIReportImplementor(this);
         setRendererType(EmbedRenderer.RENDERER_TYPE);
     }
 

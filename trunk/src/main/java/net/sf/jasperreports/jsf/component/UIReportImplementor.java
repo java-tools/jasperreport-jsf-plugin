@@ -22,6 +22,7 @@ import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.StateHolder;
+import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
 /**
@@ -29,45 +30,8 @@ import javax.faces.context.FacesContext;
  */
 public final class UIReportImplementor implements UIReport, StateHolder {
 
-    /**
-     * The Interface ComponentCallback.
-     */
-    public static interface ComponentCallback {
-
-        /**
-         * Gets the faces context.
-         * 
-         * @return the faces context
-         */
-        public FacesContext getFacesContext();
-
-        /**
-         * Gets the value expression.
-         * 
-         * @param key the key
-         * 
-         * @return the value expression
-         */
-        public ValueExpression getValueExpression(String key);
-
-        /**
-         * Checks if is transient.
-         * 
-         * @return true, if is transient
-         */
-        public boolean isTransient();
-
-        /**
-         * Sets the transient.
-         * 
-         * @param transientFlag the new transient
-         */
-        public void setTransient(boolean transientFlag);
-
-    }
-
     /** The callback. */
-    private final ComponentCallback callback;
+    private final UIComponentBase callback;
 
     /** The data source. */
     private String dataSource;
@@ -86,7 +50,7 @@ public final class UIReportImplementor implements UIReport, StateHolder {
      * 
      * @param callback the callback
      */
-    public UIReportImplementor(final ComponentCallback callback) {
+    public UIReportImplementor(final UIComponentBase callback) {
         super();
         if (callback == null) {
             throw new IllegalArgumentException();
@@ -262,7 +226,7 @@ public final class UIReportImplementor implements UIReport, StateHolder {
      * @return the faces context
      */
     private FacesContext getFacesContext() {
-        final FacesContext context = callback.getFacesContext();
+        final FacesContext context = FacesContext.getCurrentInstance();
         if (context == null) {
             throw new IllegalStateException();
         }
