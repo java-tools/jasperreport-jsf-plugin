@@ -76,34 +76,26 @@ public class FacesHyperlinkProducer implements JRHyperlinkProducer {
      * .sf.jasperreports.engine.JRPrintHyperlink)
      */
     public String getHyperlink(final JRPrintHyperlink link) {
-        final StringWriter sw = new StringWriter();
-        try {
-            final ResponseWriter writer = getResponseWriter(context, sw);
-            writer.startElement("a", report);
-            writer.writeAttribute("href", buildHref(link), null);
-            if (null != link.getHyperlinkAnchor()) {
-                writer.writeAttribute("name", link.getHyperlinkAnchor(), null);
-            }
-            /*
-             * if(null != link.getHyperlinkTarget()) { }
-             */
-            if (null != link.getHyperlinkTooltip()) {
-                writer
-                        .writeAttribute("title", link.getHyperlinkTooltip(),
-                                null);
-            }
-            writer.writeText(link.getHyperlinkPage(), null);
-            writer.endElement("a");
-            return sw.toString();
-        } catch (final IOException e) {
-            return null;
-        } finally {
-            try {
-                sw.close();
-            } catch (final IOException e) {
-                // ignore
-            }
-        }
+    	final StringBuffer sb = new StringBuffer();
+    	sb.append("<a");
+    	sb.append(" href=\"").append(buildHref(link)).append("\"");
+    	if(link.getHyperlinkAnchor() != null) {
+    		sb.append(" name=\"").append(link.getHyperlinkAnchor()).append("\"");
+    	}
+    	
+    	sb.append(" target=\"");
+    	switch(link.getHyperlinkTarget()) {
+    	
+    	}
+    	sb.append("\"");
+    	
+    	if(link.getHyperlinkTooltip() != null) {
+    		sb.append(" title=\"").append(link.getHyperlinkTooltip()).append("\"");
+    	}
+    	
+    	sb.append(">").append(link.getHyperlinkPage());
+    	sb.append("</a>");
+    	return sb.toString();
     }
 
     /**

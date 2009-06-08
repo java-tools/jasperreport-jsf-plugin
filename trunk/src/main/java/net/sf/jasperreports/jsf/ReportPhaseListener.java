@@ -35,6 +35,7 @@ import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.export.Exporter;
 import net.sf.jasperreports.jsf.export.ExporterFactory;
 import net.sf.jasperreports.jsf.export.ExporterNotFoundException;
+import net.sf.jasperreports.jsf.export.IllegalOutputFormatException;
 import net.sf.jasperreports.jsf.fill.Filler;
 import net.sf.jasperreports.jsf.fill.FillerFactory;
 import net.sf.jasperreports.jsf.util.Util;
@@ -130,41 +131,31 @@ public class ReportPhaseListener implements PhaseListener {
                 report.setFormat(format);
             }
 
-            Exporter exporter = null;
-            try {
-            	exporter = ExporterFactory.getExporter(
-                        context, report);
-            } catch (ExporterNotFoundException e) {
-				throw new IllegalOutputFormatException(format, e);
-			}
+            final Filler filler = FillerFactory.getFiller(context, report);
+            logger.log(Level.FINE, "JRJSF_0006", clientId);
+            final JasperPrint filledReport = filler.fill(context,
+                    report);
             
+            final Exporter exporter = ExporterFactory.getExporter(
+                    context, report);
+            final ByteArrayOutputStream reportData = new ByteArrayOutputStream();
             try {
-                logger.log(Level.FINE, "JRJSF_0006", clientId);
-                final Filler filler = FillerFactory.getFiller(context, report);
-                final JasperPrint filledReport = filler.fill(context,
-                        report);
-
-                final ByteArrayOutputStream reportData = new ByteArrayOutputStream();
-                try {
-                    if (logger.isLoggable(Level.FINE)) {
-                        logger.log(Level.FINE, "JRJSF_0010", new Object[] {
-                                clientId, exporter.getContentType()
-                        });
-                    }
-
-                    exporter.export(context, filledReport, reportData);
-                    Util.writeResponse(context, exporter.getContentType(), 
-                    		reportData.toByteArray());
-                } finally {
-                    try {
-                        reportData.close();
-                    } catch (final IOException e) {
-                        // ignore
-                    }
+            	if (logger.isLoggable(Level.FINE)) {
+                    logger.log(Level.FINE, "JRJSF_0010", new Object[] {
+                            clientId, exporter.getContentType()
+                    });
                 }
+                exporter.export(context, filledReport, reportData);
+                Util.writeResponse(context, exporter.getContentType(), 
+                		reportData.toByteArray());
             } catch (final IOException e) {
                 throw new JRFacesException(e);
             } finally {
+            	try {
+                    reportData.close();
+                } catch (final IOException e) {
+                    // ignore
+                }
                 context.responseComplete();
             }
         }
