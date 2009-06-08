@@ -16,12 +16,12 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.fill;
+package net.sf.jasperreports.jsf.validation;
 
 /**
  * The Class MissedDataSourceAttributeException.
  */
-public class MissedDataSourceAttributeException extends FillerException {
+public class MissedDataSourceAttributeException extends ValidationException {
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 6313893570302881706L;

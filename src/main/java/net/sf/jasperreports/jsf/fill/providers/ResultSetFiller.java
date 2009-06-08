@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -32,19 +32,10 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.fill.AbstractFiller;
 import net.sf.jasperreports.jsf.fill.FillerException;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ResultSetFiller.
  */
 public class ResultSetFiller extends AbstractFiller {
-
-    /* (non-Javadoc)
-     * @see net.sf.jasperreports.jsf.fill.Filler#getRequiredDataSourceAttributes()
-     */
-    @Override
-    public String[] getRequiredDataSourceAttributes() {
-        return new String[0];
-    }
 
     /* (non-Javadoc)
      * @see net.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.FacesContext, java.io.InputStream, java.util.Map)

@@ -16,44 +16,34 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.fill;
+package net.sf.jasperreports.jsf.validation;
+
+import java.util.Map;
 
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.component.UIDataSource;
-import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.util.Util;
 
-/**
- * The Interface Filler.
- */
-public interface Filler {
+public final class DataSourceValidatorFactory {
 
-    /**
-     * Gets the data source component.
-     * 
-     * @return the data source component
-     */
-    public UIDataSource getDataSourceComponent();
-
-    /**
-     * Sets the data source component.
-     * 
-     * @param dataSourceComponent the new data source component
-     */
-    public void setDataSourceComponent(final UIDataSource dataSourceComponent);
-
-    /**
-     * Fill.
-     * 
-     * @param context the context
-     * @param report the report
-     * 
-     * @return the jasper print
-     * 
-     * @throws FillerException the filler exception
-     */
-    public JasperPrint fill(final FacesContext context, final UIReport report)
-            throws FillerException;
-
+	private static final Map<String, Class<DataSourceValidator>> validatorCacheMap =
+		Util.loadServiceMap(DataSourceValidator.class);
+	
+	public static DataSourceValidator getValidator(FacesContext context, UIDataSource dataSource) 
+	throws ValidationException {
+		DataSourceValidator result = null;
+		Class<DataSourceValidator> validatorClass = validatorCacheMap.get(dataSource.getType());
+		if(validatorClass != null) {
+			try {
+				result = validatorClass.newInstance();
+			} catch(Exception e) {
+				throw new ValidationException(e);
+			}
+		}
+		return result;
+	}
+	
+	private DataSourceValidatorFactory() { }
+	
 }

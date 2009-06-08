@@ -24,6 +24,9 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
+import net.sf.jasperreports.jsf.validation.DataSourceValidator;
+import net.sf.jasperreports.jsf.validation.DataSourceValidatorFactory;
+
 /**
  * The Class UIDataSource.
  */
@@ -251,5 +254,15 @@ public class UIDataSource extends UIComponentBase {
         values[5] = value;
         return values;
     }
+
+	@Override
+	public void processValidators(FacesContext context) {
+		DataSourceValidator validator = DataSourceValidatorFactory.getValidator(context, this);
+		if(validator == null) {
+			super.processValidators(context);
+		} else {
+			validator.validate(context, this);
+		}
+	}
 
 }
