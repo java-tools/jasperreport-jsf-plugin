@@ -39,7 +39,7 @@ public class HtmlReport extends HtmlPanelGroup implements UIReport {
     // Report implementor
 
     /** The impl. */
-    private final UIReport impl;
+    private final UIReportImplementor impl;
 
     // iframe attributes
 
@@ -341,5 +341,11 @@ public class HtmlReport extends HtmlPanelGroup implements UIReport {
         values[7] = width;
         return values;
     }
+
+	@Override
+	public void processValidators(FacesContext context) {
+		super.processValidators(context);
+		impl.processValidators(context);
+	}
 
 }

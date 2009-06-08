@@ -49,29 +49,6 @@ import net.sf.jasperreports.jsf.util.Util;
  */
 public class ReportPhaseListener implements PhaseListener {
 
-    // Available formats
-
-    /** The Constant FORMAT_PDF. */
-    public static final String FORMAT_PDF = "pdf";
-
-    /** The Constant FORMAT_TEXT. */
-    public static final String FORMAT_TEXT = "text";
-
-    /** The Constant FORMAT_HTML. */
-    public static final String FORMAT_HTML = "html";
-
-    /** The Constant FORMAT_XML. */
-    public static final String FORMAT_XML = "xml";
-
-    /** The Constant FORMAT_RTF. */
-    public static final String FORMAT_RTF = "rtf";
-
-    /** The Constant FORMAT_XLS. */
-    public static final String FORMAT_XLS = "xls";
-
-    /** The Constant FORMAT_CSV. */
-    public static final String FORMAT_CSV = "csv";
-
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = -124696216613450702L;
 
@@ -121,12 +98,6 @@ public class ReportPhaseListener implements PhaseListener {
             if (report == null) {
                 throw new JRFacesException("UIReport component not found: "
                         + clientId);
-            }
-
-            String format = report.getFormat();
-            if (format == null) {
-                format = FORMAT_PDF;
-                report.setFormat(format);
             }
 
             final Filler filler = FillerFactory.getFiller(context, report);

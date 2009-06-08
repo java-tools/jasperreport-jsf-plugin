@@ -18,7 +18,9 @@
  */
 package net.sf.jasperreports.jsf.export;
 
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -35,6 +37,10 @@ public final class ExporterFactory {
     private static final Map<String, Class<Exporter>> exporterCacheMap =
     	Util.loadServiceMap(Exporter.class);
 
+    public static Set<String> getAvailableExportFormats() {
+    	return Collections.unmodifiableSet(exporterCacheMap.keySet());
+    }
+    
     /**
      * Gets the single instance of Exporter.
      * 
@@ -54,7 +60,7 @@ public final class ExporterFactory {
         final Class<Exporter> exporterClass = exporterCacheMap.get(report
                 .getFormat());
         if (exporterClass == null) {
-            throw new IllegalOutputFormatException(report.getFormat());
+            throw new ExporterNotFoundException(report.getFormat());
         }
 
         Exporter result;

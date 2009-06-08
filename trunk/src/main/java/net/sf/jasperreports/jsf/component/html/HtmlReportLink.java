@@ -36,7 +36,7 @@ public class HtmlReportLink extends HtmlOutputLink implements UIReport {
     // Report implementor
 
     /** The impl. */
-    private final UIReport impl;
+    private final UIReportImplementor impl;
 
     /**
      * Instantiates a new html report link.
@@ -154,5 +154,11 @@ public class HtmlReportLink extends HtmlOutputLink implements UIReport {
         values[1] = impl.saveState(context);
         return values;
     }
+
+	@Override
+	public void processValidators(FacesContext context) {
+		super.processValidators(context);
+		impl.processValidators(context);
+	}
 
 }

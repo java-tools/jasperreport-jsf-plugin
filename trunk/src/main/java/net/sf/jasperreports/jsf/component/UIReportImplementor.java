@@ -25,6 +25,9 @@ import javax.faces.component.StateHolder;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
+import net.sf.jasperreports.jsf.validation.ReportValidator;
+import net.sf.jasperreports.jsf.validation.ReportValidatorFactory;
+
 /**
  * The Class UIReportImplementor.
  */
@@ -54,6 +57,9 @@ public final class UIReportImplementor implements UIReport, StateHolder {
         super();
         if (callback == null) {
             throw new IllegalArgumentException();
+        }
+        if (!(callback instanceof UIReport)) {
+        	throw new IllegalArgumentException();
         }
         this.callback = callback;
     }
@@ -184,6 +190,14 @@ public final class UIReportImplementor implements UIReport, StateHolder {
         return callback.isTransient();
     }
 
+    public void processValidators(FacesContext context) {
+    	ReportValidator validator = ReportValidatorFactory
+    			.getValidator(context, (UIReport) callback);
+    	if(validator != null) {
+    		validator.validate(context, (UIReport) callback);
+    	}
+    }
+    
     /*
      * (non-Javadoc)
      * @seejavax.faces.component.StateHolder#restoreState(javax.faces.context.
