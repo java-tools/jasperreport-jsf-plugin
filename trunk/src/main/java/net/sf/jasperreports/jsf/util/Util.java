@@ -30,8 +30,6 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import javax.faces.FacesException;
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.portlet.PortletContext;
@@ -39,9 +37,6 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import net.sf.jasperreports.jsf.component.UIDataSource;
-import net.sf.jasperreports.jsf.component.UIReport;
 
 /**
  * The Class Util.
