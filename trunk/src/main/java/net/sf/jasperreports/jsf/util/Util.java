@@ -251,7 +251,7 @@ public final class Util {
                     }
 
                     serviceMap.put(
-                            ("null".equals(record[0]) ? null : record[0]),
+                            ("".equals(record[0]) ? null : record[0]),
                             serviceClass);
                 }
             } catch (final IOException e) {
