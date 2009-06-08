@@ -18,8 +18,6 @@
  */
 package net.sf.jasperreports.jsf.util;
 
-import java.io.IOException;
-import java.io.StringWriter;
 import java.io.Writer;
 
 import javax.faces.FactoryFinder;
@@ -37,6 +35,7 @@ import net.sf.jasperreports.engine.export.JRHyperlinkProducer;
 /**
  * The Class FacesHyperlinkProducer.
  */
+@SuppressWarnings("unused")
 public class FacesHyperlinkProducer implements JRHyperlinkProducer {
 
     /** The Constant ACCEPT_REQUEST_HEADER. */

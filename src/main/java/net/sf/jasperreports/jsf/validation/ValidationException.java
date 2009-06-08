@@ -4,15 +4,20 @@ import net.sf.jasperreports.jsf.JRFacesException;
 
 public class ValidationException extends JRFacesException {
 
-	public ValidationException(String msg, Throwable t) {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 8248094331118863059L;
+
+	public ValidationException(final String msg, final Throwable t) {
 		super(msg, t);
 	}
 
-	public ValidationException(String msg) {
+	public ValidationException(final String msg) {
 		super(msg);
 	}
 
-	public ValidationException(Throwable t) {
+	public ValidationException(final Throwable t) {
 		super(t);
 	}
 
