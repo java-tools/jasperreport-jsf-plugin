@@ -19,7 +19,10 @@
 package net.sf.jasperreports.jsf.fill;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -32,6 +35,10 @@ import net.sf.jasperreports.jsf.util.Util;
  */
 public final class FillerFactory {
 
+	private static final Logger logger = Logger.getLogger(
+			FillerFactory.class.getPackage().getName(),
+			"net.sf.jasperreports.jsf.LogMessages");
+	
     /** The exporter cache map. */
     private static final Map<String, Class<Filler>> fillerCacheMap =
     	Util.loadServiceMap(Filler.class);
@@ -56,7 +63,7 @@ public final class FillerFactory {
         }
 
         Filler result;
-        final UIDataSource dataSource = Util.getDataSourceComponent(context,
+        final UIDataSource dataSource = getDataSourceComponent(context,
                 report);
         if (dataSource == null) {
             result = DEFAULT_FILLER_INSTANCE;
@@ -64,7 +71,7 @@ public final class FillerFactory {
             final Class<Filler> fillerClass = fillerCacheMap.get(dataSource
                     .getType());
             if (fillerClass == null) {
-                throw new FillerNotFoundException(dataSource.getType());
+                throw new IllegalDataSourceTypeException(dataSource.getType());
             }
 
             try {
@@ -78,6 +85,43 @@ public final class FillerFactory {
         return result;
     }
 
+    /**
+     * Gets the data source component.
+     * 
+     * @param context the context
+     * @param report the report
+     * 
+     * @return the data source component
+     */
+    private static UIDataSource getDataSourceComponent(
+            final FacesContext context, final UIReport report) {
+        UIDataSource dataSource = null;
+        for (final UIComponent child : ((UIComponent) report).getChildren()) {
+            if (child instanceof UIDataSource) {
+                dataSource = (UIDataSource) child;
+                break;
+            }
+        }
+        if ((dataSource == null) && (report.getDataSource() != null)) {
+            final String dataSourceId = report.getDataSource();
+            dataSource = (UIDataSource) ((UIComponent) report)
+                    .findComponent(dataSourceId);
+            if (dataSource == null) {
+                UIComponent container = (UIComponent) report;
+                while (!(container instanceof NamingContainer)) {
+                    container = container.getParent();
+                }
+                dataSource = (UIDataSource) container
+                        .findComponent(dataSourceId);
+            }
+        }
+        if ((dataSource != null) && logger.isLoggable(Level.FINE)) {
+            final String dsClientId = dataSource.getClientId(context);
+            logger.log(Level.FINE, "JRJSF_0009", dsClientId);
+        }
+        return dataSource;
+    }
+    
     /**
      * Validate.
      * 

@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -16,12 +16,12 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf;
+package net.sf.jasperreports.jsf.export;
 
 /**
  * The Class IllegalOutputFormatException.
  */
-public class IllegalOutputFormatException extends JRFacesException {
+public class IllegalOutputFormatException extends ExporterException {
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1823011431377899382L;

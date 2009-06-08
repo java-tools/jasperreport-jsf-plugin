@@ -115,43 +115,6 @@ public final class Util {
     }
 
     /**
-     * Gets the data source component.
-     * 
-     * @param context the context
-     * @param report the report
-     * 
-     * @return the data source component
-     */
-    public static UIDataSource getDataSourceComponent(
-            final FacesContext context, final UIReport report) {
-        UIDataSource dataSource = null;
-        for (final UIComponent child : ((UIComponent) report).getChildren()) {
-            if (child instanceof UIDataSource) {
-                dataSource = (UIDataSource) child;
-                break;
-            }
-        }
-        if ((dataSource == null) && (report.getDataSource() != null)) {
-            final String dataSourceId = report.getDataSource();
-            dataSource = (UIDataSource) ((UIComponent) report)
-                    .findComponent(dataSourceId);
-            if (dataSource == null) {
-                UIComponent container = (UIComponent) report;
-                while (!(container instanceof NamingContainer)) {
-                    container = container.getParent();
-                }
-                dataSource = (UIDataSource) container
-                        .findComponent(dataSourceId);
-            }
-        }
-        if ((dataSource != null) && logger.isLoggable(Level.FINE)) {
-            final String dsClientId = dataSource.getClientId(context);
-            logger.log(Level.FINE, "JRJSF_0009", dsClientId);
-        }
-        return dataSource;
-    }
-
-    /**
      * Gets the faces mapping.
      * 
      * @param context the context

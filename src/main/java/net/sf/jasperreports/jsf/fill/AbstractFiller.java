@@ -102,7 +102,7 @@ public abstract class AbstractFiller implements Filler {
         			context, reportName);
         	reportStream = resource.getInputStream();
         } catch(IOException e) {
-        	throw new ReportNotFoundException(reportName, e);
+        	throw new FillerException(reportName, e);
         }
         
         if (reportStream == null) {

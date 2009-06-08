@@ -54,7 +54,7 @@ public final class ExporterFactory {
         final Class<Exporter> exporterClass = exporterCacheMap.get(report
                 .getFormat());
         if (exporterClass == null) {
-            throw new ExporterNotFoundException(report.getFormat());
+            throw new IllegalOutputFormatException(report.getFormat());
         }
 
         Exporter result;
