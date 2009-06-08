@@ -16,12 +16,12 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.export;
+package net.sf.jasperreports.jsf.validation;
 
 /**
  * The Class IllegalOutputFormatException.
  */
-public class IllegalOutputFormatException extends ExporterException {
+public class IllegalOutputFormatException extends ValidationException {
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1823011431377899382L;

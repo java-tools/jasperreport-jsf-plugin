@@ -18,7 +18,9 @@
  */
 package net.sf.jasperreports.jsf.fill;
 
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -46,6 +48,10 @@ public final class FillerFactory {
     /** The Constant DEFAULT_FILLER_INSTANCE. */
     private static final Filler DEFAULT_FILLER_INSTANCE = new StaticFiller();
 
+    public static Set<String> getAvailableDataSourceTypes() {
+    	return Collections.unmodifiableSet(fillerCacheMap.keySet());
+    }
+    
     /**
      * Gets the filler.
      * 
@@ -68,10 +74,15 @@ public final class FillerFactory {
         if (dataSource == null) {
             result = DEFAULT_FILLER_INSTANCE;
         } else {
-            final Class<Filler> fillerClass = fillerCacheMap.get(dataSource
-                    .getType());
+            final Class<Filler> fillerClass;
+            // When 'driverClass' property has been set, 
+            // override dataSource type with 'jdbc' value
+            if (dataSource.getDriverClass() != null) {
+            	dataSource.setType("jdbc");
+            }
+            fillerClass = fillerCacheMap.get(dataSource.getType());
             if (fillerClass == null) {
-                throw new IllegalDataSourceTypeException(dataSource.getType());
+                throw new FillerNotFoundException(dataSource.getType());
             }
 
             try {

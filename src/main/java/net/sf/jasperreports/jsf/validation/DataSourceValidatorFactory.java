@@ -34,6 +34,9 @@ public final class DataSourceValidatorFactory {
 	throws ValidationException {
 		DataSourceValidator result = null;
 		Class<DataSourceValidator> validatorClass = validatorCacheMap.get(dataSource.getType());
+		if(validatorClass == null) {
+			validatorClass = validatorCacheMap.get(null);
+		}
 		if(validatorClass != null) {
 			try {
 				result = validatorClass.newInstance();

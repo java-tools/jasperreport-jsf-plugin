@@ -38,30 +38,6 @@ public class UIDataSource extends UIComponentBase {
     /** The Constant COMPONENT_TYPE. */
     public static final String COMPONENT_TYPE = "net.sf.jasperreports.DataSource";
 
-    /** The Constant BEAN. */
-    public static final String BEAN = "bean";
-
-    /** The Constant CSV. */
-    public static final String CSV = "csv";
-
-    /** The Constant DEFAULT. */
-    public static final String DEFAULT = "jdbc";
-
-    /** The Constant EMPTY. */
-    public static final String EMPTY = "empty";
-
-    /** The Constant JNDI. */
-    public static final String JNDI = "jndi";
-
-    /** The Constant MAP. */
-    public static final String MAP = "map";
-
-    /** The Constant RESULT_SET. */
-    public static final String RESULT_SET = "resultSet";
-
-    /** The Constant XML. */
-    public static final String XML = "xml";
-
     // Fields
 
     /** The driver class. */
@@ -71,7 +47,7 @@ public class UIDataSource extends UIComponentBase {
     private String query;
 
     /** The type. */
-    private String type = DEFAULT;
+    private String type;
 
     /** The type set. */
     private boolean typeSet;

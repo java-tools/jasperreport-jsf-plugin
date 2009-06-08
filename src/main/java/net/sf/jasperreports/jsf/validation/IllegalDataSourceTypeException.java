@@ -16,12 +16,12 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.fill;
+package net.sf.jasperreports.jsf.validation;
 
 /**
  * The Class IllegalDataSourceTypeException.
  */
-public class IllegalDataSourceTypeException extends FillerException {
+public class IllegalDataSourceTypeException extends ValidationException {
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1358551817454303121L;
