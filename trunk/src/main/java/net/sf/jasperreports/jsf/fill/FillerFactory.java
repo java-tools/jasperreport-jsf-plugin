@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -80,7 +80,6 @@ public final class FillerFactory {
                 throw new FillerException(e);
             }
             result.setDataSourceComponent(dataSource);
-            validate(result);
         }
         return result;
     }
@@ -120,22 +119,6 @@ public final class FillerFactory {
             logger.log(Level.FINE, "JRJSF_0009", dsClientId);
         }
         return dataSource;
-    }
-    
-    /**
-     * Validate.
-     * 
-     * @param filler the filler
-     * 
-     * @throws FillerException the filler exception
-     */
-    private static void validate(final Filler filler) throws FillerException {
-        final UIDataSource dataSource = filler.getDataSourceComponent();
-        for (final String attr : filler.getRequiredDataSourceAttributes()) {
-            if (null == dataSource.getAttributes().get(attr)) {
-                throw new MissedDataSourceAttributeException(attr);
-            }
-        }
     }
 
     /**

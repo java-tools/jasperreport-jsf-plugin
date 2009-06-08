@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -32,22 +32,9 @@ import net.sf.jasperreports.jsf.fill.FillerException;
  */
 public class JdbcFiller extends AbstractSQLFiller {
 
-    /** The Constant REQUIRED_DATASOURCE_ATTRS. */
-    public static final String[] REQUIRED_DATASOURCE_ATTRS = {
-            "username", "password"
-    };
-
     /** The Constant logger. */
     private static final Logger logger = Logger.getLogger(JdbcFiller.class
             .getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
-
-    /* (non-Javadoc)
-     * @see net.sf.jasperreports.jsf.fill.Filler#getRequiredDataSourceAttributes()
-     */
-    @Override
-    public String[] getRequiredDataSourceAttributes() {
-        return REQUIRED_DATASOURCE_ATTRS;
-    }
 
     /* (non-Javadoc)
      * @see net.sf.jasperreports.jsf.fill.AbstractQueryFiller#getConnection()

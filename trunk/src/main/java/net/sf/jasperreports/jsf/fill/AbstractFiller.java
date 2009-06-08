@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -55,13 +55,6 @@ public abstract class AbstractFiller implements Filler {
 
     /** The data source component. */
     private UIDataSource dataSourceComponent;
-
-    /**
-     * Gets the required data source attributes.
-     * 
-     * @return the required data source attributes
-     */
-    public abstract String[] getRequiredDataSourceAttributes();
 
     /**
      * Gets the data source component.
