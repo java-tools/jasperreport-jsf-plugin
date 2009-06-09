@@ -29,6 +29,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.jsf.component.UIDataSource;
 import net.sf.jasperreports.jsf.fill.AbstractFiller;
 import net.sf.jasperreports.jsf.fill.FillerException;
 
@@ -37,7 +38,11 @@ import net.sf.jasperreports.jsf.fill.FillerException;
  */
 public class ResultSetFiller extends AbstractFiller {
 
-    /* (non-Javadoc)
+    protected ResultSetFiller(UIDataSource dataSource) {
+		super(dataSource);
+	}
+
+	/* (non-Javadoc)
      * @see net.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.FacesContext, java.io.InputStream, java.util.Map)
      */
     @Override

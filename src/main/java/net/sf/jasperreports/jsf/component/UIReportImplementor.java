@@ -25,9 +25,6 @@ import javax.faces.component.StateHolder;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.validation.ReportValidator;
-import net.sf.jasperreports.jsf.validation.ReportValidatorFactory;
-
 /**
  * The Class UIReportImplementor.
  */
@@ -188,14 +185,6 @@ public final class UIReportImplementor implements UIReport, StateHolder {
      */
     public boolean isTransient() {
         return callback.isTransient();
-    }
-
-    public void processValidators(FacesContext context) {
-    	ReportValidator validator = ReportValidatorFactory
-    			.getValidator(context, (UIReport) callback);
-    	if(validator != null) {
-    		validator.validate(context, (UIReport) callback);
-    	}
     }
     
     /*

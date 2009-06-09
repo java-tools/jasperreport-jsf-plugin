@@ -36,7 +36,11 @@ import net.sf.jasperreports.jsf.fill.FillerException;
  */
 public class EmptyFiller extends AbstractFiller {
 
-    /* (non-Javadoc)
+    protected EmptyFiller() {
+		super(null);
+	}
+
+	/* (non-Javadoc)
      * @see net.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.FacesContext, java.io.InputStream, java.util.Map)
      */
     @Override

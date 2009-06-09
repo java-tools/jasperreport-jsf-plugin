@@ -1,7 +1,0 @@
-:net.sf.jasperreports.jsf.export.providers.PdfExporter
-csv:net.sf.jasperreports.jsf.export.providers.CsvExporter
-html:net.sf.jasperreports.jsf.export.providers.HtmlExporter
-rtf:net.sf.jasperreports.jsf.export.providers.RtfExporter
-text:net.sf.jasperreports.jsf.export.providers.TextExporter
-xls:net.sf.jasperreports.jsf.export.providers.XlsExporter
-xml:net.sf.jasperreports.jsf.export.providers.XmlExporter

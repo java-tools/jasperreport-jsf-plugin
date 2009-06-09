@@ -21,27 +21,12 @@ package net.sf.jasperreports.jsf.fill;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.jsf.component.UIDataSource;
 import net.sf.jasperreports.jsf.component.UIReport;
 
 /**
  * The Interface Filler.
  */
 public interface Filler {
-
-    /**
-     * Gets the data source component.
-     * 
-     * @return the data source component
-     */
-    public UIDataSource getDataSourceComponent();
-
-    /**
-     * Sets the data source component.
-     * 
-     * @param dataSourceComponent the new data source component
-     */
-    public void setDataSourceComponent(final UIDataSource dataSourceComponent);
 
     /**
      * Fill.

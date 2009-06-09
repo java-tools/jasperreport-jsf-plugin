@@ -18,6 +18,7 @@
  */
 package net.sf.jasperreports.jsf.export.providers;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRExporter;
@@ -38,7 +39,11 @@ public class XmlExporter extends AbstractExporter {
     /** The Constant ATTR_IS_EMBEDDING_IMAGES. */
     public static final String ATTR_IS_EMBEDDING_IMAGES = "IS_EMBEDDING_IMAGES";
 
-    public String getContentType() {
+    protected XmlExporter(UIComponent component) {
+		super(component);
+	}
+
+	public String getContentType() {
 		return CONTENT_TYPE;
 	}
     

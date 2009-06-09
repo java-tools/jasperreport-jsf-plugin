@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.sf.jasperreports.jsf.component.UIDataSource;
 import net.sf.jasperreports.jsf.fill.AbstractSQLFiller;
 import net.sf.jasperreports.jsf.fill.FillerException;
 
@@ -32,7 +33,11 @@ import net.sf.jasperreports.jsf.fill.FillerException;
  */
 public class JdbcFiller extends AbstractSQLFiller {
 
-    /** The Constant logger. */
+    protected JdbcFiller(UIDataSource dataSource) {
+		super(dataSource);
+	}
+
+	/** The Constant logger. */
     private static final Logger logger = Logger.getLogger(JdbcFiller.class
             .getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
 

@@ -18,6 +18,7 @@
  */
 package net.sf.jasperreports.jsf.export.providers;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRExporter;
@@ -31,6 +32,10 @@ public class XlsExporter extends AbstractExporter {
 
 	public static final String CONTENT_TYPE = "application/vnd.ms-excel";
 	
+	protected XlsExporter(UIComponent component) {
+		super(component);
+	}
+
 	public String getContentType() {
 		return CONTENT_TYPE;
 	}
