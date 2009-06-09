@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,6 @@ package net.sf.jasperreports.jsf.export;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JasperPrint;
@@ -31,20 +30,11 @@ import net.sf.jasperreports.engine.JasperPrint;
  */
 public interface Exporter {
 
-    /**
-     * Gets the component.
-     *
-     * @return the component
-     */
-    public UIComponent getComponent();
-
-    /**
-     * Sets the component.
-     *
-     * @param component the new component
-     */
-    public void setComponent(final UIComponent component);
-
+	/**
+	 * MIME type of the report generated using this exporter instance
+	 * 
+	 * @return the response MIME type
+	 */
     public String getContentType();
     
     /**

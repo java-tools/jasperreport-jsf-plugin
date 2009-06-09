@@ -35,11 +35,16 @@ import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.JRFacesException;
+import net.sf.jasperreports.jsf.component.UIDataSource;
 
 /**
  * The Class QueryFiller.
  */
 public abstract class AbstractSQLFiller extends AbstractFiller {
+
+	public AbstractSQLFiller(UIDataSource dataSource) {
+		super(dataSource);
+	}
 
 	protected abstract Connection getConnection() throws Exception;
 	

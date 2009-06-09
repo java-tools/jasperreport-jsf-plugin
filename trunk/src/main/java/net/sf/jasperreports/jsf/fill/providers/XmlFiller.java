@@ -28,6 +28,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
+import net.sf.jasperreports.jsf.component.UIDataSource;
 import net.sf.jasperreports.jsf.fill.AbstractFiller;
 import net.sf.jasperreports.jsf.fill.FillerException;
 
@@ -38,7 +39,11 @@ import org.w3c.dom.Document;
  */
 public class XmlFiller extends AbstractFiller {
 
-    /* (non-Javadoc)
+    protected XmlFiller(UIDataSource dataSource) {
+		super(dataSource);
+	}
+
+	/* (non-Javadoc)
      * @see net.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.FacesContext, java.io.InputStream, java.util.Map)
      */
     @Override

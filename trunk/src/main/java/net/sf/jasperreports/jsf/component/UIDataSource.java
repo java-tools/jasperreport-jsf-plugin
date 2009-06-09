@@ -231,14 +231,4 @@ public class UIDataSource extends UIComponentBase {
         return values;
     }
 
-	@Override
-	public void processValidators(FacesContext context) {
-		DataSourceValidator validator = DataSourceValidatorFactory.getValidator(context, this);
-		if(validator == null) {
-			super.processValidators(context);
-		} else {
-			validator.validate(context, this);
-		}
-	}
-
 }

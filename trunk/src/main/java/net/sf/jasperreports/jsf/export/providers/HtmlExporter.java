@@ -18,6 +18,7 @@
  */
 package net.sf.jasperreports.jsf.export.providers;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRExporter;
@@ -47,7 +48,11 @@ public class HtmlExporter extends AbstractExporter {
     /** The Constant ATTR_IMAGES_URI. */
     public static final String ATTR_IMAGES_URI = "IMAGES_URI";
 
-    public String getContentType() {
+    protected HtmlExporter(UIComponent component) {
+		super(component);
+	}
+
+	public String getContentType() {
 		return CONTENT_TYPE;
 	}
     

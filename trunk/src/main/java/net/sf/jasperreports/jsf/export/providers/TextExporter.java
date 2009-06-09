@@ -18,6 +18,7 @@
  */
 package net.sf.jasperreports.jsf.export.providers;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRExporter;
@@ -49,6 +50,10 @@ public class TextExporter extends AbstractExporter {
 
     /** The Constant ATTR_PAGE_WIDTH. */
     public static final String ATTR_PAGE_WIDTH = "PAGE_WIDTH";
+
+	protected TextExporter(UIComponent component) {
+		super(component);
+	}
 
 	public String getContentType() {
 		return CONTENT_TYPE;

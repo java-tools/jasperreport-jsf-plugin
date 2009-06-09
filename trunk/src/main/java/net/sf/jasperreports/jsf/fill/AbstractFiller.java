@@ -56,23 +56,18 @@ public abstract class AbstractFiller implements Filler {
     /** The data source component. */
     private UIDataSource dataSourceComponent;
 
-    /**
+    public AbstractFiller(UIDataSource dataSource) {
+		super();
+		this.dataSourceComponent = dataSource;
+	}
+
+	/**
      * Gets the data source component.
      * 
      * @return the data source component
      */
     public final UIDataSource getDataSourceComponent() {
         return dataSourceComponent;
-    }
-
-    /**
-     * Sets the data source component.
-     * 
-     * @param dataSourceComponent the new data source component
-     */
-    public final void setDataSourceComponent(
-            final UIDataSource dataSourceComponent) {
-        this.dataSourceComponent = dataSourceComponent;
     }
 
     /**

@@ -49,6 +49,10 @@ public abstract class AbstractExporter implements Exporter {
     /** The component. */
     private transient UIComponent component;
 
+    public AbstractExporter(UIComponent component) {
+    	this.component = component;
+    }
+    
     /**
      * Gets the component.
      * 
@@ -56,15 +60,6 @@ public abstract class AbstractExporter implements Exporter {
      */
     public final UIComponent getComponent() {
         return component;
-    }
-
-    /**
-     * Sets the component.
-     * 
-     * @param component the new component
-     */
-    public final void setComponent(final UIComponent component) {
-        this.component = component;
     }
 
     /**

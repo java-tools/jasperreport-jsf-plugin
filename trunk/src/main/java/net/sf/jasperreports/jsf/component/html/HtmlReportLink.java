@@ -155,10 +155,4 @@ public class HtmlReportLink extends HtmlOutputLink implements UIReport {
         return values;
     }
 
-	@Override
-	public void processValidators(FacesContext context) {
-		super.processValidators(context);
-		impl.processValidators(context);
-	}
-
 }

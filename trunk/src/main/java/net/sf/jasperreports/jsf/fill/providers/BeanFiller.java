@@ -30,6 +30,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanArrayDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.jsf.component.UIDataSource;
 import net.sf.jasperreports.jsf.fill.AbstractFiller;
 import net.sf.jasperreports.jsf.fill.FillerException;
 
@@ -38,7 +39,11 @@ import net.sf.jasperreports.jsf.fill.FillerException;
  */
 public class BeanFiller extends AbstractFiller {
 
-    /* (non-Javadoc)
+    protected BeanFiller(UIDataSource dataSource) {
+		super(dataSource);
+	}
+
+	/* (non-Javadoc)
      * @see net.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.FacesContext, java.io.InputStream, java.util.Map)
      */
     @Override

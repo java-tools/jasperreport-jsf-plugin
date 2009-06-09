@@ -26,6 +26,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import net.sf.jasperreports.jsf.component.UIDataSource;
 import net.sf.jasperreports.jsf.fill.AbstractSQLFiller;
 
 /**
@@ -33,7 +34,11 @@ import net.sf.jasperreports.jsf.fill.AbstractSQLFiller;
  */
 public class JndiFiller extends AbstractSQLFiller {
 
-    /** The Constant logger. */
+    protected JndiFiller(UIDataSource dataSource) {
+		super(dataSource);
+	}
+
+	/** The Constant logger. */
     private static final Logger logger = Logger.getLogger(JndiFiller.class
             .getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
 

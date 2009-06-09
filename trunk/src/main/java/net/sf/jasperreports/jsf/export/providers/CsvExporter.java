@@ -18,6 +18,7 @@
  */
 package net.sf.jasperreports.jsf.export.providers;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRExporter;
@@ -38,7 +39,11 @@ public class CsvExporter extends AbstractExporter {
     /** The Constant ATTR_RECORD_DELIMITER. */
     public static final String ATTR_RECORD_DELIMITER = "RECORD_DELIMITER";
 
-    public String getContentType() {
+    protected CsvExporter(UIComponent component) {
+		super(component);
+	}
+
+	public String getContentType() {
 		return CONTENT_TYPE;
 	}
 

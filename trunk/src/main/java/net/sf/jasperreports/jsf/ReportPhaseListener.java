@@ -33,9 +33,9 @@ import javax.faces.event.PhaseListener;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.export.Exporter;
-import net.sf.jasperreports.jsf.export.ExporterFactory;
+import net.sf.jasperreports.jsf.export.ExporterLoader;
 import net.sf.jasperreports.jsf.fill.Filler;
-import net.sf.jasperreports.jsf.fill.FillerFactory;
+import net.sf.jasperreports.jsf.fill.FillerLoader;
 import net.sf.jasperreports.jsf.util.Util;
 
 /**
@@ -100,12 +100,12 @@ public class ReportPhaseListener implements PhaseListener {
                         + clientId);
             }
 
-            final Filler filler = FillerFactory.getFiller(context, report);
+            final Filler filler = FillerLoader.getFiller(context, report);
             logger.log(Level.FINE, "JRJSF_0006", clientId);
             final JasperPrint filledReport = filler.fill(context,
                     report);
             
-            final Exporter exporter = ExporterFactory.getExporter(
+            final Exporter exporter = ExporterLoader.getExporter(
                     context, report);
             final ByteArrayOutputStream reportData = new ByteArrayOutputStream();
             try {

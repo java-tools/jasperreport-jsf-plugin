@@ -1,0 +1,8 @@
+:net.sf.jasperreports.jsf.fill.providers.EmptyFillerFactory
+bean:net.sf.jasperreports.jsf.fill.providers.BeanFillerFactory
+csv:net.sf.jasperreports.jsf.fill.providers.CsvFillerFactory
+jdbc:net.sf.jasperreports.jsf.fill.providers.JdbcFillerFactory
+jndi:net.sf.jasperreports.jsf.fill.providers.JndiFillerFactory
+map:net.sf.jasperreports.jsf.fill.providers.MapFillerFactory
+resultset:net.sf.jasperreports.jsf.fill.providers.ResultSetFillerFactory
+xml:net.sf.jasperreports.jsf.fill.providers.XmlFillerFactory
