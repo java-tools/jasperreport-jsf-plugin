@@ -32,6 +32,10 @@ import net.sf.jasperreports.engine.JasperPrint;
  */
 public final class StaticFiller extends AbstractFiller {
 
+	protected StaticFiller() { 
+		super(null);
+	}
+	
     /* (non-Javadoc)
      * @see net.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.FacesContext, java.io.InputStream, java.util.Map)
      */
