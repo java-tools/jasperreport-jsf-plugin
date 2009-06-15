@@ -31,7 +31,7 @@ import net.sf.jasperreports.jsf.fill.FillerException;
 /**
  * The Class JdbcFiller.
  */
-public class JdbcFiller extends AbstractSQLFiller {
+public final class JdbcFiller extends AbstractSQLFiller {
 
 	protected JdbcFiller(final UIDataSource dataSource) {
 		super(dataSource);

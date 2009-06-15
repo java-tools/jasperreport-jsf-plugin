@@ -29,7 +29,7 @@ import net.sf.jasperreports.jsf.export.AbstractExporter;
 /**
  * The Class TextExporter.
  */
-public class TextExporter extends AbstractExporter {
+public final class TextExporter extends AbstractExporter {
 
 	public static final String CONTENT_TYPE = "text/plain";
 

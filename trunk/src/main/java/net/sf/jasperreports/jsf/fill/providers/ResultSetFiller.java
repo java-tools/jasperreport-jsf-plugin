@@ -36,7 +36,7 @@ import net.sf.jasperreports.jsf.fill.FillerException;
 /**
  * The Class ResultSetFiller.
  */
-public class ResultSetFiller extends AbstractFiller {
+public final class ResultSetFiller extends AbstractFiller {
 
 	protected ResultSetFiller(final UIDataSource dataSource) {
 		super(dataSource);

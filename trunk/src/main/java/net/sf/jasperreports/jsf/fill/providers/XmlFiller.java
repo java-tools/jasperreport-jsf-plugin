@@ -37,7 +37,7 @@ import org.w3c.dom.Document;
 /**
  * The Class XmlFiller.
  */
-public class XmlFiller extends AbstractFiller {
+public final class XmlFiller extends AbstractFiller {
 
 	protected XmlFiller(final UIDataSource dataSource) {
 		super(dataSource);

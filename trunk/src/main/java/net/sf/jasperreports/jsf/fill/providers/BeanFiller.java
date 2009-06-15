@@ -37,7 +37,7 @@ import net.sf.jasperreports.jsf.fill.FillerException;
 /**
  * The Class BeanFiller.
  */
-public class BeanFiller extends AbstractFiller {
+public final class BeanFiller extends AbstractFiller {
 
 	protected BeanFiller(final UIDataSource dataSource) {
 		super(dataSource);

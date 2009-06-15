@@ -25,11 +25,11 @@ import java.net.URL;
 import net.sf.jasperreports.jsf.resource.AbstractResource;
 import net.sf.jasperreports.jsf.resource.Resource;
 
-public class URLResource extends AbstractResource implements Resource {
+public final class URLResource extends AbstractResource implements Resource {
 
 	private final URL location;
 
-	public URLResource(final String name, final URL location) {
+	protected URLResource(final String name, final URL location) {
 		super(name);
 		this.location = location;
 	}

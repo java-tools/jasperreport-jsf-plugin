@@ -32,7 +32,7 @@ import net.sf.jasperreports.jsf.fill.AbstractSQLFiller;
 /**
  * The Class JndiFiller.
  */
-public class JndiFiller extends AbstractSQLFiller {
+public final class JndiFiller extends AbstractSQLFiller {
 
 	protected JndiFiller(final UIDataSource dataSource) {
 		super(dataSource);

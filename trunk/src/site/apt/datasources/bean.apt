@@ -1,0 +1,92 @@
+~~ 
+~~ JasperReports JSF Plugin
+~~ Copyright (C) 2009 A. Alonso Dominguez
+~~
+~~ This library is free software; you can redistribute it and/or
+~~ modify it under the terms of the GNU Lesser General Public
+~~ License as published by the Free Software Foundation; either
+~~ version 2.1 of the License, or (at your option) any later version.
+~~ 
+~~ This library is distributed in the hope that it will be useful,
+~~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+~~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+~~ Lesser General Public License for more details.
+~~ 
+~~ You should have received a copy of the GNU Lesser General Public
+~~ License along with this library; if not, write to the Free Software
+~~ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+~~ 
+~~ A. Alonso Dominguez
+~~ alonsoft@users.sf.net
+~~ 
+
+			---
+			XML DataSource
+			---
+			A. Alonso Dominguez
+			
+
+Usage of the XML DataSource
+
+  When using this kind of data source we will require a backing
+bean which will offer the data to the data source component.
+
+* Configuring the data source
+
+  The attributes required to be used with this type of data soruce are
+reflected in the following table:
+
+*-----------------+----------*--------------------------------------------+
+| Attribute       | Optional | Description                                |
+*-----------------+----------*--------------------------------------------+
+| value           | false    | XML Document which contains the data.      |
+*-----------------+----------*--------------------------------------------+
+| query           | true     | XPath query used to obtain the result set. |
+*-----------------+----------*--------------------------------------------+
+
+** Examples
+
+*** Simple Usage
+
+  First of all, we need to design a JSF Managed Bean which will build the
+XML document that will be used by the data source component.
+
++---
+import org.w3c.dom.Document;
+import ...;
+
+public class XMLDataBean {
+
+	...
+
+	public Document getXmlDocument() {
+		// Build an XML Document	
+	}
+
+	...
+}
++---
+
+  Then, this managed bean can be used inside the JSP file that will render
+the report or report link.
+
++---
+<jr:dataSource type="xml" value="#{XMLDataBean.xmlDocument}" />
++---
+
+*** Using Queries
+
+  The same way you can use queries with JDBC or JNDI data sources, you can
+also use queries with XML data sources. In this case, the difference is
+the kind of querie to be used, since we are dealing with XML, the query
+should be an XPath query.
+
++---
+<jr:dataSource type="xml"
+	value="#{XMLDataBean.xmlDocument}"
+	query="SALES/ORDER[city='Melbourne']"
+/>
++---
+
+  <<Note>>: Actually, parametrized XPath queries are not allowed. If you need
+a parametrized query you must hardcode it as is shown in the previous example.

@@ -34,7 +34,7 @@ import net.sf.jasperreports.jsf.fill.FillerException;
 /**
  * The Class EmptyFiller.
  */
-public class EmptyFiller extends AbstractFiller {
+public final class EmptyFiller extends AbstractFiller {
 
 	protected EmptyFiller() {
 		super(null);

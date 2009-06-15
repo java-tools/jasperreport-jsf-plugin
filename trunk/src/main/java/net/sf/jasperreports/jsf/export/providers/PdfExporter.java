@@ -29,7 +29,7 @@ import net.sf.jasperreports.jsf.export.AbstractExporter;
 /**
  * The Class PdfExporter.
  */
-public class PdfExporter extends AbstractExporter {
+public final class PdfExporter extends AbstractExporter {
 
 	public static final String CONTENT_TYPE = "application/pdf";
 

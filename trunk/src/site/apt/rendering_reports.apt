@@ -116,7 +116,7 @@ the report component tag you are using.
 * Output Formats
 
   JasperReports JSF-Plugin supports many output formats for your reports. Advanced users
-can also provide its own supported output formats, take a look to {{{exporter.html}this link}}
+can also provide its own supported output formats, take a look to {{{devel/exporter.html}this link}}
 to get more information about that.
 
   Apart from that, each of the output formats can be cutomized providing some component
