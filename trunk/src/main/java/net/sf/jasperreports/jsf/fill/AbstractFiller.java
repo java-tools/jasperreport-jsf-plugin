@@ -108,7 +108,8 @@ public abstract class AbstractFiller implements Filler {
 		} finally {
 			try {
 				reportStream.close();
-			} catch(IOException e) { }
+			} catch (final IOException e) {
+			}
 		}
 	}
 

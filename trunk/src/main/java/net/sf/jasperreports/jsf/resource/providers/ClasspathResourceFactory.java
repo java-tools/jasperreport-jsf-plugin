@@ -26,10 +26,10 @@ import net.sf.jasperreports.jsf.util.Util;
 
 public class ClasspathResourceFactory implements ResourceFactory {
 
-	public boolean acceptsResource(String name) {
+	public boolean acceptsResource(final String name) {
 		return name.startsWith("classpath:");
 	}
-	
+
 	public Resource createResource(final FacesContext context, final String name) {
 		final ClassLoader classLoader = Util.getClassLoader(this);
 		return new ClasspathResource(name, classLoader);

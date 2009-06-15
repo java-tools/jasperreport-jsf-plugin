@@ -23,9 +23,9 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIDataSource;
 import net.sf.jasperreports.jsf.spi.FillerFactory;
-import net.sf.jasperreports.jsf.validation.DataSourceValidator;
-import net.sf.jasperreports.jsf.validation.DataSourceValidatorFactory;
+import net.sf.jasperreports.jsf.spi.ValidatorLoader;
 import net.sf.jasperreports.jsf.validation.ValidationException;
+import net.sf.jasperreports.jsf.validation.Validator;
 
 public abstract class AbstractFillerFactory implements FillerFactory {
 
@@ -42,8 +42,8 @@ public abstract class AbstractFillerFactory implements FillerFactory {
 
 	protected void processValidators(final FacesContext context,
 			final UIDataSource dataSource) throws ValidationException {
-		final DataSourceValidator validator = DataSourceValidatorFactory
-				.getValidator(context, dataSource);
+		final Validator validator = ValidatorLoader.getValidator(context,
+				dataSource);
 		if (validator != null) {
 			validator.validate(context, dataSource);
 		}

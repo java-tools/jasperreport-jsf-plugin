@@ -25,46 +25,48 @@ import net.sf.jasperreports.jsf.component.UIReport;
  */
 public class ReportTestBean {
 
-    /** The factura id. */
-    private Long facturaId;
+	/** The factura id. */
+	private Long facturaId;
 
-    /** The report. */
-    private UIReport report;
+	/** The report. */
+	private UIReport report;
 
-    /**
-     * Gets the factura id.
-     * 
-     * @return the factura id
-     */
-    public Long getFacturaId() {
-        return facturaId;
-    }
+	/**
+	 * Gets the factura id.
+	 * 
+	 * @return the factura id
+	 */
+	public Long getFacturaId() {
+		return facturaId;
+	}
 
-    /**
-     * Sets the factura id.
-     * 
-     * @param facturaId the new factura id
-     */
-    public void setFacturaId(final Long facturaId) {
-        this.facturaId = facturaId;
-    }
+	/**
+	 * Sets the factura id.
+	 * 
+	 * @param facturaId
+	 *            the new factura id
+	 */
+	public void setFacturaId(final Long facturaId) {
+		this.facturaId = facturaId;
+	}
 
-    /**
-     * Gets the report.
-     * 
-     * @return the report
-     */
-    public UIReport getReport() {
-        return report;
-    }
+	/**
+	 * Gets the report.
+	 * 
+	 * @return the report
+	 */
+	public UIReport getReport() {
+		return report;
+	}
 
-    /**
-     * Sets the report.
-     * 
-     * @param report the new report
-     */
-    public void setReport(final UIReport report) {
-        this.report = report;
-    }
+	/**
+	 * Sets the report.
+	 * 
+	 * @param report
+	 *            the new report
+	 */
+	public void setReport(final UIReport report) {
+		this.report = report;
+	}
 
 }

@@ -25,7 +25,7 @@ import net.sf.jasperreports.jsf.spi.ResourceFactory;
 
 public class ContextResourceFactory implements ResourceFactory {
 
-	public boolean acceptsResource(String name) {
+	public boolean acceptsResource(final String name) {
 		return (name.indexOf(":") < 0) && name.startsWith("/");
 	}
 

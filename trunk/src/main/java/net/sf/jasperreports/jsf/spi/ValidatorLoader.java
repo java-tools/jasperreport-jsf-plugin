@@ -16,30 +16,39 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.validation.provider;
+package net.sf.jasperreports.jsf.spi;
 
+import java.util.Set;
+
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UIDataSource;
-import net.sf.jasperreports.jsf.validation.DataSourceValidatorBase;
-import net.sf.jasperreports.jsf.validation.MissedDataSourceAttributeException;
-import net.sf.jasperreports.jsf.validation.ValidationException;
+import net.sf.jasperreports.jsf.util.Util;
+import net.sf.jasperreports.jsf.validation.Validator;
 
-public class JdbcDataSourceValidator extends DataSourceValidatorBase {
+public final class ValidatorLoader {
 
-	/** The Constant REQUIRED_DATASOURCE_ATTRS. */
-	public static final String[] REQUIRED_DATASOURCE_ATTRS = { "username",
-			"password" };
+	private static final Set<ValidatorFactory> validatorFactoryCache = Util
+			.loadServiceSet(ValidatorFactory.class);
 
-	@Override
-	public void validate(final FacesContext context,
-			final UIDataSource dataSource) throws ValidationException {
-		super.validate(context, dataSource);
-		for (final String attr : REQUIRED_DATASOURCE_ATTRS) {
-			if (null == dataSource.getAttributes().get(attr)) {
-				throw new MissedDataSourceAttributeException(attr);
+	public static Validator getValidator(final FacesContext context,
+			final UIComponent component) {
+		ValidatorFactory validatorFactory = null;
+		for (final ValidatorFactory factory : validatorFactoryCache) {
+			if (factory.acceptsComponent(component)) {
+				validatorFactory = factory;
+				break;
 			}
 		}
+
+		if (validatorFactory == null) {
+			throw new ValidatorFactoryNotFoundException(
+					"No factory found for component: " + component.getFamily());
+		}
+		return validatorFactory.createValidator(context, component);
+	}
+
+	private ValidatorLoader() {
 	}
 
 }

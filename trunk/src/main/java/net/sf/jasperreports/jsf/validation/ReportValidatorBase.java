@@ -23,9 +23,10 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.spi.ExporterLoader;
 
-public class ReportValidatorBase implements ReportValidator {
+public class ReportValidatorBase extends ReportValidator {
 
-	public void validate(final FacesContext context, final UIReport report)
+	@Override
+	protected void doValidate(final FacesContext context, final UIReport report)
 			throws ValidationException {
 		if (!ExporterLoader.getAvailableExportFormats().contains(
 				report.getFormat())) {

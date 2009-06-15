@@ -25,7 +25,6 @@ import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.ResourceException;
-import net.sf.jasperreports.jsf.resource.ResourceFactoryNotFoundException;
 import net.sf.jasperreports.jsf.util.Util;
 
 /**
@@ -33,9 +32,9 @@ import net.sf.jasperreports.jsf.util.Util;
  */
 public final class ResourceLoader {
 
-	private static final Collection<ResourceFactory> resourceFactoryCache =
-		Util.loadServiceSet(ResourceFactory.class);
-	
+	private static final Collection<ResourceFactory> resourceFactoryCache = Util
+			.loadServiceSet(ResourceFactory.class);
+
 	/**
 	 * Gets the resource loader.
 	 * 
@@ -53,17 +52,17 @@ public final class ResourceLoader {
 		}
 
 		final ResourceFactory factory = getResourceFactory(name);
-		if(factory == null) {
+		if (factory == null) {
 			throw new ResourceFactoryNotFoundException(
 					"No factory for resource: " + name);
 		}
 		return factory.createResource(context, name);
 	}
 
-	private static ResourceFactory getResourceFactory(final String name) 
-	throws ResourceException {
-		for(ResourceFactory factory : resourceFactoryCache) {
-			if(factory.acceptsResource(name)) {
+	private static ResourceFactory getResourceFactory(final String name)
+			throws ResourceException {
+		for (final ResourceFactory factory : resourceFactoryCache) {
+			if (factory.acceptsResource(name)) {
 				return factory;
 			}
 		}

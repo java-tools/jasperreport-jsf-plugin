@@ -29,7 +29,6 @@ import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.export.Exporter;
 import net.sf.jasperreports.jsf.export.ExporterException;
-import net.sf.jasperreports.jsf.export.ExporterNotFoundException;
 import net.sf.jasperreports.jsf.util.Util;
 
 /**
@@ -74,13 +73,13 @@ public final class ExporterLoader {
 		final Class<ExporterFactory> exporterFactoryClass = exporterCacheMap
 				.get(report.getFormat());
 		if (exporterFactoryClass == null) {
-			throw new ExporterNotFoundException(report.getFormat());
+			throw new ExporterFactoryNotFoundException(report.getFormat());
 		}
 
 		try {
 			return exporterFactoryClass.newInstance();
 		} catch (final Exception e) {
-			throw new JRFacesException(e);
+			throw new ServiceException(e);
 		}
 	}
 

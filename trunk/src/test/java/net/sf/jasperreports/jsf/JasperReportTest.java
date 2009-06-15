@@ -33,78 +33,84 @@ import com.meterware.servletunit.ServletUnitClient;
  */
 public class JasperReportTest extends TestCase {
 
-	private static final Logger logger = Logger.getLogger(
-			JasperReportTest.class.getPackage() + ".test");
-	
-    /** The context dir. */
-    private File contextDir;
+	private static final Logger logger = Logger
+			.getLogger(JasperReportTest.class.getPackage() + ".test");
 
-    /** The context path. */
-    private String contextPath;
+	/** The context dir. */
+	private File contextDir;
 
-    /** The runner. */
-    private transient ServletRunner runner;
+	/** The context path. */
+	private String contextPath;
 
-    /**
-     * Instantiates a new jasper report test.
-     * 
-     * @param name the name
-     */
-    public JasperReportTest(final String name) {
-        super(name);
-    }
+	/** The runner. */
+	private transient ServletRunner runner;
 
-    /**
-     * Test report inline.
-     * 
-     * @throws Exception the exception
-     */
-    public void testReportInline() throws Exception {
-        final ServletUnitClient client = runner.newClient();
+	/**
+	 * Instantiates a new jasper report test.
+	 * 
+	 * @param name
+	 *            the name
+	 */
+	public JasperReportTest(final String name) {
+		super(name);
+	}
 
-        client.getResponse("http://localhost" + contextPath
-                + "/ReportInlineTest.jsf");
-    }
+	/**
+	 * Test report inline.
+	 * 
+	 * @throws Exception
+	 *             the exception
+	 */
+	public void testReportInline() throws Exception {
+		final ServletUnitClient client = runner.newClient();
 
-    /**
-     * Test report link.
-     * 
-     * @throws Exception the exception
-     */
-    public void testReportLink() throws Exception {
-        final ServletUnitClient client = runner.newClient();
-        final WebResponse response = client.getResponse("http://localhost"
-                + contextPath + "/ReportLinkTest.jsf");
-        final WebLink link = response.getLinkWithID("reportLink");
-        assertNotNull("Link 'reportLink' is null", link);
-        link.click();
-    }
+		client.getResponse("http://localhost" + contextPath
+				+ "/ReportInlineTest.jsf");
+	}
 
-    /*
-     * (non-Javadoc)
-     * @see junit.framework.TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
-        contextDir = new File(System.getProperty("context-dir"));
-        contextPath = System.getProperty("context-path");
+	/**
+	 * Test report link.
+	 * 
+	 * @throws Exception
+	 *             the exception
+	 */
+	public void testReportLink() throws Exception {
+		final ServletUnitClient client = runner.newClient();
+		final WebResponse response = client.getResponse("http://localhost"
+				+ contextPath + "/ReportLinkTest.jsf");
+		final WebLink link = response.getLinkWithID("reportLink");
+		assertNotNull("Link 'reportLink' is null", link);
+		link.click();
+	}
 
-        logger.info("Starting web application '" + contextPath 
-        		+ "' from directory: " + contextDir);
-        
-        final File webXml = new File(contextDir, "WEB-INF/web.xml");
-        runner = new ServletRunner(webXml, contextPath);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see junit.framework.TestCase#setUp()
+	 */
+	@Override
+	protected void setUp() throws Exception {
+		contextDir = new File(System.getProperty("context-dir"));
+		contextPath = System.getProperty("context-path");
 
-    /* (non-Javadoc)
-     * @see junit.framework.TestCase#tearDown()
-     */
-    @Override
-    protected void tearDown() throws Exception {
-        runner.shutDown();
-        runner = null;
+		logger.info("Starting web application '" + contextPath
+				+ "' from directory: " + contextDir);
 
-        super.tearDown();
-    }
+		final File webXml = new File(contextDir, "WEB-INF/web.xml");
+		runner = new ServletRunner(webXml, contextPath);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see junit.framework.TestCase#tearDown()
+	 */
+	@Override
+	protected void tearDown() throws Exception {
+		runner.shutDown();
+		runner = null;
+
+		super.tearDown();
+	}
 
 }

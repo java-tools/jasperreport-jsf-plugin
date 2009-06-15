@@ -16,25 +16,30 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.validation;
+package net.sf.jasperreports.jsf.validation.providers;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIDataSource;
+import net.sf.jasperreports.jsf.validation.DataSourceValidatorBase;
+import net.sf.jasperreports.jsf.validation.MissedDataSourceAttributeException;
+import net.sf.jasperreports.jsf.validation.ValidationException;
 
-public abstract class DataSourceValidator implements Validator {
+public class JdbcDataSourceValidator extends DataSourceValidatorBase {
 
-	public void validate(final FacesContext context, final UIComponent component)
-			throws ValidationException {
-		if (!(component instanceof UIDataSource)) {
-			throw new IllegalArgumentException(
-					"'component' must be a UIDataSource");
+	/** The Constant REQUIRED_DATASOURCE_ATTRS. */
+	public static final String[] REQUIRED_DATASOURCE_ATTRS = { "username",
+			"password" };
+
+	@Override
+	protected void doValidate(final FacesContext context,
+			final UIDataSource dataSource) throws ValidationException {
+		super.validate(context, dataSource);
+		for (final String attr : REQUIRED_DATASOURCE_ATTRS) {
+			if (null == dataSource.getAttributes().get(attr)) {
+				throw new MissedDataSourceAttributeException(attr);
+			}
 		}
-		doValidate(context, (UIDataSource) component);
 	}
-
-	protected abstract void doValidate(FacesContext context,
-			UIDataSource dataSource) throws ValidationException;
 
 }

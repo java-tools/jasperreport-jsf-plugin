@@ -24,6 +24,11 @@ package net.sf.jasperreports.jsf.resource;
 public class ReportNotFoundException extends ResourceException {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3585888152288225298L;
+
+	/**
 	 * Instantiates a new report not found exception.
 	 * 
 	 * @param msg

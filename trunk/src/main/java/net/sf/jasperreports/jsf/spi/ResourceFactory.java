@@ -35,7 +35,7 @@ import net.sf.jasperreports.jsf.resource.Resource;
 public interface ResourceFactory {
 
 	public boolean acceptsResource(String name);
-	
+
 	/**
 	 * Creates a new <tt>Resource</tt> instance
 	 * 

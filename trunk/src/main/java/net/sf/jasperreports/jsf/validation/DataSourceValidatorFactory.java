@@ -20,18 +20,30 @@ package net.sf.jasperreports.jsf.validation;
 
 import java.util.Map;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIDataSource;
+import net.sf.jasperreports.jsf.spi.ServiceException;
+import net.sf.jasperreports.jsf.spi.ValidatorFactory;
 import net.sf.jasperreports.jsf.util.Util;
 
-public final class DataSourceValidatorFactory {
+public final class DataSourceValidatorFactory implements ValidatorFactory {
 
 	private static final Map<String, Class<DataSourceValidator>> validatorCacheMap = Util
 			.loadServiceMap(DataSourceValidator.class);
 
-	public static DataSourceValidator getValidator(final FacesContext context,
-			final UIDataSource dataSource) throws ValidationException {
+	public boolean acceptsComponent(final UIComponent component) {
+		return (component instanceof UIDataSource);
+	}
+
+	public DataSourceValidator createValidator(final FacesContext context,
+			final UIComponent component) throws ValidationException {
+		if (!(component instanceof UIDataSource)) {
+			throw new IllegalArgumentException("");
+		}
+
+		final UIDataSource dataSource = (UIDataSource) component;
 		DataSourceValidator result = null;
 		Class<DataSourceValidator> validatorClass = validatorCacheMap
 				.get(dataSource.getType());
@@ -42,13 +54,10 @@ public final class DataSourceValidatorFactory {
 			try {
 				result = validatorClass.newInstance();
 			} catch (final Exception e) {
-				throw new ValidationException(e);
+				throw new ServiceException(e);
 			}
 		}
 		return result;
-	}
-
-	private DataSourceValidatorFactory() {
 	}
 
 }

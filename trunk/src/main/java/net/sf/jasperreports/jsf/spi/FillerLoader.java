@@ -38,7 +38,6 @@ import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.fill.AbstractFiller;
 import net.sf.jasperreports.jsf.fill.Filler;
 import net.sf.jasperreports.jsf.fill.FillerException;
-import net.sf.jasperreports.jsf.fill.FillerNotFoundException;
 import net.sf.jasperreports.jsf.util.Util;
 
 /**
@@ -102,13 +101,13 @@ public final class FillerLoader {
 		}
 		fillerFactoryClass = fillerCacheMap.get(dataSource.getType());
 		if (fillerFactoryClass == null) {
-			throw new FillerNotFoundException(dataSource.getType());
+			throw new FillerFactoryNotFoundException(dataSource.getType());
 		}
 
 		try {
 			result = fillerFactoryClass.newInstance();
 		} catch (final Exception e) {
-			throw new FillerException(e);
+			throw new ServiceException(e);
 		}
 
 		return result;
@@ -165,9 +164,8 @@ public final class FillerLoader {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * net.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.FacesContext
-		 * , java.io.InputStream, java.util.Map)
+		 * @seenet.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.
+		 * FacesContext , java.io.InputStream, java.util.Map)
 		 */
 		@Override
 		protected JasperPrint doFill(final FacesContext context,
@@ -181,7 +179,7 @@ public final class FillerLoader {
 		}
 
 	}
-	
+
 	/**
 	 * Instantiates a new filler factory.
 	 */
