@@ -28,7 +28,7 @@ import net.sf.jasperreports.jsf.export.AbstractExporter;
 /**
  * The Class XlsExporter.
  */
-public class XlsExporter extends AbstractExporter {
+public final class XlsExporter extends AbstractExporter {
 
 	public static final String CONTENT_TYPE = "application/vnd.ms-excel";
 

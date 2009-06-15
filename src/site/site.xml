@@ -40,8 +40,8 @@
   
   <body>
     <links>
-      <item name="SF Project Page" href="http://sf.net/projects/jasperreportjsf" />
-      <item name="JasperReports" href="http://jasperreports.sf.net" />
+      <item name="SF Project Page" href="http://sourceforge.net/projects/jasperreportjsf" />
+      <item name="JasperReports" href="http://jasperreports.sourceforge.net" />
     </links>
     
     <menu name="Main Menu">
@@ -50,7 +50,7 @@
       <item name="Downloads" href="downloads.html" />
     </menu>
     
-    <menu name="Documentation">
+    <menu name="User Documentation">
       <item name="Getting Started" href="getting_started.html" />
       <item name="Rendering Reports" href="rendering_reports.html" />
       <item name="Data Sources" href="datasources.html">
@@ -59,15 +59,17 @@
         <item name="XML" href="datasources/xml.html" />
         <item name="Others" href="datasources/others.html" />
       </item>
-      <item name="Extending Functionality">
-        <item name="Output Formats" href="exporter.html" />
-        <item name="Data Sources" href="filler.html" />
-      </item>
     </menu>
     
-    <menu name="Reference">
-      <item name="API Docs" href="apidocs/index.html" />
-      <item name="TLD Docs" href="tlddoc/index.html" />
+    <menu name="Developer Documentation">
+      <item name="Extending Functionality" href="devel/extending.html">
+	    <item name="Output Formats" href="devel/exporter.html" />
+	    <item name="Data Sources" href="devel/filler.html" />
+      </item>
+      <item name="Reference">
+        <item name="API Docs" href="apidocs/index.html" />
+        <item name="TLD Docs" href="tlddoc/index.html" />
+      </item>
     </menu>
     
     <menu ref="reports" />

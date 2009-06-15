@@ -29,7 +29,7 @@ import net.sf.jasperreports.jsf.export.AbstractExporter;
 /**
  * The Class XmlExporter.
  */
-public class XmlExporter extends AbstractExporter {
+public final class XmlExporter extends AbstractExporter {
 
 	public static final String CONTENT_TYPE = "text/xml";
 

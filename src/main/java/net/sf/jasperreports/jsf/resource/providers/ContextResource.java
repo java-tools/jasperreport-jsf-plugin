@@ -32,7 +32,7 @@ import net.sf.jasperreports.jsf.resource.Resource;
 /**
  * The Class ContextResourceLoader.
  */
-public class ContextResource extends AbstractResource implements Resource {
+public final class ContextResource extends AbstractResource implements Resource {
 
 	/** The context. */
 	private final ExternalContext context;
@@ -43,7 +43,7 @@ public class ContextResource extends AbstractResource implements Resource {
 	 * @param servletContext
 	 *            the servlet context
 	 */
-	public ContextResource(final String name,
+	protected ContextResource(final String name,
 			final ExternalContext servletContext) {
 		super(name);
 		if (servletContext == null) {

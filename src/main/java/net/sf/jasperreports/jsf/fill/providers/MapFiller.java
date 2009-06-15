@@ -37,7 +37,7 @@ import net.sf.jasperreports.jsf.fill.FillerException;
 /**
  * The Class MapFiller.
  */
-public class MapFiller extends AbstractFiller {
+public final class MapFiller extends AbstractFiller {
 
 	protected MapFiller(final UIDataSource dataSource) {
 		super(dataSource);

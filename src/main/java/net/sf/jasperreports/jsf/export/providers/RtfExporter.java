@@ -28,7 +28,7 @@ import net.sf.jasperreports.jsf.export.AbstractExporter;
 /**
  * The Class RtfExporter.
  */
-public class RtfExporter extends AbstractExporter {
+public final class RtfExporter extends AbstractExporter {
 
 	public static final String CONTENT_TYPE = "application/rtf";
 
