@@ -16,23 +16,20 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.export;
+package net.sf.jasperreports.jsf.spi;
 
-/**
- * The Class ExporterNotFoundException.
- */
-public class ExporterNotFoundException extends ExporterException {
-
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = -7332138486930782050L;
+public class ValidatorFactoryNotFoundException extends ServiceException {
 
 	/**
-	 * Instantiates a new exporter not found exception.
 	 * 
-	 * @param msg
-	 *            the msg
 	 */
-	public ExporterNotFoundException(final String msg) {
+	private static final long serialVersionUID = -3770336216185029903L;
+
+	public ValidatorFactoryNotFoundException(final String msg, final Throwable t) {
+		super(msg, t);
+	}
+
+	public ValidatorFactoryNotFoundException(final String msg) {
 		super(msg);
 	}
 

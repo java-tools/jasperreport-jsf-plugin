@@ -16,25 +16,27 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.validation;
+package net.sf.jasperreports.jsf.spi;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
+import net.sf.jasperreports.jsf.JRFacesException;
 
-import net.sf.jasperreports.jsf.component.UIDataSource;
+public class ServiceException extends JRFacesException {
 
-public abstract class DataSourceValidator implements Validator {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1423243248011040084L;
 
-	public void validate(final FacesContext context, final UIComponent component)
-			throws ValidationException {
-		if (!(component instanceof UIDataSource)) {
-			throw new IllegalArgumentException(
-					"'component' must be a UIDataSource");
-		}
-		doValidate(context, (UIDataSource) component);
+	public ServiceException(final String msg, final Throwable t) {
+		super(msg, t);
 	}
 
-	protected abstract void doValidate(FacesContext context,
-			UIDataSource dataSource) throws ValidationException;
+	public ServiceException(final String msg) {
+		super(msg);
+	}
+
+	public ServiceException(final Throwable t) {
+		super(t);
+	}
 
 }

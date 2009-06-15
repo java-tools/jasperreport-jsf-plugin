@@ -227,9 +227,9 @@ public final class Util {
 		} catch (final IOException e) {
 			throw new ExceptionInInitializerError(e);
 		}
-		
-		Set<T> serviceSet = new HashSet<T>();
-		while(resources.hasMoreElements()) {
+
+		final Set<T> serviceSet = new HashSet<T>();
+		while (resources.hasMoreElements()) {
 			final URL url = resources.nextElement();
 			BufferedReader reader = null;
 			try {
@@ -238,14 +238,14 @@ public final class Util {
 						.openStream()));
 				while (null != (line = reader.readLine())) {
 					// skip line comments
-					if(line.startsWith("#")) {
+					if (line.startsWith("#")) {
 						continue;
 					}
-					
+
 					Class<T> serviceClass;
 					try {
 						serviceClass = (Class<T>) loader.loadClass(line);
-					} catch(ClassNotFoundException e) {
+					} catch (final ClassNotFoundException e) {
 						final LogRecord logRecord = new LogRecord(Level.SEVERE,
 								"JRJSF_0014");
 						logRecord.setParameters(new Object[] { line });
@@ -253,11 +253,11 @@ public final class Util {
 						logger.log(logRecord);
 						continue;
 					}
-					
+
 					T instance;
 					try {
 						instance = serviceClass.newInstance();
-					} catch(Exception e) {
+					} catch (final Exception e) {
 						final LogRecord logRecord = new LogRecord(Level.SEVERE,
 								"JRJSF_0015");
 						logRecord.setParameters(new Object[] { line });
@@ -265,10 +265,10 @@ public final class Util {
 						logger.log(logRecord);
 						continue;
 					}
-					
+
 					serviceSet.add(instance);
 				}
-			} catch(IOException e) {
+			} catch (final IOException e) {
 				final LogRecord logRecord = new LogRecord(Level.SEVERE,
 						"JRJSF_0012");
 				logRecord.setParameters(new Object[] { url });
@@ -286,7 +286,7 @@ public final class Util {
 		}
 		return serviceSet;
 	}
-	
+
 	/**
 	 * Load service map.
 	 * 
@@ -317,10 +317,10 @@ public final class Util {
 						.openStream()));
 				while (null != (line = reader.readLine())) {
 					// skip line comments
-					if(line.startsWith("#")) {
+					if (line.startsWith("#")) {
 						continue;
 					}
-					
+
 					Class<T> serviceClass;
 					final String[] record = line.split(":");
 					try {

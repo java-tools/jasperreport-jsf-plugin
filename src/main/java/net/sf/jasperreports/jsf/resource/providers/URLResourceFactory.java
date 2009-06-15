@@ -28,7 +28,7 @@ import net.sf.jasperreports.jsf.spi.ResourceFactory;
 
 public class URLResourceFactory implements ResourceFactory {
 
-	public boolean acceptsResource(String name) {
+	public boolean acceptsResource(final String name) {
 		return (name.indexOf("://") >= 0);
 	}
 

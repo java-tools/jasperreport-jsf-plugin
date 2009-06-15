@@ -16,25 +16,26 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.validation;
+package net.sf.jasperreports.jsf.spi;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
+/**
+ * The Class FillerNotFoundException.
+ */
+public class FillerFactoryNotFoundException extends ServiceException {
 
-import net.sf.jasperreports.jsf.component.UIDataSource;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5815666807719608401L;
 
-public abstract class DataSourceValidator implements Validator {
-
-	public void validate(final FacesContext context, final UIComponent component)
-			throws ValidationException {
-		if (!(component instanceof UIDataSource)) {
-			throw new IllegalArgumentException(
-					"'component' must be a UIDataSource");
-		}
-		doValidate(context, (UIDataSource) component);
+	/**
+	 * Instantiates a new filler not found exception.
+	 * 
+	 * @param msg
+	 *            the msg
+	 */
+	public FillerFactoryNotFoundException(final String msg) {
+		super(msg);
 	}
-
-	protected abstract void doValidate(FacesContext context,
-			UIDataSource dataSource) throws ValidationException;
 
 }

@@ -4,15 +4,20 @@ import net.sf.jasperreports.jsf.JRFacesException;
 
 public class ResourceException extends JRFacesException {
 
-	public ResourceException(String msg, Throwable t) {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3926030327829973068L;
+
+	public ResourceException(final String msg, final Throwable t) {
 		super(msg, t);
 	}
 
-	public ResourceException(String msg) {
+	public ResourceException(final String msg) {
 		super(msg);
 	}
 
-	public ResourceException(Throwable t) {
+	public ResourceException(final Throwable t) {
 		super(t);
 	}
 

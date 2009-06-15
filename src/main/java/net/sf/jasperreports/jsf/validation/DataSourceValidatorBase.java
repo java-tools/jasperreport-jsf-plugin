@@ -23,9 +23,10 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.jsf.component.UIDataSource;
 import net.sf.jasperreports.jsf.spi.FillerLoader;
 
-public class DataSourceValidatorBase implements DataSourceValidator {
+public class DataSourceValidatorBase extends DataSourceValidator {
 
-	public void validate(final FacesContext context,
+	@Override
+	protected void doValidate(final FacesContext context,
 			final UIDataSource dataSource) throws ValidationException {
 		if (!FillerLoader.getAvailableDataSourceTypes().contains(
 				dataSource.getType())) {

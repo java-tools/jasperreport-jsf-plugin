@@ -16,24 +16,14 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.fill;
+package net.sf.jasperreports.jsf.validation;
 
-/**
- * The Class FillerNotFoundException.
- */
-public class FillerNotFoundException extends FillerException {
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = -35231220672091774L;
+public interface Validator {
 
-	/**
-	 * Instantiates a new filler not found exception.
-	 * 
-	 * @param msg
-	 *            the msg
-	 */
-	public FillerNotFoundException(final String msg) {
-		super(msg);
-	}
+	public void validate(FacesContext context, UIComponent component)
+			throws ValidationException;
 
 }

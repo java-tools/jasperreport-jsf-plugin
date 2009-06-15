@@ -16,25 +16,17 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.validation;
+package net.sf.jasperreports.jsf.spi;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UIDataSource;
+import net.sf.jasperreports.jsf.validation.Validator;
 
-public abstract class DataSourceValidator implements Validator {
+public interface ValidatorFactory {
 
-	public void validate(final FacesContext context, final UIComponent component)
-			throws ValidationException {
-		if (!(component instanceof UIDataSource)) {
-			throw new IllegalArgumentException(
-					"'component' must be a UIDataSource");
-		}
-		doValidate(context, (UIDataSource) component);
-	}
+	public boolean acceptsComponent(UIComponent component);
 
-	protected abstract void doValidate(FacesContext context,
-			UIDataSource dataSource) throws ValidationException;
+	public Validator createValidator(FacesContext context, UIComponent component);
 
 }

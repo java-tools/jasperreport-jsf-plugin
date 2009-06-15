@@ -18,13 +18,14 @@
  */
 package net.sf.jasperreports.jsf.export;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.spi.ExporterFactory;
-import net.sf.jasperreports.jsf.validation.ReportValidator;
-import net.sf.jasperreports.jsf.validation.ReportValidatorFactory;
+import net.sf.jasperreports.jsf.spi.ValidatorLoader;
 import net.sf.jasperreports.jsf.validation.ValidationException;
+import net.sf.jasperreports.jsf.validation.Validator;
 
 public abstract class AbstractExporterFactory implements ExporterFactory {
 
@@ -39,10 +40,10 @@ public abstract class AbstractExporterFactory implements ExporterFactory {
 
 	protected void processValidators(final FacesContext context,
 			final UIReport report) throws ValidationException {
-		final ReportValidator validator = ReportValidatorFactory.getValidator(
-				context, report);
+		final Validator validator = ValidatorLoader.getValidator(context,
+				(UIComponent) report);
 		if (validator != null) {
-			validator.validate(context, report);
+			validator.validate(context, (UIComponent) report);
 		}
 	}
 
