@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -29,37 +29,40 @@ import net.sf.jasperreports.engine.export.JRHyperlinkProducerFactory;
  */
 public class FacesHyperlinkProducerFactory extends JRHyperlinkProducerFactory {
 
-    /** The context. */
-    private final transient FacesContext context;
+	/** The context. */
+	private final transient FacesContext context;
 
-    /** The report. */
-    private final transient UIComponent report;
+	/** The report. */
+	private final transient UIComponent report;
 
-    /**
-     * Instantiates a new faces hyperlink producer factory.
-     * 
-     * @param context the context
-     * @param report the report
-     */
-    public FacesHyperlinkProducerFactory(final FacesContext context,
-            final UIComponent report) {
-        super();
-        if ((context == null) || (report == null)) {
-            throw new IllegalArgumentException();
-        }
-        this.context = context;
-        this.report = report;
-    }
+	/**
+	 * Instantiates a new faces hyperlink producer factory.
+	 * 
+	 * @param context
+	 *            the context
+	 * @param report
+	 *            the report
+	 */
+	public FacesHyperlinkProducerFactory(final FacesContext context,
+			final UIComponent report) {
+		super();
+		if ((context == null) || (report == null)) {
+			throw new IllegalArgumentException();
+		}
+		this.context = context;
+		this.report = report;
+	}
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * net.sf.jasperreports.engine.export.JRHyperlinkProducerFactory#getHandler
-     * (java.lang.String)
-     */
-    @Override
-    public final JRHyperlinkProducer getHandler(final String linkType) {
-        return new FacesHyperlinkProducer(context, report);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.sf.jasperreports.engine.export.JRHyperlinkProducerFactory#getHandler
+	 * (java.lang.String)
+	 */
+	@Override
+	public final JRHyperlinkProducer getHandler(final String linkType) {
+		return new FacesHyperlinkProducer(context, report);
+	}
 
 }

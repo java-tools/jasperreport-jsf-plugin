@@ -39,40 +39,42 @@ import net.sf.jasperreports.jsf.fill.FillerException;
  */
 public class BeanFiller extends AbstractFiller {
 
-    protected BeanFiller(UIDataSource dataSource) {
+	protected BeanFiller(final UIDataSource dataSource) {
 		super(dataSource);
 	}
 
-	/* (non-Javadoc)
-     * @see net.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.FacesContext, java.io.InputStream, java.util.Map)
-     */
-    @Override
-    protected JasperPrint doFill(final FacesContext context,
-            final InputStream reportStream, final Map<String, Object> params)
-            throws FillerException {
-        JRDataSource dataSource;
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.FacesContext
+	 * , java.io.InputStream, java.util.Map)
+	 */
+	@Override
+	protected JasperPrint doFill(final FacesContext context,
+			final InputStream reportStream, final Map<String, Object> params)
+			throws FillerException {
+		JRDataSource dataSource;
 
-        final Object value = getDataSourceComponent().getValue();
-        if (value instanceof Collection) {
-            dataSource = new JRBeanCollectionDataSource((Collection<?>) value);
-        } else {
-            Object[] beanArray;
-            if (!value.getClass().isArray()) {
-                beanArray = new Object[] {
-                    value
-                };
-            } else {
-                beanArray = (Object[]) value;
-            }
-            dataSource = new JRBeanArrayDataSource(beanArray);
-        }
+		final Object value = getDataSourceComponent().getValue();
+		if (value instanceof Collection) {
+			dataSource = new JRBeanCollectionDataSource((Collection<?>) value);
+		} else {
+			Object[] beanArray;
+			if (!value.getClass().isArray()) {
+				beanArray = new Object[] { value };
+			} else {
+				beanArray = (Object[]) value;
+			}
+			dataSource = new JRBeanArrayDataSource(beanArray);
+		}
 
-        try {
-            return JasperFillManager.fillReport(reportStream, params,
-                    dataSource);
-        } catch (final JRException e) {
-            throw new FillerException(e);
-        }
-    }
+		try {
+			return JasperFillManager.fillReport(reportStream, params,
+					dataSource);
+		} catch (final JRException e) {
+			throw new FillerException(e);
+		}
+	}
 
 }

@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -16,33 +16,21 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.fill;
+package net.sf.jasperreports.jsf.resource.providers;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class ReportNotFoundException.
- */
-public class ReportNotFoundException extends FillerException {
+import javax.faces.context.FacesContext;
 
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = 7621744920020149666L;
+import net.sf.jasperreports.jsf.resource.Resource;
+import net.sf.jasperreports.jsf.spi.ResourceFactory;
 
-    /**
-     * Instantiates a new report not found exception.
-     * 
-     * @param msg the msg
-     */
-    public ReportNotFoundException(final String msg) {
-        super(msg);
-    }
-    
-    /**
-     * Instantiates a new report not found exception.
-     * 
-     * @param msg the msg
-     */
-    public ReportNotFoundException(final String msg, Throwable t) {
-        super(msg, t);
-    }
+public class ContextResourceFactory implements ResourceFactory {
+
+	public boolean acceptsResource(String name) {
+		return (name.indexOf(":") < 0) && name.startsWith("/");
+	}
+
+	public Resource createResource(final FacesContext context, final String name) {
+		return new ContextResource(name, context.getExternalContext());
+	}
 
 }

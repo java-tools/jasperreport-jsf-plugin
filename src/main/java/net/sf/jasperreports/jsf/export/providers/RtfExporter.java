@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -31,21 +31,25 @@ import net.sf.jasperreports.jsf.export.AbstractExporter;
 public class RtfExporter extends AbstractExporter {
 
 	public static final String CONTENT_TYPE = "application/rtf";
-	
-	protected RtfExporter(UIComponent component) {
+
+	protected RtfExporter(final UIComponent component) {
 		super(component);
 	}
 
 	public String getContentType() {
 		return CONTENT_TYPE;
 	}
-	
-    /* (non-Javadoc)
-     * @see net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces.context.FacesContext)
-     */
-    @Override
-    protected JRExporter createJRExporter(final FacesContext context) {
-        return new JRRtfExporter();
-    }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
+	 * .context.FacesContext)
+	 */
+	@Override
+	protected JRExporter createJRExporter(final FacesContext context) {
+		return new JRRtfExporter();
+	}
 
 }

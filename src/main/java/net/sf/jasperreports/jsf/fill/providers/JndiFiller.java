@@ -34,27 +34,28 @@ import net.sf.jasperreports.jsf.fill.AbstractSQLFiller;
  */
 public class JndiFiller extends AbstractSQLFiller {
 
-    protected JndiFiller(UIDataSource dataSource) {
+	protected JndiFiller(final UIDataSource dataSource) {
 		super(dataSource);
 	}
 
 	/** The Constant logger. */
-    private static final Logger logger = Logger.getLogger(JndiFiller.class
-            .getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
+	private static final Logger logger = Logger.getLogger(JndiFiller.class
+			.getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
 
-    /* (non-Javadoc)
-     * @see net.sf.jasperreports.jsf.fill.AbstractQueryFiller#getConnection()
-     */
-    @Override
-    protected Connection getConnection()
-            throws Exception {
-        final String dataSourceName = (String) getDataSourceComponent()
-                .getValue();
-        logger.log(Level.FINE, "JRJSF_0005", dataSourceName);
-        
-        final Context jndi = new InitialContext();
-        final DataSource ds = (DataSource) jndi.lookup(dataSourceName);
-        return ds.getConnection();        
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.sf.jasperreports.jsf.fill.AbstractQueryFiller#getConnection()
+	 */
+	@Override
+	protected Connection getConnection() throws Exception {
+		final String dataSourceName = (String) getDataSourceComponent()
+				.getValue();
+		logger.log(Level.FINE, "JRJSF_0005", dataSourceName);
+
+		final Context jndi = new InitialContext();
+		final DataSource ds = (DataSource) jndi.lookup(dataSourceName);
+		return ds.getConnection();
+	}
 
 }

@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -23,16 +23,17 @@ package net.sf.jasperreports.jsf.export;
  */
 public class ExporterNotFoundException extends ExporterException {
 
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = -7332138486930782050L;
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = -7332138486930782050L;
 
-    /**
-     * Instantiates a new exporter not found exception.
-     * 
-     * @param msg the msg
-     */
-    public ExporterNotFoundException(final String msg) {
-        super(msg);
-    }
+	/**
+	 * Instantiates a new exporter not found exception.
+	 * 
+	 * @param msg
+	 *            the msg
+	 */
+	public ExporterNotFoundException(final String msg) {
+		super(msg);
+	}
 
 }

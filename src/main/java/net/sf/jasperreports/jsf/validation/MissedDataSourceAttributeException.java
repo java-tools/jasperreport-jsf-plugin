@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -23,16 +23,17 @@ package net.sf.jasperreports.jsf.validation;
  */
 public class MissedDataSourceAttributeException extends ValidationException {
 
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = 6313893570302881706L;
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 6313893570302881706L;
 
-    /**
-     * Instantiates a new missed data source attribute exception.
-     * 
-     * @param msg the msg
-     */
-    public MissedDataSourceAttributeException(final String msg) {
-        super(msg);
-    }
+	/**
+	 * Instantiates a new missed data source attribute exception.
+	 * 
+	 * @param msg
+	 *            the msg
+	 */
+	public MissedDataSourceAttributeException(final String msg) {
+		super(msg);
+	}
 
 }

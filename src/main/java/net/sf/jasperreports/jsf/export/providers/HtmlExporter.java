@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -32,47 +32,51 @@ import net.sf.jasperreports.jsf.export.AbstractExporter;
 public class HtmlExporter extends AbstractExporter {
 
 	public static final String CONTENT_TYPE = "text/html";
-	
-    /** The Constant ATTR_HTML_HEADER. */
-    public static final String ATTR_HTML_HEADER = "HTML_HEADER";
 
-    /** The Constant ATTR_HTML_FOOTER. */
-    public static final String ATTR_HTML_FOOTER = "HTML_FOOTER";
+	/** The Constant ATTR_HTML_HEADER. */
+	public static final String ATTR_HTML_HEADER = "HTML_HEADER";
 
-    /** The Constant ATTR_IMAGES_DIR. */
-    public static final String ATTR_IMAGES_DIR = "IMAGES_DIR";
+	/** The Constant ATTR_HTML_FOOTER. */
+	public static final String ATTR_HTML_FOOTER = "HTML_FOOTER";
 
-    /** The Constant ATTR_IMAGES_DIR_NAME. */
-    public static final String ATTR_IMAGES_DIR_NAME = "IMAGES_DIR_NAME";
+	/** The Constant ATTR_IMAGES_DIR. */
+	public static final String ATTR_IMAGES_DIR = "IMAGES_DIR";
 
-    /** The Constant ATTR_IMAGES_URI. */
-    public static final String ATTR_IMAGES_URI = "IMAGES_URI";
+	/** The Constant ATTR_IMAGES_DIR_NAME. */
+	public static final String ATTR_IMAGES_DIR_NAME = "IMAGES_DIR_NAME";
 
-    protected HtmlExporter(UIComponent component) {
+	/** The Constant ATTR_IMAGES_URI. */
+	public static final String ATTR_IMAGES_URI = "IMAGES_URI";
+
+	protected HtmlExporter(final UIComponent component) {
 		super(component);
 	}
 
 	public String getContentType() {
 		return CONTENT_TYPE;
 	}
-    
-    /* (non-Javadoc)
-     * @see net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces.context.FacesContext)
-     */
-    @Override
-    protected JRExporter createJRExporter(final FacesContext context) {
-        final JRHtmlExporter exporter = new JRHtmlExporter();
-        exporter.setParameter(JRHtmlExporterParameter.HTML_HEADER,
-                getComponent().getAttributes().get(ATTR_HTML_HEADER));
-        exporter.setParameter(JRHtmlExporterParameter.HTML_FOOTER,
-                getComponent().getAttributes().get(ATTR_HTML_FOOTER));
-        exporter.setParameter(JRHtmlExporterParameter.IMAGES_DIR,
-                getComponent().getAttributes().get(ATTR_IMAGES_DIR));
-        exporter.setParameter(JRHtmlExporterParameter.IMAGES_DIR_NAME,
-                getComponent().getAttributes().get(ATTR_IMAGES_DIR_NAME));
-        exporter.setParameter(JRHtmlExporterParameter.IMAGES_URI,
-                getComponent().getAttributes().get(ATTR_IMAGES_URI));
-        return exporter;
-    }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
+	 * .context.FacesContext)
+	 */
+	@Override
+	protected JRExporter createJRExporter(final FacesContext context) {
+		final JRHtmlExporter exporter = new JRHtmlExporter();
+		exporter.setParameter(JRHtmlExporterParameter.HTML_HEADER,
+				getComponent().getAttributes().get(ATTR_HTML_HEADER));
+		exporter.setParameter(JRHtmlExporterParameter.HTML_FOOTER,
+				getComponent().getAttributes().get(ATTR_HTML_FOOTER));
+		exporter.setParameter(JRHtmlExporterParameter.IMAGES_DIR,
+				getComponent().getAttributes().get(ATTR_IMAGES_DIR));
+		exporter.setParameter(JRHtmlExporterParameter.IMAGES_DIR_NAME,
+				getComponent().getAttributes().get(ATTR_IMAGES_DIR_NAME));
+		exporter.setParameter(JRHtmlExporterParameter.IMAGES_URI,
+				getComponent().getAttributes().get(ATTR_IMAGES_URI));
+		return exporter;
+	}
 
 }

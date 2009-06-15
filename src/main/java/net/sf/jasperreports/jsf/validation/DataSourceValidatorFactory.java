@@ -27,26 +27,28 @@ import net.sf.jasperreports.jsf.util.Util;
 
 public final class DataSourceValidatorFactory {
 
-	private static final Map<String, Class<DataSourceValidator>> validatorCacheMap =
-		Util.loadServiceMap(DataSourceValidator.class);
-	
-	public static DataSourceValidator getValidator(FacesContext context, UIDataSource dataSource) 
-	throws ValidationException {
+	private static final Map<String, Class<DataSourceValidator>> validatorCacheMap = Util
+			.loadServiceMap(DataSourceValidator.class);
+
+	public static DataSourceValidator getValidator(final FacesContext context,
+			final UIDataSource dataSource) throws ValidationException {
 		DataSourceValidator result = null;
-		Class<DataSourceValidator> validatorClass = validatorCacheMap.get(dataSource.getType());
-		if(validatorClass == null) {
+		Class<DataSourceValidator> validatorClass = validatorCacheMap
+				.get(dataSource.getType());
+		if (validatorClass == null) {
 			validatorClass = validatorCacheMap.get(null);
 		}
-		if(validatorClass != null) {
+		if (validatorClass != null) {
 			try {
 				result = validatorClass.newInstance();
-			} catch(Exception e) {
+			} catch (final Exception e) {
 				throw new ValidationException(e);
 			}
 		}
 		return result;
 	}
-	
-	private DataSourceValidatorFactory() { }
-	
+
+	private DataSourceValidatorFactory() {
+	}
+
 }

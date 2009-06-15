@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -33,9 +33,9 @@ import javax.faces.event.PhaseListener;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.export.Exporter;
-import net.sf.jasperreports.jsf.export.ExporterLoader;
 import net.sf.jasperreports.jsf.fill.Filler;
-import net.sf.jasperreports.jsf.fill.FillerLoader;
+import net.sf.jasperreports.jsf.spi.ExporterLoader;
+import net.sf.jasperreports.jsf.spi.FillerLoader;
 import net.sf.jasperreports.jsf.util.Util;
 
 /**
@@ -47,95 +47,96 @@ import net.sf.jasperreports.jsf.util.Util;
  * 
  * @see ReportPhaseEvent
  */
-public class ReportPhaseListener implements PhaseListener {
+public final class ReportPhaseListener implements PhaseListener {
 
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = -124696216613450702L;
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = -124696216613450702L;
 
-    /** The Constant BASE_URI. */
-    public static final String BASE_URI = "/___jasperreportsjsf";
+	/** The Constant BASE_URI. */
+	public static final String BASE_URI = "/___jasperreportsjsf";
 
-    /** The Constant PARAM_CLIENTID. */
-    public static final String PARAM_CLIENTID = "clientId";
+	/** The Constant PARAM_CLIENTID. */
+	public static final String PARAM_CLIENTID = "clientId";
 
-    /** The Constant REPORT_COMPONENT_KEY_PREFIX. */
-    public static final String REPORT_COMPONENT_KEY_PREFIX = 
-    	UIReport.COMPONENT_FAMILY + "/";
+	/** The Constant REPORT_COMPONENT_KEY_PREFIX. */
+	public static final String REPORT_COMPONENT_KEY_PREFIX = UIReport.COMPONENT_FAMILY
+			+ "/";
 
-    /** The logger. */
-    private static final Logger logger = Logger.getLogger(
-            ReportPhaseListener.class.getPackage().getName(),
-    		"net.sf.jasperreports.jsf.LogMessages");
+	/** The logger. */
+	private static final Logger logger = Logger.getLogger(
+			ReportPhaseListener.class.getPackage().getName(),
+			"net.sf.jasperreports.jsf.LogMessages");
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * javax.faces.event.PhaseListener#afterPhase(javax.faces.event.PhaseEvent)
-     */
-    public void afterPhase(final PhaseEvent event) {}
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * javax.faces.event.PhaseListener#afterPhase(javax.faces.event.PhaseEvent)
+	 */
+	public void afterPhase(final PhaseEvent event) {
+	}
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * javax.faces.event.PhaseListener#beforePhase(javax.faces.event.PhaseEvent)
-     */
-    public void beforePhase(final PhaseEvent event) throws FacesException {
-        final FacesContext context = event.getFacesContext();
-        final String uri = Util.getRequestURI(context);
-        if (uri != null && uri.indexOf(BASE_URI) > -1) {
-            final ExternalContext extContext = context.getExternalContext();
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * javax.faces.event.PhaseListener#beforePhase(javax.faces.event.PhaseEvent)
+	 */
+	public void beforePhase(final PhaseEvent event) throws FacesException {
+		final FacesContext context = event.getFacesContext();
+		final String uri = Util.getRequestURI(context);
+		if (uri != null && uri.indexOf(BASE_URI) > -1) {
+			final ExternalContext extContext = context.getExternalContext();
 
-            final String clientId = context.getExternalContext()
-            .getRequestParameterMap().get(PARAM_CLIENTID);
-            if (clientId == null) {
-                final Throwable cause = new MalformedReportURLException(
-                        "Missed parameter: " + PARAM_CLIENTID);
-                throw new JRFacesException(cause);
-            }
+			final String clientId = context.getExternalContext()
+					.getRequestParameterMap().get(PARAM_CLIENTID);
+			if (clientId == null) {
+				throw new MalformedReportURLException("Missed parameter: "
+						+ PARAM_CLIENTID);
+			}
 
-            final UIReport report = (UIReport) extContext.getSessionMap()
-            .remove(REPORT_COMPONENT_KEY_PREFIX + clientId);
-            if (report == null) {
-                throw new JRFacesException("UIReport component not found: "
-                        + clientId);
-            }
+			final UIReport report = (UIReport) extContext.getSessionMap()
+					.remove(REPORT_COMPONENT_KEY_PREFIX + clientId);
+			if (report == null) {
+				throw new JRFacesException("UIReport component not found: "
+						+ clientId);
+			}
 
-            final Filler filler = FillerLoader.getFiller(context, report);
-            logger.log(Level.FINE, "JRJSF_0006", clientId);
-            final JasperPrint filledReport = filler.fill(context,
-                    report);
-            
-            final Exporter exporter = ExporterLoader.getExporter(
-                    context, report);
-            final ByteArrayOutputStream reportData = new ByteArrayOutputStream();
-            try {
-            	if (logger.isLoggable(Level.FINE)) {
-                    logger.log(Level.FINE, "JRJSF_0010", new Object[] {
-                            clientId, exporter.getContentType()
-                    });
-                }
-                exporter.export(context, filledReport, reportData);
-                Util.writeResponse(context, exporter.getContentType(), 
-                		reportData.toByteArray());
-            } catch (final IOException e) {
-                throw new JRFacesException(e);
-            } finally {
-            	try {
-                    reportData.close();
-                } catch (final IOException e) {
-                    // ignore
-                }
-                context.responseComplete();
-            }
-        }
-    }
+			final Filler filler = FillerLoader.getFiller(context, report);
+			logger.log(Level.FINE, "JRJSF_0006", clientId);
+			final JasperPrint filledReport = filler.fill(context, report);
 
-    /*
-     * (non-Javadoc)
-     * @see javax.faces.event.PhaseListener#getPhaseId()
-     */
-    public PhaseId getPhaseId() {
-        return PhaseId.RENDER_RESPONSE;
-    }
+			final Exporter exporter = ExporterLoader.getExporter(context,
+					report);
+			final ByteArrayOutputStream reportData = new ByteArrayOutputStream();
+			try {
+				if (logger.isLoggable(Level.FINE)) {
+					logger.log(Level.FINE, "JRJSF_0010", new Object[] {
+							clientId, exporter.getContentType() });
+				}
+				exporter.export(context, filledReport, reportData);
+				Util.writeResponse(context, exporter.getContentType(),
+						reportData.toByteArray());
+			} catch (final IOException e) {
+				throw new JRFacesException(e);
+			} finally {
+				try {
+					reportData.close();
+				} catch (final IOException e) {
+					// ignore
+				}
+				context.responseComplete();
+			}
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.faces.event.PhaseListener#getPhaseId()
+	 */
+	public PhaseId getPhaseId() {
+		return PhaseId.RENDER_RESPONSE;
+	}
 
 }

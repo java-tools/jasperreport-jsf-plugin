@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -23,8 +23,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
@@ -43,318 +45,408 @@ import javax.servlet.http.HttpServletResponse;
  */
 public final class Util {
 
-    /** The Constant INVOCATION_PATH. */
-    private static final String INVOCATION_PATH = "net.sf.jasperreports.jsf.INVOCATION_PATH";
+	/** The Constant INVOCATION_PATH. */
+	private static final String INVOCATION_PATH = "net.sf.jasperreports.jsf.INVOCATION_PATH";
 
-    private static final String SERVICES_ROOT = "META-INF/services/";
-    
-    /** The Constant PORTLET_CLASS. */
-    private static final String PORTLET_CLASS = "javax.portlet.Portlet";
+	private static final String SERVICES_ROOT = "META-INF/services/";
 
-    /** The Constant PORTLET_RESOURCEURL_CLASS. */
-    private static final String PORTLET_RESOURCEURL_CLASS = "javax.portlet.ResourceURL";
+	/** The Constant PORTLET_CLASS. */
+	private static final String PORTLET_CLASS = "javax.portlet.Portlet";
 
-    /** The Constant PORTLET_AVAILABLE. */
-    public static final boolean PORTLET_AVAILABLE;
+	/** The Constant PORTLET_RESOURCEURL_CLASS. */
+	private static final String PORTLET_RESOURCEURL_CLASS = "javax.portlet.ResourceURL";
 
-    /** The Constant PORTLET_VERSION. */
-    public static final String PORTLET_VERSION;
+	/** The Constant PORTLET_AVAILABLE. */
+	public static final boolean PORTLET_AVAILABLE;
 
-    /** The logger. */
-    private static final Logger logger = Logger.getLogger(
-    		Util.class.getPackage().getName(), 
-    		"net.sf.jasperreports.jsf.LogMessages");
+	/** The Constant PORTLET_VERSION. */
+	public static final String PORTLET_VERSION;
 
-    static {
-        boolean portletAvailable = false;
-        try {
-            Class.forName(PORTLET_CLASS);
-            portletAvailable = true;
-        } catch (final ClassNotFoundException e) {
-            portletAvailable = false;
-        }
+	/** The logger. */
+	private static final Logger logger = Logger.getLogger(Util.class
+			.getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
 
-        String portletVersion = null;
-        try {
-            Class.forName(PORTLET_RESOURCEURL_CLASS);
-            portletVersion = "2.0";
-        } catch (final ClassNotFoundException e) {
-            portletVersion = portletAvailable ? "1.0" : null;
-        }
+	static {
+		boolean portletAvailable = false;
+		try {
+			Class.forName(PORTLET_CLASS);
+			portletAvailable = true;
+		} catch (final ClassNotFoundException e) {
+			portletAvailable = false;
+		}
 
-        PORTLET_AVAILABLE = portletAvailable;
-        PORTLET_VERSION = portletVersion;
-    }
+		String portletVersion = null;
+		try {
+			Class.forName(PORTLET_RESOURCEURL_CLASS);
+			portletVersion = "2.0";
+		} catch (final ClassNotFoundException e) {
+			portletVersion = portletAvailable ? "1.0" : null;
+		}
 
-    /**
-     * Gets the class loader.
-     * 
-     * @param fallback the fallback
-     * 
-     * @return the class loader
-     */
-    public static ClassLoader getClassLoader(final Object fallback) {
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        if (loader == null) {
-            if (fallback == null) { // NOPMD by antonio.alonso on 20/10/08 15:39
-                loader = Util.class.getClassLoader(); // NOPMD by antonio.alonso
-                                                      // on 20/10/08 15:40
-            } else {
-                loader = fallback.getClass().getClassLoader(); // NOPMD by
-                                                               // antonio.alonso
-                                                               // on 20/10/08
-                                                               // 15:40
-            }
-        }
-        return loader;
-    }
+		PORTLET_AVAILABLE = portletAvailable;
+		PORTLET_VERSION = portletVersion;
+	}
 
-    /**
-     * Gets the faces mapping.
-     * 
-     * @param context the context
-     * 
-     * @return the faces mapping
-     */
-    public static String getFacesMapping(final FacesContext context) {
-        if (context == null) {
-            throw new IllegalArgumentException("context");
-        }
+	/**
+	 * Gets the class loader.
+	 * 
+	 * @param fallback
+	 *            the fallback
+	 * 
+	 * @return the class loader
+	 */
+	public static ClassLoader getClassLoader(final Object fallback) {
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		if (loader == null) {
+			if (fallback == null) { // NOPMD by antonio.alonso on 20/10/08 15:39
+				loader = Util.class.getClassLoader(); // NOPMD by antonio.alonso
+				// on 20/10/08 15:40
+			} else {
+				loader = fallback.getClass().getClassLoader(); // NOPMD by
+				// antonio.alonso
+				// on 20/10/08
+				// 15:40
+			}
+		}
+		return loader;
+	}
 
-        // Check for a previously stored mapping
-        final ExternalContext extContext = context.getExternalContext();
-        String mapping = (String) extContext.getRequestMap().get(
-                INVOCATION_PATH);
+	/**
+	 * Gets the faces mapping.
+	 * 
+	 * @param context
+	 *            the context
+	 * 
+	 * @return the faces mapping
+	 */
+	public static String getFacesMapping(final FacesContext context) {
+		if (context == null) {
+			throw new IllegalArgumentException("context");
+		}
 
-        if (mapping == null) {
+		// Check for a previously stored mapping
+		final ExternalContext extContext = context.getExternalContext();
+		String mapping = (String) extContext.getRequestMap().get(
+				INVOCATION_PATH);
 
-            extContext.getRequest();
-            String servletPath = null;
-            String pathInfo = null;
+		if (mapping == null) {
 
-            // first check for javax.servlet.forward.servlet_path
-            // and javax.servlet.forward.path_info for non-null
-            // values. if either is non-null, use this
-            // information to generate determine the mapping.
+			extContext.getRequest();
+			String servletPath = null;
+			String pathInfo = null;
 
-            servletPath = extContext.getRequestServletPath();
-            pathInfo = extContext.getRequestPathInfo();
+			// first check for javax.servlet.forward.servlet_path
+			// and javax.servlet.forward.path_info for non-null
+			// values. if either is non-null, use this
+			// information to generate determine the mapping.
 
-            mapping = getMappingForRequest(servletPath, pathInfo);
-        }
+			servletPath = extContext.getRequestServletPath();
+			pathInfo = extContext.getRequestPathInfo();
 
-        // if the FacesServlet is mapped to /* throw an
-        // Exception in order to prevent an endless
-        // RequestDispatcher loop
-        if ("/*".equals(mapping)) {
-            throw new FacesException("Illegal faces mapping: " + mapping);
-        }
+			mapping = getMappingForRequest(servletPath, pathInfo);
+		}
 
-        if (mapping != null) {
-            extContext.getRequestMap().put(INVOCATION_PATH, mapping);
-        }
+		// if the FacesServlet is mapped to /* throw an
+		// Exception in order to prevent an endless
+		// RequestDispatcher loop
+		if ("/*".equals(mapping)) {
+			throw new FacesException("Illegal faces mapping: " + mapping);
+		}
 
-        return mapping;
-    }
+		if (mapping != null) {
+			extContext.getRequestMap().put(INVOCATION_PATH, mapping);
+		}
 
-    /**
-     * Checks if is portlet context.
-     * 
-     * @param facesContext the faces context
-     * 
-     * @return true, if is portlet context
-     */
-    public static boolean isPortletContext(final FacesContext facesContext) {
-        if (!PORTLET_AVAILABLE) {
-            return false;
-        }
+		return mapping;
+	}
 
-        final Object context = facesContext.getExternalContext().getContext();
-        return context instanceof PortletContext;
-    }
+	/**
+	 * Checks if is portlet context.
+	 * 
+	 * @param facesContext
+	 *            the faces context
+	 * 
+	 * @return true, if is portlet context
+	 */
+	public static boolean isPortletContext(final FacesContext facesContext) {
+		if (!PORTLET_AVAILABLE) {
+			return false;
+		}
 
-    /**
-     * Gets the request uri.
-     * 
-     * @param context the context
-     * 
-     * @return the request uri
-     */
-    public static String getRequestURI(final FacesContext context) {
-        if (isPortletContext(context)) {
-            if ("2.0".equals(PORTLET_VERSION)) {
-                final ResourceRequest request = (ResourceRequest) context
-                        .getExternalContext().getRequest();
-                return request.getResourceID();
-            } else {
-                return null;
-            }
-        } else {
-            final HttpServletRequest request = (HttpServletRequest) context
-                    .getExternalContext().getRequest();
-            return request.getRequestURI();
-        }
-    }
+		final Object context = facesContext.getExternalContext().getContext();
+		return context instanceof PortletContext;
+	}
 
-    /**
-     * <p>
-     * Returns true if the provided <code>url-mapping</code> is a prefix path
-     * mapping (starts with <code>/</code>).
-     * </p>
-     * 
-     * @param mapping a <code>url-pattern</code>
-     * 
-     * @return true if the mapping starts with <code>/</code>
-     */
-    public static boolean isPrefixMapped(final String mapping) {
-        return mapping.charAt(0) == '/';
-    }
+	/**
+	 * Gets the request uri.
+	 * 
+	 * @param context
+	 *            the context
+	 * 
+	 * @return the request uri
+	 */
+	public static String getRequestURI(final FacesContext context) {
+		if (isPortletContext(context)) {
+			if ("2.0".equals(PORTLET_VERSION)) {
+				final ResourceRequest request = (ResourceRequest) context
+						.getExternalContext().getRequest();
+				return request.getResourceID();
+			} else {
+				return null;
+			}
+		} else {
+			final HttpServletRequest request = (HttpServletRequest) context
+					.getExternalContext().getRequest();
+			return request.getRequestURI();
+		}
+	}
 
-    /**
-     * Load service map.
-     * 
-     * @param resource the resource
-     * 
-     * @return the map< string, class< t>>
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> Map<String, Class<T>> loadServiceMap(final Class<T> clazz) {
-        final ClassLoader loader = Util.getClassLoader(null);
-        
-        Enumeration<URL> resources;
-        String serviceConf = SERVICES_ROOT + clazz.getName();
-        try {
-            resources = loader.getResources(serviceConf);
-        } catch (final IOException e) {
-            throw new ExceptionInInitializerError(e);
-        }
+	/**
+	 * <p>
+	 * Returns true if the provided <code>url-mapping</code> is a prefix path
+	 * mapping (starts with <code>/</code>).
+	 * </p>
+	 * 
+	 * @param mapping
+	 *            a <code>url-pattern</code>
+	 * 
+	 * @return true if the mapping starts with <code>/</code>
+	 */
+	public static boolean isPrefixMapped(final String mapping) {
+		return mapping.charAt(0) == '/';
+	}
 
-        final Map<String, Class<T>> serviceMap = new LinkedHashMap<String, Class<T>>();
-        while (resources.hasMoreElements()) {
-            final URL url = resources.nextElement();
-            BufferedReader reader = null;
-            try {
-                String line;
-                reader = new BufferedReader(new InputStreamReader(url
-                        .openStream()));
-                while (null != (line = reader.readLine())) {
-                    Class<T> serviceClass;
-                    final String[] record = line.split(":");
-                    try {
-                        serviceClass = (Class<T>) loader.loadClass(record[1]);
-                    } catch (final ClassNotFoundException e) {
-                    	LogRecord logRecord = new LogRecord(Level.SEVERE, "JRJSF_0011");
-                    	logRecord.setParameters(new Object[]{ record[1], record[0] });
-                    	logRecord.setThrown(e);
-                        logger.log(logRecord);
-                        continue;
-                    }
+	@SuppressWarnings("unchecked")
+	public static <T> Set<T> loadServiceSet(final Class<T> clazz) {
+		final ClassLoader loader = Util.getClassLoader(null);
 
-                    serviceMap.put(
-                            ("".equals(record[0]) ? null : record[0]),
-                            serviceClass);
-                }
-            } catch (final IOException e) {
-            	LogRecord logRecord = new LogRecord(Level.SEVERE, "JRJSF_0012");
-            	logRecord.setParameters(new Object[]{ url });
-            	logRecord.setThrown(e);
-            	logger.log(logRecord);
-                continue;
-            } finally {
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    } catch (final IOException e) {
-                        // ignore
-                    }
-                }
-            }
-        }
-        return serviceMap;
-    }
+		Enumeration<URL> resources;
+		final String serviceConf = SERVICES_ROOT + clazz.getName();
+		try {
+			resources = loader.getResources(serviceConf);
+		} catch (final IOException e) {
+			throw new ExceptionInInitializerError(e);
+		}
+		
+		Set<T> serviceSet = new HashSet<T>();
+		while(resources.hasMoreElements()) {
+			final URL url = resources.nextElement();
+			BufferedReader reader = null;
+			try {
+				String line;
+				reader = new BufferedReader(new InputStreamReader(url
+						.openStream()));
+				while (null != (line = reader.readLine())) {
+					// skip line comments
+					if(line.startsWith("#")) {
+						continue;
+					}
+					
+					Class<T> serviceClass;
+					try {
+						serviceClass = (Class<T>) loader.loadClass(line);
+					} catch(ClassNotFoundException e) {
+						final LogRecord logRecord = new LogRecord(Level.SEVERE,
+								"JRJSF_0014");
+						logRecord.setParameters(new Object[] { line });
+						logRecord.setThrown(e);
+						logger.log(logRecord);
+						continue;
+					}
+					
+					T instance;
+					try {
+						instance = serviceClass.newInstance();
+					} catch(Exception e) {
+						final LogRecord logRecord = new LogRecord(Level.SEVERE,
+								"JRJSF_0015");
+						logRecord.setParameters(new Object[] { line });
+						logRecord.setThrown(e);
+						logger.log(logRecord);
+						continue;
+					}
+					
+					serviceSet.add(instance);
+				}
+			} catch(IOException e) {
+				final LogRecord logRecord = new LogRecord(Level.SEVERE,
+						"JRJSF_0012");
+				logRecord.setParameters(new Object[] { url });
+				logRecord.setThrown(e);
+				logger.log(logRecord);
+			} finally {
+				if (reader != null) {
+					try {
+						reader.close();
+					} catch (final IOException e) {
+						// ignore
+					}
+				}
+			}
+		}
+		return serviceSet;
+	}
+	
+	/**
+	 * Load service map.
+	 * 
+	 * @param resource
+	 *            the resource
+	 * 
+	 * @return the map< string, class< t>>
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> Map<String, Class<T>> loadServiceMap(final Class<T> clazz) {
+		final ClassLoader loader = Util.getClassLoader(null);
 
-    /**
-     * Write response.
-     * 
-     * @param context the context
-     * @param contentType the content type
-     * @param data the data
-     * 
-     * @throws IOException Signals that an I/O exception has occurred.
-     */
-    public static void writeResponse(final FacesContext context,
-            final String contentType, final byte[] data) throws IOException {
-        if (isPortletContext(context)) {
-            if ("2.0".equals(PORTLET_VERSION)) {
-                final ResourceResponse response = (ResourceResponse) context
-                        .getExternalContext().getResponse();
-                response.setContentType(contentType);
-                response.setContentLength(data.length);
-                response.getPortletOutputStream().write(data);
+		Enumeration<URL> resources;
+		final String serviceConf = SERVICES_ROOT + clazz.getName();
+		try {
+			resources = loader.getResources(serviceConf);
+		} catch (final IOException e) {
+			throw new ExceptionInInitializerError(e);
+		}
 
-                response.setProperty("Cache-Type", "no-cache");
-                response.setProperty("Expires", "0");
-            } else {
-                throw new IllegalStateException(
-                        "Only Resource Request/Response state is allowed");
-            }
-        } else {
-            final HttpServletResponse response = (HttpServletResponse) context
-                    .getExternalContext().getResponse();
-            response.setContentType(contentType);
-            response.setContentLength(data.length);
-            response.getOutputStream().write(data);
+		final Map<String, Class<T>> serviceMap = new LinkedHashMap<String, Class<T>>();
+		while (resources.hasMoreElements()) {
+			final URL url = resources.nextElement();
+			BufferedReader reader = null;
+			try {
+				String line;
+				reader = new BufferedReader(new InputStreamReader(url
+						.openStream()));
+				while (null != (line = reader.readLine())) {
+					// skip line comments
+					if(line.startsWith("#")) {
+						continue;
+					}
+					
+					Class<T> serviceClass;
+					final String[] record = line.split(":");
+					try {
+						serviceClass = (Class<T>) loader.loadClass(record[1]);
+					} catch (final ClassNotFoundException e) {
+						final LogRecord logRecord = new LogRecord(Level.SEVERE,
+								"JRJSF_0011");
+						logRecord.setParameters(new Object[] { record[1],
+								record[0] });
+						logRecord.setThrown(e);
+						logger.log(logRecord);
+						continue;
+					}
 
-            response.setHeader("Cache-Type", "no-cache");
-            response.setHeader("Expires", "0");
-        }
-    }
+					serviceMap.put(("".equals(record[0]) ? null : record[0]),
+							serviceClass);
+				}
+			} catch (final IOException e) {
+				final LogRecord logRecord = new LogRecord(Level.SEVERE,
+						"JRJSF_0012");
+				logRecord.setParameters(new Object[] { url });
+				logRecord.setThrown(e);
+				logger.log(logRecord);
+				continue;
+			} finally {
+				if (reader != null) {
+					try {
+						reader.close();
+					} catch (final IOException e) {
+						// ignore
+					}
+				}
+			}
+		}
+		return serviceMap;
+	}
 
-    /**
-     * <p>
-     * Return the appropriate {@link javax.faces.webapp.FacesServlet} mapping
-     * based on the servlet path of the current request.
-     * </p>
-     * 
-     * @param servletPath the servlet path of the request
-     * @param pathInfo the path info of the request
-     * 
-     * @return the appropriate mapping based on the current request
-     * 
-     * @see HttpServletRequest#getServletPath()
-     */
-    private static String getMappingForRequest(final String servletPath,
-            final String pathInfo) {
+	/**
+	 * Write response.
+	 * 
+	 * @param context
+	 *            the context
+	 * @param contentType
+	 *            the content type
+	 * @param data
+	 *            the data
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static void writeResponse(final FacesContext context,
+			final String contentType, final byte[] data) throws IOException {
+		if (isPortletContext(context)) {
+			if ("2.0".equals(PORTLET_VERSION)) {
+				final ResourceResponse response = (ResourceResponse) context
+						.getExternalContext().getResponse();
+				response.setContentType(contentType);
+				response.setContentLength(data.length);
+				response.getPortletOutputStream().write(data);
 
-        if (servletPath == null) {
-            return null;
-        }
-        // If the path returned by HttpServletRequest.getServletPath()
-        // returns a zero-length String, then the FacesServlet has
-        // been mapped to '/*'.
-        if (servletPath.length() == 0) {
-            return "/*";
-        }
+				response.setProperty("Cache-Type", "no-cache");
+				response.setProperty("Expires", "0");
+			} else {
+				throw new IllegalStateException(
+						"Only Resource Request/Response state is allowed");
+			}
+		} else {
+			final HttpServletResponse response = (HttpServletResponse) context
+					.getExternalContext().getResponse();
+			response.setContentType(contentType);
+			response.setContentLength(data.length);
+			response.getOutputStream().write(data);
 
-        // presence of path info means we were invoked
-        // using a prefix path mapping
-        if (pathInfo != null) {
-            return servletPath;
-        } else if (servletPath.indexOf('.') < 0) {
-            // if pathInfo is null and no '.' is present, assume the
-            // FacesServlet was invoked using prefix path but without
-            // any pathInfo - i.e. GET /contextroot/faces or
-            // GET /contextroot/faces/
-            return servletPath;
-        } else {
-            // Servlet invoked using extension mapping
-            return servletPath.substring(servletPath.lastIndexOf('.'));
-        }
-    }
+			response.setHeader("Cache-Type", "no-cache");
+			response.setHeader("Expires", "0");
+		}
+	}
 
-    /**
-     * Instantiates a new util.
-     */
-    private Util() {}
+	/**
+	 * <p>
+	 * Return the appropriate {@link javax.faces.webapp.FacesServlet} mapping
+	 * based on the servlet path of the current request.
+	 * </p>
+	 * 
+	 * @param servletPath
+	 *            the servlet path of the request
+	 * @param pathInfo
+	 *            the path info of the request
+	 * 
+	 * @return the appropriate mapping based on the current request
+	 * 
+	 * @see HttpServletRequest#getServletPath()
+	 */
+	private static String getMappingForRequest(final String servletPath,
+			final String pathInfo) {
+
+		if (servletPath == null) {
+			return null;
+		}
+		// If the path returned by HttpServletRequest.getServletPath()
+		// returns a zero-length String, then the FacesServlet has
+		// been mapped to '/*'.
+		if (servletPath.length() == 0) {
+			return "/*";
+		}
+
+		// presence of path info means we were invoked
+		// using a prefix path mapping
+		if (pathInfo != null) {
+			return servletPath;
+		} else if (servletPath.indexOf('.') < 0) {
+			// if pathInfo is null and no '.' is present, assume the
+			// FacesServlet was invoked using prefix path but without
+			// any pathInfo - i.e. GET /contextroot/faces or
+			// GET /contextroot/faces/
+			return servletPath;
+		} else {
+			// Servlet invoked using extension mapping
+			return servletPath.substring(servletPath.lastIndexOf('.'));
+		}
+	}
+
+	/**
+	 * Instantiates a new util.
+	 */
+	private Util() {
+	}
 
 }

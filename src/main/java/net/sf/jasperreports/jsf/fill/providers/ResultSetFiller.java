@@ -38,26 +38,30 @@ import net.sf.jasperreports.jsf.fill.FillerException;
  */
 public class ResultSetFiller extends AbstractFiller {
 
-    protected ResultSetFiller(UIDataSource dataSource) {
+	protected ResultSetFiller(final UIDataSource dataSource) {
 		super(dataSource);
 	}
 
-	/* (non-Javadoc)
-     * @see net.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.FacesContext, java.io.InputStream, java.util.Map)
-     */
-    @Override
-    protected JasperPrint doFill(final FacesContext context,
-            final InputStream reportStream, final Map<String, Object> params)
-            throws FillerException {
-        final ResultSet rs = (ResultSet) getDataSourceComponent().getValue();
-        final JRDataSource dataSource = new JRResultSetDataSource(rs);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.FacesContext
+	 * , java.io.InputStream, java.util.Map)
+	 */
+	@Override
+	protected JasperPrint doFill(final FacesContext context,
+			final InputStream reportStream, final Map<String, Object> params)
+			throws FillerException {
+		final ResultSet rs = (ResultSet) getDataSourceComponent().getValue();
+		final JRDataSource dataSource = new JRResultSetDataSource(rs);
 
-        try {
-            return JasperFillManager.fillReport(reportStream, params,
-                    dataSource);
-        } catch (final JRException e) {
-            throw new FillerException(e);
-        }
-    }
+		try {
+			return JasperFillManager.fillReport(reportStream, params,
+					dataSource);
+		} catch (final JRException e) {
+			throw new FillerException(e);
+		}
+	}
 
 }

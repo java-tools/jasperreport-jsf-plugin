@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -29,111 +29,117 @@ import net.sf.jasperreports.jsf.component.UIReport;
  */
 public abstract class AbstractReportTag extends UIComponentELTag {
 
-    /** The data source. */
-    private ValueExpression dataSource;
+	/** The data source. */
+	private ValueExpression dataSource;
 
-    /** The path. */
-    private ValueExpression path;
+	/** The path. */
+	private ValueExpression path;
 
-    /** The subreport dir. */
-    private ValueExpression subreportDir;
+	/** The subreport dir. */
+	private ValueExpression subreportDir;
 
-    /** The format. */
-    private ValueExpression format;
+	/** The format. */
+	private ValueExpression format;
 
-    /**
-     * Sets the data source.
-     * 
-     * @param dataSource the new data source
-     */
-    public void setDataSource(final ValueExpression dataSource) {
-        this.dataSource = dataSource;
-    }
+	/**
+	 * Sets the data source.
+	 * 
+	 * @param dataSource
+	 *            the new data source
+	 */
+	public void setDataSource(final ValueExpression dataSource) {
+		this.dataSource = dataSource;
+	}
 
-    /**
-     * Sets the path.
-     * 
-     * @param report the new path
-     */
-    public void setPath(final ValueExpression report) {
-        path = report;
-    }
+	/**
+	 * Sets the path.
+	 * 
+	 * @param report
+	 *            the new path
+	 */
+	public void setPath(final ValueExpression report) {
+		path = report;
+	}
 
-    /**
-     * Sets the subreport dir.
-     * 
-     * @param subreportDir the new subreport dir
-     */
-    public void setSubreportDir(final ValueExpression subreportDir) {
-        this.subreportDir = subreportDir;
-    }
+	/**
+	 * Sets the subreport dir.
+	 * 
+	 * @param subreportDir
+	 *            the new subreport dir
+	 */
+	public void setSubreportDir(final ValueExpression subreportDir) {
+		this.subreportDir = subreportDir;
+	}
 
-    /**
-     * Sets the format.
-     * 
-     * @param type the new format
-     */
-    public void setFormat(final ValueExpression type) {
-        format = type;
-    }
+	/**
+	 * Sets the format.
+	 * 
+	 * @param type
+	 *            the new format
+	 */
+	public void setFormat(final ValueExpression type) {
+		format = type;
+	}
 
-    // TagSupport
+	// TagSupport
 
-    /*
-     * (non-Javadoc)
-     * @see javax.faces.webapp.UIComponentELTag#release()
-     */
-    @Override
-    public void release() {
-        super.release();
-        dataSource = null;
-        path = null;
-        subreportDir = null;
-        format = null;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.faces.webapp.UIComponentELTag#release()
+	 */
+	@Override
+	public void release() {
+		super.release();
+		dataSource = null;
+		path = null;
+		subreportDir = null;
+		format = null;
+	}
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * javax.faces.webapp.UIComponentELTag#setProperties(javax.faces.component
-     * .UIComponent)
-     */
-    @Override
-    protected void setProperties(final UIComponent component) {
-        super.setProperties(component);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * javax.faces.webapp.UIComponentELTag#setProperties(javax.faces.component
+	 * .UIComponent)
+	 */
+	@Override
+	protected void setProperties(final UIComponent component) {
+		super.setProperties(component);
 
-        final UIReport jreport = (UIReport) component;
-        if (dataSource != null) {
-            if (dataSource.isLiteralText()) {
-                jreport.setDataSource(dataSource.getExpressionString());
-            } else {
-                component.setValueExpression("dataSource", dataSource);
-            }
-        }
+		final UIReport jreport = (UIReport) component;
+		if (dataSource != null) {
+			if (dataSource.isLiteralText()) {
+				jreport.setDataSource(dataSource.getExpressionString());
+			} else {
+				component.setValueExpression("dataSource", dataSource);
+			}
+		}
 
-        if (path != null) {
-            if (path.isLiteralText()) {
-                jreport.setPath(path.getExpressionString());
-            } else {
-                component.setValueExpression("report", path);
-            }
-        }
+		if (path != null) {
+			if (path.isLiteralText()) {
+				jreport.setPath(path.getExpressionString());
+			} else {
+				component.setValueExpression("report", path);
+			}
+		}
 
-        if (subreportDir != null) {
-            if (subreportDir.isLiteralText()) {
-                jreport.setSubreportDir(subreportDir.getExpressionString());
-            } else {
-                component.setValueExpression("subreportDir", subreportDir);
-            }
-        }
+		if (subreportDir != null) {
+			if (subreportDir.isLiteralText()) {
+				jreport.setSubreportDir(subreportDir.getExpressionString());
+			} else {
+				component.setValueExpression("subreportDir", subreportDir);
+			}
+		}
 
-        if (format != null) {
-            if (format.isLiteralText()) {
-                jreport.setFormat(format.getExpressionString());
-            } else {
-                component.setValueExpression("format", format);
-            }
-        }
-    }
+		if (format != null) {
+			if (format.isLiteralText()) {
+				jreport.setFormat(format.getExpressionString());
+			} else {
+				component.setValueExpression("format", format);
+			}
+		}
+	}
 
 }

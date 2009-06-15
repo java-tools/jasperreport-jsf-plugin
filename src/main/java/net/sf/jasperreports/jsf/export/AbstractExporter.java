@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -37,77 +37,84 @@ import net.sf.jasperreports.jsf.util.Util;
  */
 public abstract class AbstractExporter implements Exporter {
 
-    /** The Constant ATTR_END_PAGE_INDEX. */
-    public static final String ATTR_END_PAGE_INDEX = "END_PAGE_INDEX";
+	/** The Constant ATTR_END_PAGE_INDEX. */
+	public static final String ATTR_END_PAGE_INDEX = "END_PAGE_INDEX";
 
-    /** The Constant ATTR_PAGE_INDEX. */
-    public static final String ATTR_PAGE_INDEX = "PAGE_INDEX";
+	/** The Constant ATTR_PAGE_INDEX. */
+	public static final String ATTR_PAGE_INDEX = "PAGE_INDEX";
 
-    /** The Constant ATTR_START_PAGE_INDEX. */
-    public static final String ATTR_START_PAGE_INDEX = "START_PAGE_INDEX";
+	/** The Constant ATTR_START_PAGE_INDEX. */
+	public static final String ATTR_START_PAGE_INDEX = "START_PAGE_INDEX";
 
-    /** The component. */
-    private transient UIComponent component;
+	/** The component. */
+	private transient final UIComponent component;
 
-    public AbstractExporter(UIComponent component) {
-    	this.component = component;
-    }
-    
-    /**
-     * Gets the component.
-     * 
-     * @return the component
-     */
-    public final UIComponent getComponent() {
-        return component;
-    }
+	public AbstractExporter(final UIComponent component) {
+		this.component = component;
+	}
 
-    /**
-     * Export.
-     * 
-     * @param context the context
-     * @param print the print
-     * @param stream the stream
-     * 
-     * @throws IOException Signals that an I/O exception has occurred.
-     * @throws JRException the JR exception
-     * @throws ExporterException the exporter exception
-     */
-    public final void export(final FacesContext context,
-            final JasperPrint print, final OutputStream stream)
-            throws IOException, ExporterException {
-        final JRExporter exporter = createJRExporter(context);
-        exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
-        exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, stream);
-        exporter.setParameter(JRExporterParameter.CLASS_LOADER, Util
-                .getClassLoader(getComponent()));
+	/**
+	 * Gets the component.
+	 * 
+	 * @return the component
+	 */
+	public final UIComponent getComponent() {
+		return component;
+	}
 
-        exporter.setParameter(JRExporterParameter.END_PAGE_INDEX,
-                getComponent().getAttributes().get(ATTR_END_PAGE_INDEX));
-        exporter.setParameter(JRExporterParameter.PAGE_INDEX, getComponent()
-                .getAttributes().get(ATTR_PAGE_INDEX));
-        exporter.setParameter(JRExporterParameter.START_PAGE_INDEX,
-                getComponent().getAttributes().get(ATTR_START_PAGE_INDEX));
+	/**
+	 * Export.
+	 * 
+	 * @param context
+	 *            the context
+	 * @param print
+	 *            the print
+	 * @param stream
+	 *            the stream
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws JRException
+	 *             the JR exception
+	 * @throws ExporterException
+	 *             the exporter exception
+	 */
+	public final void export(final FacesContext context,
+			final JasperPrint print, final OutputStream stream)
+			throws IOException, ExporterException {
+		final JRExporter exporter = createJRExporter(context);
+		exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
+		exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, stream);
+		exporter.setParameter(JRExporterParameter.CLASS_LOADER, Util
+				.getClassLoader(getComponent()));
 
-        final JRHyperlinkProducerFactory hpf = new FacesHyperlinkProducerFactory(
-                context, getComponent());
-        exporter.setParameter(JRExporterParameter.HYPERLINK_PRODUCER_FACTORY,
-                hpf);
+		exporter.setParameter(JRExporterParameter.END_PAGE_INDEX,
+				getComponent().getAttributes().get(ATTR_END_PAGE_INDEX));
+		exporter.setParameter(JRExporterParameter.PAGE_INDEX, getComponent()
+				.getAttributes().get(ATTR_PAGE_INDEX));
+		exporter.setParameter(JRExporterParameter.START_PAGE_INDEX,
+				getComponent().getAttributes().get(ATTR_START_PAGE_INDEX));
 
-        try {
-            exporter.exportReport();
-        } catch (final JRException e) {
-            throw new ExporterException(e);
-        }
-    }
+		final JRHyperlinkProducerFactory hpf = new FacesHyperlinkProducerFactory(
+				context, getComponent());
+		exporter.setParameter(JRExporterParameter.HYPERLINK_PRODUCER_FACTORY,
+				hpf);
 
-    /**
-     * Creates the jr exporter.
-     * 
-     * @param context the context
-     * 
-     * @return the jR exporter
-     */
-    protected abstract JRExporter createJRExporter(FacesContext context);
+		try {
+			exporter.exportReport();
+		} catch (final JRException e) {
+			throw new ExporterException(e);
+		}
+	}
+
+	/**
+	 * Creates the jr exporter.
+	 * 
+	 * @param context
+	 *            the context
+	 * 
+	 * @return the jR exporter
+	 */
+	protected abstract JRExporter createJRExporter(FacesContext context);
 
 }

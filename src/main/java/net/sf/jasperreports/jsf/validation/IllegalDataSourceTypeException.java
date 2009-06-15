@@ -23,16 +23,17 @@ package net.sf.jasperreports.jsf.validation;
  */
 public class IllegalDataSourceTypeException extends ValidationException {
 
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = 1358551817454303121L;
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 1358551817454303121L;
 
-    /**
-     * Instantiates a new illegal data source type exception.
-     * 
-     * @param msg the msg
-     */
-    public IllegalDataSourceTypeException(final String msg) {
-        super(msg);
-    }
+	/**
+	 * Instantiates a new illegal data source type exception.
+	 * 
+	 * @param msg
+	 *            the msg
+	 */
+	public IllegalDataSourceTypeException(final String msg) {
+		super(msg);
+	}
 
 }
