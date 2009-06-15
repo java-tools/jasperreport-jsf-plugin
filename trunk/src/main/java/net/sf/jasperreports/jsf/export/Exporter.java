@@ -35,19 +35,24 @@ public interface Exporter {
 	 * 
 	 * @return the response MIME type
 	 */
-    public String getContentType();
-    
-    /**
-     * Export.
-     *
-     * @param context the context
-     * @param print the print
-     * @param stream the stream
-     *
-     * @throws IOException Signals that an I/O exception has occurred.
-     * @throws ExporterException the exporter exception
-     */
-    public void export(final FacesContext context, final JasperPrint print,
-            final OutputStream stream) throws IOException, ExporterException;
+	public String getContentType();
+
+	/**
+	 * Export.
+	 * 
+	 * @param context
+	 *            the context
+	 * @param print
+	 *            the print
+	 * @param stream
+	 *            the stream
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws ExporterException
+	 *             the exporter exception
+	 */
+	public void export(final FacesContext context, final JasperPrint print,
+			final OutputStream stream) throws IOException, ExporterException;
 
 }

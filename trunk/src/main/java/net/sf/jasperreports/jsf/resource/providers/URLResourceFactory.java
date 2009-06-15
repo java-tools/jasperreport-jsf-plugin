@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -16,31 +16,26 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.resource;
+package net.sf.jasperreports.jsf.resource.providers;
 
 import java.io.IOException;
+import java.net.URL;
 
 import javax.faces.context.FacesContext;
 
-/**
- * Resource instantiator.
- * <p>
- * Helper interface used internally to create <tt>Resource</tt> instances
- * 
- * @author antonio.alonso
- *
- */
-public interface ResourceFactory {
+import net.sf.jasperreports.jsf.resource.Resource;
+import net.sf.jasperreports.jsf.spi.ResourceFactory;
 
-	/**
-	 * Creates a new <tt>Resource</tt> instance
-	 * 
-	 * @param context the current <tt>FacesContext</tt>
-	 * @param name the resource name
-	 * @return a new <tt>Resource</tt> instance
-	 * @throws IOException if the resource can't be loaded.
-	 */
-	public Resource createResource(FacesContext context, String name)
-	throws IOException;
-	
+public class URLResourceFactory implements ResourceFactory {
+
+	public boolean acceptsResource(String name) {
+		return (name.indexOf("://") >= 0);
+	}
+
+	public Resource createResource(final FacesContext context, final String name)
+			throws IOException {
+		final URL location = new URL(name);
+		return new URLResource(location.getFile(), location);
+	}
+
 }

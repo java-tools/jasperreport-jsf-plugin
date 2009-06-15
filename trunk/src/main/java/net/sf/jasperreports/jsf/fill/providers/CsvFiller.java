@@ -39,32 +39,36 @@ import net.sf.jasperreports.jsf.fill.FillerException;
  */
 public class CsvFiller extends AbstractFiller {
 
-    protected CsvFiller(UIDataSource dataSource) {
+	protected CsvFiller(final UIDataSource dataSource) {
 		super(dataSource);
 	}
 
-	/* (non-Javadoc)
-     * @see net.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.FacesContext, java.io.InputStream, java.util.Map)
-     */
-    @Override
-    protected JasperPrint doFill(final FacesContext context,
-            final InputStream reportStream, final Map<String, Object> params)
-            throws FillerException {
-        JRDataSource dataSource;
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.FacesContext
+	 * , java.io.InputStream, java.util.Map)
+	 */
+	@Override
+	protected JasperPrint doFill(final FacesContext context,
+			final InputStream reportStream, final Map<String, Object> params)
+			throws FillerException {
+		JRDataSource dataSource;
 
-        final File file = (File) getDataSourceComponent().getValue();
-        try {
-            dataSource = new JRCsvDataSource(file);
-        } catch (final FileNotFoundException e) {
-            throw new FillerException(e);
-        }
+		final File file = (File) getDataSourceComponent().getValue();
+		try {
+			dataSource = new JRCsvDataSource(file);
+		} catch (final FileNotFoundException e) {
+			throw new FillerException(e);
+		}
 
-        try {
-            return JasperFillManager.fillReport(reportStream, params,
-                    dataSource);
-        } catch (final JRException e) {
-            throw new FillerException(e);
-        }
-    }
+		try {
+			return JasperFillManager.fillReport(reportStream, params,
+					dataSource);
+		} catch (final JRException e) {
+			throw new FillerException(e);
+		}
+	}
 
 }

@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -16,7 +16,7 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.resource.provider;
+package net.sf.jasperreports.jsf.resource.providers;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,12 +25,11 @@ import java.net.URL;
 import net.sf.jasperreports.jsf.resource.AbstractResource;
 import net.sf.jasperreports.jsf.resource.Resource;
 
-public class ClasspathResource extends AbstractResource 
-implements Resource {
-	
-	private ClassLoader classLoader;
-	
-	public ClasspathResource(String name, ClassLoader classLoader) {
+public class ClasspathResource extends AbstractResource implements Resource {
+
+	private final ClassLoader classLoader;
+
+	public ClasspathResource(final String name, final ClassLoader classLoader) {
 		super(name);
 		this.classLoader = classLoader;
 	}
@@ -40,16 +39,16 @@ implements Resource {
 	}
 
 	public URL getLocation() throws IOException {
-		URL location = classLoader.getResource(getName());
-		if(location == null) {
+		final URL location = classLoader.getResource(getName());
+		if (location == null) {
 			throwLocationNotFoundException();
 		}
 		return location;
 	}
-	
+
 	public String getPath() {
-		URL location = classLoader.getResource(getName());
-		if(location == null) {
+		final URL location = classLoader.getResource(getName());
+		if (location == null) {
 			throwLocationNotFoundException();
 		}
 		return location.getPath();
@@ -57,8 +56,8 @@ implements Resource {
 
 	private void throwLocationNotFoundException() {
 		throw new IllegalStateException(
-				"Resource location for classpath resource '" + getName() 
-				+ "' couldn't be identified.");
+				"Resource location for classpath resource '" + getName()
+						+ "' couldn't be identified.");
 	}
-	
+
 }

@@ -23,20 +23,21 @@ package net.sf.jasperreports.jsf.validation;
  */
 public class IllegalOutputFormatException extends ValidationException {
 
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = 1823011431377899382L;
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 1823011431377899382L;
 
-    /**
-     * Instantiates a new illegal output format exception.
-     * 
-     * @param msg the msg
-     */
-    public IllegalOutputFormatException(final String msg) {
-        super(msg);
-    }
-    
-    public IllegalOutputFormatException(final String msg, Throwable t) {
-    	super(msg, t);
-    }
+	/**
+	 * Instantiates a new illegal output format exception.
+	 * 
+	 * @param msg
+	 *            the msg
+	 */
+	public IllegalOutputFormatException(final String msg) {
+		super(msg);
+	}
+
+	public IllegalOutputFormatException(final String msg, final Throwable t) {
+		super(msg, t);
+	}
 
 }

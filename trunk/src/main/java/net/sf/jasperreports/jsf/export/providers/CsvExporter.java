@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -32,14 +32,14 @@ import net.sf.jasperreports.jsf.export.AbstractExporter;
 public class CsvExporter extends AbstractExporter {
 
 	public static final String CONTENT_TYPE = "text/plain";
-	
-    /** The Constant ATTR_FIELD_DELIMITER. */
-    public static final String ATTR_FIELD_DELIMITER = "FIELD_DELIMITER";
 
-    /** The Constant ATTR_RECORD_DELIMITER. */
-    public static final String ATTR_RECORD_DELIMITER = "RECORD_DELIMITER";
+	/** The Constant ATTR_FIELD_DELIMITER. */
+	public static final String ATTR_FIELD_DELIMITER = "FIELD_DELIMITER";
 
-    protected CsvExporter(UIComponent component) {
+	/** The Constant ATTR_RECORD_DELIMITER. */
+	public static final String ATTR_RECORD_DELIMITER = "RECORD_DELIMITER";
+
+	protected CsvExporter(final UIComponent component) {
 		super(component);
 	}
 
@@ -47,17 +47,21 @@ public class CsvExporter extends AbstractExporter {
 		return CONTENT_TYPE;
 	}
 
-	/* (non-Javadoc)
-     * @see net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces.context.FacesContext)
-     */
-    @Override
-    protected JRExporter createJRExporter(final FacesContext context) {
-        final JRCsvExporter exporter = new JRCsvExporter();
-        exporter.setParameter(JRCsvExporterParameter.FIELD_DELIMITER,
-                getComponent().getAttributes().get(ATTR_FIELD_DELIMITER));
-        exporter.setParameter(JRCsvExporterParameter.RECORD_DELIMITER,
-                getComponent().getAttributes().get(ATTR_RECORD_DELIMITER));
-        return exporter;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
+	 * .context.FacesContext)
+	 */
+	@Override
+	protected JRExporter createJRExporter(final FacesContext context) {
+		final JRCsvExporter exporter = new JRCsvExporter();
+		exporter.setParameter(JRCsvExporterParameter.FIELD_DELIMITER,
+				getComponent().getAttributes().get(ATTR_FIELD_DELIMITER));
+		exporter.setParameter(JRCsvExporterParameter.RECORD_DELIMITER,
+				getComponent().getAttributes().get(ATTR_RECORD_DELIMITER));
+		return exporter;
+	}
 
 }

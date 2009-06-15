@@ -33,59 +33,59 @@ import net.sf.jasperreports.jsf.fill.FillerException;
  */
 public class JdbcFiller extends AbstractSQLFiller {
 
-    protected JdbcFiller(UIDataSource dataSource) {
+	protected JdbcFiller(final UIDataSource dataSource) {
 		super(dataSource);
 	}
 
 	/** The Constant logger. */
-    private static final Logger logger = Logger.getLogger(JdbcFiller.class
-            .getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
+	private static final Logger logger = Logger.getLogger(JdbcFiller.class
+			.getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
 
-    /* (non-Javadoc)
-     * @see net.sf.jasperreports.jsf.fill.AbstractQueryFiller#getConnection()
-     */
-    @Override
-    protected Connection getConnection()
-            throws SQLException {
-        final String driverClass = getDataSourceComponent().getDriverClass();
-        if ((driverClass == null) || (driverClass.length() == 0)) {
-            throw new FillerException(
-                    "DEFAULT dataSource type requires a driverClass value!");
-        }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.sf.jasperreports.jsf.fill.AbstractQueryFiller#getConnection()
+	 */
+	@Override
+	protected Connection getConnection() throws SQLException {
+		final String driverClass = getDataSourceComponent().getDriverClass();
+		if ((driverClass == null) || (driverClass.length() == 0)) {
+			throw new FillerException(
+					"DEFAULT dataSource type requires a driverClass value!");
+		}
 
-        try {
-            Class.forName(driverClass);
-        } catch (final ClassNotFoundException e) {
-            throw new FillerException("Driver class not found: " + driverClass,
-                    e);
-        }
-        logger.log(Level.FINE, "JRJSF_0004", driverClass);
+		try {
+			Class.forName(driverClass);
+		} catch (final ClassNotFoundException e) {
+			throw new FillerException("Driver class not found: " + driverClass,
+					e);
+		}
+		logger.log(Level.FINE, "JRJSF_0004", driverClass);
 
-        final String connectionURL = (String) getDataSourceComponent()
-                .getValue();
-        final String username = (String) getDataSourceComponent()
-                .getAttributes().get("username");
-        final String password = (String) getDataSourceComponent()
-                .getAttributes().get("password");
+		final String connectionURL = (String) getDataSourceComponent()
+				.getValue();
+		final String username = (String) getDataSourceComponent()
+				.getAttributes().get("username");
+		final String password = (String) getDataSourceComponent()
+				.getAttributes().get("password");
 
-        Connection conn = null;
-        try {
-            if (username == null) {
-                logger.log(Level.FINE, "JRJSF_0007", connectionURL);
-                conn = DriverManager.getConnection(connectionURL);
-            } else {
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.log(Level.FINE, "JRJSF_0008", new Object[] {
-                            connectionURL, username
-                    });
-                }
-                conn = DriverManager.getConnection(connectionURL, username,
-                        password);
-            }
-        } catch (final SQLException e) {
-            throw new FillerException(e);
-        }
-        return conn;
-    }
+		Connection conn = null;
+		try {
+			if (username == null) {
+				logger.log(Level.FINE, "JRJSF_0007", connectionURL);
+				conn = DriverManager.getConnection(connectionURL);
+			} else {
+				if (logger.isLoggable(Level.FINE)) {
+					logger.log(Level.FINE, "JRJSF_0008", new Object[] {
+							connectionURL, username });
+				}
+				conn = DriverManager.getConnection(connectionURL, username,
+						password);
+			}
+		} catch (final SQLException e) {
+			throw new FillerException(e);
+		}
+		return conn;
+	}
 
 }

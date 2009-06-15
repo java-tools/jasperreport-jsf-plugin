@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -18,23 +18,24 @@
  */
 package net.sf.jasperreports.jsf;
 
-import net.sf.jasperreports.engine.JRException;
-
 /**
  * The Class MalformedReportURLException.
  */
-public class MalformedReportURLException extends JRException {
+public class MalformedReportURLException extends JRFacesException {
 
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = 3940886012138032361L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3940886012138032361L;
 
-    /**
-     * Instantiates a new malformed report url exception.
-     * 
-     * @param msg the msg
-     */
-    public MalformedReportURLException(final String msg) {
-        super(msg);
-    }
+	/**
+	 * Instantiates a new malformed report url exception.
+	 * 
+	 * @param msg
+	 *            the msg
+	 */
+	public MalformedReportURLException(final String msg) {
+		super(msg);
+	}
 
 }

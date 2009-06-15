@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -32,32 +32,36 @@ import net.sf.jasperreports.jsf.export.AbstractExporter;
 public class PdfExporter extends AbstractExporter {
 
 	public static final String CONTENT_TYPE = "application/pdf";
-	
-    /** The Constant ATTR_IS_COMPRESSED. */
-    public static final String ATTR_IS_COMPRESSED = "IS_COMPRESSED";
 
-    /** The Constant ATTR_IS_ENCRYPTED. */
-    public static final String ATTR_IS_ENCRYPTED = "IS_ENCRYPTED";
+	/** The Constant ATTR_IS_COMPRESSED. */
+	public static final String ATTR_IS_COMPRESSED = "IS_COMPRESSED";
 
-    protected PdfExporter(UIComponent component) {
+	/** The Constant ATTR_IS_ENCRYPTED. */
+	public static final String ATTR_IS_ENCRYPTED = "IS_ENCRYPTED";
+
+	protected PdfExporter(final UIComponent component) {
 		super(component);
 	}
 
 	public String getContentType() {
 		return CONTENT_TYPE;
 	}
-    
-    /* (non-Javadoc)
-     * @see net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces.context.FacesContext)
-     */
-    @Override
-    protected JRExporter createJRExporter(final FacesContext context) {
-        final JRPdfExporter exporter = new JRPdfExporter();
-        exporter.setParameter(JRPdfExporterParameter.IS_COMPRESSED,
-                getComponent().getAttributes().get(ATTR_IS_COMPRESSED));
-        exporter.setParameter(JRPdfExporterParameter.IS_ENCRYPTED,
-                getComponent().getAttributes().get(ATTR_IS_ENCRYPTED));
-        return exporter;
-    }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
+	 * .context.FacesContext)
+	 */
+	@Override
+	protected JRExporter createJRExporter(final FacesContext context) {
+		final JRPdfExporter exporter = new JRPdfExporter();
+		exporter.setParameter(JRPdfExporterParameter.IS_COMPRESSED,
+				getComponent().getAttributes().get(ATTR_IS_COMPRESSED));
+		exporter.setParameter(JRPdfExporterParameter.IS_ENCRYPTED,
+				getComponent().getAttributes().get(ATTR_IS_ENCRYPTED));
+		return exporter;
+	}
 
 }

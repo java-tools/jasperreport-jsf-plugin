@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -29,68 +29,73 @@ import net.sf.jasperreports.jsf.renderkit.LinkRenderer;
  */
 public class ReportLinkTag extends AbstractReportTag {
 
-    /** The target. */
-    private ValueExpression target;
+	/** The target. */
+	private ValueExpression target;
 
-    /**
-     * Sets the target.
-     * 
-     * @param target the new target
-     */
-    public void setTarget(final ValueExpression target) {
-        this.target = target;
-    }
+	/**
+	 * Sets the target.
+	 * 
+	 * @param target
+	 *            the new target
+	 */
+	public void setTarget(final ValueExpression target) {
+		this.target = target;
+	}
 
-    // TagSupport
+	// TagSupport
 
-    /*
-     * (non-Javadoc)
-     * @see net.sf.jasperreports.jsf.taglib.AbstractReportTag#release()
-     */
-    @Override
-    public void release() {
-        super.release();
-        target = null;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.sf.jasperreports.jsf.taglib.AbstractReportTag#release()
+	 */
+	@Override
+	public void release() {
+		super.release();
+		target = null;
+	}
 
-    // UIComponentELTag
+	// UIComponentELTag
 
-    /*
-     * (non-Javadoc)
-     * @see javax.faces.webapp.UIComponentTagBase#getComponentType()
-     */
-    @Override
-    public String getComponentType() {
-        return HtmlReportLink.COMPONENT_TYPE;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.faces.webapp.UIComponentTagBase#getComponentType()
+	 */
+	@Override
+	public String getComponentType() {
+		return HtmlReportLink.COMPONENT_TYPE;
+	}
 
-    /*
-     * (non-Javadoc)
-     * @see javax.faces.webapp.UIComponentTagBase#getRendererType()
-     */
-    @Override
-    public String getRendererType() {
-        return LinkRenderer.RENDERER_TYPE;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.faces.webapp.UIComponentTagBase#getRendererType()
+	 */
+	@Override
+	public String getRendererType() {
+		return LinkRenderer.RENDERER_TYPE;
+	}
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * net.sf.jasperreports.jsf.taglib.AbstractReportTag#setProperties(javax
-     * .faces.component.UIComponent)
-     */
-    @Override
-    protected void setProperties(final UIComponent component) {
-        super.setProperties(component);
-        final HtmlReportLink report = (HtmlReportLink) component;
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.sf.jasperreports.jsf.taglib.AbstractReportTag#setProperties(javax
+	 * .faces.component.UIComponent)
+	 */
+	@Override
+	protected void setProperties(final UIComponent component) {
+		super.setProperties(component);
+		final HtmlReportLink report = (HtmlReportLink) component;
 
-        if (target != null) {
-            if (target.isLiteralText()) {
-                report.setTarget(target.getExpressionString());
-            } else {
-                report.setValueExpression("target", target);
-            }
-        }
-    }
+		if (target != null) {
+			if (target.isLiteralText()) {
+				report.setTarget(target.getExpressionString());
+			} else {
+				report.setValueExpression("target", target);
+			}
+		}
+	}
 
 }

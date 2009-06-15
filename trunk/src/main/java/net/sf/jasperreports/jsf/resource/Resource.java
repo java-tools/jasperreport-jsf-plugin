@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -23,11 +23,11 @@ import java.io.InputStream;
 import java.net.URL;
 
 /**
- * Resource abstraction which can be used to load reports from
- * any kind of source
+ * Resource abstraction which can be used to load reports from any kind of
+ * source
  * 
  * @author antonio.alonso
- *
+ * 
  */
 public interface Resource {
 
@@ -35,7 +35,7 @@ public interface Resource {
 	 * Name of the resource
 	 */
 	public String getName();
-	
+
 	/**
 	 * Obtains the URL location of this resource
 	 * 
@@ -43,7 +43,7 @@ public interface Resource {
 	 * @throws IOException
 	 */
 	public URL getLocation() throws IOException;
-	
+
 	/**
 	 * Obtains an InputStream which can be used to read the resource data.
 	 * <p>
@@ -53,12 +53,12 @@ public interface Resource {
 	 * @throws IOException
 	 */
 	public InputStream getInputStream() throws IOException;
-	
+
 	/**
 	 * The path part of the resource
 	 * 
 	 * @return
 	 */
 	public String getPath();
-	
+
 }

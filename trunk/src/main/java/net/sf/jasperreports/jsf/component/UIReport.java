@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -25,63 +25,67 @@ import javax.faces.component.StateHolder;
  */
 public interface UIReport extends StateHolder {
 
-    /** The Constant COMPONENT_FAMILY. */
-    public static final String COMPONENT_FAMILY = "net.sf.jasperreports.Report";
+	/** The Constant COMPONENT_FAMILY. */
+	public static final String COMPONENT_FAMILY = "net.sf.jasperreports.Report";
 
-    /**
-     * Gets the data source.
-     * 
-     * @return the data source
-     */
-    public String getDataSource();
+	/**
+	 * Gets the data source.
+	 * 
+	 * @return the data source
+	 */
+	public String getDataSource();
 
-    /**
-     * Sets the data source.
-     * 
-     * @param dataSource the new data source
-     */
-    public void setDataSource(String dataSource);
+	/**
+	 * Sets the data source.
+	 * 
+	 * @param dataSource
+	 *            the new data source
+	 */
+	public void setDataSource(String dataSource);
 
-    /**
-     * Gets the path.
-     * 
-     * @return the path
-     */
-    public String getPath();
+	/**
+	 * Gets the path.
+	 * 
+	 * @return the path
+	 */
+	public String getPath();
 
-    /**
-     * Sets the path.
-     * 
-     * @param path the new path
-     */
-    public void setPath(String path);
+	/**
+	 * Sets the path.
+	 * 
+	 * @param path
+	 *            the new path
+	 */
+	public void setPath(String path);
 
-    /**
-     * Gets the subreport dir.
-     * 
-     * @return the subreport dir
-     */
-    public String getSubreportDir();
+	/**
+	 * Gets the subreport dir.
+	 * 
+	 * @return the subreport dir
+	 */
+	public String getSubreportDir();
 
-    /**
-     * Sets the subreport dir.
-     * 
-     * @param subreportDir the new subreport dir
-     */
-    public void setSubreportDir(String subreportDir);
+	/**
+	 * Sets the subreport dir.
+	 * 
+	 * @param subreportDir
+	 *            the new subreport dir
+	 */
+	public void setSubreportDir(String subreportDir);
 
-    /**
-     * Gets the format.
-     * 
-     * @return the format
-     */
-    public String getFormat();
+	/**
+	 * Gets the format.
+	 * 
+	 * @return the format
+	 */
+	public String getFormat();
 
-    /**
-     * Sets the format.
-     * 
-     * @param format the new format
-     */
-    public void setFormat(String format);
+	/**
+	 * Sets the format.
+	 * 
+	 * @param format
+	 *            the new format
+	 */
+	public void setFormat(String format);
 
 }

@@ -28,17 +28,20 @@ import net.sf.jasperreports.jsf.component.UIReport;
  */
 public interface Filler {
 
-    /**
-     * Fill.
-     * 
-     * @param context the context
-     * @param report the report
-     * 
-     * @return the jasper print
-     * 
-     * @throws FillerException the filler exception
-     */
-    public JasperPrint fill(final FacesContext context, final UIReport report)
-            throws FillerException;
+	/**
+	 * Fill.
+	 * 
+	 * @param context
+	 *            the context
+	 * @param report
+	 *            the report
+	 * 
+	 * @return the jasper print
+	 * 
+	 * @throws FillerException
+	 *             the filler exception
+	 */
+	public JasperPrint fill(final FacesContext context, final UIReport report)
+			throws FillerException;
 
 }

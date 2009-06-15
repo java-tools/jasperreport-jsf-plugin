@@ -32,8 +32,9 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.component.UIDataSource;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.resource.ReportNotFoundException;
 import net.sf.jasperreports.jsf.resource.Resource;
-import net.sf.jasperreports.jsf.resource.ResourceLoader;
+import net.sf.jasperreports.jsf.spi.ResourceLoader;
 import net.sf.jasperreports.jsf.util.Util;
 
 /**
@@ -41,120 +42,135 @@ import net.sf.jasperreports.jsf.util.Util;
  */
 public abstract class AbstractFiller implements Filler {
 
-    // Report Parameters
+	// Report Parameters
 
-    /** The Constant PARAM_REPORT_CLASSLOADER. */
-    public static final String PARAM_REPORT_CLASSLOADER = "REPORT_CLASS_LOADER";
+	/** The Constant PARAM_REPORT_CLASSLOADER. */
+	public static final String PARAM_REPORT_CLASSLOADER = "REPORT_CLASS_LOADER";
 
-    /** The Constant PARAM_REPORT_LOCALE. */
-    public static final String PARAM_REPORT_LOCALE = "REPORT_LOCALE";
+	/** The Constant PARAM_REPORT_LOCALE. */
+	public static final String PARAM_REPORT_LOCALE = "REPORT_LOCALE";
 
-    /** The logger. */
-    private static final Logger logger = Logger.getLogger(AbstractFiller.class
-            .getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
+	/** The logger. */
+	private static final Logger logger = Logger.getLogger(AbstractFiller.class
+			.getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
 
-    /** The data source component. */
-    private UIDataSource dataSourceComponent;
+	/** The data source component. */
+	private final UIDataSource dataSourceComponent;
 
-    public AbstractFiller(UIDataSource dataSource) {
+	public AbstractFiller(final UIDataSource dataSource) {
 		super();
 		this.dataSourceComponent = dataSource;
 	}
 
 	/**
-     * Gets the data source component.
-     * 
-     * @return the data source component
-     */
-    public final UIDataSource getDataSourceComponent() {
-        return dataSourceComponent;
-    }
+	 * Gets the data source component.
+	 * 
+	 * @return the data source component
+	 */
+	public final UIDataSource getDataSourceComponent() {
+		return dataSourceComponent;
+	}
 
-    /**
-     * Fill.
-     * 
-     * @param context the context
-     * @param report the report
-     * 
-     * @return the jasper print
-     * 
-     * @throws FillerException the filler exception
-     */
-    public final JasperPrint fill(final FacesContext context,
-            final UIReport report) throws FillerException {
-        final String reportName = report.getPath();
-        
-        InputStream reportStream = null;
-        try {
-        	final Resource resource = ResourceLoader.getResource(
-        			context, reportName);
-        	reportStream = resource.getInputStream();
-        } catch(IOException e) {
-        	throw new FillerException(reportName, e);
-        }
-        
-        if (reportStream == null) {
-            throw new ReportNotFoundException(reportName);
-        }
-        logger.log(Level.FINE, "JRJSF_0003", reportName);
+	/**
+	 * Fill.
+	 * 
+	 * @param context
+	 *            the context
+	 * @param report
+	 *            the report
+	 * 
+	 * @return the jasper print
+	 * 
+	 * @throws FillerException
+	 *             the filler exception
+	 */
+	public final JasperPrint fill(final FacesContext context,
+			final UIReport report) throws FillerException {
+		final String reportName = report.getPath();
 
-        final Map<String, Object> params = buildParamMap(context, report);
-        return doFill(context, reportStream, params);
-    }
-    
-    /**
-     * Do fill.
-     * 
-     * @param context the context
-     * @param reportStream the report stream
-     * @param params the params
-     * 
-     * @return the jasper print
-     * 
-     * @throws FillerException the filler exception
-     */
-    protected abstract JasperPrint doFill(FacesContext context,
-            InputStream reportStream, Map<String, Object> params)
-            throws FillerException;
+		InputStream reportStream = null;
+		try {
+			final Resource resource = ResourceLoader.getResource(context,
+					reportName);
+			reportStream = resource.getInputStream();
+		} catch (final IOException e) {
+			throw new FillerException(reportName, e);
+		}
 
-    /**
-     * Builds the param map.
-     * 
-     * @param context the context
-     * @param report the report
-     * 
-     * @return the map< string, object>
-     */
-    protected final Map<String, Object> buildParamMap(final FacesContext context,
-            final UIReport report) 
-    throws FillerException {
-        // Build param map using component's child parameters
-        final Map<String, Object> parameters = new HashMap<String, Object>();
-        for (final UIComponent component : ((UIComponent) report).getChildren()) {
-            if (!(component instanceof UIParameter)) {
-                continue;
-            }
-            final UIParameter param = (UIParameter) component;
-            parameters.put(param.getName(), param.getValue());
-        }
+		if (reportStream == null) {
+			throw new ReportNotFoundException(reportName);
+		}
+		logger.log(Level.FINE, "JRJSF_0003", reportName);
 
-        // Specific report parameters
-        parameters.put(PARAM_REPORT_CLASSLOADER, Util.getClassLoader(report));
-        parameters.put(PARAM_REPORT_LOCALE, context.getViewRoot().getLocale());
+		try {
+			final Map<String, Object> params = buildParamMap(context, report);
+			return doFill(context, reportStream, params);
+		} finally {
+			try {
+				reportStream.close();
+			} catch(IOException e) { }
+		}
+	}
 
-        // Subreport directory
-        final String subreportDir = report.getSubreportDir();
-        if (subreportDir != null) {
-            Resource resource = null;
-            try {
-            	resource = ResourceLoader.getResource(context, subreportDir);
-            } catch(IOException e) {
-            	throw new FillerException(e);
-            }
-            parameters.put("SUBREPORT_DIR", resource.getPath());
-        }
+	/**
+	 * Do fill.
+	 * 
+	 * @param context
+	 *            the context
+	 * @param reportStream
+	 *            the report stream
+	 * @param params
+	 *            the params
+	 * 
+	 * @return the jasper print
+	 * 
+	 * @throws FillerException
+	 *             the filler exception
+	 */
+	protected abstract JasperPrint doFill(FacesContext context,
+			InputStream reportStream, Map<String, Object> params)
+			throws FillerException;
 
-        return parameters;
-    }
+	/**
+	 * Builds the param map.
+	 * 
+	 * @param context
+	 *            the context
+	 * @param report
+	 *            the report
+	 * 
+	 * @return the map< string, object>
+	 */
+	protected final Map<String, Object> buildParamMap(
+			final FacesContext context, final UIReport report)
+			throws FillerException {
+		// Build param map using component's child parameters
+		final Map<String, Object> parameters = new HashMap<String, Object>();
+		for (final UIComponent component : ((UIComponent) report).getChildren()) {
+			if (!(component instanceof UIParameter)) {
+				continue;
+			}
+			final UIParameter param = (UIParameter) component;
+			parameters.put(param.getName(), param.getValue());
+		}
+
+		// Specific report parameters
+		parameters.put(PARAM_REPORT_CLASSLOADER, Util.getClassLoader(report));
+		parameters.put(PARAM_REPORT_LOCALE, context.getViewRoot().getLocale());
+
+		// Subreport directory
+		final String subreportDir = report.getSubreportDir();
+		if (subreportDir != null) {
+			Resource resource = null;
+			try {
+				resource = ResourceLoader.getResource(context, subreportDir);
+			} catch (final IOException e) {
+				throw new FillerException(e);
+			}
+			parameters.put("SUBREPORT_DIR", resource.getPath());
+		}
+
+		return parameters;
+	}
 
 }

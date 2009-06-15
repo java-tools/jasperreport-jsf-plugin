@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -23,16 +23,17 @@ package net.sf.jasperreports.jsf.fill;
  */
 public class FillerNotFoundException extends FillerException {
 
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = -35231220672091774L;
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = -35231220672091774L;
 
-    /**
-     * Instantiates a new filler not found exception.
-     * 
-     * @param msg the msg
-     */
-    public FillerNotFoundException(final String msg) {
-        super(msg);
-    }
+	/**
+	 * Instantiates a new filler not found exception.
+	 * 
+	 * @param msg
+	 *            the msg
+	 */
+	public FillerNotFoundException(final String msg) {
+		super(msg);
+	}
 
 }

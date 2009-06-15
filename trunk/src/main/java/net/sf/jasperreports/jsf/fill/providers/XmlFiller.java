@@ -39,38 +39,42 @@ import org.w3c.dom.Document;
  */
 public class XmlFiller extends AbstractFiller {
 
-    protected XmlFiller(UIDataSource dataSource) {
+	protected XmlFiller(final UIDataSource dataSource) {
 		super(dataSource);
 	}
 
-	/* (non-Javadoc)
-     * @see net.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.FacesContext, java.io.InputStream, java.util.Map)
-     */
-    @Override
-    protected JasperPrint doFill(final FacesContext context,
-            final InputStream reportStream, final Map<String, Object> params)
-            throws FillerException {
-        JRDataSource dataSource;
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.FacesContext
+	 * , java.io.InputStream, java.util.Map)
+	 */
+	@Override
+	protected JasperPrint doFill(final FacesContext context,
+			final InputStream reportStream, final Map<String, Object> params)
+			throws FillerException {
+		JRDataSource dataSource;
 
-        final Document xmlDocument = (Document) getDataSourceComponent()
-                .getValue();
-        final String query = getDataSourceComponent().getQuery();
-        try {
-            if ((query != null) && (query.length() > 0)) {
-                dataSource = new JRXmlDataSource(xmlDocument, query);
-            } else {
-                dataSource = new JRXmlDataSource(xmlDocument);
-            }
-        } catch (final JRException e) {
-            throw new FillerException(e);
-        }
+		final Document xmlDocument = (Document) getDataSourceComponent()
+				.getValue();
+		final String query = getDataSourceComponent().getQuery();
+		try {
+			if ((query != null) && (query.length() > 0)) {
+				dataSource = new JRXmlDataSource(xmlDocument, query);
+			} else {
+				dataSource = new JRXmlDataSource(xmlDocument);
+			}
+		} catch (final JRException e) {
+			throw new FillerException(e);
+		}
 
-        try {
-            return JasperFillManager.fillReport(reportStream, params,
-                    dataSource);
-        } catch (final JRException e) {
-            throw new FillerException(e);
-        }
-    }
+		try {
+			return JasperFillManager.fillReport(reportStream, params,
+					dataSource);
+		} catch (final JRException e) {
+			throw new FillerException(e);
+		}
+	}
 
 }

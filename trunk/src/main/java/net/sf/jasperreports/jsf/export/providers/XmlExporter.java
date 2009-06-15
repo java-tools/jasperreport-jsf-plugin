@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -32,32 +32,36 @@ import net.sf.jasperreports.jsf.export.AbstractExporter;
 public class XmlExporter extends AbstractExporter {
 
 	public static final String CONTENT_TYPE = "text/xml";
-	
-    /** The Constant ATTR_DTD_LOCATION. */
-    public static final String ATTR_DTD_LOCATION = "DTD_LOCATION";
 
-    /** The Constant ATTR_IS_EMBEDDING_IMAGES. */
-    public static final String ATTR_IS_EMBEDDING_IMAGES = "IS_EMBEDDING_IMAGES";
+	/** The Constant ATTR_DTD_LOCATION. */
+	public static final String ATTR_DTD_LOCATION = "DTD_LOCATION";
 
-    protected XmlExporter(UIComponent component) {
+	/** The Constant ATTR_IS_EMBEDDING_IMAGES. */
+	public static final String ATTR_IS_EMBEDDING_IMAGES = "IS_EMBEDDING_IMAGES";
+
+	protected XmlExporter(final UIComponent component) {
 		super(component);
 	}
 
 	public String getContentType() {
 		return CONTENT_TYPE;
 	}
-    
-    /* (non-Javadoc)
-     * @see net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces.context.FacesContext)
-     */
-    @Override
-    protected JRExporter createJRExporter(final FacesContext context) {
-        final JRXmlExporter exporter = new JRXmlExporter();
-        exporter.setParameter(JRXmlExporterParameter.DTD_LOCATION,
-                getComponent().getAttributes().get(ATTR_DTD_LOCATION));
-        exporter.setParameter(JRXmlExporterParameter.IS_EMBEDDING_IMAGES,
-                getComponent().getAttributes().get(ATTR_IS_EMBEDDING_IMAGES));
-        return exporter;
-    }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
+	 * .context.FacesContext)
+	 */
+	@Override
+	protected JRExporter createJRExporter(final FacesContext context) {
+		final JRXmlExporter exporter = new JRXmlExporter();
+		exporter.setParameter(JRXmlExporterParameter.DTD_LOCATION,
+				getComponent().getAttributes().get(ATTR_DTD_LOCATION));
+		exporter.setParameter(JRXmlExporterParameter.IS_EMBEDDING_IMAGES,
+				getComponent().getAttributes().get(ATTR_IS_EMBEDDING_IMAGES));
+		return exporter;
+	}
 
 }

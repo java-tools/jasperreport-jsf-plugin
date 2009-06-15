@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -16,22 +16,17 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.resource.provider;
-
-import java.io.IOException;
-import java.net.URL;
+package net.sf.jasperreports.jsf.spi;
 
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.resource.Resource;
-import net.sf.jasperreports.jsf.resource.ResourceFactory;
+import net.sf.jasperreports.jsf.JRFacesException;
+import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.export.Exporter;
 
-public class URLResourceFactory implements ResourceFactory {
+public interface ExporterFactory {
 
-	public Resource createResource(FacesContext context, String name) 
-	throws IOException {
-		URL location = new URL(name);
-		return new URLResource(location.getFile(), location);
-	}
+	public Exporter createExporter(FacesContext context, UIReport report)
+			throws JRFacesException;
 
 }

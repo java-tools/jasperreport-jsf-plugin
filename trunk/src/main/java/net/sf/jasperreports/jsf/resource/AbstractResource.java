@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -20,9 +20,9 @@ package net.sf.jasperreports.jsf.resource;
 
 public abstract class AbstractResource implements Resource {
 
-	private String name;
+	private final String name;
 
-	public AbstractResource(String name) {
+	public AbstractResource(final String name) {
 		super();
 		this.name = name;
 	}
@@ -30,5 +30,5 @@ public abstract class AbstractResource implements Resource {
 	public String getName() {
 		return name;
 	}
-	
+
 }

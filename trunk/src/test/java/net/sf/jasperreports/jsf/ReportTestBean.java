@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -20,7 +20,6 @@ package net.sf.jasperreports.jsf;
 
 import net.sf.jasperreports.jsf.component.UIReport;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ReportTestBean.
  */
