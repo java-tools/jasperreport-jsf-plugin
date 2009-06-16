@@ -24,14 +24,13 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.spi.ServiceException;
+import net.sf.jasperreports.jsf.spi.Services;
 import net.sf.jasperreports.jsf.spi.ValidatorFactory;
-import net.sf.jasperreports.jsf.util.Util;
 
 public final class ReportValidatorFactory implements ValidatorFactory {
 
-	private static final Map<String, Class<ReportValidator>> validatorCacheMap = Util
-			.loadServiceMap(ReportValidator.class);
+	private static final Map<String, ReportValidator> validatorCacheMap = 
+			Services.map(ReportValidator.class);
 
 	public boolean acceptsComponent(final UIComponent component) {
 		return (component instanceof UIReport);
@@ -45,17 +44,9 @@ public final class ReportValidatorFactory implements ValidatorFactory {
 
 		final UIReport report = (UIReport) component;
 		ReportValidator result = null;
-		Class<ReportValidator> validatorClass = validatorCacheMap.get(report
-				.getFormat());
-		if (validatorClass == null) {
-			validatorClass = validatorCacheMap.get(null);
-		}
-		if (validatorClass != null) {
-			try {
-				result = validatorClass.newInstance();
-			} catch (final Exception e) {
-				throw new ServiceException(e);
-			}
+		result = validatorCacheMap.get(report.getFormat());
+		if (result == null) {
+			result = validatorCacheMap.get(null);
 		}
 		return result;
 	}

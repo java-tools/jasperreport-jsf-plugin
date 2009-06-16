@@ -18,18 +18,7 @@
  */
 package net.sf.jasperreports.jsf.util;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
 
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
@@ -48,8 +37,6 @@ public final class Util {
 	/** The Constant INVOCATION_PATH. */
 	private static final String INVOCATION_PATH = "net.sf.jasperreports.jsf.INVOCATION_PATH";
 
-	private static final String SERVICES_ROOT = "META-INF/services/";
-
 	/** The Constant PORTLET_CLASS. */
 	private static final String PORTLET_CLASS = "javax.portlet.Portlet";
 
@@ -61,10 +48,6 @@ public final class Util {
 
 	/** The Constant PORTLET_VERSION. */
 	public static final String PORTLET_VERSION;
-
-	/** The logger. */
-	private static final Logger logger = Logger.getLogger(Util.class
-			.getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
 
 	static {
 		boolean portletAvailable = false;
@@ -214,148 +197,6 @@ public final class Util {
 	 */
 	public static boolean isPrefixMapped(final String mapping) {
 		return mapping.charAt(0) == '/';
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <T> Set<T> loadServiceSet(final Class<T> clazz) {
-		final ClassLoader loader = Util.getClassLoader(null);
-
-		Enumeration<URL> resources;
-		final String serviceConf = SERVICES_ROOT + clazz.getName();
-		try {
-			resources = loader.getResources(serviceConf);
-		} catch (final IOException e) {
-			throw new ExceptionInInitializerError(e);
-		}
-
-		final Set<T> serviceSet = new HashSet<T>();
-		while (resources.hasMoreElements()) {
-			final URL url = resources.nextElement();
-			BufferedReader reader = null;
-			try {
-				String line;
-				reader = new BufferedReader(new InputStreamReader(url
-						.openStream()));
-				while (null != (line = reader.readLine())) {
-					// skip line comments
-					if (line.startsWith("#")) {
-						continue;
-					}
-
-					Class<T> serviceClass;
-					try {
-						serviceClass = (Class<T>) loader.loadClass(line);
-					} catch (final ClassNotFoundException e) {
-						final LogRecord logRecord = new LogRecord(Level.SEVERE,
-								"JRJSF_0014");
-						logRecord.setParameters(new Object[] { line });
-						logRecord.setThrown(e);
-						logger.log(logRecord);
-						continue;
-					}
-
-					T instance;
-					try {
-						instance = serviceClass.newInstance();
-					} catch (final Exception e) {
-						final LogRecord logRecord = new LogRecord(Level.SEVERE,
-								"JRJSF_0015");
-						logRecord.setParameters(new Object[] { line });
-						logRecord.setThrown(e);
-						logger.log(logRecord);
-						continue;
-					}
-
-					serviceSet.add(instance);
-				}
-			} catch (final IOException e) {
-				final LogRecord logRecord = new LogRecord(Level.SEVERE,
-						"JRJSF_0012");
-				logRecord.setParameters(new Object[] { url });
-				logRecord.setThrown(e);
-				logger.log(logRecord);
-			} finally {
-				if (reader != null) {
-					try {
-						reader.close();
-					} catch (final IOException e) {
-						// ignore
-					}
-				}
-			}
-		}
-		return serviceSet;
-	}
-
-	/**
-	 * Load service map.
-	 * 
-	 * @param resource
-	 *            the resource
-	 * 
-	 * @return the map< string, class< t>>
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> Map<String, Class<T>> loadServiceMap(final Class<T> clazz) {
-		final ClassLoader loader = Util.getClassLoader(null);
-
-		Enumeration<URL> resources;
-		final String serviceConf = SERVICES_ROOT + clazz.getName();
-		try {
-			resources = loader.getResources(serviceConf);
-		} catch (final IOException e) {
-			throw new ExceptionInInitializerError(e);
-		}
-
-		final Map<String, Class<T>> serviceMap = new LinkedHashMap<String, Class<T>>();
-		while (resources.hasMoreElements()) {
-			final URL url = resources.nextElement();
-			BufferedReader reader = null;
-			try {
-				String line;
-				reader = new BufferedReader(new InputStreamReader(url
-						.openStream()));
-				while (null != (line = reader.readLine())) {
-					// skip line comments
-					if (line.startsWith("#")) {
-						continue;
-					}
-
-					Class<T> serviceClass;
-					final String[] record = line.split(":");
-					try {
-						serviceClass = (Class<T>) loader.loadClass(record[1]);
-					} catch (final ClassNotFoundException e) {
-						final LogRecord logRecord = new LogRecord(Level.SEVERE,
-								"JRJSF_0011");
-						logRecord.setParameters(new Object[] { record[1],
-								record[0] });
-						logRecord.setThrown(e);
-						logger.log(logRecord);
-						continue;
-					}
-
-					serviceMap.put(("".equals(record[0]) ? null : record[0]),
-							serviceClass);
-				}
-			} catch (final IOException e) {
-				final LogRecord logRecord = new LogRecord(Level.SEVERE,
-						"JRJSF_0012");
-				logRecord.setParameters(new Object[] { url });
-				logRecord.setThrown(e);
-				logger.log(logRecord);
-				continue;
-			} finally {
-				if (reader != null) {
-					try {
-						reader.close();
-					} catch (final IOException e) {
-						// ignore
-					}
-				}
-			}
-		}
-		return serviceMap;
 	}
 
 	/**

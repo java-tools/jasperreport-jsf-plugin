@@ -25,15 +25,14 @@ import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.ResourceException;
-import net.sf.jasperreports.jsf.util.Util;
 
 /**
  * The Class ResourceLoader.
  */
 public final class ResourceLoader {
 
-	private static final Collection<ResourceFactory> resourceFactoryCache = Util
-			.loadServiceSet(ResourceFactory.class);
+	private static final Collection<ResourceFactory> resourceFactoryCache = Services
+			.set(ResourceFactory.class);
 
 	/**
 	 * Gets the resource loader.
