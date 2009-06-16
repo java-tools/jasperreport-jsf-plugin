@@ -21,11 +21,83 @@
 ~~ 
 
 			---
-			Others DataSources
+			Other Data Sources
 			---
 			A. Alonso Dominguez
 			
 
 Other supported data sources
 
-  Comming soon
+  Following is a summary about other supported data sources:
+  
+  * Bean and map data sources
+  
+  * <<<java.sql.ResultSet>>> based data source
+
+* Bean & map data sources
+
+  This kind of data sources use one or more instances of the same bean
+class (<<<java.util.Map>>> when using maps) as data records. 
+
+** Configuring the data source
+
+  The attributes required to be used with this type of data soruce are
+reflected in the following table:
+
+*-----------------+----------*-----------------------------------------------------+
+| Attribute       | Optional | Description                                         |
+*-----------------+----------*-----------------------------------------------------+
+| type            | false    | <<<bean>>> when using beans and <<<map>>> otherwise |
+*-----------------+----------*-----------------------------------------------------+
+| value           | false    | Bean, Collection or array which contains the data.  |
+*-----------------+----------*-----------------------------------------------------+
+
+** Simple Example
+
+  Following there is an example about using this kind of data sources
+
++---
+import example.data.OrderBean;
+import java.util.*;
+
+public class BeanDataBean {
+	
+	...
+	
+	public OrderBean[] getOrderArray() {
+		List<OrderBean> orderColl = new ArrayList<OrderBean>();
+		...
+		return orderColl.toArray(new OrderBean[orderColl.size()]);
+	}
+	
+	public Collection<OrderBean> getOrderCollection() {
+		Set<OrderBean> orderSet = new HashSet<OrderSet>();
+		...
+		return Collections.unmodifiableSet(orderSet);
+	}
+	
+	...
+	
+}
++---
+
+  Then, this managed bean can be used inside the JSP file that will render
+the report or report link.
+
++---
+<%-- Array example --%>
+<jr:dataSource id="..." type="bean" value="#{beanData.orderArray}" />
+
+<%-- Collection example --%>
+<jr:dataSource id="..." type="bean" value="#{beanData.orderCollection}" />
++---
+
+** Using Queries
+
+  Queries against bean or map data sources are not supported.
+  
+* ResultSet data sources
+
+  This is the most simple data source that can be used. The only required
+attribute is <<<value>>> and its type should be always a <<<java.sql.ResultSet>>>.
+Be careful, since application is responsible of closing the result set.

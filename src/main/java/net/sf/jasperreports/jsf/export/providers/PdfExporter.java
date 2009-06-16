@@ -24,12 +24,12 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
-import net.sf.jasperreports.jsf.export.AbstractExporter;
+import net.sf.jasperreports.jsf.export.AbstractJRExporter;
 
 /**
  * The Class PdfExporter.
  */
-public final class PdfExporter extends AbstractExporter {
+public final class PdfExporter extends AbstractJRExporter {
 
 	public static final String CONTENT_TYPE = "application/pdf";
 

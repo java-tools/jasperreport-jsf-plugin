@@ -24,12 +24,12 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRCsvExporter;
 import net.sf.jasperreports.engine.export.JRCsvExporterParameter;
-import net.sf.jasperreports.jsf.export.AbstractExporter;
+import net.sf.jasperreports.jsf.export.AbstractJRExporter;
 
 /**
  * The Class CsvExporter.
  */
-public final class CsvExporter extends AbstractExporter {
+public final class CsvExporter extends AbstractJRExporter {
 
 	public static final String CONTENT_TYPE = "text/plain";
 

@@ -74,6 +74,19 @@ the report or report link.
 <jr:dataSource type="xml" value="#{XMLDataBean.xmlDocument}" />
 +---
 
+  Other valid values for attribute <<<value>>> are:
+  
+  * <<<java.io.File>>>: A file handle to a resource accessible by the server 
+    which is running the application.
+  
+  * <<<java.net.URL>>>: An URL to a resource accessible through internet
+  
+  * <<<java.lang.String>>>: A path to any kind of resource. It will be loaded using
+    the built-in resource loading mechanism.
+  
+  * <<<java.io.InputStream>>>: A stream ready to be used to read the XML data. In
+    this case, application is responsible of closing the stream
+
 *** Using Queries
 
   The same way you can use queries with JDBC or JNDI data sources, you can
@@ -84,9 +97,11 @@ should be an XPath query.
 +---
 <jr:dataSource type="xml"
 	value="#{XMLDataBean.xmlDocument}"
-	query="SALES/ORDER[city='Melbourne']"
-/>
+	query="SALES/ORDER[city='{0}']"
+>
+	<f:param value="Melbourne" />
+</jr:dataSource>
 +---
 
-  <<Note>>: Actually, parametrized XPath queries are not allowed. If you need
-a parametrized query you must hardcode it as is shown in the previous example.
+  As you can see, you can parameterize queries but following the java message
+formatting strategy.

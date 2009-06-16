@@ -18,41 +18,29 @@
  */
 package net.sf.jasperreports.jsf.fill.providers;
 
-import java.io.InputStream;
 import java.util.Collection;
 import java.util.Map;
 
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRMapArrayDataSource;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 import net.sf.jasperreports.jsf.component.UIDataSource;
-import net.sf.jasperreports.jsf.fill.AbstractFiller;
+import net.sf.jasperreports.jsf.fill.AbstractJRDataSourceFiller;
 import net.sf.jasperreports.jsf.fill.FillerException;
 
 /**
  * The Class MapFiller.
  */
-public final class MapFiller extends AbstractFiller {
+public final class MapFiller extends AbstractJRDataSourceFiller {
 
 	protected MapFiller(final UIDataSource dataSource) {
 		super(dataSource);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.FacesContext
-	 * , java.io.InputStream, java.util.Map)
-	 */
 	@Override
-	protected JasperPrint doFill(final FacesContext context,
-			final InputStream reportStream, final Map<String, Object> params)
+	protected JRDataSource getJRDataSource(FacesContext context)
 			throws FillerException {
 		JRDataSource dataSource;
 
@@ -68,13 +56,7 @@ public final class MapFiller extends AbstractFiller {
 			}
 			dataSource = new JRMapArrayDataSource(mapArray);
 		}
-
-		try {
-			return JasperFillManager.fillReport(reportStream, params,
-					dataSource);
-		} catch (final JRException e) {
-			throw new FillerException(e);
-		}
+		return dataSource;
 	}
 
 }

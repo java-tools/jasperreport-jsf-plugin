@@ -18,46 +18,26 @@
  */
 package net.sf.jasperreports.jsf.fill.providers;
 
-import java.io.InputStream;
-import java.util.Map;
-
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.jsf.fill.AbstractFiller;
+import net.sf.jasperreports.jsf.fill.AbstractJRDataSourceFiller;
 import net.sf.jasperreports.jsf.fill.FillerException;
 
 /**
  * The Class EmptyFiller.
  */
-public final class EmptyFiller extends AbstractFiller {
-
+public final class EmptyFiller extends AbstractJRDataSourceFiller {
+	
 	protected EmptyFiller() {
 		super(null);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.FacesContext
-	 * , java.io.InputStream, java.util.Map)
-	 */
 	@Override
-	protected JasperPrint doFill(final FacesContext context,
-			final InputStream reportStream, final Map<String, Object> params)
+	protected JRDataSource getJRDataSource(FacesContext context)
 			throws FillerException {
-		final JRDataSource dataSource = new JREmptyDataSource();
-		try {
-			return JasperFillManager.fillReport(reportStream, params,
-					dataSource);
-		} catch (final JRException e) {
-			throw new FillerException(e);
-		}
+		return new JREmptyDataSource();
 	}
 
 }
