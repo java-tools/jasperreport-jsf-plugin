@@ -72,11 +72,13 @@ that must be used for the <<<type>>> attribute of the data source component.
 *---------------------------------------------------------+---------*
 | DataSource                                              | Type    |
 *---------------------------------------------------------+---------*
-| {{{datasources/jdbc.html}JDBC DataSource}}              | default |
+| {{{jdbc.html}JDBC DataSource}}                          | default |
 *---------------------------------------------------------+---------*
-| {{{datasources/jndi.html}JNDI DataSource}}              | jndi    |
+| {{{jndi.html}JNDI DataSource}}                          | jndi    |
 *---------------------------------------------------------+---------*
-| {{{datasources/xml.html}XML DataSource}}                | xml     |
+| {{{csv.html}CSV DataSource}}                            | csv     |
 *---------------------------------------------------------+---------*
-| {{{datasources/other.html}Other Supported DataSources}} | other   |
+| {{{xml.html}XML DataSource}}                            | xml     |
+*---------------------------------------------------------+---------*
+| {{{other.html}Other Supported DataSources}}             | other   |
 *---------------------------------------------------------+---------*

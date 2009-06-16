@@ -16,46 +16,44 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.fill.providers;
+package net.sf.jasperreports.jsf.fill;
 
-import java.util.Collection;
+import java.io.InputStream;
+import java.util.Map;
 
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.data.JRBeanArrayDataSource;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.component.UIDataSource;
-import net.sf.jasperreports.jsf.fill.AbstractJRDataSourceFiller;
-import net.sf.jasperreports.jsf.fill.FillerException;
 
-/**
- * The Class BeanFiller.
- */
-public final class BeanFiller extends AbstractJRDataSourceFiller {
+public abstract class AbstractJRDataSourceFiller extends AbstractFiller {
 
-	protected BeanFiller(final UIDataSource dataSource) {
+	public AbstractJRDataSourceFiller(UIDataSource dataSource) {
 		super(dataSource);
 	}
 
+	protected void closeDataSource(JRDataSource dataSource) 
+	throws FillerException { }
+	
+	protected abstract JRDataSource getJRDataSource(FacesContext context)
+	throws FillerException;
+
 	@Override
-	protected JRDataSource getJRDataSource(FacesContext context)
+	protected final JasperPrint doFill(FacesContext context,
+			InputStream reportStream, Map<String, Object> params)
 			throws FillerException {
-		JRDataSource dataSource;
-
-		final Object value = getDataSourceComponent().getValue();
-		if (value instanceof Collection) {
-			dataSource = new JRBeanCollectionDataSource((Collection<?>) value);
-		} else {
-			Object[] beanArray;
-			if (!value.getClass().isArray()) {
-				beanArray = new Object[] { value };
-			} else {
-				beanArray = (Object[]) value;
-			}
-			dataSource = new JRBeanArrayDataSource(beanArray);
+		JRDataSource dataSource = getJRDataSource(context);
+		try {
+			return JasperFillManager.fillReport(reportStream, params,
+					dataSource);
+		} catch(JRException e) {
+			throw new FillerException(e);
+		} finally {
+			closeDataSource(dataSource);
 		}
-		return dataSource;
 	}
-
+	
 }

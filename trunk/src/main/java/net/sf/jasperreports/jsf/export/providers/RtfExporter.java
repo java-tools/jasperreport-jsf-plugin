@@ -23,12 +23,12 @@ import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRRtfExporter;
-import net.sf.jasperreports.jsf.export.AbstractExporter;
+import net.sf.jasperreports.jsf.export.AbstractJRExporter;
 
 /**
  * The Class RtfExporter.
  */
-public final class RtfExporter extends AbstractExporter {
+public final class RtfExporter extends AbstractJRExporter {
 
 	public static final String CONTENT_TYPE = "application/rtf";
 

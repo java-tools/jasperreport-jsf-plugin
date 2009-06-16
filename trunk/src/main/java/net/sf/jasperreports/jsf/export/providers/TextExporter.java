@@ -24,12 +24,12 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRTextExporter;
 import net.sf.jasperreports.engine.export.JRTextExporterParameter;
-import net.sf.jasperreports.jsf.export.AbstractExporter;
+import net.sf.jasperreports.jsf.export.AbstractJRExporter;
 
 /**
  * The Class TextExporter.
  */
-public final class TextExporter extends AbstractExporter {
+public final class TextExporter extends AbstractJRExporter {
 
 	public static final String CONTENT_TYPE = "text/plain";
 

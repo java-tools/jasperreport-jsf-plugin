@@ -23,17 +23,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Map;
 
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRCsvDataSource;
 import net.sf.jasperreports.jsf.component.UIDataSource;
-import net.sf.jasperreports.jsf.fill.AbstractFiller;
+import net.sf.jasperreports.jsf.fill.AbstractJRDataSourceFiller;
 import net.sf.jasperreports.jsf.fill.FillerException;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.ResourceException;
@@ -42,38 +38,35 @@ import net.sf.jasperreports.jsf.spi.ResourceLoader;
 /**
  * The Class CsvFiller.
  */
-public final class CsvFiller extends AbstractFiller {
+public final class CsvFiller extends AbstractJRDataSourceFiller {
 
+	private InputStream dataSourceStream = null;
+	private boolean closeStream = true;
+	
 	protected CsvFiller(final UIDataSource dataSource) {
 		super(dataSource);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.FacesContext
-	 * , java.io.InputStream, java.util.Map)
-	 */
 	@Override
-	protected JasperPrint doFill(final FacesContext context,
-			final InputStream reportStream, final Map<String, Object> params)
+	protected JRDataSource getJRDataSource(FacesContext context)
 			throws FillerException {
 		JRDataSource dataSource = null;
-		InputStream dsStream = null;
-
+		
 		final Object value = getDataSourceComponent().getValue();
 		if(value instanceof URL) {
 			try {
-				dsStream = ((URL) value).openStream();
+				dataSourceStream = ((URL) value).openStream();
 			} catch (IOException e) {
 				throw new FillerException(e);
 			}
+		} else if(value instanceof InputStream) {
+			dataSourceStream = (InputStream) value;
+			closeStream = false;
 		} else if(value instanceof String) {
 			try {
 				Resource resource = ResourceLoader.getResource(
 						context, (String) value);
-				dsStream = resource.getInputStream();
+				dataSourceStream = resource.getInputStream();
 			} catch (ResourceException e) {
 				throw new FillerException(e);
 			} catch (IOException e) {
@@ -88,26 +81,26 @@ public final class CsvFiller extends AbstractFiller {
 		}
 
 		if (dataSource == null) {
-			if (dsStream == null) {
-				throw new FillerException("CSV datasource needs a valid File, URL or string");
+			if (dataSourceStream == null) {
+				throw new FillerException("CSV datasource needs a valid File, "
+						+ "URL, InputStream or string");
 			} else {
-				dataSource = new JRCsvDataSource(dsStream);
+				dataSource = new JRCsvDataSource(dataSourceStream);
 			}
 		}
 		
-		try {
-			return JasperFillManager.fillReport(reportStream, params,
-					dataSource);
-		} catch (final JRException e) {
-			throw new FillerException(e);
-		} finally {
-			if(dsStream != null) {
-				try {
-					dsStream.close();
-					dsStream = null;
-				} catch(IOException e) { }
-			}
+		return dataSource;
+	}
+
+	@Override
+	protected void closeDataSource(JRDataSource dataSource)
+			throws FillerException {
+		if(dataSourceStream != null && closeStream) {
+			try {
+				dataSourceStream.close();
+			} catch(IOException e) { }
 		}
+		dataSourceStream = null;
 	}
 
 }

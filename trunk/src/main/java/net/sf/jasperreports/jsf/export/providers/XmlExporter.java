@@ -24,12 +24,12 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRXmlExporter;
 import net.sf.jasperreports.engine.export.JRXmlExporterParameter;
-import net.sf.jasperreports.jsf.export.AbstractExporter;
+import net.sf.jasperreports.jsf.export.AbstractJRExporter;
 
 /**
  * The Class XmlExporter.
  */
-public final class XmlExporter extends AbstractExporter {
+public final class XmlExporter extends AbstractJRExporter {
 
 	public static final String CONTENT_TYPE = "text/xml";
 
