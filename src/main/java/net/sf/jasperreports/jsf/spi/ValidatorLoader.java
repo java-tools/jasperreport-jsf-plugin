@@ -23,13 +23,12 @@ import java.util.Set;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.util.Util;
 import net.sf.jasperreports.jsf.validation.Validator;
 
 public final class ValidatorLoader {
 
-	private static final Set<ValidatorFactory> validatorFactoryCache = Util
-			.loadServiceSet(ValidatorFactory.class);
+	private static final Set<ValidatorFactory> validatorFactoryCache = Services
+			.set(ValidatorFactory.class);
 
 	public static Validator getValidator(final FacesContext context,
 			final UIComponent component) {

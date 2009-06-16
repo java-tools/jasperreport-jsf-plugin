@@ -19,4 +19,4 @@
 # alonsoft@users.sf.net
 #
 :net.sf.jasperreports.jsf.validation.DataSourceValidatorBase
-jdbc:net.sf.jasperreports.jsf.validation.provider.JdbcDataSourceValidator
+jdbc:net.sf.jasperreports.jsf.validation.providers.JdbcDataSourceValidator

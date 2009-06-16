@@ -38,7 +38,6 @@ import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.fill.AbstractFiller;
 import net.sf.jasperreports.jsf.fill.Filler;
 import net.sf.jasperreports.jsf.fill.FillerException;
-import net.sf.jasperreports.jsf.util.Util;
 
 /**
  * A factory for creating Filler objects.
@@ -49,8 +48,8 @@ public final class FillerLoader {
 			.getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
 
 	/** The exporter cache map. */
-	private static final Map<String, Class<FillerFactory>> fillerCacheMap = Util
-			.loadServiceMap(FillerFactory.class);
+	private static final Map<String, FillerFactory> fillerCacheMap = Services
+			.map(FillerFactory.class);
 
 	/** The Constant DEFAULT_FILLER_INSTANCE. */
 	private static final Filler DEFAULT_FILLER_INSTANCE = new StaticFiller();
@@ -93,23 +92,16 @@ public final class FillerLoader {
 			final UIDataSource dataSource) throws JRFacesException {
 		FillerFactory result;
 
-		final Class<FillerFactory> fillerFactoryClass;
 		// When 'driverClass' property has been set,
 		// override dataSource type with 'jdbc' value
 		if (dataSource.getDriverClass() != null) {
 			dataSource.setType("jdbc");
 		}
-		fillerFactoryClass = fillerCacheMap.get(dataSource.getType());
-		if (fillerFactoryClass == null) {
+		
+		result = fillerCacheMap.get(dataSource.getType());
+		if (result == null) {
 			throw new FillerFactoryNotFoundException(dataSource.getType());
 		}
-
-		try {
-			result = fillerFactoryClass.newInstance();
-		} catch (final Exception e) {
-			throw new ServiceException(e);
-		}
-
 		return result;
 	}
 
