@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -18,7 +19,7 @@ import net.sf.jasperreports.jsf.util.Util;
 public final class Services {
 
 	/** The logger. */
-	private static final Logger logger = Logger.getLogger(Util.class
+	private static final Logger logger = Logger.getLogger(Services.class
 			.getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
 	
 	private static final String SERVICES_ROOT = "META-INF/services/";
@@ -30,16 +31,9 @@ public final class Services {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> Set<T> set(final Class<T> clazz) {
+	public static <T> Set<T> set(final Class<T> clazz) throws ServiceException {
 		final ClassLoader loader = Util.getClassLoader(null);
-
-		Enumeration<URL> resources;
-		final String serviceConf = SERVICES_ROOT + clazz.getName();
-		try {
-			resources = loader.getResources(serviceConf);
-		} catch (final IOException e) {
-			throw new ExceptionInInitializerError(e);
-		}
+		final Enumeration<URL> resources = getServiceResources(clazz, loader);
 
 		final Set<T> serviceSet = new HashSet<T>();
 		while (resources.hasMoreElements()) {
@@ -97,7 +91,7 @@ public final class Services {
 				}
 			}
 		}
-		return serviceSet;
+		return Collections.unmodifiableSet(serviceSet);
 	}
 
 	/**
@@ -117,16 +111,9 @@ public final class Services {
 	 * @return the map< string, class< t>>
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> Map<String, T> map(final Class<T> clazz) {
+	public static <T> Map<String, T> map(final Class<T> clazz) throws ServiceException {
 		final ClassLoader loader = Util.getClassLoader(null);
-
-		Enumeration<URL> resources;
-		final String serviceConf = SERVICES_ROOT + clazz.getName();
-		try {
-			resources = loader.getResources(serviceConf);
-		} catch (final IOException e) {
-			throw new ExceptionInInitializerError(e);
-		}
+		final Enumeration<URL> resources = getServiceResources(clazz, loader);
 
 		final Map<String, T> serviceMap = new LinkedHashMap<String, T>();
 		while (resources.hasMoreElements()) {
@@ -188,7 +175,20 @@ public final class Services {
 				}
 			}
 		}
-		return serviceMap;
+		return Collections.unmodifiableMap(serviceMap);
+	}
+	
+	private static Enumeration<URL> getServiceResources(
+			Class<?> serviceClass, ClassLoader classLoader) 
+	throws ServiceException {
+		Enumeration<URL> resources;
+		final String serviceConf = SERVICES_ROOT + serviceClass.getName();
+		try {
+			resources = classLoader.getResources(serviceConf);
+		} catch (final IOException e) {
+			throw new ServiceException(e);
+		}
+		return resources;
 	}
 	
 	private Services() { }
