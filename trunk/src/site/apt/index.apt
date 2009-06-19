@@ -66,6 +66,15 @@ report engine.
   Java Server Faces is the base framework for this library. Nevertheless, some other
 web frameworks which extend the JSF functionality are supported:
 
-    * Sun Facelets
+    * {{{https://facelets.dev.java.net}Sun Facelets}}
     
-    * Apache Shale (Clay views)
+    * {{{http://shale.apache.org}Apache Shale (Clay views)}}
+
+* Supported Runtimes
+
+  This plugin has been tested in servlet and portlet environments using following
+runtime stacks:
+
+	* {{{http://tomcat.apache.org}Apache Tomcat 6.x}} + {{{http://javaserverfaces.dev.java.net}JSF 1.2}}
+	
+	* {{{http://tomcat.apache.org}Apache Tomcat 6.x}} + {{{http://javaserverfaces.dev.java.net}JSF 1.2}} + {{{http://portlet-container.dev.java.net}Open Portal Container 2.0}}
