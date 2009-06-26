@@ -73,8 +73,9 @@ abstract class AbstractReportRenderer extends Renderer {
 		final StringBuffer reportURI = new StringBuffer(
 				ReportPhaseListener.BASE_URI);
 
-		final String mapping = Util.getFacesMapping(context);
-		if (Util.isPrefixMapped(mapping)) {
+		Util util = Util.getInstance(context);
+		final String mapping = util.getFacesMapping(context);
+		if (util.isPrefixMapped(mapping)) {
 			reportURI.insert(0, mapping);
 		} else {
 			reportURI.append(mapping);
