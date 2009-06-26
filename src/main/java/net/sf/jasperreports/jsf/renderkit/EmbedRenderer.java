@@ -62,8 +62,7 @@ public class EmbedRenderer extends AbstractReportRenderer {
 		final ViewHandler viewHandler = context.getApplication()
 				.getViewHandler();
 		final UIReport report = (UIReport) component;
-		final String reportURI = viewHandler.getResourceURL(context,
-				buildReportURI(context, component));
+		final String reportURI = buildReportURI(context, component);
 
 		logger.log(Level.FINE, "JRJSF_0002", component.getClientId(context));
 

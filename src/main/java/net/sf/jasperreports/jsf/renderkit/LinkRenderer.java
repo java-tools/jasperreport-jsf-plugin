@@ -57,8 +57,7 @@ public class LinkRenderer extends AbstractReportRenderer {
 		final ViewHandler viewHandler = context.getApplication()
 				.getViewHandler();
 		final UIReport report = (UIReport) component;
-		final String reportURI = viewHandler.getResourceURL(context,
-				buildReportURI(context, component));
+		final String reportURI = buildReportURI(context, component);
 
 		final ResponseWriter writer = context.getResponseWriter();
 		logger.log(Level.FINE, "JRJSF_0001", component.getClientId(context));
