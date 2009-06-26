@@ -23,53 +23,23 @@ import java.io.IOException;
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.portlet.PortletContext;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * The Class Util.
  */
-public final class Util {
+public abstract class Util {
+
+	/** The Constant PORTLET_CLASS. */
+	protected static final String PORTLET_CLASS = "javax.portlet.Portlet";
+
+	/** The Constant PORTLET_RESOURCEURL_CLASS. */
+	protected static final String PORTLET_RESOURCEURL_CLASS = "javax.portlet.ResourceURL";
 
 	/** The Constant INVOCATION_PATH. */
 	private static final String INVOCATION_PATH = "net.sf.jasperreports.jsf.INVOCATION_PATH";
-
-	/** The Constant PORTLET_CLASS. */
-	private static final String PORTLET_CLASS = "javax.portlet.Portlet";
-
-	/** The Constant PORTLET_RESOURCEURL_CLASS. */
-	private static final String PORTLET_RESOURCEURL_CLASS = "javax.portlet.ResourceURL";
-
-	/** The Constant PORTLET_AVAILABLE. */
-	public static final boolean PORTLET_AVAILABLE;
-
-	/** The Constant PORTLET_VERSION. */
-	public static final String PORTLET_VERSION;
-
-	static {
-		boolean portletAvailable = false;
-		try {
-			Class.forName(PORTLET_CLASS);
-			portletAvailable = true;
-		} catch (final ClassNotFoundException e) {
-			portletAvailable = false;
-		}
-
-		String portletVersion = null;
-		try {
-			Class.forName(PORTLET_RESOURCEURL_CLASS);
-			portletVersion = "2.0";
-		} catch (final ClassNotFoundException e) {
-			portletVersion = portletAvailable ? "1.0" : null;
-		}
-
-		PORTLET_AVAILABLE = portletAvailable;
-		PORTLET_VERSION = portletVersion;
-	}
-
+	
 	/**
 	 * Gets the class loader.
 	 * 
@@ -93,6 +63,57 @@ public final class Util {
 		}
 		return loader;
 	}
+	
+	public static Util getInstance(FacesContext context) {
+		Util instance;
+		if(isServletContext(context)) {
+			instance = new ServletUtil();
+		} else if(isPortletAvailable()) {
+			instance = new PortletUtil();
+		} else {
+			throw new IllegalArgumentException("Unrecognized application context");
+		}
+		return instance;
+	}
+	
+	protected static boolean isPortletAvailable() {
+		boolean portletAvailable = false;
+		try {
+			Class.forName(PORTLET_CLASS);
+			portletAvailable = true;
+		} catch (final ClassNotFoundException e) {
+			portletAvailable = false;
+		} catch (final NoClassDefFoundError e) {
+			portletAvailable = false;
+		}
+		return portletAvailable;
+	}
+	
+	protected static String getPortletVersion() {
+		boolean portletAvailable = isPortletAvailable();
+		
+		String portletVersion = null;
+		try {
+			Class.forName(PORTLET_RESOURCEURL_CLASS);
+			portletVersion = "2.0";
+		} catch (final ClassNotFoundException e) {
+			portletVersion = portletAvailable ? "1.0" : null;
+		} catch (final NoClassDefFoundError e) {
+			portletVersion = portletAvailable ? "1.0" : null;
+		}
+		return portletVersion;
+	}
+	
+	private static boolean isServletContext(FacesContext context) {
+		Object ctx = context.getExternalContext().getContext();
+		return (ctx instanceof ServletContext);
+	}
+	
+	/**
+	 * Instantiates a new util.
+	 */
+	protected Util() {
+	}
 
 	/**
 	 * Gets the faces mapping.
@@ -102,7 +123,7 @@ public final class Util {
 	 * 
 	 * @return the faces mapping
 	 */
-	public static String getFacesMapping(final FacesContext context) {
+	public String getFacesMapping(final FacesContext context) {
 		if (context == null) {
 			throw new IllegalArgumentException("context");
 		}
@@ -144,23 +165,6 @@ public final class Util {
 	}
 
 	/**
-	 * Checks if is portlet context.
-	 * 
-	 * @param facesContext
-	 *            the faces context
-	 * 
-	 * @return true, if is portlet context
-	 */
-	public static boolean isPortletContext(final FacesContext facesContext) {
-		if (!PORTLET_AVAILABLE) {
-			return false;
-		}
-
-		final Object context = facesContext.getExternalContext().getContext();
-		return context instanceof PortletContext;
-	}
-
-	/**
 	 * Gets the request uri.
 	 * 
 	 * @param context
@@ -168,21 +172,7 @@ public final class Util {
 	 * 
 	 * @return the request uri
 	 */
-	public static String getRequestURI(final FacesContext context) {
-		if (isPortletContext(context)) {
-			if ("2.0".equals(PORTLET_VERSION)) {
-				final ResourceRequest request = (ResourceRequest) context
-						.getExternalContext().getRequest();
-				return request.getResourceID();
-			} else {
-				return null;
-			}
-		} else {
-			final HttpServletRequest request = (HttpServletRequest) context
-					.getExternalContext().getRequest();
-			return request.getRequestURI();
-		}
-	}
+	public abstract String getRequestURI(final FacesContext context);
 
 	/**
 	 * <p>
@@ -195,7 +185,7 @@ public final class Util {
 	 * 
 	 * @return true if the mapping starts with <code>/</code>
 	 */
-	public static boolean isPrefixMapped(final String mapping) {
+	public boolean isPrefixMapped(final String mapping) {
 		return mapping.charAt(0) == '/';
 	}
 
@@ -212,33 +202,8 @@ public final class Util {
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public static void writeResponse(final FacesContext context,
-			final String contentType, final byte[] data) throws IOException {
-		if (isPortletContext(context)) {
-			if ("2.0".equals(PORTLET_VERSION)) {
-				final ResourceResponse response = (ResourceResponse) context
-						.getExternalContext().getResponse();
-				response.setContentType(contentType);
-				response.setContentLength(data.length);
-				response.getPortletOutputStream().write(data);
-
-				response.setProperty("Cache-Type", "no-cache");
-				response.setProperty("Expires", "0");
-			} else {
-				throw new IllegalStateException(
-						"Only Resource Request/Response state is allowed");
-			}
-		} else {
-			final HttpServletResponse response = (HttpServletResponse) context
-					.getExternalContext().getResponse();
-			response.setContentType(contentType);
-			response.setContentLength(data.length);
-			response.getOutputStream().write(data);
-
-			response.setHeader("Cache-Type", "no-cache");
-			response.setHeader("Expires", "0");
-		}
-	}
+	public abstract void writeResponse(final FacesContext context,
+			final String contentType, final byte[] data) throws IOException;
 
 	/**
 	 * <p>
@@ -255,7 +220,7 @@ public final class Util {
 	 * 
 	 * @see HttpServletRequest#getServletPath()
 	 */
-	private static String getMappingForRequest(final String servletPath,
+	private String getMappingForRequest(final String servletPath,
 			final String pathInfo) {
 
 		if (servletPath == null) {
@@ -282,12 +247,6 @@ public final class Util {
 			// Servlet invoked using extension mapping
 			return servletPath.substring(servletPath.lastIndexOf('.'));
 		}
-	}
-
-	/**
-	 * Instantiates a new util.
-	 */
-	private Util() {
 	}
 
 }

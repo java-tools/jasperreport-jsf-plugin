@@ -84,7 +84,7 @@ public final class ReportPhaseListener implements PhaseListener {
 	 */
 	public void beforePhase(final PhaseEvent event) throws FacesException {
 		final FacesContext context = event.getFacesContext();
-		final String uri = Util.getRequestURI(context);
+		final String uri = Util.getInstance(context).getRequestURI(context);
 		if (uri != null && uri.indexOf(BASE_URI) > -1) {
 			final ExternalContext extContext = context.getExternalContext();
 
@@ -114,7 +114,7 @@ public final class ReportPhaseListener implements PhaseListener {
 							clientId, exporter.getContentType() });
 				}
 				exporter.export(context, filledReport, reportData);
-				Util.writeResponse(context, exporter.getContentType(),
+				Util.getInstance(context).writeResponse(context, exporter.getContentType(),
 						reportData.toByteArray());
 			} catch (final IOException e) {
 				throw new JRFacesException(e);
