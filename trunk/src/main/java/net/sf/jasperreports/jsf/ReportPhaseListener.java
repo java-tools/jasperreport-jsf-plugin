@@ -98,8 +98,7 @@ public final class ReportPhaseListener implements PhaseListener {
 			final UIReport report = (UIReport) extContext.getSessionMap()
 					.remove(REPORT_COMPONENT_KEY_PREFIX + clientId);
 			if (report == null) {
-				throw new JRFacesException("UIReport component not found: "
-						+ clientId);
+				throw new UnregisteredUIReportException(clientId);
 			}
 
 			final Filler filler = FillerLoader.getFiller(context, report);
