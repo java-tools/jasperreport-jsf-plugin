@@ -84,46 +84,51 @@ public final class ReportPhaseListener implements PhaseListener {
 	 */
 	public void beforePhase(final PhaseEvent event) throws FacesException {
 		final FacesContext context = event.getFacesContext();
-		final String uri = Util.getInstance(context).getRequestURI(context);
+		final Util util = Util.getInstance(context);
+		
+		final String uri = util.getRequestURI(context);
 		if (uri != null && uri.indexOf(BASE_URI) > -1) {
-			final ExternalContext extContext = context.getExternalContext();
-
-			final String clientId = context.getExternalContext()
-					.getRequestParameterMap().get(PARAM_CLIENTID);
-			if (clientId == null) {
-				throw new MalformedReportURLException("Missed parameter: "
-						+ PARAM_CLIENTID);
-			}
-
-			final UIReport report = (UIReport) extContext.getSessionMap()
-					.remove(REPORT_COMPONENT_KEY_PREFIX + clientId);
-			if (report == null) {
-				throw new UnregisteredUIReportException(clientId);
-			}
-
-			final Filler filler = FillerLoader.getFiller(context, report);
-			logger.log(Level.FINE, "JRJSF_0006", clientId);
-			final JasperPrint filledReport = filler.fill(context, report);
-
-			final Exporter exporter = ExporterLoader.getExporter(context,
-					report);
-			final ByteArrayOutputStream reportData = new ByteArrayOutputStream();
 			try {
-				if (logger.isLoggable(Level.FINE)) {
-					logger.log(Level.FINE, "JRJSF_0010", new Object[] {
-							clientId, exporter.getContentType() });
+				final ExternalContext extContext = context.getExternalContext();
+	
+				final String clientId = context.getExternalContext()
+						.getRequestParameterMap().get(PARAM_CLIENTID);
+				if (clientId == null) {
+					throw new MalformedReportURLException("Missed parameter: "
+							+ PARAM_CLIENTID);
 				}
-				exporter.export(context, filledReport, reportData);
-				Util.getInstance(context).writeResponse(context, exporter.getContentType(),
-						reportData.toByteArray());
-			} catch (final IOException e) {
-				throw new JRFacesException(e);
-			} finally {
+	
+				final UIReport report = (UIReport) extContext.getSessionMap()
+						.remove(REPORT_COMPONENT_KEY_PREFIX + clientId);
+				if (report == null) {
+					throw new UnregisteredUIReportException(clientId);
+				}
+	
+				final Filler filler = FillerLoader.getFiller(context, report);
+				logger.log(Level.FINE, "JRJSF_0006", clientId);
+				final JasperPrint filledReport = filler.fill(context, report);
+	
+				final Exporter exporter = ExporterLoader.getExporter(context,
+						report);
+				final ByteArrayOutputStream reportData = new ByteArrayOutputStream();
 				try {
-					reportData.close();
+					if (logger.isLoggable(Level.FINE)) {
+						logger.log(Level.FINE, "JRJSF_0010", new Object[] {
+								clientId, exporter.getContentType() });
+					}
+					exporter.export(context, filledReport, reportData);
+					util.writeResponse(context, exporter.getContentType(),
+							reportData.toByteArray());
 				} catch (final IOException e) {
-					// ignore
+					throw new JRFacesException(e);
+				} finally {
+					try {
+						reportData.close();
+					} catch (final IOException e) {
+						// ignore
+					}
 				}
+			} finally {
 				context.responseComplete();
 			}
 		}

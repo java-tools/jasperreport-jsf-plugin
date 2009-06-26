@@ -143,7 +143,7 @@ public abstract class AbstractFiller implements Filler {
 	 * 
 	 * @return the map< string, object>
 	 */
-	protected final Map<String, Object> buildParamMap(
+	protected Map<String, Object> buildParamMap(
 			final FacesContext context, final UIReport report)
 			throws FillerException {
 		// Build param map using component's child parameters
