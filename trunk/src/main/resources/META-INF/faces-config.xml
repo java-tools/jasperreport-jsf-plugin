@@ -34,6 +34,7 @@
     </lifecycle>
     
     <component>
+    	<display-name>Data Source Component</display-name>
     	<component-type>
     		net.sf.jasperreports.DataSource
     	</component-type>
@@ -43,6 +44,7 @@
     </component>
     
     <component>
+    	<display-name>HTML Embedded Report Component</display-name>
     	<component-type>
     		net.sf.jasperreports.HtmlReport
     	</component-type>
@@ -52,6 +54,7 @@
     </component>
     
     <component>
+    	<display-name>HTML Link Report Component</display-name>
     	<component-type>
     		net.sf.jasperreports.HtmlReportLink
     	</component-type>
