@@ -24,6 +24,9 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
+
 final class ServletUtil extends Util {
 
 	protected ServletUtil() { }
@@ -36,16 +39,27 @@ final class ServletUtil extends Util {
 	}
 	
 	@Override
+	public void writeHeaders(FacesContext context, ReportRenderer renderer,
+			UIReport report) throws IOException {
+		final HttpServletResponse response = (HttpServletResponse) context
+				.getExternalContext().getResponse();
+		response.setHeader("Cache-Type", "no-cache");
+		response.setHeader("Expires", "0");
+		
+		if(report.getName() != null) {
+			response.setHeader("Content-Disposition", encodeContentDisposition(
+					renderer, report, response.getCharacterEncoding()));
+		}
+	}
+
+	@Override
 	public void writeResponse(FacesContext context, String contentType,
 			byte[] data) throws IOException {
 		final HttpServletResponse response = (HttpServletResponse) context
 				.getExternalContext().getResponse();
 		response.setContentType(contentType);
 		response.setContentLength(data.length);
-		response.getOutputStream().write(data);
-
-		response.setHeader("Cache-Type", "no-cache");
-		response.setHeader("Expires", "0");
+		response.getOutputStream().write(data);	
 	}
 	
 }

@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
@@ -34,6 +35,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.export.Exporter;
 import net.sf.jasperreports.jsf.fill.Filler;
+import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 import net.sf.jasperreports.jsf.spi.ExporterLoader;
 import net.sf.jasperreports.jsf.spi.FillerLoader;
 import net.sf.jasperreports.jsf.util.Util;
@@ -99,7 +101,7 @@ public final class ReportPhaseListener implements PhaseListener {
 				}
 	
 				final UIReport report = (UIReport) extContext.getSessionMap()
-						.remove(REPORT_COMPONENT_KEY_PREFIX + clientId);
+						.get(REPORT_COMPONENT_KEY_PREFIX + clientId);
 				if (report == null) {
 					throw new UnregisteredUIReportException(clientId);
 				}
@@ -119,6 +121,7 @@ public final class ReportPhaseListener implements PhaseListener {
 					exporter.export(context, filledReport, reportData);
 					util.writeResponse(context, exporter.getContentType(),
 							reportData.toByteArray());
+					report.encodeHeaders(context);
 				} catch (final IOException e) {
 					throw new JRFacesException(e);
 				} finally {

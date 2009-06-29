@@ -30,12 +30,14 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
 import net.sf.jasperreports.jsf.ReportPhaseListener;
+import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.util.Util;
 
 /**
  * The Class AbstractReportRenderer.
  */
-abstract class AbstractReportRenderer extends Renderer {
+abstract class AbstractReportRenderer extends Renderer 
+implements ReportRenderer {
 
 	/** The Constant PASSTHRU_ATTRS. */
 	private static final String[] PASSTHRU_ATTRS = { "dir", "lang", "title",
@@ -56,6 +58,12 @@ abstract class AbstractReportRenderer extends Renderer {
 	public final boolean getRendersChildren() { // NOPMD by antonio.alonso on
 		// 20/10/08 15:41
 		return true;
+	}
+
+	public void encodeHeaders(FacesContext context, UIReport report)
+			throws IOException {
+		Util util = Util.getInstance(context);
+		util.writeHeaders(context, this, report);
 	}
 
 	/**

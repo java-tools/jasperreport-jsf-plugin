@@ -19,12 +19,16 @@
 package net.sf.jasperreports.jsf.util;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+
+import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 
 /**
  * The Class Util.
@@ -189,6 +193,10 @@ public abstract class Util {
 		return mapping.charAt(0) == '/';
 	}
 
+	public abstract void writeHeaders(FacesContext context, 
+			ReportRenderer renderer, UIReport report)
+	throws IOException;
+	
 	/**
 	 * Write response.
 	 * 
@@ -203,8 +211,22 @@ public abstract class Util {
 	 *             Signals that an I/O exception has occurred.
 	 */
 	public abstract void writeResponse(final FacesContext context,
-			final String contentType, final byte[] data) throws IOException;
+			final String contentType, 
+			final byte[] data) 
+	throws IOException;
 
+	protected String encodeContentDisposition(ReportRenderer renderer, 
+			UIReport report, String enc) 
+	throws IOException {
+		StringBuffer disposition = new StringBuffer();
+		if(report.getName() != null) {
+			disposition.append(renderer.getContentDisposition());
+			disposition.append(";");
+			disposition.append(URLEncoder.encode(report.getName(), enc));
+		}
+		return disposition.toString();
+	}
+	
 	/**
 	 * <p>
 	 * Return the appropriate {@link javax.faces.webapp.FacesServlet} mapping

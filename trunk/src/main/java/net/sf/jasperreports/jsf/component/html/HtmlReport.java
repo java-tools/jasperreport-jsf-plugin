@@ -18,6 +18,8 @@
  */
 package net.sf.jasperreports.jsf.component.html;
 
+import java.io.IOException;
+
 import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -27,6 +29,7 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.component.UIReportImplementor;
 import net.sf.jasperreports.jsf.renderkit.EmbedRenderer;
+import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 
 /**
  * The Class HtmlReport.
@@ -88,6 +91,14 @@ public class HtmlReport extends HtmlPanelGroup implements UIReport {
 	 */
 	public void setDataSource(final String dataSource) {
 		impl.setDataSource(dataSource);
+	}
+
+	public String getName() {
+		return impl.getName();
+	}
+
+	public void setName(String name) {
+		impl.setName(name);
 	}
 
 	/*
@@ -316,6 +327,11 @@ public class HtmlReport extends HtmlPanelGroup implements UIReport {
 	}
 
 	// State saving/restoring methods
+
+	public void encodeHeaders(FacesContext context) throws IOException {
+		ReportRenderer renderer = (ReportRenderer) getRenderer(context);
+		renderer.encodeHeaders(context, this);
+	}
 
 	/*
 	 * (non-Javadoc)

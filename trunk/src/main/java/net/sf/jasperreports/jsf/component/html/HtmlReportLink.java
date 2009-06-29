@@ -18,12 +18,15 @@
  */
 package net.sf.jasperreports.jsf.component.html;
 
+import java.io.IOException;
+
 import javax.faces.component.html.HtmlOutputLink;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.component.UIReportImplementor;
 import net.sf.jasperreports.jsf.renderkit.LinkRenderer;
+import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 
 /**
  * The Class HtmlReportLink.
@@ -86,6 +89,14 @@ public class HtmlReportLink extends HtmlOutputLink implements UIReport {
 		impl.setPath(path);
 	}
 
+	public String getName() {
+		return impl.getName();
+	}
+
+	public void setName(String name) {
+		impl.setName(name);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -136,6 +147,11 @@ public class HtmlReportLink extends HtmlOutputLink implements UIReport {
 	}
 
 	// State saving/restoring methods
+
+	public void encodeHeaders(FacesContext context) throws IOException {
+		ReportRenderer renderer = (ReportRenderer) getRenderer(context);
+		renderer.encodeHeaders(context, this);
+	}
 
 	/*
 	 * (non-Javadoc)

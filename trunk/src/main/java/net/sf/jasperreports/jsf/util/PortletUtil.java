@@ -24,6 +24,9 @@ import javax.faces.context.FacesContext;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
+import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
+
 final class PortletUtil extends Util {
 	
 	protected PortletUtil() { }
@@ -40,6 +43,26 @@ final class PortletUtil extends Util {
 	}
 	
 	@Override
+	public void writeHeaders(FacesContext context, ReportRenderer renderer,
+			UIReport report) 
+	throws IOException {
+		if ("2.0".equals(getPortletVersion())) {
+			final ResourceResponse response = (ResourceResponse) context
+					.getExternalContext().getResponse();
+			response.setProperty("Cache-Type", "no-cache");
+			response.setProperty("Expires", "0");
+			
+			if(report.getName() != null) {
+				response.setProperty("Content-Disposition", encodeContentDisposition(
+						renderer, report, response.getCharacterEncoding()));
+			}
+		} else {
+			throw new IllegalStateException(
+			"Only Resource Request/Response state is allowed");
+		}
+	}
+
+	@Override
 	public void writeResponse(FacesContext context, String contentType,
 			byte[] data) throws IOException {
 		if ("2.0".equals(getPortletVersion())) {
@@ -48,9 +71,6 @@ final class PortletUtil extends Util {
 			response.setContentType(contentType);
 			response.setContentLength(data.length);
 			response.getPortletOutputStream().write(data);
-
-			response.setProperty("Cache-Type", "no-cache");
-			response.setProperty("Expires", "0");
 		} else {
 			throw new IllegalStateException(
 					"Only Resource Request/Response state is allowed");
