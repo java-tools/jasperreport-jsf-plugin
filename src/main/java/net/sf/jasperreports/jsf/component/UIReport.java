@@ -18,7 +18,10 @@
  */
 package net.sf.jasperreports.jsf.component;
 
+import java.io.IOException;
+
 import javax.faces.component.StateHolder;
+import javax.faces.context.FacesContext;
 
 /**
  * The Interface UIReport.
@@ -43,6 +46,10 @@ public interface UIReport extends StateHolder {
 	 */
 	public void setDataSource(String dataSource);
 
+	public String getName();
+	
+	public void setName(String name);
+	
 	/**
 	 * Gets the path.
 	 * 
@@ -88,4 +95,6 @@ public interface UIReport extends StateHolder {
 	 */
 	public void setFormat(String format);
 
+	public void encodeHeaders(FacesContext context) throws IOException;
+	
 }

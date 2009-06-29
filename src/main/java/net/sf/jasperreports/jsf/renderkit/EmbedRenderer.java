@@ -37,6 +37,8 @@ import net.sf.jasperreports.jsf.component.html.HtmlReport;
  */
 public class EmbedRenderer extends AbstractReportRenderer {
 
+	public static final String CONTENT_DISPOSITION = "inline";
+	
 	/** The Constant RENDERER_TYPE. */
 	public static final String RENDERER_TYPE = "net.sf.jasperreports.Embed";
 
@@ -47,6 +49,10 @@ public class EmbedRenderer extends AbstractReportRenderer {
 	/** The logger. */
 	private static final Logger logger = Logger.getLogger(EmbedRenderer.class
 			.getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
+
+	public String getContentDisposition() {
+		return CONTENT_DISPOSITION;
+	}
 
 	/*
 	 * (non-Javadoc)

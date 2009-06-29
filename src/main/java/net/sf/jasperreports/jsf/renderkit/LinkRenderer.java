@@ -36,12 +36,18 @@ import net.sf.jasperreports.jsf.component.UIReport;
  */
 public class LinkRenderer extends AbstractReportRenderer {
 
+	public static final String CONTENT_DISPOSITION = "attachment";
+	
 	/** The Constant RENDERER_TYPE. */
 	public static final String RENDERER_TYPE = "net.sf.jasperreports.Link";
 
 	/** The logger. */
 	private static final Logger logger = Logger.getLogger(LinkRenderer.class
 			.getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
+
+	public String getContentDisposition() {
+		return CONTENT_DISPOSITION;
+	}
 
 	/*
 	 * (non-Javadoc)

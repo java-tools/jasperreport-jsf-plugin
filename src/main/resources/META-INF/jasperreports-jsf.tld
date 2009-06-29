@@ -114,6 +114,13 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
+			<name>name</name>
+			<required>false</required>
+			<deferred-value>
+				<type>java.lang.String</type>
+			</deferred-value>
+		</attribute>
+		<attribute>
 			<name>path</name>
 			<required>true</required>
 			<deferred-value>
@@ -198,6 +205,13 @@
 		</attribute>
 		<attribute>
 			<name>dataSource</name>
+			<required>false</required>
+			<deferred-value>
+				<type>java.lang.String</type>
+			</deferred-value>
+		</attribute>
+		<attribute>
+			<name>name</name>
 			<required>false</required>
 			<deferred-value>
 				<type>java.lang.String</type>

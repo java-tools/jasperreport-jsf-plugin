@@ -28,7 +28,7 @@ import javax.faces.context.FacesContext;
 /**
  * The Class UIReportImplementor.
  */
-public final class UIReportImplementor implements UIReport, StateHolder {
+public final class UIReportImplementor implements StateHolder {
 
 	/** The callback. */
 	private final UIComponentBase callback;
@@ -36,6 +36,8 @@ public final class UIReportImplementor implements UIReport, StateHolder {
 	/** The data source. */
 	private String dataSource;
 
+	private String name;
+	
 	/** The path. */
 	private String path;
 
@@ -92,6 +94,26 @@ public final class UIReportImplementor implements UIReport, StateHolder {
 	 */
 	public void setDataSource(final String dataSource) {
 		this.dataSource = dataSource;
+	}
+
+	public String getName() {
+		if (name != null) {
+			return name;
+		}
+		final ValueExpression ve = getValueExpression("name");
+		if(ve != null) {
+			try {
+				return (String) ve.getValue(getFacesContext().getELContext());
+			} catch (final ELException e) {
+				throw new FacesException(e);
+			}
+		} else {
+			return name;
+		}
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	/*
@@ -209,6 +231,7 @@ public final class UIReportImplementor implements UIReport, StateHolder {
 		path = (String) values[1];
 		subreportDir = (String) values[2];
 		format = (String) values[3];
+		name = (String) values[4];
 	}
 
 	/*
@@ -219,11 +242,12 @@ public final class UIReportImplementor implements UIReport, StateHolder {
 	 * )
 	 */
 	public Object saveState(final FacesContext context) {
-		final Object[] values = new Object[4];
+		final Object[] values = new Object[5];
 		values[0] = dataSource;
 		values[1] = path;
 		values[2] = subreportDir;
 		values[3] = format;
+		values[4] = name;
 		return values;
 	}
 
