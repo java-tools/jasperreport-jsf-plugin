@@ -34,6 +34,13 @@
 	<uri>http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_0.tld</uri>
 	
 	<tag>
+		<description><![CDATA[
+Faces component tag used to provide to a report component 
+the data needed for rendering. Consult library documentation
+about how to use this tag and its possible locations within
+the Faces tree.
+		]]></description>
+		<display-name>Data Source Tag</display-name>
 		<name>dataSource</name>
 		<tag-class>
 			net.sf.jasperreports.jsf.taglib.DataSourceTag
@@ -52,6 +59,11 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
+			<description><![CDATA[
+JDBC driver class using for connecting to a SQL
+database and obtain a result to be used as data input
+for the report. Required when using <tt>jdbc</tt> data sources.
+			]]></description>
 			<name>driverClass</name>
 			<required>false</required>
 			<deferred-value>
@@ -59,6 +71,11 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
+			<description><![CDATA[
+Query to be used to filter the data obtained from
+the data source. The query language used depends
+on the type of data source the user is dealing with. 
+			]]></description>
 			<name>query</name>
 			<required>false</required>
 			<deferred-value>
@@ -66,6 +83,13 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
+			<description><![CDATA[
+Selection of the data source type to be used.
+The value to be used depends of the available
+data source types provided by means of the
+<tt>Filler</tt> interface. To know more, consult 
+library documentation. 
+			]]></description>
 			<name>type</name>
 			<required>false</required>
 			<deferred-value>
@@ -73,6 +97,13 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
+			<description><![CDATA[
+This value depends of the type of data source
+being configured. It can be a JDBC URL, an XML
+document, a bean array, etc. Consult the library
+documentation to obtain information about possible
+values.
+			]]></description>
 			<name>value</name>
 			<required>false</required>
 			<deferred-value>
@@ -82,6 +113,12 @@
 	</tag>
 	
 	<tag>
+		<description><![CDATA[
+Faces component tag used to insert an inline report
+within a faces component tree. Component will be
+rendered inside the page.
+		]]></description>
+		<display-name>Embedded Report Tag</display-name>
 		<name>report</name>
 		<tag-class>
 			net.sf.jasperreports.jsf.taglib.ReportTag
@@ -107,6 +144,10 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
+			<description><![CDATA[
+Data source ID reference used to obtain the data
+needed to render the report.
+			]]></description>
 			<name>dataSource</name>
 			<required>false</required>
 			<deferred-value>
@@ -114,6 +155,11 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
+			<description><![CDATA[
+File name of the exported report. This value will
+be used inside the <tt>Content-Disposition</tt>
+header when rendering the report contents.
+			]]></description>
 			<name>name</name>
 			<required>false</required>
 			<deferred-value>
@@ -121,6 +167,12 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
+			<description><![CDATA[
+Path to the report resource that should be rendered.
+Values of this attribute depend on available resource
+loaders. Consult library documentation to know more
+about the built-in resource loading mechanism.
+			]]></description>
 			<name>path</name>
 			<required>true</required>
 			<deferred-value>
@@ -128,6 +180,13 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
+			<description><![CDATA[
+Path to the sub report location needed by the report 
+that should be rendered. Values of this attribute 
+depend on available resource loaders. Consult library 
+documentation to know more about the built-in resource 
+loading mechanism.
+			]]></description>
 			<name>subreportDir</name>
 			<required>false</required>
 			<deferred-value>
@@ -135,6 +194,11 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
+			<description><![CDATA[
+Output format of the rendered report. Consult
+library documentation to know the possible
+values of this attribute.
+			]]></description>
 			<name>format</name>
 			<required>false</required>
 			<deferred-value>
@@ -179,6 +243,13 @@
 	</tag>
 	
 	<tag>
+		<description><![CDATA[
+Faces component tag used to insert an report link
+within a faces component tree. Component will be
+rendered as link that when clicked outputs the
+report contents.
+		]]></description>
+		<display-name>Report Link Tag</display-name>
 		<name>reportLink</name>
 		<tag-class>
 			net.sf.jasperreports.jsf.taglib.ReportLinkTag
@@ -204,6 +275,10 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
+			<description><![CDATA[
+Data source ID reference used to obtain the data
+needed to render the report.
+			]]></description>
 			<name>dataSource</name>
 			<required>false</required>
 			<deferred-value>
@@ -211,6 +286,11 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
+			<description><![CDATA[
+File name of the exported report. This value will
+be used inside the <tt>Content-Disposition</tt>
+header when rendering the report contents.
+			]]></description>
 			<name>name</name>
 			<required>false</required>
 			<deferred-value>
@@ -218,6 +298,12 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
+			<description><![CDATA[
+Path to the report resource that should be rendered.
+Values of this attribute depend on available resource
+loaders. Consult library documentation to know more
+about the built-in resource loading mechanism.
+			]]></description>
 			<name>path</name>
 			<required>true</required>
 			<deferred-value>
@@ -225,6 +311,13 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
+			<description><![CDATA[
+Path to the sub report location needed by the report 
+that should be rendered. Values of this attribute 
+depend on available resource loaders. Consult library 
+documentation to know more about the built-in resource 
+loading mechanism.
+			]]></description>
 			<name>subreportDir</name>
 			<required>false</required>
 			<deferred-value>
@@ -232,6 +325,11 @@
 			</deferred-value>
 		</attribute>
 		<attribute>
+			<description><![CDATA[
+Output format of the rendered report. Consult
+library documentation to know the possible
+values of this attribute.
+			]]></description>
 			<name>format</name>
 			<required>false</required>
 			<deferred-value>
