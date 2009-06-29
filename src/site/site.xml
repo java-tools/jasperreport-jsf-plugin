@@ -64,9 +64,11 @@
     </menu>
     
     <menu name="Developer Documentation">
-      <item name="Extending Functionality" href="devel/index.html">
-	    <item name="Output Formats" href="devel/exporter.html" />
-	    <item name="Data Sources" href="devel/filler.html" />
+      <item name="Functional Features" href="devel/index.html">
+	    <item name="Fillers" href="devel/filler.html" />
+	    <item name="Exporters" href="devel/exporter.html" />
+	    <item name="Resource Loading" href="devel/resource_loading.html" />
+	    <item name="Validators" href="devel/validators.html" />
       </item>
       <item name="Reference">
         <item name="API Docs" href="apidocs/index.html" />
