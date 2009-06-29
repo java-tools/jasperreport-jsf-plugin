@@ -107,15 +107,7 @@ public final class XmlFiller extends AbstractJRDataSourceFiller {
 		}
 		
 		try {
-			DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder builder = builderFactory.newDocumentBuilder();		
-			return builder.parse(stream);
-		} catch (SAXException e) {
-			throw new FillerException(e);
-		} catch (ParserConfigurationException e) {
-			throw new FillerException(e);
-		} catch (IOException e) {
-			throw new FillerException(e);
+			return parseStream(stream);
 		} finally {
 			if(stream != null && closeStream) {
 				try {
@@ -139,6 +131,23 @@ public final class XmlFiller extends AbstractJRDataSourceFiller {
 		
 		return MessageFormat.format(query, 
 				params.toArray(new Object[params.size()]));
+	}
+	
+	private Document parseStream(InputStream stream)
+	throws FillerException {
+		Document result;
+		try {
+			DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder builder = builderFactory.newDocumentBuilder();		
+			result = builder.parse(stream);
+		} catch (SAXException e) {
+			throw new FillerException(e);
+		} catch (ParserConfigurationException e) {
+			throw new FillerException(e);
+		} catch (IOException e) {
+			throw new FillerException(e);
+		}
+		return result;
 	}
 	
 }

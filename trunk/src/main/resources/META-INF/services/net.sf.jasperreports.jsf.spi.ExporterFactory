@@ -19,6 +19,7 @@
 # alonsoft@users.sf.net
 #
 :net.sf.jasperreports.jsf.export.providers.PdfExporterFactory
+pdf:net.sf.jasperreports.jsf.export.providers.PdfExporterFactory
 csv:net.sf.jasperreports.jsf.export.providers.CsvExporterFactory
 html:net.sf.jasperreports.jsf.export.providers.HtmlExporterFactory
 rtf:net.sf.jasperreports.jsf.export.providers.RtfExporterFactory
