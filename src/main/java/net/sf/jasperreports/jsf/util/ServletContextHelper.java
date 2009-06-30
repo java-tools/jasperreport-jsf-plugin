@@ -27,9 +27,9 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 
-final class ServletUtil extends Util {
+final class ServletContextHelper extends ExternalContextHelper {
 
-	protected ServletUtil() { }
+	protected ServletContextHelper() { }
 
 	@Override
 	public String getRequestURI(FacesContext context) {

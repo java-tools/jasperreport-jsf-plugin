@@ -73,10 +73,15 @@ public class EmbedRenderer extends AbstractReportRenderer {
 		logger.log(Level.FINE, "JRJSF_0002", component.getClientId(context));
 
 		final ResponseWriter writer = context.getResponseWriter();
+		if("block".equals(
+				component.getAttributes().get("layout"))) {
+			writer.startElement("br", component);
+		}
+		
 		writer.startElement("iframe", component);
 		renderIdAttribute(context, component);
 		writer.writeURIAttribute("src", reportURI, null);
-
+		
 		renderAttributes(writer, component);
 	}
 
@@ -105,6 +110,11 @@ public class EmbedRenderer extends AbstractReportRenderer {
 		final ResponseWriter writer = context.getResponseWriter();
 		writer.endElement("iframe");
 
+		if("block".equals(
+				component.getAttributes().get("layout"))) {
+			writer.startElement("br", component);
+		}
+		
 		registerComponent(context, component);
 	}
 

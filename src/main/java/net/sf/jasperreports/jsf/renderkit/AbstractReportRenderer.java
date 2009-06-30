@@ -37,6 +37,7 @@ import net.sf.jasperreports.jsf.export.Exporter;
 import net.sf.jasperreports.jsf.fill.Filler;
 import net.sf.jasperreports.jsf.spi.ExporterLoader;
 import net.sf.jasperreports.jsf.spi.FillerLoader;
+import net.sf.jasperreports.jsf.util.ExternalContextHelper;
 import net.sf.jasperreports.jsf.util.Util;
 
 /**
@@ -81,7 +82,7 @@ implements ReportRenderer {
 		logger.log(Level.FINE, "JRJSF_0006", clientId);
 		final JasperPrint filledReport = filler.fill(context, report);
 
-		final Util util = Util.getInstance(context);
+		final ExternalContextHelper helper = ExternalContextHelper.getInstance(context);
 		final Exporter exporter = ExporterLoader.getExporter(context, report);
 		final ByteArrayOutputStream reportData = new ByteArrayOutputStream();
 		try {
@@ -90,7 +91,7 @@ implements ReportRenderer {
 						clientId, exporter.getContentType() });
 			}
 			exporter.export(context, filledReport, reportData);
-			util.writeResponse(context, exporter.getContentType(), 
+			helper.writeResponse(context, exporter.getContentType(), 
 					reportData.toByteArray());
 		} finally {
 			try {
@@ -110,8 +111,8 @@ implements ReportRenderer {
 			throw new IllegalArgumentException("Report component is null");
 		}
 		
-		final Util util = Util.getInstance(context);
-		util.writeHeaders(context, this, report);
+		final ExternalContextHelper helper = ExternalContextHelper.getInstance(context);
+		helper.writeHeaders(context, this, report);
 	}
 	
 	/**
@@ -129,9 +130,8 @@ implements ReportRenderer {
 		final StringBuffer reportURI = new StringBuffer(
 				ReportPhaseListener.BASE_URI);
 
-		final Util util = Util.getInstance(context);
-		final String mapping = util.getFacesMapping(context);
-		if (util.isPrefixMapped(mapping)) {
+		final String mapping = Util.getFacesMapping(context);
+		if (Util.isPrefixMapped(mapping)) {
 			reportURI.insert(0, mapping);
 		} else {
 			reportURI.append(mapping);
