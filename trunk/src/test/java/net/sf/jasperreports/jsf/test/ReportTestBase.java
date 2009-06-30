@@ -16,14 +16,17 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf;
+package net.sf.jasperreports.jsf.test;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.logging.Logger;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.xml.sax.SAXException;
 
-import com.meterware.httpunit.WebLink;
 import com.meterware.httpunit.WebResponse;
 import com.meterware.servletunit.ServletRunner;
 import com.meterware.servletunit.ServletUnitClient;
@@ -31,10 +34,10 @@ import com.meterware.servletunit.ServletUnitClient;
 /**
  * The Class JasperReportTest.
  */
-public class JasperReportTest extends TestCase {
+public abstract class ReportTestBase {
 
 	private static final Logger logger = Logger
-			.getLogger(JasperReportTest.class.getPackage() + ".test");
+			.getLogger(ReportTestBase.class.getPackage() + ".test");
 
 	/** The context dir. */
 	private File contextDir;
@@ -45,51 +48,15 @@ public class JasperReportTest extends TestCase {
 	/** The runner. */
 	private transient ServletRunner runner;
 
-	/**
-	 * Instantiates a new jasper report test.
-	 * 
-	 * @param name
-	 *            the name
-	 */
-	public JasperReportTest(final String name) {
-		super(name);
-	}
-
-	/**
-	 * Test report inline.
-	 * 
-	 * @throws Exception
-	 *             the exception
-	 */
-	public void testReportInline() throws Exception {
-		final ServletUnitClient client = runner.newClient();
-
-		client.getResponse("http://localhost" + contextPath
-				+ "/ReportInlineTest.jsf");
-	}
-
-	/**
-	 * Test report link.
-	 * 
-	 * @throws Exception
-	 *             the exception
-	 */
-	public void testReportLink() throws Exception {
-		final ServletUnitClient client = runner.newClient();
-		final WebResponse response = client.getResponse("http://localhost"
-				+ contextPath + "/ReportLinkTest.jsf");
-		final WebLink link = response.getLinkWithID("reportLink");
-		assertNotNull("Link 'reportLink' is null", link);
-		link.click();
-	}
-
+	private transient ServletUnitClient client;
+	
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see junit.framework.TestCase#setUp()
 	 */
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void startContainer() throws Exception {
 		contextDir = new File(System.getProperty("context-dir"));
 		contextPath = System.getProperty("context-path");
 
@@ -105,12 +72,34 @@ public class JasperReportTest extends TestCase {
 	 * 
 	 * @see junit.framework.TestCase#tearDown()
 	 */
-	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void stopContainer() throws Exception {
+		if(client != null) {
+			client.clearContents();
+		}
+		client = null;
+		
 		runner.shutDown();
 		runner = null;
-
-		super.tearDown();
+	}
+	
+	protected final ServletUnitClient getClient() {
+		if(client == null) {
+			client = runner.newClient();
+		}
+		return client;
+	}
+	
+	protected WebResponse getCurrentPage() {
+		final ServletUnitClient client = getClient();
+		return client.getCurrentPage();
+	}
+	
+	protected WebResponse getResponse(String path) 
+	throws MalformedURLException, IOException, SAXException {
+		final ServletUnitClient client = getClient();
+		return client.getResponse("http://localhost"
+				+ contextPath + path);
 	}
 
 }

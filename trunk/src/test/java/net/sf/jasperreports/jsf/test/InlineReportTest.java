@@ -16,57 +16,19 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf;
+package net.sf.jasperreports.jsf.test;
 
-import net.sf.jasperreports.jsf.component.UIReport;
+import org.junit.Assert;
+import org.junit.Test;
 
-/**
- * The Class ReportTestBean.
- */
-public class ReportTestBean {
+import com.meterware.httpunit.WebResponse;
 
-	/** The factura id. */
-	private Long facturaId;
+public class InlineReportTest extends ReportTestBase {
 
-	/** The report. */
-	private UIReport report;
-
-	/**
-	 * Gets the factura id.
-	 * 
-	 * @return the factura id
-	 */
-	public Long getFacturaId() {
-		return facturaId;
+	@Test
+	public void renderInline() throws Exception {
+		WebResponse response = getResponse("/ReportInlineTest.jsf");
+		Assert.assertNotNull(response);
 	}
-
-	/**
-	 * Sets the factura id.
-	 * 
-	 * @param facturaId
-	 *            the new factura id
-	 */
-	public void setFacturaId(final Long facturaId) {
-		this.facturaId = facturaId;
-	}
-
-	/**
-	 * Gets the report.
-	 * 
-	 * @return the report
-	 */
-	public UIReport getReport() {
-		return report;
-	}
-
-	/**
-	 * Sets the report.
-	 * 
-	 * @param report
-	 *            the new report
-	 */
-	public void setReport(final UIReport report) {
-		this.report = report;
-	}
-
+	
 }
