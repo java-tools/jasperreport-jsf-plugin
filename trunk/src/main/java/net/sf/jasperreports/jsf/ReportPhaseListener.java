@@ -30,7 +30,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.util.Util;
+import net.sf.jasperreports.jsf.util.ExternalContextHelper;
 
 /**
  * The listener interface for receiving reportPhase events. The class that is
@@ -78,9 +78,9 @@ public final class ReportPhaseListener implements PhaseListener {
 	 */
 	public void beforePhase(final PhaseEvent event) throws FacesException {
 		final FacesContext context = event.getFacesContext();
-		final Util util = Util.getInstance(context);
+		final ExternalContextHelper helper = ExternalContextHelper.getInstance(context);
 		
-		final String uri = util.getRequestURI(context);
+		final String uri = helper.getRequestURI(context);
 		if (uri != null && uri.indexOf(BASE_URI) > -1) {
 			try {
 				final ExternalContext extContext = context.getExternalContext();

@@ -27,9 +27,9 @@ import javax.portlet.ResourceResponse;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 
-final class PortletUtil extends Util {
+final class PortletContextHelper extends ExternalContextHelper {
 	
-	protected PortletUtil() { }
+	protected PortletContextHelper() { }
 	
 	@Override
 	public String getRequestURI(FacesContext context) {
