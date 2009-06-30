@@ -18,26 +18,18 @@
  */
 package net.sf.jasperreports.jsf;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
-import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.export.Exporter;
-import net.sf.jasperreports.jsf.fill.Filler;
-import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
-import net.sf.jasperreports.jsf.spi.ExporterLoader;
-import net.sf.jasperreports.jsf.spi.FillerLoader;
 import net.sf.jasperreports.jsf.util.Util;
 
 /**
@@ -105,31 +97,15 @@ public final class ReportPhaseListener implements PhaseListener {
 				if (report == null) {
 					throw new UnregisteredUIReportException(clientId);
 				}
-	
-				final Filler filler = FillerLoader.getFiller(context, report);
-				logger.log(Level.FINE, "JRJSF_0006", clientId);
-				final JasperPrint filledReport = filler.fill(context, report);
-	
-				final Exporter exporter = ExporterLoader.getExporter(context,
-						report);
-				final ByteArrayOutputStream reportData = new ByteArrayOutputStream();
+
+				logger.log(Level.FINER, "JRJSF_0016", clientId);
 				try {
-					if (logger.isLoggable(Level.FINE)) {
-						logger.log(Level.FINE, "JRJSF_0010", new Object[] {
-								clientId, exporter.getContentType() });
-					}
-					exporter.export(context, filledReport, reportData);
-					util.writeResponse(context, exporter.getContentType(),
-							reportData.toByteArray());
+					report.encodeContent(context);
 					report.encodeHeaders(context);
 				} catch (final IOException e) {
 					throw new JRFacesException(e);
 				} finally {
-					try {
-						reportData.close();
-					} catch (final IOException e) {
-						// ignore
-					}
+					logger.log(Level.FINER, "JRJSF_0017", clientId);
 				}
 			} finally {
 				context.responseComplete();

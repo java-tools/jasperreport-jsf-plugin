@@ -326,13 +326,20 @@ public class HtmlReport extends HtmlPanelGroup implements UIReport {
 		return UIReport.COMPONENT_FAMILY;
 	}
 
-	// State saving/restoring methods
+	// UIReport encode methods
+	
+	public void encodeContent(FacesContext context) throws IOException {
+		ReportRenderer renderer = (ReportRenderer) getRenderer(context);
+		renderer.encodeContent(context, this);
+	}
 
 	public void encodeHeaders(FacesContext context) throws IOException {
 		ReportRenderer renderer = (ReportRenderer) getRenderer(context);
 		renderer.encodeHeaders(context, this);
 	}
 
+	// State saving/restoring methods
+	
 	/*
 	 * (non-Javadoc)
 	 * 

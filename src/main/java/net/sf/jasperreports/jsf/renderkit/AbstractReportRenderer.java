@@ -18,6 +18,7 @@
  */
 package net.sf.jasperreports.jsf.renderkit;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,8 +30,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
+import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.ReportPhaseListener;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.export.Exporter;
+import net.sf.jasperreports.jsf.fill.Filler;
+import net.sf.jasperreports.jsf.spi.ExporterLoader;
+import net.sf.jasperreports.jsf.spi.FillerLoader;
 import net.sf.jasperreports.jsf.util.Util;
 
 /**
@@ -59,13 +65,41 @@ implements ReportRenderer {
 		// 20/10/08 15:41
 		return true;
 	}
+	
+	public void encodeContent(FacesContext context, UIReport report)
+	throws IOException {
+		final String clientId = ((UIComponent) report).getClientId(context);
+
+		final Filler filler = FillerLoader.getFiller(context, report);
+		logger.log(Level.FINE, "JRJSF_0006", clientId);
+		final JasperPrint filledReport = filler.fill(context, report);
+
+		final Util util = Util.getInstance(context);
+		final Exporter exporter = ExporterLoader.getExporter(context, report);
+		final ByteArrayOutputStream reportData = new ByteArrayOutputStream();
+		try {
+			if (logger.isLoggable(Level.FINE)) {
+				logger.log(Level.FINE, "JRJSF_0010", new Object[] {
+						clientId, exporter.getContentType() });
+			}
+			exporter.export(context, filledReport, reportData);
+			util.writeResponse(context, exporter.getContentType(), 
+					reportData.toByteArray());
+		} finally {
+			try {
+				reportData.close();
+			} catch (final IOException e) {
+				// ignore
+			}
+		}
+	}
 
 	public void encodeHeaders(FacesContext context, UIReport report)
 			throws IOException {
-		Util util = Util.getInstance(context);
+		final Util util = Util.getInstance(context);
 		util.writeHeaders(context, this, report);
 	}
-
+	
 	/**
 	 * Builds the report uri.
 	 * 
