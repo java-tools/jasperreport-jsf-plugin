@@ -68,6 +68,13 @@ implements ReportRenderer {
 	
 	public void encodeContent(FacesContext context, UIReport report)
 	throws IOException {
+		if(context == null) {
+			throw new IllegalArgumentException("Faces' context is null");
+		}
+		if(report == null) {
+			throw new IllegalArgumentException("Report component is null");
+		}
+		
 		final String clientId = ((UIComponent) report).getClientId(context);
 
 		final Filler filler = FillerLoader.getFiller(context, report);
@@ -96,6 +103,13 @@ implements ReportRenderer {
 
 	public void encodeHeaders(FacesContext context, UIReport report)
 			throws IOException {
+		if(context == null) {
+			throw new IllegalArgumentException("Faces' context is null");
+		}
+		if(report == null) {
+			throw new IllegalArgumentException("Report component is null");
+		}
+		
 		final Util util = Util.getInstance(context);
 		util.writeHeaders(context, this, report);
 	}
