@@ -18,6 +18,9 @@
  */
 package net.sf.jasperreports.jsf.util;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -28,8 +31,13 @@ import javax.servlet.http.HttpServletRequest;
  */
 public final class Util {
 
+	private static final Logger logger = Logger.getLogger(
+			Util.class.getPackage().getName(), 
+			"net.sf.jasperreports.jsf.LogMessages");
+	
 	/** The Constant INVOCATION_PATH. */
-	private static final String INVOCATION_PATH = "net.sf.jasperreports.jsf.INVOCATION_PATH";
+	private static final String INVOCATION_PATH = 
+		"net.sf.jasperreports.jsf.INVOCATION_PATH";
 	
 	/**
 	 * Gets the class loader.
@@ -98,7 +106,14 @@ public final class Util {
 		}
 
 		if (mapping != null) {
+			if(logger.isLoggable(Level.FINER)) {
+				logger.log(Level.FINER, "JRJSF_0018", mapping);
+			}
 			extContext.getRequestMap().put(INVOCATION_PATH, mapping);
+		} else {
+			if(logger.isLoggable(Level.FINER)) {
+				logger.log(Level.FINER, "JRJSF_0019");
+			}
 		}
 
 		return mapping;
@@ -116,6 +131,9 @@ public final class Util {
 	 * @return true if the mapping starts with <code>/</code>
 	 */
 	public static boolean isPrefixMapped(final String mapping) {
+		if(mapping == null || mapping.length() == 0) {
+			throw new IllegalArgumentException("'mapping' can't be null or empty");
+		}
 		return mapping.charAt(0) == '/';
 	}
 	
