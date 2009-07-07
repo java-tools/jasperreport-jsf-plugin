@@ -36,7 +36,7 @@ public class JdbcDataSourceValidator extends DataSourceValidatorBase {
 	@Override
 	protected void doValidate(final FacesContext context,
 			final UIDataSource dataSource) throws ValidationException {
-		super.validate(context, dataSource);
+		super.doValidate(context, dataSource);
 		for (final String attr : REQUIRED_DATASOURCE_ATTRS) {
 			if (null == dataSource.getAttributes().get(attr)) {
 				throw new MissedDataSourceAttributeException(attr);
