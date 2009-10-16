@@ -121,7 +121,7 @@ public abstract class ExternalContextHelper {
 		StringBuffer disposition = new StringBuffer();
 		if(report.getName() != null) {
 			disposition.append(renderer.getContentDisposition());
-			disposition.append(";");
+			disposition.append("; filename=");
 			disposition.append(URLEncoder.encode(report.getName(), enc));
 		}
 		return disposition.toString();
