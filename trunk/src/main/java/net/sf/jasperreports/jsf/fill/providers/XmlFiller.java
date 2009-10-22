@@ -26,6 +26,8 @@ import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
@@ -35,6 +37,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
 import net.sf.jasperreports.jsf.component.UIDataSource;
@@ -51,6 +54,10 @@ import org.xml.sax.SAXException;
  */
 public final class XmlFiller extends AbstractJRDataSourceFiller {
 
+	private static final Logger logger = Logger.getLogger(
+			BeanFiller.class.getPackage().getName(), 
+			"net.sf.jasperreports.jsf.LogMessages");
+	
 	protected XmlFiller(final UIDataSource dataSource) {
 		super(dataSource);
 	}
@@ -61,16 +68,24 @@ public final class XmlFiller extends AbstractJRDataSourceFiller {
 		JRDataSource dataSource;
 
 		final Document xmlDocument = getXmlDocument(context);
-		final String query = getDataSourceComponent().getQuery();
-		try {
-			if ((query != null) && (query.length() > 0)) {
-				dataSource = new JRXmlDataSource(xmlDocument, 
-						parseQuery(query));
-			} else {
-				dataSource = new JRXmlDataSource(xmlDocument);
+		if(xmlDocument == null) {
+			if(logger.isLoggable(Level.WARNING)) {
+				logger.log(Level.WARNING, "JRJSF_0020", 
+						getDataSourceComponent().getClientId(context));
 			}
-		} catch (final JRException e) {
-			throw new FillerException(e);
+			dataSource = new JREmptyDataSource();
+		} else {
+			final String query = getDataSourceComponent().getQuery();
+			try {
+				if ((query != null) && (query.length() > 0)) {
+					dataSource = new JRXmlDataSource(xmlDocument, 
+							parseQuery(query));
+				} else {
+					dataSource = new JRXmlDataSource(xmlDocument);
+				}
+			} catch (final JRException e) {
+				throw new FillerException(e);
+			}
 		}
 		return dataSource;
 	}
@@ -78,6 +93,10 @@ public final class XmlFiller extends AbstractJRDataSourceFiller {
 	private Document getXmlDocument(FacesContext context) 
 	throws FillerException {
 		Object value = getDataSourceComponent().getValue();
+		if(value == null) {
+			return null;
+		}
+		
 		if(value instanceof Document) {
 			return (Document) value;
 		}

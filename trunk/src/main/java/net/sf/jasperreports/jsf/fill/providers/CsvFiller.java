@@ -23,10 +23,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.data.JRCsvDataSource;
 import net.sf.jasperreports.jsf.component.UIDataSource;
 import net.sf.jasperreports.jsf.fill.AbstractJRDataSourceFiller;
@@ -40,6 +43,10 @@ import net.sf.jasperreports.jsf.spi.ResourceLoader;
  */
 public final class CsvFiller extends AbstractJRDataSourceFiller {
 
+	private static final Logger logger = Logger.getLogger(
+			BeanFiller.class.getPackage().getName(), 
+			"net.sf.jasperreports.jsf.LogMessages");
+	
 	private InputStream dataSourceStream = null;
 	private boolean closeStream = true;
 	
@@ -53,7 +60,13 @@ public final class CsvFiller extends AbstractJRDataSourceFiller {
 		JRDataSource dataSource = null;
 		
 		final Object value = getDataSourceComponent().getValue();
-		if(value instanceof URL) {
+		if(value == null) {
+			if(logger.isLoggable(Level.WARNING)) {
+				logger.log(Level.WARNING, "JRJSF_0020", 
+						getDataSourceComponent().getClientId(context));
+			}
+			dataSource = new JREmptyDataSource();
+		} else if(value instanceof URL) {
 			try {
 				dataSourceStream = ((URL) value).openStream();
 			} catch (IOException e) {
