@@ -28,6 +28,7 @@ import javax.sql.DataSource;
 
 import net.sf.jasperreports.jsf.component.UIDataSource;
 import net.sf.jasperreports.jsf.fill.AbstractSQLFiller;
+import net.sf.jasperreports.jsf.fill.FillerException;
 
 /**
  * The Class JndiFiller.
@@ -51,6 +52,10 @@ public final class JndiFiller extends AbstractSQLFiller {
 	protected Connection getConnection() throws Exception {
 		final String dataSourceName = (String) getDataSourceComponent()
 				.getValue();
+		if(dataSourceName == null || dataSourceName.length() == 0) {
+			throw new FillerException("JNDI Filler requires a JNDI name" +
+					" from a dataSource component");
+		}
 		logger.log(Level.FINE, "JRJSF_0005", dataSourceName);
 
 		final Context jndi = new InitialContext();

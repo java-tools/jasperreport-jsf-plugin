@@ -20,10 +20,13 @@ package net.sf.jasperreports.jsf.fill.providers;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.data.JRMapArrayDataSource;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 import net.sf.jasperreports.jsf.component.UIDataSource;
@@ -35,6 +38,10 @@ import net.sf.jasperreports.jsf.fill.FillerException;
  */
 public final class MapFiller extends AbstractJRDataSourceFiller {
 
+	private static final Logger logger = Logger.getLogger(
+			BeanFiller.class.getPackage().getName(), 
+			"net.sf.jasperreports.jsf.LogMessages");
+	
 	protected MapFiller(final UIDataSource dataSource) {
 		super(dataSource);
 	}
@@ -45,7 +52,13 @@ public final class MapFiller extends AbstractJRDataSourceFiller {
 		JRDataSource dataSource;
 
 		final Object value = getDataSourceComponent().getValue();
-		if (value instanceof Collection) {
+		if (value == null) {
+			if(logger.isLoggable(Level.WARNING)) {
+				logger.log(Level.WARNING, "JRJSF_0020", 
+						getDataSourceComponent().getClientId(context));
+			}
+			dataSource = new JREmptyDataSource();
+		} else if (value instanceof Collection<?>) {
 			dataSource = new JRMapCollectionDataSource((Collection<?>) value);
 		} else {
 			Map<?, ?>[] mapArray;

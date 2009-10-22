@@ -19,10 +19,13 @@
 package net.sf.jasperreports.jsf.fill.providers;
 
 import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.jsf.component.UIDataSource;
 import net.sf.jasperreports.jsf.fill.AbstractJRDataSourceFiller;
@@ -33,6 +36,10 @@ import net.sf.jasperreports.jsf.fill.FillerException;
  */
 public final class ResultSetFiller extends AbstractJRDataSourceFiller {
 
+	private static final Logger logger = Logger.getLogger(
+			BeanFiller.class.getPackage().getName(), 
+			"net.sf.jasperreports.jsf.LogMessages");
+	
 	protected ResultSetFiller(final UIDataSource dataSource) {
 		super(dataSource);
 	}
@@ -41,6 +48,13 @@ public final class ResultSetFiller extends AbstractJRDataSourceFiller {
 	protected JRDataSource getJRDataSource(FacesContext context)
 			throws FillerException {
 		final ResultSet rs = (ResultSet) getDataSourceComponent().getValue();
+		if (rs == null) {
+			if(logger.isLoggable(Level.WARNING)) {
+				logger.log(Level.WARNING, "JRJSF_0020", 
+						getDataSourceComponent().getClientId(context));
+			}
+			return new JREmptyDataSource();
+		}
 		return new JRResultSetDataSource(rs);
 	}
 
