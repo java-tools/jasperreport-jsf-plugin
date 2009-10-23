@@ -52,9 +52,9 @@ public final class JndiFiller extends AbstractSQLFiller {
 	protected Connection getConnection() throws Exception {
 		final String dataSourceName = (String) getDataSourceComponent()
 				.getValue();
-		if(dataSourceName == null || dataSourceName.length() == 0) {
-			throw new FillerException("JNDI Filler requires a JNDI name" +
-					" from a dataSource component");
+		if (dataSourceName == null || dataSourceName.length() == 0) {
+			throw new FillerException("JNDI Filler requires a JNDI name"
+					+ " from a dataSource component");
 		}
 		logger.log(Level.FINE, "JRJSF_0005", dataSourceName);
 

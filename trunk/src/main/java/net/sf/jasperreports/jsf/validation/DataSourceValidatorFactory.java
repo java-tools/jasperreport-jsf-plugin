@@ -29,8 +29,8 @@ import net.sf.jasperreports.jsf.spi.ValidatorFactory;
 
 public final class DataSourceValidatorFactory implements ValidatorFactory {
 
-	private static final Map<String, DataSourceValidator> validatorCacheMap = 
-			Services.map(DataSourceValidator.class);
+	private static final Map<String, DataSourceValidator> validatorCacheMap = Services
+			.map(DataSourceValidator.class);
 
 	public boolean acceptsComponent(final UIComponent component) {
 		return (component instanceof UIDataSource);

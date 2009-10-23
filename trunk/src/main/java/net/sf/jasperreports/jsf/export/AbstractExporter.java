@@ -37,5 +37,5 @@ public abstract class AbstractExporter implements Exporter {
 	public final UIComponent getComponent() {
 		return component;
 	}
-	
+
 }

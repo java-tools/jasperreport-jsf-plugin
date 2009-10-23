@@ -69,11 +69,12 @@ public final class JdbcFiller extends AbstractSQLFiller {
 		final String password = (String) getDataSourceComponent()
 				.getAttributes().get("password");
 
-		if(connectionURL == null || connectionURL.length() == 0) {
-			throw new FillerException("JDBC Filler requires a connection string" +
-					" from a dataSource component");
+		if (connectionURL == null || connectionURL.length() == 0) {
+			throw new FillerException(
+					"JDBC Filler requires a connection string"
+							+ " from a dataSource component");
 		}
-		
+
 		Connection conn = null;
 		try {
 			if (username == null) {

@@ -27,8 +27,8 @@ public class InlineReportTest extends ReportTestBase {
 
 	@Test
 	public void renderInline() throws Exception {
-		WebResponse response = getResponse("/ReportInlineTest.jsf");
+		final WebResponse response = getResponse("/ReportInlineTest.jsf");
 		Assert.assertNotNull(response);
 	}
-	
+
 }

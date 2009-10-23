@@ -31,29 +31,30 @@ import net.sf.jasperreports.jsf.component.UIDataSource;
 
 public abstract class AbstractJRDataSourceFiller extends AbstractFiller {
 
-	public AbstractJRDataSourceFiller(UIDataSource dataSource) {
+	public AbstractJRDataSourceFiller(final UIDataSource dataSource) {
 		super(dataSource);
 	}
 
-	protected void closeDataSource(JRDataSource dataSource) 
-	throws FillerException { }
-	
+	protected void closeDataSource(final JRDataSource dataSource)
+			throws FillerException {
+	}
+
 	protected abstract JRDataSource getJRDataSource(FacesContext context)
-	throws FillerException;
+			throws FillerException;
 
 	@Override
-	protected final JasperPrint doFill(FacesContext context,
-			InputStream reportStream, Map<String, Object> params)
+	protected final JasperPrint doFill(final FacesContext context,
+			final InputStream reportStream, final Map<String, Object> params)
 			throws FillerException {
-		JRDataSource dataSource = getJRDataSource(context);
+		final JRDataSource dataSource = getJRDataSource(context);
 		try {
 			return JasperFillManager.fillReport(reportStream, params,
 					dataSource);
-		} catch(JRException e) {
+		} catch (final JRException e) {
 			throw new FillerException(e);
 		} finally {
 			closeDataSource(dataSource);
 		}
 	}
-	
+
 }

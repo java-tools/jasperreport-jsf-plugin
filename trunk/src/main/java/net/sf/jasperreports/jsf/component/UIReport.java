@@ -47,9 +47,9 @@ public interface UIReport extends StateHolder {
 	public void setDataSource(String dataSource);
 
 	public String getName();
-	
+
 	public void setName(String name);
-	
+
 	/**
 	 * Gets the path.
 	 * 
@@ -96,7 +96,7 @@ public interface UIReport extends StateHolder {
 	public void setFormat(String format);
 
 	public void encodeContent(FacesContext context) throws IOException;
-	
+
 	public void encodeHeaders(FacesContext context) throws IOException;
-	
+
 }

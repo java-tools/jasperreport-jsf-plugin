@@ -29,8 +29,8 @@ import net.sf.jasperreports.jsf.spi.ValidatorFactory;
 
 public final class ReportValidatorFactory implements ValidatorFactory {
 
-	private static final Map<String, ReportValidator> validatorCacheMap = 
-			Services.map(ReportValidator.class);
+	private static final Map<String, ReportValidator> validatorCacheMap = Services
+			.map(ReportValidator.class);
 
 	public boolean acceptsComponent(final UIComponent component) {
 		return (component instanceof UIReport);

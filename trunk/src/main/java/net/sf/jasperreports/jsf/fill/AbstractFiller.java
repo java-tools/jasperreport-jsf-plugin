@@ -143,9 +143,8 @@ public abstract class AbstractFiller implements Filler {
 	 * 
 	 * @return the map< string, object>
 	 */
-	protected Map<String, Object> buildParamMap(
-			final FacesContext context, final UIReport report)
-			throws FillerException {
+	protected Map<String, Object> buildParamMap(final FacesContext context,
+			final UIReport report) throws FillerException {
 		// Build param map using component's child parameters
 		final Map<String, Object> parameters = new HashMap<String, Object>();
 		for (final UIComponent component : ((UIComponent) report).getChildren()) {

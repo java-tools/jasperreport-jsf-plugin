@@ -44,8 +44,8 @@ import net.sf.jasperreports.jsf.util.Util;
 /**
  * The Class AbstractReportRenderer.
  */
-abstract class AbstractReportRenderer extends Renderer 
-implements ReportRenderer {
+abstract class AbstractReportRenderer extends Renderer implements
+		ReportRenderer {
 
 	/** The Constant PASSTHRU_ATTRS. */
 	private static final String[] PASSTHRU_ATTRS = { "dir", "lang", "title",
@@ -67,33 +67,34 @@ implements ReportRenderer {
 		// 20/10/08 15:41
 		return true;
 	}
-	
-	public void encodeContent(FacesContext context, UIReport report)
-	throws IOException {
-		if(context == null) {
+
+	public void encodeContent(final FacesContext context, final UIReport report)
+			throws IOException {
+		if (context == null) {
 			throw new IllegalArgumentException("Faces' context is null");
 		}
-		if(report == null) {
+		if (report == null) {
 			throw new IllegalArgumentException("Report component is null");
 		}
-		
+
 		final String clientId = ((UIComponent) report).getClientId(context);
 
 		final Filler filler = FillerLoader.getFiller(context, report);
 		logger.log(Level.FINE, "JRJSF_0006", clientId);
 		final JasperPrint filledReport = filler.fill(context, report);
 
-		final ExternalContextHelper helper = ExternalContextHelper.getInstance(context);
+		final ExternalContextHelper helper = ExternalContextHelper
+				.getInstance(context);
 		final Exporter exporter = ExporterLoader.getExporter(context, report);
 		final ByteArrayOutputStream reportData = new ByteArrayOutputStream();
 		try {
 			if (logger.isLoggable(Level.FINE)) {
-				logger.log(Level.FINE, "JRJSF_0010", new Object[] {
-						clientId, exporter.getContentType() });
+				logger.log(Level.FINE, "JRJSF_0010", new Object[] { clientId,
+						exporter.getContentType() });
 			}
 			exporter.export(context, filledReport, reportData);
-			helper.writeResponse(context, exporter.getContentType(), 
-					reportData.toByteArray());
+			helper.writeResponse(context, exporter.getContentType(), reportData
+					.toByteArray());
 		} finally {
 			try {
 				reportData.close();
@@ -103,19 +104,20 @@ implements ReportRenderer {
 		}
 	}
 
-	public void encodeHeaders(FacesContext context, UIReport report)
+	public void encodeHeaders(final FacesContext context, final UIReport report)
 			throws IOException {
-		if(context == null) {
+		if (context == null) {
 			throw new IllegalArgumentException("Faces' context is null");
 		}
-		if(report == null) {
+		if (report == null) {
 			throw new IllegalArgumentException("Report component is null");
 		}
-		
-		final ExternalContextHelper helper = ExternalContextHelper.getInstance(context);
+
+		final ExternalContextHelper helper = ExternalContextHelper
+				.getInstance(context);
 		helper.writeHeaders(context, this, report);
 	}
-	
+
 	/**
 	 * Builds the report uri.
 	 * 
@@ -131,17 +133,16 @@ implements ReportRenderer {
 		final StringBuffer reportURI = new StringBuffer(
 				ReportPhaseListener.BASE_URI);
 
-		Configuration config = Configuration.getInstance(context);
+		final Configuration config = Configuration.getInstance(context);
 		String mapping = Util.getInvocationPath(context);
-		if(!config.getFacesMappings().contains(mapping)) {
-			if(logger.isLoggable(Level.WARNING)) {
-				logger.log(Level.WARNING, "JRJSF_0021", new Object[]{ 
-						mapping, config.getDefaultMapping()
-				});
+		if (!config.getFacesMappings().contains(mapping)) {
+			if (logger.isLoggable(Level.WARNING)) {
+				logger.log(Level.WARNING, "JRJSF_0021", new Object[] { mapping,
+						config.getDefaultMapping() });
 			}
 			mapping = config.getDefaultMapping();
 		}
-		
+
 		if (Util.isPrefixMapped(mapping)) {
 			reportURI.insert(0, mapping);
 		} else {

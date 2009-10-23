@@ -28,11 +28,12 @@ import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 
 final class PortletContextHelper extends ExternalContextHelper {
-	
-	protected PortletContextHelper() { }
-	
+
+	protected PortletContextHelper() {
+	}
+
 	@Override
-	public String getRequestURI(FacesContext context) {
+	public String getRequestURI(final FacesContext context) {
 		if ("2.0".equals(getPortletVersion())) {
 			final ResourceRequest request = (ResourceRequest) context
 					.getExternalContext().getRequest();
@@ -41,30 +42,31 @@ final class PortletContextHelper extends ExternalContextHelper {
 			return null;
 		}
 	}
-	
+
 	@Override
-	public void writeHeaders(FacesContext context, ReportRenderer renderer,
-			UIReport report) 
-	throws IOException {
+	public void writeHeaders(final FacesContext context,
+			final ReportRenderer renderer, final UIReport report)
+			throws IOException {
 		if ("2.0".equals(getPortletVersion())) {
 			final ResourceResponse response = (ResourceResponse) context
 					.getExternalContext().getResponse();
 			response.setProperty("Cache-Type", "no-cache");
 			response.setProperty("Expires", "0");
-			
-			if(report.getName() != null) {
-				response.setProperty("Content-Disposition", encodeContentDisposition(
-						renderer, report, response.getCharacterEncoding()));
+
+			if (report.getName() != null) {
+				response.setProperty("Content-Disposition",
+						encodeContentDisposition(renderer, report, response
+								.getCharacterEncoding()));
 			}
 		} else {
 			throw new IllegalStateException(
-			"Only Resource Request/Response state is allowed");
+					"Only Resource Request/Response state is allowed");
 		}
 	}
 
 	@Override
-	public void writeResponse(FacesContext context, String contentType,
-			byte[] data) throws IOException {
+	public void writeResponse(final FacesContext context,
+			final String contentType, final byte[] data) throws IOException {
 		if ("2.0".equals(getPortletVersion())) {
 			final ResourceResponse response = (ResourceResponse) context
 					.getExternalContext().getResponse();

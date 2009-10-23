@@ -27,11 +27,11 @@ import net.sf.jasperreports.jsf.component.UIReport;
 public interface ReportRenderer {
 
 	public String getContentDisposition();
-	
+
 	public void encodeContent(FacesContext context, UIReport report)
-	throws IOException;
-	
+			throws IOException;
+
 	public void encodeHeaders(FacesContext context, UIReport report)
-	throws IOException;
-	
+			throws IOException;
+
 }
