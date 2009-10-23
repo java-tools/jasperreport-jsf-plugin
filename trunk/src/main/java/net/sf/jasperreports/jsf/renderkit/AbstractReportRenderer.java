@@ -33,6 +33,7 @@ import javax.faces.render.Renderer;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.ReportPhaseListener;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.config.Configuration;
 import net.sf.jasperreports.jsf.export.Exporter;
 import net.sf.jasperreports.jsf.fill.Filler;
 import net.sf.jasperreports.jsf.spi.ExporterLoader;
@@ -130,7 +131,17 @@ implements ReportRenderer {
 		final StringBuffer reportURI = new StringBuffer(
 				ReportPhaseListener.BASE_URI);
 
-		final String mapping = Util.getFacesMapping(context);
+		Configuration config = Configuration.getInstance(context);
+		String mapping = Util.getInvocationPath(context);
+		if(!config.getFacesMappings().contains(mapping)) {
+			if(logger.isLoggable(Level.WARNING)) {
+				logger.log(Level.WARNING, "JRJSF_0021", new Object[]{ 
+						mapping, config.getDefaultMapping()
+				});
+			}
+			mapping = config.getDefaultMapping();
+		}
+		
 		if (Util.isPrefixMapped(mapping)) {
 			reportURI.insert(0, mapping);
 		} else {
