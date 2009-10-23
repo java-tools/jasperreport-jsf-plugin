@@ -97,7 +97,7 @@ public final class FillerLoader {
 		if (dataSource.getDriverClass() != null) {
 			dataSource.setType("jdbc");
 		}
-		
+
 		result = fillerCacheMap.get(dataSource.getType());
 		if (result == null) {
 			throw new FillerFactoryNotFoundException(dataSource.getType());

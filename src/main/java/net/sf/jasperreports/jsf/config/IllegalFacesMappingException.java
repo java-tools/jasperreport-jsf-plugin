@@ -16,28 +16,17 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.fill.providers;
+package net.sf.jasperreports.jsf.config;
 
-import javax.faces.context.FacesContext;
+public class IllegalFacesMappingException extends ConfigurationException {
 
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.jsf.fill.AbstractJRDataSourceFiller;
-import net.sf.jasperreports.jsf.fill.FillerException;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3793797448078858440L;
 
-/**
- * The Class EmptyFiller.
- */
-public final class EmptyFiller extends AbstractJRDataSourceFiller {
-
-	protected EmptyFiller() {
-		super(null);
-	}
-
-	@Override
-	protected JRDataSource getJRDataSource(final FacesContext context)
-			throws FillerException {
-		return new JREmptyDataSource();
+	public IllegalFacesMappingException(final String mapping) {
+		super(mapping);
 	}
 
 }

@@ -36,8 +36,9 @@ import com.meterware.servletunit.ServletUnitClient;
  */
 public abstract class ReportTestBase {
 
-	private static final Logger logger = Logger
-			.getLogger(ReportTestBase.class.getPackage() + ".test");
+	private static final Logger logger = Logger.getLogger(ReportTestBase.class
+			.getPackage()
+			+ ".test");
 
 	/** The context dir. */
 	private File contextDir;
@@ -49,7 +50,7 @@ public abstract class ReportTestBase {
 	private transient ServletRunner runner;
 
 	private transient ServletUnitClient client;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -74,32 +75,31 @@ public abstract class ReportTestBase {
 	 */
 	@After
 	public void stopContainer() throws Exception {
-		if(client != null) {
+		if (client != null) {
 			client.clearContents();
 		}
 		client = null;
-		
+
 		runner.shutDown();
 		runner = null;
 	}
-	
+
 	protected final ServletUnitClient getClient() {
-		if(client == null) {
+		if (client == null) {
 			client = runner.newClient();
 		}
 		return client;
 	}
-	
+
 	protected WebResponse getCurrentPage() {
 		final ServletUnitClient client = getClient();
 		return client.getCurrentPage();
 	}
-	
-	protected WebResponse getResponse(String path) 
-	throws MalformedURLException, IOException, SAXException {
+
+	protected WebResponse getResponse(final String path)
+			throws MalformedURLException, IOException, SAXException {
 		final ServletUnitClient client = getClient();
-		return client.getResponse("http://localhost"
-				+ contextPath + path);
+		return client.getResponse("http://localhost" + contextPath + path);
 	}
 
 }

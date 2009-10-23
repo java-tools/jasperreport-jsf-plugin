@@ -78,20 +78,21 @@ public final class ReportPhaseListener implements PhaseListener {
 	 */
 	public void beforePhase(final PhaseEvent event) throws FacesException {
 		final FacesContext context = event.getFacesContext();
-		final ExternalContextHelper helper = ExternalContextHelper.getInstance(context);
-		
+		final ExternalContextHelper helper = ExternalContextHelper
+				.getInstance(context);
+
 		final String uri = helper.getRequestURI(context);
 		if (uri != null && uri.indexOf(BASE_URI) > -1) {
 			try {
 				final ExternalContext extContext = context.getExternalContext();
-	
+
 				final String clientId = context.getExternalContext()
 						.getRequestParameterMap().get(PARAM_CLIENTID);
 				if (clientId == null) {
 					throw new MalformedReportURLException("Missed parameter: "
 							+ PARAM_CLIENTID);
 				}
-	
+
 				final UIReport report = (UIReport) extContext.getSessionMap()
 						.get(REPORT_COMPONENT_KEY_PREFIX + clientId);
 				if (report == null) {

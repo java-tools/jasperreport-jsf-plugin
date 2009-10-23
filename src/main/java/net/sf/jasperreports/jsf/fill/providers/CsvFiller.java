@@ -43,49 +43,48 @@ import net.sf.jasperreports.jsf.spi.ResourceLoader;
  */
 public final class CsvFiller extends AbstractJRDataSourceFiller {
 
-	private static final Logger logger = Logger.getLogger(
-			BeanFiller.class.getPackage().getName(), 
-			"net.sf.jasperreports.jsf.LogMessages");
-	
+	private static final Logger logger = Logger.getLogger(BeanFiller.class
+			.getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
+
 	private InputStream dataSourceStream = null;
 	private boolean closeStream = true;
-	
+
 	protected CsvFiller(final UIDataSource dataSource) {
 		super(dataSource);
 	}
 
 	@Override
-	protected JRDataSource getJRDataSource(FacesContext context)
+	protected JRDataSource getJRDataSource(final FacesContext context)
 			throws FillerException {
 		JRDataSource dataSource = null;
-		
+
 		final Object value = getDataSourceComponent().getValue();
-		if(value == null) {
-			if(logger.isLoggable(Level.WARNING)) {
-				logger.log(Level.WARNING, "JRJSF_0020", 
+		if (value == null) {
+			if (logger.isLoggable(Level.WARNING)) {
+				logger.log(Level.WARNING, "JRJSF_0020",
 						getDataSourceComponent().getClientId(context));
 			}
 			dataSource = new JREmptyDataSource();
-		} else if(value instanceof URL) {
+		} else if (value instanceof URL) {
 			try {
 				dataSourceStream = ((URL) value).openStream();
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				throw new FillerException(e);
 			}
-		} else if(value instanceof InputStream) {
+		} else if (value instanceof InputStream) {
 			dataSourceStream = (InputStream) value;
 			closeStream = false;
-		} else if(value instanceof String) {
+		} else if (value instanceof String) {
 			try {
-				Resource resource = ResourceLoader.getResource(
-						context, (String) value);
+				final Resource resource = ResourceLoader.getResource(context,
+						(String) value);
 				dataSourceStream = resource.getInputStream();
-			} catch (ResourceException e) {
+			} catch (final ResourceException e) {
 				throw new FillerException(e);
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				throw new FillerException(e);
 			}
-		} else if(value instanceof File) {
+		} else if (value instanceof File) {
 			try {
 				dataSource = new JRCsvDataSource((File) value);
 			} catch (final FileNotFoundException e) {
@@ -101,17 +100,18 @@ public final class CsvFiller extends AbstractJRDataSourceFiller {
 				dataSource = new JRCsvDataSource(dataSourceStream);
 			}
 		}
-		
+
 		return dataSource;
 	}
 
 	@Override
-	protected void closeDataSource(JRDataSource dataSource)
+	protected void closeDataSource(final JRDataSource dataSource)
 			throws FillerException {
-		if(dataSourceStream != null && closeStream) {
+		if (dataSourceStream != null && closeStream) {
 			try {
 				dataSourceStream.close();
-			} catch(IOException e) { }
+			} catch (final IOException e) {
+			}
 		}
 		dataSourceStream = null;
 	}

@@ -136,14 +136,15 @@ class XmlHelper {
 		return elementList;
 	}
 
-	
-	public static Document loadDocument(InputStream stream) 
-	throws ParserConfigurationException, SAXException, IOException {
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder builder = factory.newDocumentBuilder();
+	public static Document loadDocument(final InputStream stream)
+			throws ParserConfigurationException, SAXException, IOException {
+		final DocumentBuilderFactory factory = DocumentBuilderFactory
+				.newInstance();
+		final DocumentBuilder builder = factory.newDocumentBuilder();
 		return builder.parse(stream);
 	}
-	
-	private XmlHelper() { }
-	
+
+	private XmlHelper() {
+	}
+
 }

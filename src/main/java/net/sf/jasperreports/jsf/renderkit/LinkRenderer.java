@@ -37,7 +37,7 @@ import net.sf.jasperreports.jsf.component.UIReport;
 public class LinkRenderer extends AbstractReportRenderer {
 
 	public static final String CONTENT_DISPOSITION = "attachment";
-	
+
 	/** The Constant RENDERER_TYPE. */
 	public static final String RENDERER_TYPE = "net.sf.jasperreports.Link";
 

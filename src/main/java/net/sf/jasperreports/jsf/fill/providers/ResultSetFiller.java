@@ -36,21 +36,20 @@ import net.sf.jasperreports.jsf.fill.FillerException;
  */
 public final class ResultSetFiller extends AbstractJRDataSourceFiller {
 
-	private static final Logger logger = Logger.getLogger(
-			BeanFiller.class.getPackage().getName(), 
-			"net.sf.jasperreports.jsf.LogMessages");
-	
+	private static final Logger logger = Logger.getLogger(BeanFiller.class
+			.getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
+
 	protected ResultSetFiller(final UIDataSource dataSource) {
 		super(dataSource);
 	}
 
 	@Override
-	protected JRDataSource getJRDataSource(FacesContext context)
+	protected JRDataSource getJRDataSource(final FacesContext context)
 			throws FillerException {
 		final ResultSet rs = (ResultSet) getDataSourceComponent().getValue();
 		if (rs == null) {
-			if(logger.isLoggable(Level.WARNING)) {
-				logger.log(Level.WARNING, "JRJSF_0020", 
+			if (logger.isLoggable(Level.WARNING)) {
+				logger.log(Level.WARNING, "JRJSF_0020",
 						getDataSourceComponent().getClientId(context));
 			}
 			return new JREmptyDataSource();

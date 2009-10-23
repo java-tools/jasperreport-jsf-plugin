@@ -25,7 +25,8 @@ import java.net.URL;
 import net.sf.jasperreports.jsf.resource.AbstractResource;
 import net.sf.jasperreports.jsf.resource.Resource;
 
-public final class ClasspathResource extends AbstractResource implements Resource {
+public final class ClasspathResource extends AbstractResource implements
+		Resource {
 
 	private final ClassLoader classLoader;
 

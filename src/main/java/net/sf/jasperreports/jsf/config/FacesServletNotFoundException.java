@@ -16,28 +16,13 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.fill.providers;
+package net.sf.jasperreports.jsf.config;
 
-import javax.faces.context.FacesContext;
+public class FacesServletNotFoundException extends ConfigurationException {
 
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.jsf.fill.AbstractJRDataSourceFiller;
-import net.sf.jasperreports.jsf.fill.FillerException;
-
-/**
- * The Class EmptyFiller.
- */
-public final class EmptyFiller extends AbstractJRDataSourceFiller {
-
-	protected EmptyFiller() {
-		super(null);
-	}
-
-	@Override
-	protected JRDataSource getJRDataSource(final FacesContext context)
-			throws FillerException {
-		return new JREmptyDataSource();
-	}
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5567375418501806866L;
 
 }

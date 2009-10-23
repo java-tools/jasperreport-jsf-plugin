@@ -35,23 +35,21 @@ public class ReportLinkTest extends ReportTestBase {
 
 	@Parameters
 	public static Collection<?> linkIdentifiers() {
-		return Arrays.asList(new Object[][]{ 
-				{ "reportLink" }
-		});
+		return Arrays.asList(new Object[][] { { "reportLink" } });
 	}
-	
-	private String linkId;
-	
-	public ReportLinkTest(String linkId) {
+
+	private final String linkId;
+
+	public ReportLinkTest(final String linkId) {
 		this.linkId = linkId;
 	}
-	
+
 	@Test
 	public void clickOnLink() throws Exception {
-		WebResponse response = getResponse("/ReportLinkTest.jsf");
+		final WebResponse response = getResponse("/ReportLinkTest.jsf");
 		final WebLink link = response.getLinkWithID(linkId);
 		Assert.assertNotNull("Link '" + linkId + "' is null", link);
 		link.click();
 	}
-	
+
 }

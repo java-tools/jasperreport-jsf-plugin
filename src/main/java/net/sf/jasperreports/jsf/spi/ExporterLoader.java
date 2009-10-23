@@ -69,8 +69,8 @@ public final class ExporterLoader {
 	private static ExporterFactory getExporterFactory(
 			final FacesContext context, final UIReport report)
 			throws JRFacesException {
-		final ExporterFactory exporterFactory = exporterCacheMap
-				.get(report.getFormat());
+		final ExporterFactory exporterFactory = exporterCacheMap.get(report
+				.getFormat());
 		if (exporterFactory == null) {
 			throw new ExporterFactoryNotFoundException(report.getFormat());
 		}

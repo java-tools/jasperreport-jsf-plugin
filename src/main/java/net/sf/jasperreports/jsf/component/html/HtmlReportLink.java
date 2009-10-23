@@ -93,7 +93,7 @@ public class HtmlReportLink extends HtmlOutputLink implements UIReport {
 		return impl.getName();
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		impl.setName(name);
 	}
 
@@ -147,19 +147,19 @@ public class HtmlReportLink extends HtmlOutputLink implements UIReport {
 	}
 
 	// UIReport encode methods
-	
-	public void encodeContent(FacesContext context) throws IOException {
-		ReportRenderer renderer = (ReportRenderer) getRenderer(context);
+
+	public void encodeContent(final FacesContext context) throws IOException {
+		final ReportRenderer renderer = (ReportRenderer) getRenderer(context);
 		renderer.encodeContent(context, this);
 	}
-	
-	public void encodeHeaders(FacesContext context) throws IOException {
-		ReportRenderer renderer = (ReportRenderer) getRenderer(context);
+
+	public void encodeHeaders(final FacesContext context) throws IOException {
+		final ReportRenderer renderer = (ReportRenderer) getRenderer(context);
 		renderer.encodeHeaders(context, this);
 	}
 
 	// State saving/restoring methods
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 

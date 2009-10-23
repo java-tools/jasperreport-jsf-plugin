@@ -35,19 +35,19 @@ public abstract class ExternalContextHelper {
 	/** The Constant PORTLET_RESOURCEURL_CLASS. */
 	private static final String PORTLET_RESOURCEURL_CLASS = "javax.portlet.ResourceURL";
 
-
-	public static ExternalContextHelper getInstance(FacesContext context) {
+	public static ExternalContextHelper getInstance(final FacesContext context) {
 		ExternalContextHelper instance;
-		if(isServletContext(context)) {
+		if (isServletContext(context)) {
 			instance = new ServletContextHelper();
-		} else if(isPortletAvailable()) {
+		} else if (isPortletAvailable()) {
 			instance = new PortletContextHelper();
 		} else {
-			throw new IllegalArgumentException("Unrecognized application context");
+			throw new IllegalArgumentException(
+					"Unrecognized application context");
 		}
 		return instance;
 	}
-	
+
 	protected static boolean isPortletAvailable() {
 		boolean portletAvailable = false;
 		try {
@@ -60,10 +60,10 @@ public abstract class ExternalContextHelper {
 		}
 		return portletAvailable;
 	}
-	
+
 	protected static String getPortletVersion() {
-		boolean portletAvailable = isPortletAvailable();
-		
+		final boolean portletAvailable = isPortletAvailable();
+
 		String portletVersion = null;
 		try {
 			Class.forName(PORTLET_RESOURCEURL_CLASS);
@@ -75,14 +75,15 @@ public abstract class ExternalContextHelper {
 		}
 		return portletVersion;
 	}
-	
-	private static boolean isServletContext(FacesContext context) {
-		Object ctx = context.getExternalContext().getContext();
+
+	private static boolean isServletContext(final FacesContext context) {
+		final Object ctx = context.getExternalContext().getContext();
 		return (ctx instanceof ServletContext);
 	}
-	
-	protected ExternalContextHelper() { }
-	
+
+	protected ExternalContextHelper() {
+	}
+
 	/**
 	 * Gets the request uri.
 	 * 
@@ -92,11 +93,10 @@ public abstract class ExternalContextHelper {
 	 * @return the request uri
 	 */
 	public abstract String getRequestURI(final FacesContext context);
-	
-	public abstract void writeHeaders(FacesContext context, 
-			ReportRenderer renderer, UIReport report)
-	throws IOException;
-	
+
+	public abstract void writeHeaders(FacesContext context,
+			ReportRenderer renderer, UIReport report) throws IOException;
+
 	/**
 	 * Write response.
 	 * 
@@ -111,20 +111,17 @@ public abstract class ExternalContextHelper {
 	 *             Signals that an I/O exception has occurred.
 	 */
 	public abstract void writeResponse(final FacesContext context,
-			final String contentType, 
-			final byte[] data) 
-	throws IOException;
-	
-	protected String encodeContentDisposition(ReportRenderer renderer, 
-			UIReport report, String enc) 
-	throws IOException {
-		StringBuffer disposition = new StringBuffer();
-		if(report.getName() != null) {
+			final String contentType, final byte[] data) throws IOException;
+
+	protected String encodeContentDisposition(final ReportRenderer renderer,
+			final UIReport report, final String enc) throws IOException {
+		final StringBuffer disposition = new StringBuffer();
+		if (report.getName() != null) {
 			disposition.append(renderer.getContentDisposition());
 			disposition.append("; filename=");
 			disposition.append(URLEncoder.encode(report.getName(), enc));
 		}
 		return disposition.toString();
 	}
-	
+
 }

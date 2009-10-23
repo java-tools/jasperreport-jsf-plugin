@@ -37,7 +37,7 @@ public final class UIReportImplementor implements StateHolder {
 	private String dataSource;
 
 	private String name;
-	
+
 	/** The path. */
 	private String path;
 
@@ -101,7 +101,7 @@ public final class UIReportImplementor implements StateHolder {
 			return name;
 		}
 		final ValueExpression ve = getValueExpression("name");
-		if(ve != null) {
+		if (ve != null) {
 			try {
 				return (String) ve.getValue(getFacesContext().getELContext());
 			} catch (final ELException e) {
@@ -112,7 +112,7 @@ public final class UIReportImplementor implements StateHolder {
 		}
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 

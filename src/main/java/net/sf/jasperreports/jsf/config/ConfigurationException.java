@@ -22,15 +22,24 @@ import net.sf.jasperreports.jsf.JRFacesException;
 
 public class ConfigurationException extends JRFacesException {
 
-	public ConfigurationException(String msg, Throwable t) {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6436187355445724783L;
+
+	public ConfigurationException() {
+		super();
+	}
+
+	public ConfigurationException(final String msg, final Throwable t) {
 		super(msg, t);
 	}
 
-	public ConfigurationException(String msg) {
+	public ConfigurationException(final String msg) {
 		super(msg);
 	}
 
-	public ConfigurationException(Throwable t) {
+	public ConfigurationException(final Throwable t) {
 		super(t);
 	}
 

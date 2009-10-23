@@ -25,8 +25,14 @@ import javax.faces.FacesException;
  */
 public class JRFacesException extends FacesException {
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = -1788161074861908151L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 282841613696573983L;
+
+	public JRFacesException() {
+		super();
+	}
 
 	/**
 	 * Instantiates a new jR faces exception.

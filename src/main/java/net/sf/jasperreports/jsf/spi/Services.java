@@ -39,9 +39,9 @@ public final class Services {
 	/** The logger. */
 	private static final Logger logger = Logger.getLogger(Services.class
 			.getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
-	
+
 	private static final String SERVICES_ROOT = "META-INF/services/";
-	
+
 	/**
 	 * 
 	 * @param <T>
@@ -115,21 +115,22 @@ public final class Services {
 	/**
 	 * Loads a service map from the classpath.
 	 * <p>
-	 * Services are looked up following convention <tt>META-INF/services/[serviceClassName]</tt>.
-	 * When loading service maps, service configuration file must contain
-	 * entries as follows:
-	 * <tt>
+	 * Services are looked up following convention
+	 * <tt>META-INF/services/[serviceClassName]</tt>. When loading service maps,
+	 * service configuration file must contain entries as follows: <tt>
 	 * [key]:[implementation class]
 	 * </tt>
 	 * 
-	 * @param <T> service type to be obtained
+	 * @param <T>
+	 *            service type to be obtained
 	 * @param resource
 	 *            the resource
 	 * 
 	 * @return the map< string, class< t>>
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> Map<String, T> map(final Class<T> clazz) throws ServiceException {
+	public static <T> Map<String, T> map(final Class<T> clazz)
+			throws ServiceException {
 		final ClassLoader loader = Util.getClassLoader(null);
 		final Enumeration<URL> resources = getServiceResources(clazz, loader);
 
@@ -172,7 +173,7 @@ public final class Services {
 						logger.log(logRecord);
 						continue;
 					}
-					
+
 					serviceMap.put(("".equals(record[0]) ? null : record[0]),
 							instance);
 				}
@@ -195,10 +196,10 @@ public final class Services {
 		}
 		return Collections.unmodifiableMap(serviceMap);
 	}
-	
+
 	private static Enumeration<URL> getServiceResources(
-			Class<?> serviceClass, ClassLoader classLoader) 
-	throws ServiceException {
+			final Class<?> serviceClass, final ClassLoader classLoader)
+			throws ServiceException {
 		Enumeration<URL> resources;
 		final String serviceConf = SERVICES_ROOT + serviceClass.getName();
 		try {
@@ -208,7 +209,8 @@ public final class Services {
 		}
 		return resources;
 	}
-	
-	private Services() { }
-	
+
+	private Services() {
+	}
+
 }

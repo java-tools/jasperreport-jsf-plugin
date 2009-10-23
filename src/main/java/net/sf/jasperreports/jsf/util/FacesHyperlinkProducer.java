@@ -142,22 +142,23 @@ public class FacesHyperlinkProducer implements JRHyperlinkProducer {
 	private String buildHref(final JRPrintHyperlink link) {
 		final StringBuffer buff = new StringBuffer();
 		buff.append(link.getHyperlinkReference());
-		
+
 		List<?> params;
-		
-		if ((link.getHyperlinkParameters() != null) &&
-		   (params = link.getHyperlinkParameters().getParameters()) != null ) {
+
+		if ((link.getHyperlinkParameters() != null)
+				&& (params = link.getHyperlinkParameters().getParameters()) != null) {
 			if (params.size() > 0) {
 				buff.append('?');
 				for (int i = 0; i < params.size(); i++) {
-					final JRHyperlinkParameter param = (JRHyperlinkParameter) params.get(i);
+					final JRHyperlinkParameter param = (JRHyperlinkParameter) params
+							.get(i);
 					buff.append(param.getName());
 					buff.append('=');
 					buff.append(param.getValueExpression().getText());
 				}
 			}
 		}
-		
+
 		return context.getExternalContext().encodeResourceURL(buff.toString());
 	}
 

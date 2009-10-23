@@ -33,7 +33,7 @@ public abstract class AbstractReportTag extends UIComponentELTag {
 	private ValueExpression dataSource;
 
 	private ValueExpression name;
-	
+
 	/** The path. */
 	private ValueExpression path;
 
@@ -53,7 +53,7 @@ public abstract class AbstractReportTag extends UIComponentELTag {
 		this.dataSource = dataSource;
 	}
 
-	public void setName(ValueExpression name) {
+	public void setName(final ValueExpression name) {
 		this.name = name;
 	}
 
@@ -123,7 +123,7 @@ public abstract class AbstractReportTag extends UIComponentELTag {
 				component.setValueExpression("dataSource", dataSource);
 			}
 		}
-		
+
 		if (name != null) {
 			if (name.isLiteralText()) {
 				jreport.setName(name.getExpressionString());

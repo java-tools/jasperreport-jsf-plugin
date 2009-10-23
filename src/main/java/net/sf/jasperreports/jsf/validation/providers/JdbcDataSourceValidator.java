@@ -28,10 +28,8 @@ import net.sf.jasperreports.jsf.validation.ValidationException;
 public class JdbcDataSourceValidator extends DataSourceValidatorBase {
 
 	/** The Constant REQUIRED_DATASOURCE_ATTRS. */
-	public static final String[] REQUIRED_DATASOURCE_ATTRS = { 
-			"driverClass",
-			"username",
-			"password" };
+	public static final String[] REQUIRED_DATASOURCE_ATTRS = { "driverClass",
+			"username", "password" };
 
 	@Override
 	protected void doValidate(final FacesContext context,

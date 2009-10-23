@@ -29,37 +29,39 @@ import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 
 final class ServletContextHelper extends ExternalContextHelper {
 
-	protected ServletContextHelper() { }
+	protected ServletContextHelper() {
+	}
 
 	@Override
-	public String getRequestURI(FacesContext context) {
+	public String getRequestURI(final FacesContext context) {
 		final HttpServletRequest request = (HttpServletRequest) context
 				.getExternalContext().getRequest();
 		return request.getRequestURI();
 	}
-	
+
 	@Override
-	public void writeHeaders(FacesContext context, ReportRenderer renderer,
-			UIReport report) throws IOException {
+	public void writeHeaders(final FacesContext context,
+			final ReportRenderer renderer, final UIReport report)
+			throws IOException {
 		final HttpServletResponse response = (HttpServletResponse) context
 				.getExternalContext().getResponse();
 		response.setHeader("Cache-Type", "no-cache");
 		response.setHeader("Expires", "0");
-		
-		if(report.getName() != null) {
+
+		if (report.getName() != null) {
 			response.setHeader("Content-Disposition", encodeContentDisposition(
 					renderer, report, response.getCharacterEncoding()));
 		}
 	}
 
 	@Override
-	public void writeResponse(FacesContext context, String contentType,
-			byte[] data) throws IOException {
+	public void writeResponse(final FacesContext context,
+			final String contentType, final byte[] data) throws IOException {
 		final HttpServletResponse response = (HttpServletResponse) context
 				.getExternalContext().getResponse();
 		response.setContentType(contentType);
 		response.setContentLength(data.length);
-		response.getOutputStream().write(data);	
+		response.getOutputStream().write(data);
 	}
-	
+
 }
