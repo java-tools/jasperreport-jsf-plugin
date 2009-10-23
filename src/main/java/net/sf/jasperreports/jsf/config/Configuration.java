@@ -20,10 +20,14 @@ package net.sf.jasperreports.jsf.config;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
 import javax.faces.webapp.FacesServlet;
+
+import net.sf.jasperreports.jsf.util.Util;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -57,7 +61,7 @@ public final class Configuration {
 		return instance;
 	}
 	
-	private List<String> servletMappings = new ArrayList<String>();
+	private List<String> facesMappings = new ArrayList<String>();
 	private String defaultMapping;
 	
 	private Configuration(FacesContext context) throws ConfigurationException { 
@@ -76,9 +80,8 @@ public final class Configuration {
 		return defaultMapping;
 	}
 	
-	public String[] getMappings() {
-		return servletMappings.toArray(
-				new String[servletMappings.size()]);
+	public Collection<String> getFacesMappings() {
+		return Collections.unmodifiableList(facesMappings);
 	}
 
 	private void loadMappings(Document webXml) throws ConfigurationException {
@@ -96,12 +99,31 @@ public final class Configuration {
 				if(!servletName.equals(mappingName)) continue;
 				
 				String urlPattern = XmlHelper.getChildText(servletMapping, TAG_URL_PATTERN);
-				if(defaultMapping == null) {
-					defaultMapping = urlPattern;
+				if("/*".equals(urlPattern)) {
+					throw new ConfigurationException("Illegal FacesServlet mapping: " + urlPattern);
 				}
-				servletMappings.add(urlPattern);
+				
+				String mapping = stripMapping(urlPattern);
+				if(defaultMapping == null) {
+					defaultMapping = mapping;
+				}
+				facesMappings.add(mapping);
 			}
 		}
+		
+		if(defaultMapping == null) {
+			throw new ConfigurationException("No FacesServlet found in current application web.xml");
+		}
+	}
+	
+	private String stripMapping(String urlPattern) {
+		String mapping;
+		if(Util.isPrefixMapped(urlPattern)) {
+			mapping = urlPattern.substring(0, urlPattern.lastIndexOf("/"));
+		} else {
+			mapping = urlPattern.substring(urlPattern.indexOf("."));
+		}
+		return mapping;
 	}
 
 }

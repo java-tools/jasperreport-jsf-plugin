@@ -71,7 +71,7 @@ public final class Util {
 	 * 
 	 * @return the faces mapping
 	 */
-	public static String getFacesMapping(final FacesContext context) {
+	public static String getInvocationPath(final FacesContext context) {
 		if (context == null) {
 			throw new IllegalArgumentException("context");
 		}
