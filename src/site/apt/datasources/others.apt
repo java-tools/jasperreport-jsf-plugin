@@ -33,6 +33,8 @@ Other supported data sources
   * Bean and map data sources
   
   * <<<java.sql.ResultSet>>> based data source
+  
+  * User designed <<<net.sf.jasperreports.engine.JRDataSource>>>
 
 * Bean & map data sources
 
@@ -101,3 +103,43 @@ the report or report link.
   This is the most simple data source that can be used. The only required
 attribute is <<<value>>> and its type should be always a <<<java.sql.ResultSet>>>.
 Be careful, since application is responsible of closing the result set.
+
+* User defined data sources
+
+  If none of the data sources suppported are suitable to your needs, you can
+create your own data source extending the class <<<net.sf.jasperreports.engine.JRDataSource>>>.
+Once you have your own implementation of this class you can define a <<<jr:dataSource>>>
+component to make use of it. 
+
+  When using custom data sources you will need a class to implement the interface
+<<<net.sf.jasperreports.engine.JRDataSource>>>, a managed bean that will be used
+to provide the data source to the JSF Component and the <<<jr:dataSource>>> definition:
+
++---
+import net.sf.jasperreports.engine.JRDataSource;
+...
+
+public class CustomDataSourceBean {
+
+	public JRDataSource getData() {
+		return new CustomDataSource( ... );
+	}
+
+	private class CustomDataSource implements JRDataSource {
+	
+		public CutomDataSource( ... ) {
+			...
+		}
+	
+		// other methods
+	
+	}
+
+}
++---
+
+  The JSF data source component will be similar to the following:
+
++---
+<jr:dataSource id="myCustomDS" type="custom" value="#{customDataSource.data}" />
++---
