@@ -127,8 +127,7 @@ public final class Configuration {
 		}
 
 		if (defaultMapping == null) {
-			throw new ConfigurationException(
-					"No FacesServlet found in current application web.xml");
+			throw new FacesServletNotFoundException();
 		}
 	}
 
