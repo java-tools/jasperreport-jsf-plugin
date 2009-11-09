@@ -29,3 +29,19 @@ Features for final version
 
   Here is a list of features and bug fixes implemented in the final
 version for JasperReports JSF Plugin
+
+  * Added support for JasperReports 3.5.2 and later
+
+  * Bug 2848454: Bad exported filename fixed
+  
+  * Bug 2817806: NPE When exporting HTML reports fixed
+  
+  * Bug 2811689: Error constructing report URI fixed
+  
+  * Bug 2817805: Enless loop when validating JDBC data sources fixed
+  
+  * Bug 2813832: Plugin complains about Portlet API's
+  
+  * Bug 2782326: Null pointer in FillerFactory fixed
+  
+  * Bug 2002902: Response writer is null fixed
