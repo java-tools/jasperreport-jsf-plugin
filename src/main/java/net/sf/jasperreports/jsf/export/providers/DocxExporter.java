@@ -35,7 +35,7 @@ public class DocxExporter extends AbstractJRExporter {
 	
 	public static final String ATTR_FRAMES_AS_NESTED_TABLES = "FRAMES_AS_NESTED_TABLES";
 	
-	protected DocxExporter(UIComponent component) {
+	protected DocxExporter(final UIComponent component) {
 		super(component);
 	}
 	
@@ -44,7 +44,7 @@ public class DocxExporter extends AbstractJRExporter {
 	}
 
 	@Override
-	protected JRExporter createJRExporter(FacesContext context) {
+	protected JRExporter createJRExporter(final FacesContext context) {
 		final JRDocxExporter exporter = new JRDocxExporter();
 		setParameterUsingAttribute(exporter, 
 				JRDocxExporterParameter.FRAMES_AS_NESTED_TABLES, ATTR_FRAMES_AS_NESTED_TABLES);

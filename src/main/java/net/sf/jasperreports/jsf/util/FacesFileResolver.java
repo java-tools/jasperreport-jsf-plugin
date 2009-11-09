@@ -30,18 +30,18 @@ import net.sf.jasperreports.jsf.spi.ResourceLoader;
 
 public class FacesFileResolver implements FileResolver {
 
-	private FacesContext context;
+	private final FacesContext context;
 	
-	public FacesFileResolver(FacesContext context) {
+	public FacesFileResolver(final FacesContext context) {
 		super();
 		this.context = context;
 	}
 
-	public File resolveFile(String name) {
+	public File resolveFile(final String name) {
 		Resource resource;
 		try {
 			resource = ResourceLoader.getResource(context, name);
-		} catch(IOException e) {
+		} catch(final IOException e) {
 			throw new JRFacesException(e);
 		}
 		return new File(resource.getPath());

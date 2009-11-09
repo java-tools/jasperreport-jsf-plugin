@@ -36,17 +36,17 @@ public class Graphics2DExporter extends AbstractJRExporter {
 	
 	public static final String ATTR_ZOOM_RATIO = "ZOOM_RATIO";
 	
-	protected Graphics2DExporter(UIComponent component) {
+	protected Graphics2DExporter(final UIComponent component) {
 		super(component);
 	}
 
 	@Override
-	protected JRExporter createJRExporter(FacesContext context)
+	protected JRExporter createJRExporter(final FacesContext context)
 			throws ExporterException {
 		JRExporter exporter;
 		try {
 			exporter = new JRGraphics2DExporter();
-		} catch(JRException e) {
+		} catch(final JRException e) {
 			throw new ExporterException(e);
 		}
 		

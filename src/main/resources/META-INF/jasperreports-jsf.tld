@@ -33,6 +33,12 @@
 	<short-name>jr</short-name>
 	<uri>http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_0.tld</uri>
 	
+	<listener>
+		<listener-class>
+			net.sf.jasperreports.jsf.config.ConfigurationStartupListener
+		</listener-class>
+	</listener>
+	
 	<tag>
 		<description><![CDATA[
 Faces component tag used to provide to a report component 
