@@ -29,7 +29,7 @@ import net.sf.jasperreports.jsf.export.ExporterException;
 public class DocxExporterFactory extends AbstractExporterFactory {
 
 	@Override
-	protected Exporter doCreateExporter(FacesContext context, UIReport report)
+	protected Exporter doCreateExporter(final FacesContext context, final UIReport report)
 			throws ExporterException {
 		return new DocxExporter((UIComponent) report);
 	}

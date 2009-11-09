@@ -23,9 +23,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.context.FacesContext;
 import javax.faces.webapp.FacesServlet;
+import javax.servlet.ServletContext;
 
 import net.sf.jasperreports.jsf.util.Util;
 
@@ -34,11 +37,15 @@ import org.w3c.dom.Element;
 
 public final class Configuration {
 
-	private static final String INSTANCE_KEY = Configuration.class.getPackage()
-			.getName();
+	protected static final String INSTANCE_KEY = 
+		Configuration.class.getPackage().getName();
 
-	private static final String FACES_SERVLET_CLASS = FacesServlet.class
-			.getName();
+	private static final Logger logger = Logger.getLogger(
+			Configuration.class.getPackage().getName(), 
+			"net.sf.jasperreports.jsf.LogMessages");
+	
+	private static final String FACES_SERVLET_CLASS = 
+		FacesServlet.class.getName();
 
 	private static final String TAG_URL_PATTERN = "url-pattern";
 	private static final String TAG_SERVLET = "servlet";
@@ -67,7 +74,20 @@ public final class Configuration {
 	private final List<String> facesMappings = new ArrayList<String>();
 	private String defaultMapping;
 
-	private Configuration(final FacesContext context)
+	protected Configuration(final ServletContext context) 
+	throws ConfigurationException {
+		final InputStream is = context.getResourceAsStream(WEB_XML);
+		Document webXml;
+		try {
+			webXml = XmlHelper.loadDocument(is);
+		} catch (final Exception e) {
+			throw new ConfigurationException(e);
+		}
+
+		loadMappings(webXml);
+	}
+	
+	protected Configuration(final FacesContext context)
 			throws ConfigurationException {
 		final InputStream is = context.getExternalContext()
 				.getResourceAsStream(WEB_XML);
@@ -101,6 +121,10 @@ public final class Configuration {
 			if (!FACES_SERVLET_CLASS.equals(servletClass)) {
 				continue;
 			}
+			
+			if(logger.isLoggable(Level.CONFIG)) {
+				logger.log(Level.CONFIG, "JRJSF_0024", servletName);
+			}
 
 			final List<Element> servletMappingList = XmlHelper
 					.getChildElements(webXml.getDocumentElement(),
@@ -111,7 +135,7 @@ public final class Configuration {
 				if (!servletName.equals(mappingName)) {
 					continue;
 				}
-
+				
 				final String urlPattern = XmlHelper.getChildText(
 						servletMapping, TAG_URL_PATTERN);
 				if ("/*".equals(urlPattern)) {
@@ -121,6 +145,11 @@ public final class Configuration {
 				final String mapping = stripMapping(urlPattern);
 				if (defaultMapping == null) {
 					defaultMapping = mapping;
+					if(logger.isLoggable(Level.CONFIG)) {
+						logger.log(Level.CONFIG, "JRJSF_0026", servletName);
+					}
+				} else if(logger.isLoggable(Level.CONFIG)) {
+					logger.log(Level.CONFIG, "JRJSF_0025", servletName);
 				}
 				facesMappings.add(mapping);
 			}

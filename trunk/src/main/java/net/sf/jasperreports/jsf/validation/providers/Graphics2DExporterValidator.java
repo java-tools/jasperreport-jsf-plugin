@@ -18,11 +18,14 @@
  */
 package net.sf.jasperreports.jsf.validation.providers;
 
+import java.awt.Graphics2D;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.export.providers.Graphics2DExporter;
+import net.sf.jasperreports.jsf.validation.IllegalAttributeValueException;
 import net.sf.jasperreports.jsf.validation.MissedAttributeException;
 import net.sf.jasperreports.jsf.validation.ReportValidatorBase;
 import net.sf.jasperreports.jsf.validation.ValidationException;
@@ -30,13 +33,21 @@ import net.sf.jasperreports.jsf.validation.ValidationException;
 public class Graphics2DExporterValidator extends ReportValidatorBase {
 
 	@Override
-	protected void doValidate(FacesContext context, UIReport report)
+	protected void doValidate(final FacesContext context, final UIReport report)
 			throws ValidationException {
 		super.doValidate(context, report);
-		if(null == ((UIComponent) report).getAttributes()
-				.get(Graphics2DExporter.ATTR_GRAPHICS_2D)) {
+		
+		Object value;
+		if(null == (value = ((UIComponent) report).getAttributes()
+				.get(Graphics2DExporter.ATTR_GRAPHICS_2D))) {
 			throw new MissedAttributeException(report.getFormat() + 
 					" : " + Graphics2DExporter.ATTR_GRAPHICS_2D);
+		}
+		
+		if(!(value instanceof Graphics2D)) {
+			throw new IllegalAttributeValueException(
+					Graphics2DExporter.ATTR_GRAPHICS_2D + " => " 
+					+ value.getClass().getName());
 		}
 	}
 

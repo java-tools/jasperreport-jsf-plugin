@@ -21,7 +21,7 @@ package net.sf.jasperreports.jsf.validation;
 /**
  * The Class IllegalOutputFormatException.
  */
-public class IllegalOutputFormatException extends ValidationException {
+public class IllegalOutputFormatException extends IllegalAttributeValueException {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1823011431377899382L;

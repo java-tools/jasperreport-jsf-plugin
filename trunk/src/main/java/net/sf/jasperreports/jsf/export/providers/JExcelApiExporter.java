@@ -31,7 +31,7 @@ public class JExcelApiExporter extends AbstractXlsExporter {
 	
 	public static final String ATTR_CREATE_CUSTOM_PALETTE = "CREATE_CUSTOM_PALETTE";
 	
-	protected JExcelApiExporter(UIComponent component) {
+	protected JExcelApiExporter(final UIComponent component) {
 		super(component);
 	}
 
@@ -40,9 +40,9 @@ public class JExcelApiExporter extends AbstractXlsExporter {
 	}
 	
 	@Override
-	protected JRXlsAbstractExporter createJRXlsExporter(FacesContext context)
+	protected JRXlsAbstractExporter createJRXlsExporter(final FacesContext context)
 			throws ExporterException {
-		JRXlsAbstractExporter exporter = 
+		final JRXlsAbstractExporter exporter = 
 			new net.sf.jasperreports.engine.export.JExcelApiExporter();
 		setParameterUsingAttribute(exporter, 
 				JExcelApiExporterParameter.CREATE_CUSTOM_PALETTE, ATTR_CREATE_CUSTOM_PALETTE);

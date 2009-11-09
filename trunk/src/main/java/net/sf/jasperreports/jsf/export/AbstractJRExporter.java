@@ -132,8 +132,8 @@ public abstract class AbstractJRExporter extends AbstractExporter {
 	protected abstract JRExporter createJRExporter(FacesContext context)
 	throws ExporterException;
 
-	protected void setParameterUsingAttribute(JRExporter exporter, 
-			JRExporterParameter param, String attr) {
+	protected void setParameterUsingAttribute(final JRExporter exporter, 
+			final JRExporterParameter param, final String attr) {
 		Object value;
 		if(null != (value = getComponent().getAttributes()
 				.get(attr))) {

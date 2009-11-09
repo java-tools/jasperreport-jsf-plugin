@@ -16,21 +16,21 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.fill.providers;
+package net.sf.jasperreports.jsf.validation;
 
-import javax.faces.context.FacesContext;
+public class IllegalAttributeValueException extends ValidationException {
 
-import net.sf.jasperreports.jsf.JRFacesException;
-import net.sf.jasperreports.jsf.component.UIDataSource;
-import net.sf.jasperreports.jsf.fill.AbstractFillerFactory;
-import net.sf.jasperreports.jsf.fill.Filler;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -306710637470588621L;
 
-public class CustomDataSourceFillerFactory extends AbstractFillerFactory {
-
-	@Override
-	protected Filler doCreateFiller(final FacesContext context,
-			final UIDataSource dataSource) throws JRFacesException {
-		return new CustomDataSourceFiller(dataSource);
+	public IllegalAttributeValueException(final String msg) {
+		super(msg);
 	}
-
+	
+	public IllegalAttributeValueException(final String msg, final Throwable t) {
+		super(msg, t);
+	}
+	
 }

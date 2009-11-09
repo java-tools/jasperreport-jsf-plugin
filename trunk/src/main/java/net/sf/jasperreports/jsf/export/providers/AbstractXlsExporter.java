@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRXlsAbstractExporter;
+import net.sf.jasperreports.engine.export.JRXlsAbstractExporterParameter;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import net.sf.jasperreports.jsf.export.AbstractJRExporter;
 import net.sf.jasperreports.jsf.export.ExporterException;
@@ -62,32 +63,32 @@ abstract class AbstractXlsExporter extends AbstractJRExporter {
 	}
 	
 	@Override
-	protected JRExporter createJRExporter(FacesContext context) {
-		JRXlsAbstractExporter exporter = createJRXlsExporter(context);
+	protected JRExporter createJRExporter(final FacesContext context) {
+		final JRXlsAbstractExporter exporter = createJRXlsExporter(context);
 		setParameterUsingAttribute(exporter, 
-				JRXlsExporterParameter.IS_AUTO_DETECT_CELL_TYPE, ATTR_IS_AUTO_DETECT_CELL_TYPE);
+				JRXlsAbstractExporterParameter.IS_AUTO_DETECT_CELL_TYPE, ATTR_IS_AUTO_DETECT_CELL_TYPE);
 		setParameterUsingAttribute(exporter, 
-				JRXlsExporterParameter.IS_COLLAPSE_ROW_SPAN, ATTR_IS_COLLAPSE_ROW_SPAN);
+				JRXlsAbstractExporterParameter.IS_COLLAPSE_ROW_SPAN, ATTR_IS_COLLAPSE_ROW_SPAN);
 		setParameterUsingAttribute(exporter, 
-				JRXlsExporterParameter.IS_DETECT_CELL_TYPE, ATTR_IS_DETECT_CELL_TYPE);
+				JRXlsAbstractExporterParameter.IS_DETECT_CELL_TYPE, ATTR_IS_DETECT_CELL_TYPE);
 		setParameterUsingAttribute(exporter, 
-				JRXlsExporterParameter.IS_FONT_SIZE_FIX_ENABLED, ATTR_IS_FONT_SIZE_FIX_ENABLED);
+				JRXlsAbstractExporterParameter.IS_FONT_SIZE_FIX_ENABLED, ATTR_IS_FONT_SIZE_FIX_ENABLED);
 		setParameterUsingAttribute(exporter, 
-				JRXlsExporterParameter.IS_IGNORE_CELL_BORDER, ATTR_IS_IGNORE_CELL_BORDER);
+				JRXlsAbstractExporterParameter.IS_IGNORE_CELL_BORDER, ATTR_IS_IGNORE_CELL_BORDER);
 		setParameterUsingAttribute(exporter, 
-				JRXlsExporterParameter.IS_IGNORE_GRAPHICS, ATTR_IS_IGNORE_GRAPHICS);
+				JRXlsAbstractExporterParameter.IS_IGNORE_GRAPHICS, ATTR_IS_IGNORE_GRAPHICS);
 		setParameterUsingAttribute(exporter, 
-				JRXlsExporterParameter.IS_IMAGE_BORDER_FIX_ENABLED, ATTR_IS_IMAGE_SIZE_FIX_ENABLED);
+				JRXlsAbstractExporterParameter.IS_IMAGE_BORDER_FIX_ENABLED, ATTR_IS_IMAGE_SIZE_FIX_ENABLED);
 		setParameterUsingAttribute(exporter, 
-				JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, ATTR_IS_ONE_PAGE_PER_SHEET);
+				JRXlsAbstractExporterParameter.IS_ONE_PAGE_PER_SHEET, ATTR_IS_ONE_PAGE_PER_SHEET);
 		setParameterUsingAttribute(exporter, 
-				JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, ATTR_IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS);
+				JRXlsAbstractExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, ATTR_IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS);
 		setParameterUsingAttribute(exporter, 
-				JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, ATTR_IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS);
+				JRXlsAbstractExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, ATTR_IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS);
 		setParameterUsingAttribute(exporter, 
-				JRXlsExporterParameter.IS_WHITE_PAGE_BACKGROUND, ATTR_IS_WHITE_PAGE_BACKGROUND);
+				JRXlsAbstractExporterParameter.IS_WHITE_PAGE_BACKGROUND, ATTR_IS_WHITE_PAGE_BACKGROUND);
 		setParameterUsingAttribute(exporter, 
-				JRXlsExporterParameter.MAXIMUM_ROWS_PER_SHEET, ATTR_MAXIMUM_ROWS_PER_SHEET);
+				JRXlsAbstractExporterParameter.MAXIMUM_ROWS_PER_SHEET, ATTR_MAXIMUM_ROWS_PER_SHEET);
 		return exporter;
 	}
 

@@ -34,12 +34,12 @@ public class CustomDataSourceFiller extends AbstractJRDataSourceFiller {
 	private static final Logger logger = Logger.getLogger(BeanFiller.class
 			.getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
 	
-	protected CustomDataSourceFiller(UIDataSource dataSource) {
+	protected CustomDataSourceFiller(final UIDataSource dataSource) {
 		super(dataSource);
 	}
 
 	@Override
-	protected JRDataSource getJRDataSource(FacesContext context)
+	protected JRDataSource getJRDataSource(final FacesContext context)
 			throws FillerException {
 		JRDataSource dataSource = (JRDataSource) getDataSourceComponent().getValue();
 		if (dataSource == null) {
