@@ -21,52 +21,48 @@ package net.sf.jasperreports.jsf.export.providers;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
+import net.sf.jasperreports.engine.export.JRGraphics2DExporter;
+import net.sf.jasperreports.engine.export.JRGraphics2DExporterParameter;
 import net.sf.jasperreports.jsf.export.AbstractJRExporter;
+import net.sf.jasperreports.jsf.export.ExporterException;
 
-/**
- * The Class PdfExporter.
- */
-public final class PdfExporter extends AbstractJRExporter {
+public class Graphics2DExporter extends AbstractJRExporter {
 
-	public static final String CONTENT_TYPE = "application/pdf";
-
-	/** The Constant ATTR_IS_COMPRESSED. */
-	public static final String ATTR_IS_COMPRESSED = "IS_COMPRESSED";
-
-	/** The Constant ATTR_IS_ENCRYPTED. */
-	public static final String ATTR_IS_ENCRYPTED = "IS_ENCRYPTED";
-
-	public static final String ATTR_IS_TAGGED = "IS_TAGGED";
+	public static final String ATTR_GRAPHICS_2D = "GRAPHICS_2D";
 	
-	protected PdfExporter(final UIComponent component) {
+	public static final String ATTR_MINIMIZE_PRINTER_JOB_SIZE = "MINIMIZE_PRINTER_JOB_SIZE";
+	
+	public static final String ATTR_ZOOM_RATIO = "ZOOM_RATIO";
+	
+	protected Graphics2DExporter(UIComponent component) {
 		super(component);
 	}
 
-	public String getContentType() {
-		return CONTENT_TYPE;
+	@Override
+	protected JRExporter createJRExporter(FacesContext context)
+			throws ExporterException {
+		JRExporter exporter;
+		try {
+			exporter = new JRGraphics2DExporter();
+		} catch(JRException e) {
+			throw new ExporterException(e);
+		}
+		
+		setParameterUsingAttribute(exporter, 
+				JRGraphics2DExporterParameter.GRAPHICS_2D, ATTR_GRAPHICS_2D);
+		setParameterUsingAttribute(exporter, 
+				JRGraphics2DExporterParameter.MINIMIZE_PRINTER_JOB_SIZE, 
+				ATTR_MINIMIZE_PRINTER_JOB_SIZE);
+		setParameterUsingAttribute(exporter, 
+				JRGraphics2DExporterParameter.ZOOM_RATIO, ATTR_ZOOM_RATIO);
+		return exporter;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
-	 * .context.FacesContext)
-	 */
-	@Override
-	protected JRExporter createJRExporter(final FacesContext context) {
-		final JRPdfExporter exporter = new JRPdfExporter();
-		setParameterUsingAttribute(exporter, 
-				JRPdfExporterParameter.IS_COMPRESSED, ATTR_IS_COMPRESSED);
-		setParameterUsingAttribute(exporter, 
-				JRPdfExporterParameter.IS_ENCRYPTED, ATTR_IS_ENCRYPTED);
-		setParameterUsingAttribute(exporter, 
-				JRPdfExporterParameter.IS_TAGGED, ATTR_IS_TAGGED);
-		return exporter;
+	public String getContentType() {
+		// No content type for Graphic2D instances
+		return null;
 	}
 
 }

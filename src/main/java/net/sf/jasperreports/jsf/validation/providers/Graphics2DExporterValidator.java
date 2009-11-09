@@ -16,41 +16,28 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.export.providers;
+package net.sf.jasperreports.jsf.validation.providers;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.engine.export.JRXlsAbstractExporter;
-import net.sf.jasperreports.engine.export.JRXlsExporter;
+import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.export.providers.Graphics2DExporter;
+import net.sf.jasperreports.jsf.validation.MissedAttributeException;
+import net.sf.jasperreports.jsf.validation.ReportValidatorBase;
+import net.sf.jasperreports.jsf.validation.ValidationException;
 
-/**
- * The Class XlsExporter.
- */
+public class Graphics2DExporterValidator extends ReportValidatorBase {
 
-public final class XlsExporter extends AbstractXlsExporter {
-
-	public static final String CONTENT_TYPE = "application/vnd.ms-excel";
-	
-	protected XlsExporter(final UIComponent component) {
-		super(component);
-	}
-
-	public String getContentType() {
-		return CONTENT_TYPE;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
-	 * .context.FacesContext)
-	 */
 	@Override
-	protected JRXlsAbstractExporter createJRXlsExporter(
-			final FacesContext context) {
-		return new JRXlsExporter();
+	protected void doValidate(FacesContext context, UIReport report)
+			throws ValidationException {
+		super.doValidate(context, report);
+		if(null == ((UIComponent) report).getAttributes()
+				.get(Graphics2DExporter.ATTR_GRAPHICS_2D)) {
+			throw new MissedAttributeException(report.getFormat() + 
+					" : " + Graphics2DExporter.ATTR_GRAPHICS_2D);
+		}
 	}
 
 }

@@ -19,3 +19,4 @@
 # alonsoft@users.sf.net
 #
 :net.sf.jasperreports.jsf.validation.ReportValidatorBase
+graph2d:net.sf.jasperreports.jsf.validation.providers.Graphics2DExporterValidator

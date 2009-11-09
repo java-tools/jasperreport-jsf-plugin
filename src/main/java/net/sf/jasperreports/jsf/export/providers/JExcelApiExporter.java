@@ -21,46 +21,31 @@ package net.sf.jasperreports.jsf.export.providers;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.engine.export.JRXmlExporter;
-import net.sf.jasperreports.engine.export.JRXmlExporterParameter;
-import net.sf.jasperreports.jsf.export.AbstractJRExporter;
+import net.sf.jasperreports.engine.export.JExcelApiExporterParameter;
+import net.sf.jasperreports.engine.export.JRXlsAbstractExporter;
+import net.sf.jasperreports.jsf.export.ExporterException;
 
-/**
- * The Class XmlExporter.
- */
-public final class XmlExporter extends AbstractJRExporter {
+public class JExcelApiExporter extends AbstractXlsExporter {
 
-	public static final String CONTENT_TYPE = "text/xml";
-
-	/** The Constant ATTR_DTD_LOCATION. */
-	public static final String ATTR_DTD_LOCATION = "DTD_LOCATION";
-
-	/** The Constant ATTR_IS_EMBEDDING_IMAGES. */
-	public static final String ATTR_IS_EMBEDDING_IMAGES = "IS_EMBEDDING_IMAGES";
-
-	protected XmlExporter(final UIComponent component) {
+	public static final String CONTENT_TYPE = "application/vnd.ms-excel";
+	
+	public static final String ATTR_CREATE_CUSTOM_PALETTE = "CREATE_CUSTOM_PALETTE";
+	
+	protected JExcelApiExporter(UIComponent component) {
 		super(component);
 	}
 
 	public String getContentType() {
 		return CONTENT_TYPE;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
-	 * .context.FacesContext)
-	 */
+	
 	@Override
-	protected JRExporter createJRExporter(final FacesContext context) {
-		final JRXmlExporter exporter = new JRXmlExporter();
+	protected JRXlsAbstractExporter createJRXlsExporter(FacesContext context)
+			throws ExporterException {
+		JRXlsAbstractExporter exporter = 
+			new net.sf.jasperreports.engine.export.JExcelApiExporter();
 		setParameterUsingAttribute(exporter, 
-				JRXmlExporterParameter.DTD_LOCATION, ATTR_DTD_LOCATION);
-		setParameterUsingAttribute(exporter, 
-				JRXmlExporterParameter.IS_EMBEDDING_IMAGES, ATTR_IS_EMBEDDING_IMAGES);
+				JExcelApiExporterParameter.CREATE_CUSTOM_PALETTE, ATTR_CREATE_CUSTOM_PALETTE);
 		return exporter;
 	}
 

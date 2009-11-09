@@ -22,7 +22,7 @@ import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIDataSource;
 import net.sf.jasperreports.jsf.validation.DataSourceValidatorBase;
-import net.sf.jasperreports.jsf.validation.MissedDataSourceAttributeException;
+import net.sf.jasperreports.jsf.validation.MissedAttributeException;
 import net.sf.jasperreports.jsf.validation.ValidationException;
 
 public class JdbcDataSourceValidator extends DataSourceValidatorBase {
@@ -37,7 +37,8 @@ public class JdbcDataSourceValidator extends DataSourceValidatorBase {
 		super.doValidate(context, dataSource);
 		for (final String attr : REQUIRED_DATASOURCE_ATTRS) {
 			if (null == dataSource.getAttributes().get(attr)) {
-				throw new MissedDataSourceAttributeException(attr);
+				throw new MissedAttributeException(
+						dataSource.getType() + " : " + attr);
 			}
 		}
 	}

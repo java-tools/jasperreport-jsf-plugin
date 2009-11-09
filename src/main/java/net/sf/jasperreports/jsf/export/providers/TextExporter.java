@@ -69,18 +69,18 @@ public final class TextExporter extends AbstractJRExporter {
 	@Override
 	protected JRExporter createJRExporter(final FacesContext context) {
 		final JRTextExporter exporter = new JRTextExporter();
-		exporter.setParameter(JRTextExporterParameter.BETWEEN_PAGES_TEXT,
-				getComponent().getAttributes().get(ATTR_BETWEEN_PAGES_TEXT));
-		exporter.setParameter(JRTextExporterParameter.CHARACTER_HEIGHT,
-				getComponent().getAttributes().get(ATTR_CHARACTER_HEIGHT));
-		exporter.setParameter(JRTextExporterParameter.CHARACTER_WIDTH,
-				getComponent().getAttributes().get(ATTR_CHARACTER_WIDTH));
-		exporter.setParameter(JRTextExporterParameter.LINE_SEPARATOR,
-				getComponent().getAttributes().get(ATTR_LINE_SEPARATOR));
-		exporter.setParameter(JRTextExporterParameter.PAGE_HEIGHT,
-				getComponent().getAttributes().get(ATTR_PAGE_HEIGHT));
-		exporter.setParameter(JRTextExporterParameter.PAGE_WIDTH,
-				getComponent().getAttributes().get(ATTR_PAGE_WIDTH));
+		setParameterUsingAttribute(exporter, 
+				JRTextExporterParameter.BETWEEN_PAGES_TEXT, ATTR_BETWEEN_PAGES_TEXT);
+		setParameterUsingAttribute(exporter, 
+				JRTextExporterParameter.CHARACTER_HEIGHT, ATTR_CHARACTER_HEIGHT);
+		setParameterUsingAttribute(exporter, 
+				JRTextExporterParameter.CHARACTER_WIDTH, ATTR_CHARACTER_WIDTH);
+		setParameterUsingAttribute(exporter, 
+				JRTextExporterParameter.LINE_SEPARATOR, ATTR_LINE_SEPARATOR);
+		setParameterUsingAttribute(exporter, 
+				JRTextExporterParameter.PAGE_HEIGHT, ATTR_PAGE_HEIGHT);
+		setParameterUsingAttribute(exporter, 
+				JRTextExporterParameter.PAGE_WIDTH, ATTR_PAGE_WIDTH);
 		return exporter;
 	}
 

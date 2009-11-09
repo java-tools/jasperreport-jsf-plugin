@@ -57,10 +57,10 @@ public final class CsvExporter extends AbstractJRExporter {
 	@Override
 	protected JRExporter createJRExporter(final FacesContext context) {
 		final JRCsvExporter exporter = new JRCsvExporter();
-		exporter.setParameter(JRCsvExporterParameter.FIELD_DELIMITER,
-				getComponent().getAttributes().get(ATTR_FIELD_DELIMITER));
-		exporter.setParameter(JRCsvExporterParameter.RECORD_DELIMITER,
-				getComponent().getAttributes().get(ATTR_RECORD_DELIMITER));
+		setParameterUsingAttribute(exporter, 
+				JRCsvExporterParameter.FIELD_DELIMITER, ATTR_FIELD_DELIMITER);
+		setParameterUsingAttribute(exporter, 
+				JRCsvExporterParameter.RECORD_DELIMITER, ATTR_RECORD_DELIMITER);
 		return exporter;
 	}
 

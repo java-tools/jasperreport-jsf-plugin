@@ -16,41 +16,24 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.export.providers;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-
-import net.sf.jasperreports.engine.export.JRXlsAbstractExporter;
-import net.sf.jasperreports.engine.export.JRXlsExporter;
+package net.sf.jasperreports.jsf.validation;
 
 /**
- * The Class XlsExporter.
+ * The Class MissedDataSourceAttributeException.
  */
+public class MissedAttributeException extends ValidationException {
 
-public final class XlsExporter extends AbstractXlsExporter {
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 6313893570302881706L;
 
-	public static final String CONTENT_TYPE = "application/vnd.ms-excel";
-	
-	protected XlsExporter(final UIComponent component) {
-		super(component);
-	}
-
-	public String getContentType() {
-		return CONTENT_TYPE;
-	}
-
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Instantiates a new missed data source attribute exception.
 	 * 
-	 * @see
-	 * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
-	 * .context.FacesContext)
+	 * @param msg
+	 *            the msg
 	 */
-	@Override
-	protected JRXlsAbstractExporter createJRXlsExporter(
-			final FacesContext context) {
-		return new JRXlsExporter();
+	public MissedAttributeException(final String msg) {
+		super(msg);
 	}
 
 }

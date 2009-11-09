@@ -97,7 +97,7 @@ should be an XPath query.
 +---
 <jr:dataSource type="xml"
 	value="#{XMLDataBean.xmlDocument}"
-	query="SALES/ORDER[city='{0}']"
+	query="SALES/ORDER[@city='{0}']"
 >
 	<f:param value="Melbourne" />
 </jr:dataSource>

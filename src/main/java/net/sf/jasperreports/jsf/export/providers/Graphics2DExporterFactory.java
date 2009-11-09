@@ -16,24 +16,22 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.validation;
+package net.sf.jasperreports.jsf.export.providers;
 
-/**
- * The Class MissedDataSourceAttributeException.
- */
-public class MissedDataSourceAttributeException extends ValidationException {
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 6313893570302881706L;
+import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.export.AbstractExporterFactory;
+import net.sf.jasperreports.jsf.export.Exporter;
+import net.sf.jasperreports.jsf.export.ExporterException;
 
-	/**
-	 * Instantiates a new missed data source attribute exception.
-	 * 
-	 * @param msg
-	 *            the msg
-	 */
-	public MissedDataSourceAttributeException(final String msg) {
-		super(msg);
+public class Graphics2DExporterFactory extends AbstractExporterFactory {
+
+	@Override
+	protected Exporter doCreateExporter(FacesContext context, UIReport report)
+			throws ExporterException {
+		return new Graphics2DExporter((UIComponent) report);
 	}
 
 }
