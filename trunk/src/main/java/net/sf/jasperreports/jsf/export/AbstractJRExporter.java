@@ -29,6 +29,8 @@ import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRHyperlinkProducerFactory;
+import net.sf.jasperreports.engine.util.FileResolver;
+import net.sf.jasperreports.jsf.util.FacesFileResolver;
 import net.sf.jasperreports.jsf.util.FacesHyperlinkProducerFactory;
 import net.sf.jasperreports.jsf.util.Util;
 
@@ -37,6 +39,12 @@ import net.sf.jasperreports.jsf.util.Util;
  */
 public abstract class AbstractJRExporter extends AbstractExporter {
 
+	public static final String ATTR_CHARACTER_ENCODING = "CHARACTER_ENCODING";
+	
+	public static final String ATTR_FILTER = "FILTER";
+
+	public static final String ATTR_IGNORE_PAGE_MARGINS = "IGNORE_PAGE_MARGINS";
+	
 	/** The Constant ATTR_END_PAGE_INDEX. */
 	public static final String ATTR_END_PAGE_INDEX = "END_PAGE_INDEX";
 
@@ -46,6 +54,10 @@ public abstract class AbstractJRExporter extends AbstractExporter {
 	/** The Constant ATTR_START_PAGE_INDEX. */
 	public static final String ATTR_START_PAGE_INDEX = "START_PAGE_INDEX";
 
+	public static final String ATTR_OFFSET_X = "OFFSET_X";
+	
+	public static final String ATTR_OFFSET_Y = "OFFSET_Y";
+	
 	public AbstractJRExporter(final UIComponent component) {
 		super(component);
 	}
@@ -71,22 +83,36 @@ public abstract class AbstractJRExporter extends AbstractExporter {
 			final JasperPrint print, final OutputStream stream)
 			throws IOException, ExporterException {
 		final JRExporter exporter = createJRExporter(context);
+		
 		exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
 		exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, stream);
 		exporter.setParameter(JRExporterParameter.CLASS_LOADER, Util
 				.getClassLoader(getComponent()));
 
-		exporter.setParameter(JRExporterParameter.END_PAGE_INDEX,
-				getComponent().getAttributes().get(ATTR_END_PAGE_INDEX));
-		exporter.setParameter(JRExporterParameter.PAGE_INDEX, getComponent()
-				.getAttributes().get(ATTR_PAGE_INDEX));
-		exporter.setParameter(JRExporterParameter.START_PAGE_INDEX,
-				getComponent().getAttributes().get(ATTR_START_PAGE_INDEX));
+		setParameterUsingAttribute(exporter, 
+				JRExporterParameter.CHARACTER_ENCODING, ATTR_CHARACTER_ENCODING);
+		setParameterUsingAttribute(exporter, 
+				JRExporterParameter.IGNORE_PAGE_MARGINS, ATTR_IGNORE_PAGE_MARGINS);
+		setParameterUsingAttribute(exporter, 
+				JRExporterParameter.END_PAGE_INDEX, ATTR_END_PAGE_INDEX);
+		setParameterUsingAttribute(exporter, 
+				JRExporterParameter.PAGE_INDEX, ATTR_PAGE_INDEX);
+		setParameterUsingAttribute(exporter, 
+				JRExporterParameter.START_PAGE_INDEX, ATTR_START_PAGE_INDEX);
+		setParameterUsingAttribute(exporter, 
+				JRExporterParameter.FILTER, ATTR_FILTER);
+		setParameterUsingAttribute(exporter, 
+				JRExporterParameter.OFFSET_X, ATTR_OFFSET_X);
+		setParameterUsingAttribute(exporter, 
+				JRExporterParameter.OFFSET_Y, ATTR_OFFSET_Y);
 
+		final FileResolver fr = new FacesFileResolver(context);
+		exporter.setParameter(JRExporterParameter.FILE_RESOLVER, fr);
+		
 		final JRHyperlinkProducerFactory hpf = new FacesHyperlinkProducerFactory(
 				context, getComponent());
-		exporter.setParameter(JRExporterParameter.HYPERLINK_PRODUCER_FACTORY,
-				hpf);
+		exporter.setParameter(
+				JRExporterParameter.HYPERLINK_PRODUCER_FACTORY, hpf);
 
 		try {
 			exporter.exportReport();
@@ -103,6 +129,16 @@ public abstract class AbstractJRExporter extends AbstractExporter {
 	 * 
 	 * @return the jR exporter
 	 */
-	protected abstract JRExporter createJRExporter(FacesContext context);
+	protected abstract JRExporter createJRExporter(FacesContext context)
+	throws ExporterException;
 
+	protected void setParameterUsingAttribute(JRExporter exporter, 
+			JRExporterParameter param, String attr) {
+		Object value;
+		if(null != (value = getComponent().getAttributes()
+				.get(attr))) {
+			exporter.setParameter(param, value);
+		}
+	}
+	
 }

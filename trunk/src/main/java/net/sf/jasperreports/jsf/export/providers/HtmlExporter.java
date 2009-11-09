@@ -66,16 +66,16 @@ public final class HtmlExporter extends AbstractJRExporter {
 	@Override
 	protected JRExporter createJRExporter(final FacesContext context) {
 		final JRHtmlExporter exporter = new JRHtmlExporter();
-		exporter.setParameter(JRHtmlExporterParameter.HTML_HEADER,
-				getComponent().getAttributes().get(ATTR_HTML_HEADER));
-		exporter.setParameter(JRHtmlExporterParameter.HTML_FOOTER,
-				getComponent().getAttributes().get(ATTR_HTML_FOOTER));
-		exporter.setParameter(JRHtmlExporterParameter.IMAGES_DIR,
-				getComponent().getAttributes().get(ATTR_IMAGES_DIR));
-		exporter.setParameter(JRHtmlExporterParameter.IMAGES_DIR_NAME,
-				getComponent().getAttributes().get(ATTR_IMAGES_DIR_NAME));
-		exporter.setParameter(JRHtmlExporterParameter.IMAGES_URI,
-				getComponent().getAttributes().get(ATTR_IMAGES_URI));
+		setParameterUsingAttribute(exporter, 
+				JRHtmlExporterParameter.HTML_HEADER, ATTR_HTML_HEADER);
+		setParameterUsingAttribute(exporter, 
+				JRHtmlExporterParameter.HTML_FOOTER, ATTR_HTML_FOOTER);
+		setParameterUsingAttribute(exporter, 
+				JRHtmlExporterParameter.IMAGES_DIR, ATTR_IMAGES_DIR);
+		setParameterUsingAttribute(exporter, 
+				JRHtmlExporterParameter.IMAGES_DIR_NAME, ATTR_IMAGES_DIR_NAME);
+		setParameterUsingAttribute(exporter, 
+				JRHtmlExporterParameter.IMAGES_URI, ATTR_IMAGES_URI);
 		return exporter;
 	}
 

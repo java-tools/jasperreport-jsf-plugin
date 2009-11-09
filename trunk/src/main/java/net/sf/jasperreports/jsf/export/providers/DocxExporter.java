@@ -22,51 +22,33 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
+import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
+import net.sf.jasperreports.engine.export.ooxml.JRDocxExporterParameter;
 import net.sf.jasperreports.jsf.export.AbstractJRExporter;
 
-/**
- * The Class PdfExporter.
- */
-public final class PdfExporter extends AbstractJRExporter {
-
-	public static final String CONTENT_TYPE = "application/pdf";
-
-	/** The Constant ATTR_IS_COMPRESSED. */
-	public static final String ATTR_IS_COMPRESSED = "IS_COMPRESSED";
-
-	/** The Constant ATTR_IS_ENCRYPTED. */
-	public static final String ATTR_IS_ENCRYPTED = "IS_ENCRYPTED";
-
-	public static final String ATTR_IS_TAGGED = "IS_TAGGED";
+public class DocxExporter extends AbstractJRExporter {
 	
-	protected PdfExporter(final UIComponent component) {
+	public static final String CONTENT_TYPE = 
+		"application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+	
+	//public static final String ATTR_FLEXIBLE_ROW_HEIGHT = "FLEXIBLE_ROW_HEIGHT";
+	
+	public static final String ATTR_FRAMES_AS_NESTED_TABLES = "FRAMES_AS_NESTED_TABLES";
+	
+	protected DocxExporter(UIComponent component) {
 		super(component);
 	}
-
+	
 	public String getContentType() {
 		return CONTENT_TYPE;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
-	 * .context.FacesContext)
-	 */
 	@Override
-	protected JRExporter createJRExporter(final FacesContext context) {
-		final JRPdfExporter exporter = new JRPdfExporter();
+	protected JRExporter createJRExporter(FacesContext context) {
+		final JRDocxExporter exporter = new JRDocxExporter();
 		setParameterUsingAttribute(exporter, 
-				JRPdfExporterParameter.IS_COMPRESSED, ATTR_IS_COMPRESSED);
-		setParameterUsingAttribute(exporter, 
-				JRPdfExporterParameter.IS_ENCRYPTED, ATTR_IS_ENCRYPTED);
-		setParameterUsingAttribute(exporter, 
-				JRPdfExporterParameter.IS_TAGGED, ATTR_IS_TAGGED);
+				JRDocxExporterParameter.FRAMES_AS_NESTED_TABLES, ATTR_FRAMES_AS_NESTED_TABLES);
 		return exporter;
-	}
+	}	
 
 }

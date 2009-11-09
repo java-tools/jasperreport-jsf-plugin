@@ -16,41 +16,35 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.export.providers;
+package net.sf.jasperreports.jsf.util;
 
-import javax.faces.component.UIComponent;
+import java.io.File;
+import java.io.IOException;
+
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.engine.export.JRXlsAbstractExporter;
-import net.sf.jasperreports.engine.export.JRXlsExporter;
+import net.sf.jasperreports.engine.util.FileResolver;
+import net.sf.jasperreports.jsf.JRFacesException;
+import net.sf.jasperreports.jsf.resource.Resource;
+import net.sf.jasperreports.jsf.spi.ResourceLoader;
 
-/**
- * The Class XlsExporter.
- */
+public class FacesFileResolver implements FileResolver {
 
-public final class XlsExporter extends AbstractXlsExporter {
-
-	public static final String CONTENT_TYPE = "application/vnd.ms-excel";
+	private FacesContext context;
 	
-	protected XlsExporter(final UIComponent component) {
-		super(component);
+	public FacesFileResolver(FacesContext context) {
+		super();
+		this.context = context;
 	}
 
-	public String getContentType() {
-		return CONTENT_TYPE;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
-	 * .context.FacesContext)
-	 */
-	@Override
-	protected JRXlsAbstractExporter createJRXlsExporter(
-			final FacesContext context) {
-		return new JRXlsExporter();
+	public File resolveFile(String name) {
+		Resource resource;
+		try {
+			resource = ResourceLoader.getResource(context, name);
+		} catch(IOException e) {
+			throw new JRFacesException(e);
+		}
+		return new File(resource.getPath());
 	}
 
 }

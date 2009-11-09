@@ -127,7 +127,7 @@ public class CustomDataSourceBean {
 
 	private class CustomDataSource implements JRDataSource {
 	
-		public CutomDataSource( ... ) {
+		public CustomDataSource( ... ) {
 			...
 		}
 	
