@@ -115,9 +115,11 @@ the report component tag you are using.
 
 * Output Formats
 
-  JasperReports JSF-Plugin supports many output formats for your reports. Advanced users
-can also provide its own supported output formats, take a look to {{{devel/exporter.html}this link}}
-to get more information about that.
+  JasperReports JSF-Plugin allows rendering reports using different output formats
+by means of the <<<format>>> attribute. Library has its own builtin mechanism to be
+aware of different exporters bundled inside the official distribution.
+Advanced users can also provide its own supported output formats, take a 
+look to {{{devel/exporter.html}this link}} to get more information about that.
 
   Apart from that, each of the output formats can be cutomized providing some component
 attributes using the <<<f:attribute>>> tag nested inside the report component you are using.
@@ -127,6 +129,32 @@ attributes using the <<<f:attribute>>> tag nested inside the report component yo
 	<f:attribute name="FIELD_DELIMITER" value=":" />
 </jr:report>
 +---
+
+  Following there is a list of the current supported output formats
+  
+*--------------------+-------------------------------------------------------------------------+--------------------------------------------*
+| <<<format>>> value | Mime Type                                                               | Description                                |
+*--------------------+-------------------------------------------------------------------------+--------------------------------------------*
+| <<<docx>>>         | application/vnd.openxmlformats-officedocument.wordprocessingml.document | Exports to a Office 2007 Word document     |
+*--------------------+-------------------------------------------------------------------------+--------------------------------------------*
+| <<<pdf>>>          | application/pdf                                                         | Exports to a PDF document                  |
+*--------------------+-------------------------------------------------------------------------+--------------------------------------------*
+| <<<graph2d>>>      | NO MIME TYPE                                                            | Exports to a <<<java.awt.Graphics2D>>>     |
+*--------------------+-------------------------------------------------------------------------+--------------------------------------------*
+| <<<csv>>>          | text/plain                                                              | Exports to a CSV text file                 |
+*--------------------+-------------------------------------------------------------------------+--------------------------------------------*
+| <<<html>>>         | text/html                                                               | Exports to a HTML document                 |
+*--------------------+-------------------------------------------------------------------------+--------------------------------------------*
+| <<<jexcel>>>       | application/vnd.ms-excel                                                | Exports to a MSExcel file using JExcel API |
+*--------------------+-------------------------------------------------------------------------+--------------------------------------------*
+| <<<rtf>>>          | application/rtf                                                         | Exports to a RTF document                  |
+*--------------------+-------------------------------------------------------------------------+--------------------------------------------*
+| <<<text>>>         | text/plain                                                              | Exports to a plain text file               |
+*--------------------+-------------------------------------------------------------------------+--------------------------------------------*
+| <<<xls>>>          | application/vnd.ms-excel                                                | Exports to a MSExcel file using POI API    |
+*--------------------+-------------------------------------------------------------------------+--------------------------------------------*
+| <<<xml>>>          | text/xml                                                                | Exports to a XML document                  |
+*--------------------+-------------------------------------------------------------------------+--------------------------------------------*
 
   Take a look to the {{{apidocs/index.html}Javadocs}} to get specific information about each
 exporter and its specific attributes.

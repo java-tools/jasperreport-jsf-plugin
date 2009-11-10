@@ -34,6 +34,9 @@ public class FacesFileResolver implements FileResolver {
 	
 	public FacesFileResolver(final FacesContext context) {
 		super();
+		if(context == null) {
+			throw new IllegalArgumentException("'context' can't be null");
+		}
 		this.context = context;
 	}
 

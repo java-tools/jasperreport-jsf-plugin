@@ -31,6 +31,10 @@ Features for final version
 version for JasperReports JSF Plugin
 
   * Added support for JasperReports 3.5.2 and later
+  
+  * Added <<<.docx>>>, <<<java.awt.Graphics2D>>> output formats
+  
+  * Better tight integration between JSF and JasperReports by means of engine's classes implementations
 
   * Bug 2848454: Bad exported filename fixed
   
