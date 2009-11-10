@@ -52,7 +52,7 @@ public final class FillerLoader {
 			.map(FillerFactory.class);
 
 	/** The Constant DEFAULT_FILLER_INSTANCE. */
-	private static final Filler DEFAULT_FILLER_INSTANCE = new StaticFiller();
+	private static final Filler DEFAULT_FILLER_INSTANCE = new NoopFiller();
 
 	public static Set<String> getAvailableDataSourceTypes() {
 		return Collections.unmodifiableSet(fillerCacheMap.keySet());
@@ -81,6 +81,8 @@ public final class FillerLoader {
 		final UIDataSource dataSource = getDataSourceComponent(context, report);
 		if (dataSource == null) {
 			result = DEFAULT_FILLER_INSTANCE;
+		} else if (dataSource.getType() == null) {
+			result = DEFAULT_FILLER_INSTANCE;
 		} else {
 			final FillerFactory factory = getFillerFactory(context, dataSource);
 			result = factory.createFiller(context, dataSource);
@@ -91,12 +93,6 @@ public final class FillerLoader {
 	private static FillerFactory getFillerFactory(final FacesContext context,
 			final UIDataSource dataSource) throws JRFacesException {
 		FillerFactory result;
-
-		// When 'driverClass' property has been set,
-		// override dataSource type with 'jdbc' value
-		if (dataSource.getDriverClass() != null) {
-			dataSource.setType("jdbc");
-		}
 
 		result = fillerCacheMap.get(dataSource.getType());
 		if (result == null) {
@@ -147,9 +143,9 @@ public final class FillerLoader {
 	/**
 	 * The Class StaticFiller.
 	 */
-	private static final class StaticFiller extends AbstractFiller {
+	private static final class NoopFiller extends AbstractFiller {
 
-		public StaticFiller() {
+		public NoopFiller() {
 			super(null);
 		}
 

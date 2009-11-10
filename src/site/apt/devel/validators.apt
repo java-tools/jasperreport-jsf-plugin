@@ -91,6 +91,7 @@ Here is an example:
 
 +---
 :net.sf.jasperreports.jsf.validation.ReportValidatorBase
+graph2d:net.sf.jasperreports.jsf.validation.providers.Graphics2DExporterValidator
 +---
 
   When no validator is found for the current data source type, the default one

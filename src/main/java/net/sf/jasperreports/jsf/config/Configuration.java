@@ -146,10 +146,16 @@ public final class Configuration {
 				if (defaultMapping == null) {
 					defaultMapping = mapping;
 					if(logger.isLoggable(Level.CONFIG)) {
-						logger.log(Level.CONFIG, "JRJSF_0026", servletName);
+						logger.log(Level.CONFIG, "JRJSF_0026", new Object[]{ 
+								servletName, mapping 
+						});
 					}
 				} else if(logger.isLoggable(Level.CONFIG)) {
-					logger.log(Level.CONFIG, "JRJSF_0025", servletName);
+					if(logger.isLoggable(Level.CONFIG)) {
+						logger.log(Level.CONFIG, "JRJSF_0025", new Object[]{ 
+								servletName, mapping 
+						});
+					}
 				}
 				facesMappings.add(mapping);
 			}

@@ -103,7 +103,7 @@ are you implementing:
       any XML / taglib at all.
       
   Using Shale-Clay is very similar to using JSF Facelets, the main difference
-is the special attribute needed to stablish wichi JSF component it's related
+is the special attribute needed to stablish which JSF component it's related
 to a HTML tag. Following is an example:
 
 +---

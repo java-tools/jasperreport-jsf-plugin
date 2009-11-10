@@ -21,6 +21,7 @@ package net.sf.jasperreports.jsf.validation.providers;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIDataSource;
+import net.sf.jasperreports.jsf.fill.providers.JdbcFiller;
 import net.sf.jasperreports.jsf.validation.DataSourceValidatorBase;
 import net.sf.jasperreports.jsf.validation.MissedAttributeException;
 import net.sf.jasperreports.jsf.validation.ValidationException;
@@ -28,8 +29,9 @@ import net.sf.jasperreports.jsf.validation.ValidationException;
 public class JdbcDataSourceValidator extends DataSourceValidatorBase {
 
 	/** The Constant REQUIRED_DATASOURCE_ATTRS. */
-	public static final String[] REQUIRED_DATASOURCE_ATTRS = { "driverClass",
-			"username", "password" };
+	public static final String[] REQUIRED_DATASOURCE_ATTRS = { 
+			JdbcFiller.ATTR_DRIVER_CLASS_NAME,
+	};
 
 	@Override
 	protected void doValidate(final FacesContext context,
