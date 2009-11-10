@@ -28,7 +28,7 @@
 
   <groupId>net.sf.jasperreports</groupId>
   <artifactId>jasperreports-jsf</artifactId>
-  <version>1.0-beta-3</version>
+  <version>1.0-RC</version>
 
   <packaging>jar</packaging>
 
@@ -45,9 +45,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/tags/1.0-beta-3</connection>
-    <developerConnection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/tags/1.0-beta-3</developerConnection>
-    <url>http://jasperreportjsf.svn.sourceforge.net/viewvc/jasperreportjsf/tags/1.0-beta-3</url>
+    <connection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/trunk</connection>
+    <developerConnection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/trunk</developerConnection>
+    <url>http://jasperreportjsf.svn.sourceforge.net/viewvc/jasperreportjsf/trunk</url>
   </scm>
 
   <issueManagement>
