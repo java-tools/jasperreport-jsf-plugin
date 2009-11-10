@@ -25,16 +25,16 @@
 			---
 			A. Alonso Dominguez
 
-Features for final version
+Features for last beta version
 
-  Here is a list of features and bug fixes implemented in the final
-version for JasperReports JSF Plugin
+  Here is a list of features and bug fixes implemented in the last
+beta version for JasperReports JSF Plugin
 
   * Added support for JasperReports 3.5.2 and later
   
   * Added <<<.docx>>>, <<<java.awt.Graphics2D>>> output formats
   
-  * Better tight integration between JSF and JasperReports by means of engine's classes implementations
+  * Tight integration between JSF and JasperReports by means of engine's classes implementations
 
   * Bug 2848454: Bad exported filename fixed
   

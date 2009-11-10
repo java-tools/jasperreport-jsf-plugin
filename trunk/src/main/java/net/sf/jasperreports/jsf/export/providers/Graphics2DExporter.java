@@ -28,7 +28,7 @@ import net.sf.jasperreports.engine.export.JRGraphics2DExporterParameter;
 import net.sf.jasperreports.jsf.export.AbstractJRExporter;
 import net.sf.jasperreports.jsf.export.ExporterException;
 
-public class Graphics2DExporter extends AbstractJRExporter {
+public final class Graphics2DExporter extends AbstractJRExporter {
 
 	public static final String ATTR_GRAPHICS_2D = "GRAPHICS_2D";
 	

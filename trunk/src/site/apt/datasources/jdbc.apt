@@ -28,7 +28,7 @@
 
 Usage of the JDBC DataSource
 
-  JDBC data sources are the default type of data source that you
+  JDBC data sources are at the lowest level of data source that you
 can use. The usage of this data kind of data source requires configuring
 some attributes for the <<<jr:dataSource>>> tag.
 
@@ -42,10 +42,18 @@ reflected in the following table:
 *-----------------+----------*--------------------------------------------------+
 | driverClassName | false    | Name of the driver class to be used.             |
 *-----------------+----------*--------------------------------------------------+
+| username        | true     | Database user                                    |
+*-----------------+----------*--------------------------------------------------+
+| password        | true     | Database Password                                |
+*-----------------+----------*--------------------------------------------------+
 | value           | false    | URL of the connection                            |
 *-----------------+----------*--------------------------------------------------+
 | query           | true     | Query to be used to offer the data to the report |
 *-----------------+----------*--------------------------------------------------+
+
+  The {{{../tlddoc/jr/dataSource.html}jr:dataSource}} tag just supports the last
+two listed attributes, the other three (<<<driverClassName>>>, <<<username>>> and
+<<<password>>>) must be provided using the <<<f:attribute>>> tag.
 
 ** Examples
 
@@ -57,19 +65,20 @@ instance. The report must be desgined with a default query.
   The most simple usage consist on stablish the two required attributes:
   
 +---
-<jr:dataSource id="jdbcDataSource"
-	driverClassName="org.postgresql.Driver"
+<jr:dataSource id="jdbcDataSource" type="jdbc"
 	value="jdbc:psql://localhost/databasename"
-/>
+>
+	<f:attribute name="driverClassName" value="org.postgresql.Driver" />
+</jr:dataSource>
 +---
 
   You can also specify the username and password of the connection this way:
   
 +---
 <jr:dataSource id="jdbcDataSource"
-	driverClassName="org.postgresql.Driver"
 	value="jdbc:psql://localhost/databasename"
 >
+	<f:attribute name="driverClassName" value="org.postgresql.Driver" />
 	<f:attribute name="username" value="userId" />
 	<f:attribute name="password" value="s3cret" />
 </jr:dataSource>
@@ -84,20 +93,21 @@ instance. The report doesn't need to be designed with a default query.
   
 +---
 <jr:dataSource id="jdbcDataSource"
-	driverClassName="org.postgresql.Driver"
 	value="jdbc:psql://localhost/databasename"
 	query="select * from orders"
-/>
+>
+	<f:attribute name="driverClassName" value="org.postgresql.Driver" />
+</jr:dataSource>
 +---
 
   Also you can use parametriced queries this way:
   
 +---
 <jr:dataSource id="jdbcDataSource"
-	driverClassName="org.postgresql.Driver"
 	value="jdbc:psql://localhost/databasename"
 	query="select * from orders where orderId = ?"
 >
+	<f:attribute name="driverClassName" value="org.postgresql.Driver" />
 	<f:param value="23938" />
 </jr:dataSource>
 +---

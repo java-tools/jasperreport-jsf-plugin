@@ -72,9 +72,9 @@ that must be used for the <<<type>>> attribute of the data source component.
 *---------------------------------------------------------+---------*
 | DataSource                                              | Type    |
 *---------------------------------------------------------+---------*
-| {{{jdbc.html}JDBC DataSource}}                          | default |
-*---------------------------------------------------------+---------*
 | {{{jndi.html}JNDI DataSource}}                          | jndi    |
+*---------------------------------------------------------+---------*
+| {{{jdbc.html}JDBC DataSource}}                          | jdbc    |
 *---------------------------------------------------------+---------*
 | {{{csv.html}CSV DataSource}}                            | csv     |
 *---------------------------------------------------------+---------*
@@ -82,3 +82,6 @@ that must be used for the <<<type>>> attribute of the data source component.
 *---------------------------------------------------------+---------*
 | {{{other.html}Other Supported DataSources}}             | other   |
 *---------------------------------------------------------+---------*
+
+  If no value is set to the <<<type>>> attribute no data will be injected
+into the generated report.

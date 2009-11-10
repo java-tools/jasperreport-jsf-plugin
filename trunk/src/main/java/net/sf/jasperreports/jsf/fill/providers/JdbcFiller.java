@@ -33,6 +33,12 @@ import net.sf.jasperreports.jsf.fill.FillerException;
  */
 public final class JdbcFiller extends AbstractSQLFiller {
 
+	public static final String ATTR_DRIVER_CLASS_NAME = "driverClassName";
+	
+	public static final String ATTR_USERNAME = "username";
+	
+	public static final String ATTR_PASSWORD = "password";
+	
 	protected JdbcFiller(final UIDataSource dataSource) {
 		super(dataSource);
 	}
@@ -48,10 +54,11 @@ public final class JdbcFiller extends AbstractSQLFiller {
 	 */
 	@Override
 	protected Connection getConnection() throws SQLException {
-		final String driverClass = getDataSourceComponent().getDriverClass();
+		final String driverClass = (String) getDataSourceComponent()
+				.getAttributes().get(ATTR_DRIVER_CLASS_NAME);
 		if ((driverClass == null) || (driverClass.length() == 0)) {
 			throw new FillerException(
-					"DEFAULT dataSource type requires a driverClass value!");
+					"DEFAULT dataSource type requires a driverClassName value!");
 		}
 
 		try {
@@ -65,9 +72,9 @@ public final class JdbcFiller extends AbstractSQLFiller {
 		final String connectionURL = (String) getDataSourceComponent()
 				.getValue();
 		final String username = (String) getDataSourceComponent()
-				.getAttributes().get("username");
+				.getAttributes().get(ATTR_USERNAME);
 		final String password = (String) getDataSourceComponent()
-				.getAttributes().get("password");
+				.getAttributes().get(ATTR_PASSWORD);
 
 		if (connectionURL == null || connectionURL.length() == 0) {
 			throw new FillerException(

@@ -37,9 +37,6 @@ public class UIDataSource extends UIComponentBase {
 
 	// Fields
 
-	/** The driver class. */
-	private String driverClass;
-
 	/** The query. */
 	private String query;
 
@@ -61,37 +58,6 @@ public class UIDataSource extends UIComponentBase {
 	}
 
 	// Properties
-
-	/**
-	 * Gets the driver class.
-	 * 
-	 * @return the driver class
-	 */
-	public String getDriverClass() {
-		if (driverClass != null) {
-			return driverClass;
-		}
-		final ValueExpression ve = getValueExpression("driverClass");
-		if (ve != null) {
-			try {
-				return (String) ve.getValue(getFacesContext().getELContext());
-			} catch (final ELException e) {
-				throw new FacesException(e);
-			}
-		} else {
-			return driverClass;
-		}
-	}
-
-	/**
-	 * Sets the driver class.
-	 * 
-	 * @param driverClass
-	 *            the new driver class
-	 */
-	public void setDriverClass(final String driverClass) {
-		this.driverClass = driverClass;
-	}
 
 	/**
 	 * Gets the query.
@@ -210,11 +176,10 @@ public class UIDataSource extends UIComponentBase {
 	public void restoreState(final FacesContext context, final Object state) {
 		final Object[] values = (Object[]) state;
 		super.restoreState(context, values[0]);
-		driverClass = (String) values[1];
-		query = (String) values[2];
-		type = (String) values[3];
-		typeSet = ((Boolean) values[4]).booleanValue();
-		value = values[5];
+		query = (String) values[1];
+		type = (String) values[2];
+		typeSet = ((Boolean) values[3]).booleanValue();
+		value = values[4];
 	}
 
 	/*
@@ -225,13 +190,12 @@ public class UIDataSource extends UIComponentBase {
 	 */
 	@Override
 	public Object saveState(final FacesContext context) {
-		final Object[] values = new Object[6];
+		final Object[] values = new Object[5];
 		values[0] = super.saveState(context);
-		values[1] = driverClass;
-		values[2] = query;
-		values[3] = type;
-		values[4] = Boolean.valueOf(typeSet);
-		values[5] = value;
+		values[1] = query;
+		values[2] = type;
+		values[3] = Boolean.valueOf(typeSet);
+		values[4] = value;
 		return values;
 	}
 

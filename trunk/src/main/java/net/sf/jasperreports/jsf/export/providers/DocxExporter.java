@@ -26,7 +26,7 @@ import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporterParameter;
 import net.sf.jasperreports.jsf.export.AbstractJRExporter;
 
-public class DocxExporter extends AbstractJRExporter {
+public final class DocxExporter extends AbstractJRExporter {
 	
 	public static final String CONTENT_TYPE = 
 		"application/vnd.openxmlformats-officedocument.wordprocessingml.document";

@@ -29,9 +29,6 @@ import net.sf.jasperreports.jsf.component.UIDataSource;
  */
 public class DataSourceTag extends UIComponentELTag {
 
-	/** The driver class. */
-	private ValueExpression driverClass;
-
 	/** The query. */
 	private ValueExpression query;
 
@@ -40,16 +37,6 @@ public class DataSourceTag extends UIComponentELTag {
 
 	/** The value. */
 	private ValueExpression value;
-
-	/**
-	 * Sets the driver class.
-	 * 
-	 * @param driverClass
-	 *            el driverClass a establecer
-	 */
-	public void setDriverClass(final ValueExpression driverClass) {
-		this.driverClass = driverClass;
-	}
 
 	/**
 	 * Sets the query.
@@ -91,7 +78,6 @@ public class DataSourceTag extends UIComponentELTag {
 	@Override
 	public void release() {
 		super.release();
-		driverClass = null;
 		query = null;
 		type = null;
 		value = null;
@@ -130,14 +116,6 @@ public class DataSourceTag extends UIComponentELTag {
 	protected void setProperties(final UIComponent component) {
 		super.setProperties(component);
 		final UIDataSource dataSource = (UIDataSource) component;
-
-		if (driverClass != null) {
-			if (driverClass.isLiteralText()) {
-				dataSource.setDriverClass(driverClass.getExpressionString());
-			} else {
-				dataSource.setValueExpression("driverClass", driverClass);
-			}
-		}
 
 		if (query != null) {
 			if (query.isLiteralText()) {

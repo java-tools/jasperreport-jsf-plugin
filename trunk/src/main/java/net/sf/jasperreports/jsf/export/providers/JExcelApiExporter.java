@@ -25,7 +25,7 @@ import net.sf.jasperreports.engine.export.JExcelApiExporterParameter;
 import net.sf.jasperreports.engine.export.JRXlsAbstractExporter;
 import net.sf.jasperreports.jsf.export.ExporterException;
 
-public class JExcelApiExporter extends AbstractXlsExporter {
+public final class JExcelApiExporter extends AbstractXlsExporter {
 
 	public static final String CONTENT_TYPE = "application/vnd.ms-excel";
 	

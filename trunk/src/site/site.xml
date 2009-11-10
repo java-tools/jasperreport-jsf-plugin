@@ -22,7 +22,11 @@
   alonsoft@users.sf.net
 -->
 
-<project name="JasperReports JSF Plugin">
+<project name="JasperReports JSF Plugin"
+         xmlns="http://maven.apache.org/xsd/decoration"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/xsd/decoration http://maven.apache.org/xsd/decoration-1.0.0.xsd">
+
   <bannerLeft>
     <name>SourceForge.net Logo</name>
     <src>http://sflogo.sourceforge.net/sflogo.php?group_id=212447&amp;type=5</src>
@@ -33,9 +37,15 @@
     <href>http://jasperreportjsf.sf.net</href>
   </bannerRight>
   
+  <publishDate position="left" />
+  
+  <version position="left" />
+  
   <poweredBy>
     <logo name="Maven" href="http://maven.apache.org/"
           img="http://maven.apache.org/images/logos/maven-feather.png"/>
+    <logo name="JasperReports" href="http://www.jaspersoft.com/jasperreports"
+          img="http://jasperforge.org/uploads/projects/logo/jasperreports_thumbnail.jpg"/>
   </poweredBy>
   
   <body>
@@ -49,6 +59,7 @@
       <item name="License" href="license.html" />
       <item name="Downloads" href="downloads.html" />
       <item name="What's New?" href="whats_new.html" />
+      <item name="Tracker" href="https://sourceforge.net/tracker/?group_id=212447" />
       <item name="Forums" href="http://sourceforge.net/forum/?group_id=212447" />
     </menu>
     
