@@ -27,26 +27,15 @@
     <groupId>net.sf.jasperreports</groupId>
     <artifactId>jasperreports-jsf-common</artifactId>
     <version>1.0-RC</version>
-    <relativePath>../build/common-pom.xml</relativePath>
+    <relativePath>../../build/common-pom.xml</relativePath>
   </parent>
 
-  <name>JasperReports JSF Plugin - Implementation</name>
-  <artifactId>jasperreports-jsf</artifactId>
-  <packaging>jar</packaging>
+  <name>JasperReports JSF Plugin - Samples - Simple DB</name>
+  <groupId>net.sf.jasperreports.jsf.samples</groupId>
+  <artifactId>simple-db</artifactId>
+  <packaging>war</packaging>
 
   <build>
-    <testResources>
-      <testResource>
-        <directory>${basedir}/src/test/resources</directory>
-        <filtering>true</filtering>
-      </testResource>
-      <testResource>
-        <directory>${basedir}/src/test/webapp</directory>
-      </testResource>
-      <testResource>
-      	<directory>${basedir}/src/test/conf</directory>
-      </testResource>
-    </testResources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -85,42 +74,6 @@
           <downloadJavadocs>true</downloadJavadocs>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <configuration>
-          <descriptors>
-            <descriptor>src/assembly/bin.xml</descriptor>
-            <descriptor>src/assembly/src.xml</descriptor>
-          </descriptors>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>package-sources</id>
-            <phase>package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>package-javadocs</id>
-            <phase>package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 
@@ -148,10 +101,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>net.sourceforge.maven-taglib</groupId>
-        <artifactId>maven-taglib-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
