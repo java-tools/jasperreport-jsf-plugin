@@ -66,18 +66,6 @@ the Faces tree.
 		</attribute>
 		<attribute>
 			<description><![CDATA[
-JDBC driver class using for connecting to a SQL
-database and obtain a result to be used as data input
-for the report. Required when using <tt>jdbc</tt> data sources.
-			]]></description>
-			<name>driverClass</name>
-			<required>false</required>
-			<deferred-value>
-				<type>java.lang.String</type>
-			</deferred-value>
-		</attribute>
-		<attribute>
-			<description><![CDATA[
 Query to be used to filter the data obtained from
 the data source. The query language used depends
 on the type of data source the user is dealing with. 
