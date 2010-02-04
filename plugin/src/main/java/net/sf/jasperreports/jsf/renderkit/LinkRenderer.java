@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -36,77 +36,76 @@ import net.sf.jasperreports.jsf.component.UIReport;
  */
 public class LinkRenderer extends AbstractReportRenderer {
 
-	public static final String CONTENT_DISPOSITION = "attachment";
+    public static final String CONTENT_DISPOSITION = "attachment";
 
-	/** The Constant RENDERER_TYPE. */
-	public static final String RENDERER_TYPE = "net.sf.jasperreports.Link";
+    /** The Constant RENDERER_TYPE. */
+    public static final String RENDERER_TYPE = "net.sf.jasperreports.Link";
 
-	/** The logger. */
-	private static final Logger logger = Logger.getLogger(LinkRenderer.class
-			.getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
+    /** The logger. */
+    private static final Logger logger = Logger.getLogger(
+            LinkRenderer.class.getPackage().getName(),
+            "net.sf.jasperreports.jsf.LogMessages");
 
-	public String getContentDisposition() {
-		return CONTENT_DISPOSITION;
-	}
+    public String getContentDisposition() {
+        return CONTENT_DISPOSITION;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.faces.render.Renderer#encodeBegin(javax.faces.context.FacesContext,
-	 * javax.faces.component.UIComponent)
-	 */
-	@Override
-	@SuppressWarnings("unused")
-	public void encodeBegin(final FacesContext context,
-			final UIComponent component) throws IOException {
-		final ViewHandler viewHandler = context.getApplication()
-				.getViewHandler();
-		final UIReport report = (UIReport) component;
-		final String reportURI = buildReportURI(context, component);
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * javax.faces.render.Renderer#encodeBegin(javax.faces.context.FacesContext,
+     * javax.faces.component.UIComponent)
+     */
+    @Override
+    @SuppressWarnings("unused")
+    public void encodeBegin(final FacesContext context,
+            final UIComponent component) throws IOException {
+        final ViewHandler viewHandler = context.getApplication().getViewHandler();
+        final UIReport report = (UIReport) component;
+        final String reportURI = buildReportURI(context, component);
 
-		final ResponseWriter writer = context.getResponseWriter();
-		logger.log(Level.FINE, "JRJSF_0001", component.getClientId(context));
+        final ResponseWriter writer = context.getResponseWriter();
+        logger.log(Level.FINE, "JRJSF_0001", component.getClientId(context));
 
-		writer.startElement("a", component);
-		renderIdAttribute(context, component);
-		writer.writeURIAttribute("href", reportURI, null);
+        writer.startElement("a", component);
+        renderIdAttribute(context, component);
+        writer.writeURIAttribute("href", reportURI, null);
 
-		renderAttributes(writer, component);
-	}
+        renderAttributes(writer, component);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.faces.render.Renderer#encodeEnd(javax.faces.context.FacesContext,
-	 * javax.faces.component.UIComponent)
-	 */
-	@Override
-	public void encodeEnd(final FacesContext context,
-			final UIComponent component) throws IOException {
-		final ResponseWriter writer = context.getResponseWriter();
-		writer.endElement("a");
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * javax.faces.render.Renderer#encodeEnd(javax.faces.context.FacesContext,
+     * javax.faces.component.UIComponent)
+     */
+    @Override
+    public void encodeEnd(final FacesContext context,
+            final UIComponent component) throws IOException {
+        final ResponseWriter writer = context.getResponseWriter();
+        writer.endElement("a");
 
-		registerComponent(context, component);
-	}
+        registerComponent(context, component);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sf.jasperreports.jsf.renderkit.AbstractReportRenderer#renderAttributes
-	 * (javax.faces.context.ResponseWriter, javax.faces.component.UIComponent)
-	 */
-	@Override
-	protected void renderAttributes(final ResponseWriter writer,
-			final UIComponent report) throws IOException {
-		super.renderAttributes(writer, report);
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * net.sf.jasperreports.jsf.renderkit.AbstractReportRenderer#renderAttributes
+     * (javax.faces.context.ResponseWriter, javax.faces.component.UIComponent)
+     */
+    @Override
+    protected void renderAttributes(final ResponseWriter writer,
+            final UIComponent report) throws IOException {
+        super.renderAttributes(writer, report);
 
-		final String target = (String) report.getAttributes().get("target");
-		if (target != null) {
-			writer.writeAttribute("target", target, null);
-		}
-	}
-
+        final String target = (String) report.getAttributes().get("target");
+        if (target != null) {
+            writer.writeAttribute("target", target, null);
+        }
+    }
 }

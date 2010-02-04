@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -31,30 +31,29 @@ import net.sf.jasperreports.jsf.component.UIDataSource;
 
 public abstract class AbstractJRDataSourceFiller extends AbstractFiller {
 
-	public AbstractJRDataSourceFiller(final UIDataSource dataSource) {
-		super(dataSource);
-	}
+    public AbstractJRDataSourceFiller(final UIDataSource dataSource) {
+        super(dataSource);
+    }
 
-	protected void closeDataSource(final JRDataSource dataSource)
-			throws FillerException {
-	}
+    protected void closeDataSource(final JRDataSource dataSource)
+            throws FillerException {
+    }
 
-	protected abstract JRDataSource getJRDataSource(FacesContext context)
-			throws FillerException;
+    protected abstract JRDataSource getJRDataSource(FacesContext context)
+            throws FillerException;
 
-	@Override
-	protected final JasperPrint doFill(final FacesContext context,
-			final InputStream reportStream, final Map<String, Object> params)
-			throws FillerException {
-		final JRDataSource dataSource = getJRDataSource(context);
-		try {
-			return JasperFillManager.fillReport(reportStream, params,
-					dataSource);
-		} catch (final JRException e) {
-			throw new FillerException(e);
-		} finally {
-			closeDataSource(dataSource);
-		}
-	}
-
+    @Override
+    protected final JasperPrint doFill(final FacesContext context,
+            final InputStream reportStream, final Map<String, Object> params)
+            throws FillerException {
+        final JRDataSource dataSource = getJRDataSource(context);
+        try {
+            return JasperFillManager.fillReport(reportStream, params,
+                    dataSource);
+        } catch (final JRException e) {
+            throw new FillerException(e);
+        } finally {
+            closeDataSource(dataSource);
+        }
+    }
 }

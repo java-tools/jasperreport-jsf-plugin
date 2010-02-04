@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -43,77 +43,77 @@ import net.sf.jasperreports.jsf.spi.ResourceLoader;
  */
 public final class CsvFiller extends AbstractJRDataSourceFiller {
 
-	private static final Logger logger = Logger.getLogger(BeanFiller.class
-			.getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
+    private static final Logger logger = Logger.getLogger(
+            BeanFiller.class.getPackage().getName(),
+            "net.sf.jasperreports.jsf.LogMessages");
+    
+    private InputStream dataSourceStream = null;
+    private boolean closeStream = true;
 
-	private InputStream dataSourceStream = null;
-	private boolean closeStream = true;
+    protected CsvFiller(final UIDataSource dataSource) {
+        super(dataSource);
+    }
 
-	protected CsvFiller(final UIDataSource dataSource) {
-		super(dataSource);
-	}
+    @Override
+    protected JRDataSource getJRDataSource(final FacesContext context)
+            throws FillerException {
+        JRDataSource dataSource = null;
 
-	@Override
-	protected JRDataSource getJRDataSource(final FacesContext context)
-			throws FillerException {
-		JRDataSource dataSource = null;
+        final Object value = getDataSourceComponent().getValue();
+        if (value == null) {
+            if (logger.isLoggable(Level.WARNING)) {
+                logger.log(Level.WARNING, "JRJSF_0020",
+                        getDataSourceComponent().getClientId(context));
+            }
+            dataSource = new JREmptyDataSource();
+        } else if (value instanceof URL) {
+            try {
+                dataSourceStream = ((URL) value).openStream();
+            } catch (final IOException e) {
+                throw new FillerException(e);
+            }
+        } else if (value instanceof InputStream) {
+            dataSourceStream = (InputStream) value;
+            closeStream = false;
+        } else if (value instanceof String) {
+            try {
+                final Resource resource = ResourceLoader.getResource(context,
+                        (String) value);
+                dataSourceStream = resource.getInputStream();
+            } catch (final ResourceException e) {
+                throw new FillerException(e);
+            } catch (final IOException e) {
+                throw new FillerException(e);
+            }
+        } else if (value instanceof File) {
+            try {
+                dataSource = new JRCsvDataSource((File) value);
+            } catch (final FileNotFoundException e) {
+                throw new FillerException(e);
+            }
+        }
 
-		final Object value = getDataSourceComponent().getValue();
-		if (value == null) {
-			if (logger.isLoggable(Level.WARNING)) {
-				logger.log(Level.WARNING, "JRJSF_0020",
-						getDataSourceComponent().getClientId(context));
-			}
-			dataSource = new JREmptyDataSource();
-		} else if (value instanceof URL) {
-			try {
-				dataSourceStream = ((URL) value).openStream();
-			} catch (final IOException e) {
-				throw new FillerException(e);
-			}
-		} else if (value instanceof InputStream) {
-			dataSourceStream = (InputStream) value;
-			closeStream = false;
-		} else if (value instanceof String) {
-			try {
-				final Resource resource = ResourceLoader.getResource(context,
-						(String) value);
-				dataSourceStream = resource.getInputStream();
-			} catch (final ResourceException e) {
-				throw new FillerException(e);
-			} catch (final IOException e) {
-				throw new FillerException(e);
-			}
-		} else if (value instanceof File) {
-			try {
-				dataSource = new JRCsvDataSource((File) value);
-			} catch (final FileNotFoundException e) {
-				throw new FillerException(e);
-			}
-		}
+        if (dataSource == null) {
+            if (dataSourceStream == null) {
+                throw new FillerException("CSV datasource needs a valid File, "
+                        + "URL, InputStream or string");
+            } else {
+                dataSource = new JRCsvDataSource(dataSourceStream);
+            }
+        }
 
-		if (dataSource == null) {
-			if (dataSourceStream == null) {
-				throw new FillerException("CSV datasource needs a valid File, "
-						+ "URL, InputStream or string");
-			} else {
-				dataSource = new JRCsvDataSource(dataSourceStream);
-			}
-		}
+        return dataSource;
+    }
 
-		return dataSource;
-	}
-
-	@Override
-	protected void closeDataSource(final JRDataSource dataSource)
-			throws FillerException {
-		if (dataSourceStream != null && closeStream) {
-			try {
-				dataSourceStream.close();
-			} catch (final IOException e) {
-			}
-		}
-		dataSourceStream = null;
-	}
-
+    @Override
+    protected void closeDataSource(final JRDataSource dataSource)
+            throws FillerException {
+        if (dataSourceStream != null && closeStream) {
+            try {
+                dataSourceStream.close();
+            } catch (final IOException e) {
+            }
+        }
+        dataSourceStream = null;
+    }
 }

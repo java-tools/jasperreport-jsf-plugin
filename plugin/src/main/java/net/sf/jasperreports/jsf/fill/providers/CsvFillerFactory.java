@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -27,10 +27,9 @@ import net.sf.jasperreports.jsf.fill.Filler;
 
 public class CsvFillerFactory extends AbstractFillerFactory {
 
-	@Override
-	protected Filler doCreateFiller(final FacesContext context,
-			final UIDataSource dataSource) throws JRFacesException {
-		return new CsvFiller(dataSource);
-	}
-
+    @Override
+    protected Filler doCreateFiller(final FacesContext context,
+            final UIDataSource dataSource) throws JRFacesException {
+        return new CsvFiller(dataSource);
+    }
 }

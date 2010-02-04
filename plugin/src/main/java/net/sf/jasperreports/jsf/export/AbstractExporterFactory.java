@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -29,22 +29,21 @@ import net.sf.jasperreports.jsf.validation.Validator;
 
 public abstract class AbstractExporterFactory implements ExporterFactory {
 
-	public Exporter createExporter(final FacesContext context,
-			final UIReport report) throws ExporterException {
-		processValidators(context, report);
-		return doCreateExporter(context, report);
-	}
+    public Exporter createExporter(final FacesContext context,
+            final UIReport report) throws ExporterException {
+        processValidators(context, report);
+        return doCreateExporter(context, report);
+    }
 
-	protected abstract Exporter doCreateExporter(FacesContext context,
-			UIReport report) throws ExporterException;
+    protected abstract Exporter doCreateExporter(FacesContext context,
+            UIReport report) throws ExporterException;
 
-	protected void processValidators(final FacesContext context,
-			final UIReport report) throws ValidationException {
-		final Validator validator = ValidatorLoader.getValidator(context,
-				(UIComponent) report);
-		if (validator != null) {
-			validator.validate(context, (UIComponent) report);
-		}
-	}
-
+    protected void processValidators(final FacesContext context,
+            final UIReport report) throws ValidationException {
+        final Validator validator = ValidatorLoader.getValidator(context,
+                (UIComponent) report);
+        if (validator != null) {
+            validator.validate(context, (UIComponent) report);
+        }
+    }
 }

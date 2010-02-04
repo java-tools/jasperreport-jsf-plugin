@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -31,37 +31,34 @@ import net.sf.jasperreports.jsf.export.AbstractJRExporter;
  */
 public final class CsvExporter extends AbstractJRExporter {
 
-	public static final String CONTENT_TYPE = "text/plain";
+    public static final String CONTENT_TYPE = "text/plain";
+    /** The Constant ATTR_FIELD_DELIMITER. */
+    public static final String ATTR_FIELD_DELIMITER = "FIELD_DELIMITER";
+    /** The Constant ATTR_RECORD_DELIMITER. */
+    public static final String ATTR_RECORD_DELIMITER = "RECORD_DELIMITER";
 
-	/** The Constant ATTR_FIELD_DELIMITER. */
-	public static final String ATTR_FIELD_DELIMITER = "FIELD_DELIMITER";
+    protected CsvExporter(final UIComponent component) {
+        super(component);
+    }
 
-	/** The Constant ATTR_RECORD_DELIMITER. */
-	public static final String ATTR_RECORD_DELIMITER = "RECORD_DELIMITER";
+    public String getContentType() {
+        return CONTENT_TYPE;
+    }
 
-	protected CsvExporter(final UIComponent component) {
-		super(component);
-	}
-
-	public String getContentType() {
-		return CONTENT_TYPE;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
-	 * .context.FacesContext)
-	 */
-	@Override
-	protected JRExporter createJRExporter(final FacesContext context) {
-		final JRCsvExporter exporter = new JRCsvExporter();
-		setParameterUsingAttribute(exporter, 
-				JRCsvExporterParameter.FIELD_DELIMITER, ATTR_FIELD_DELIMITER);
-		setParameterUsingAttribute(exporter, 
-				JRCsvExporterParameter.RECORD_DELIMITER, ATTR_RECORD_DELIMITER);
-		return exporter;
-	}
-
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
+     * .context.FacesContext)
+     */
+    @Override
+    protected JRExporter createJRExporter(final FacesContext context) {
+        final JRCsvExporter exporter = new JRCsvExporter();
+        setParameterUsingAttribute(exporter,
+                JRCsvExporterParameter.FIELD_DELIMITER, ATTR_FIELD_DELIMITER);
+        setParameterUsingAttribute(exporter,
+                JRCsvExporterParameter.RECORD_DELIMITER, ATTR_RECORD_DELIMITER);
+        return exporter;
+    }
 }

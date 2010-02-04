@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -30,29 +30,28 @@ import net.sf.jasperreports.engine.JasperPrint;
  */
 public interface Exporter {
 
-	/**
-	 * MIME type of the report generated using this exporter instance
-	 * 
-	 * @return the response MIME type
-	 */
-	public String getContentType();
+    /**
+     * MIME type of the report generated using this exporter instance
+     *
+     * @return the response MIME type
+     */
+    public String getContentType();
 
-	/**
-	 * Export.
-	 * 
-	 * @param context
-	 *            the context
-	 * @param print
-	 *            the print
-	 * @param stream
-	 *            the stream
-	 * 
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws ExporterException
-	 *             the exporter exception
-	 */
-	public void export(final FacesContext context, final JasperPrint print,
-			final OutputStream stream) throws IOException, ExporterException;
-
+    /**
+     * Export.
+     *
+     * @param context
+     *            the context
+     * @param print
+     *            the print
+     * @param stream
+     *            the stream
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws ExporterException
+     *             the exporter exception
+     */
+    public void export(final FacesContext context, final JasperPrint print,
+            final OutputStream stream) throws IOException, ExporterException;
 }

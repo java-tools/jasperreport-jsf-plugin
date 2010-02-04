@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -29,39 +29,38 @@ import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 
 final class ServletContextHelper extends ExternalContextHelper {
 
-	protected ServletContextHelper() {
-	}
+    protected ServletContextHelper() {
+    }
 
-	@Override
-	public String getRequestURI(final FacesContext context) {
-		final HttpServletRequest request = (HttpServletRequest) context
-				.getExternalContext().getRequest();
-		return request.getRequestURI();
-	}
+    @Override
+    public String getRequestURI(final FacesContext context) {
+        final HttpServletRequest request = (HttpServletRequest)
+                context.getExternalContext().getRequest();
+        return request.getRequestURI();
+    }
 
-	@Override
-	public void writeHeaders(final FacesContext context,
-			final ReportRenderer renderer, final UIReport report)
-			throws IOException {
-		final HttpServletResponse response = (HttpServletResponse) context
-				.getExternalContext().getResponse();
-		response.setHeader("Cache-Type", "no-cache");
-		response.setHeader("Expires", "0");
+    @Override
+    public void writeHeaders(final FacesContext context,
+            final ReportRenderer renderer, final UIReport report)
+            throws IOException {
+        final HttpServletResponse response = (HttpServletResponse)
+                context.getExternalContext().getResponse();
+        response.setHeader("Cache-Type", "no-cache");
+        response.setHeader("Expires", "0");
 
-		if (report.getName() != null) {
-			response.setHeader("Content-Disposition", encodeContentDisposition(
-					renderer, report, response.getCharacterEncoding()));
-		}
-	}
+        if (report.getName() != null) {
+            response.setHeader("Content-Disposition", encodeContentDisposition(
+                    renderer, report, response.getCharacterEncoding()));
+        }
+    }
 
-	@Override
-	public void writeResponse(final FacesContext context,
-			final String contentType, final byte[] data) throws IOException {
-		final HttpServletResponse response = (HttpServletResponse) context
-				.getExternalContext().getResponse();
-		response.setContentType(contentType);
-		response.setContentLength(data.length);
-		response.getOutputStream().write(data);
-	}
-
+    @Override
+    public void writeResponse(final FacesContext context,
+            final String contentType, final byte[] data) throws IOException {
+        final HttpServletResponse response = (HttpServletResponse)
+                context.getExternalContext().getResponse();
+        response.setContentType(contentType);
+        response.setContentLength(data.length);
+        response.getOutputStream().write(data);
+    }
 }

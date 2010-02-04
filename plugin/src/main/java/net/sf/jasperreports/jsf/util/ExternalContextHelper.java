@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -29,99 +29,98 @@ import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 
 public abstract class ExternalContextHelper {
 
-	/** The Constant PORTLET_CLASS. */
-	private static final String PORTLET_CLASS = "javax.portlet.Portlet";
+    /** The Constant PORTLET_CLASS. */
+    private static final String PORTLET_CLASS = "javax.portlet.Portlet";
 
-	/** The Constant PORTLET_RESOURCEURL_CLASS. */
-	private static final String PORTLET_RESOURCEURL_CLASS = "javax.portlet.ResourceURL";
+    /** The Constant PORTLET_RESOURCEURL_CLASS. */
+    private static final String PORTLET_RESOURCEURL_CLASS = "javax.portlet.ResourceURL";
 
-	public static ExternalContextHelper getInstance(final FacesContext context) {
-		ExternalContextHelper instance;
-		if (isServletContext(context)) {
-			instance = new ServletContextHelper();
-		} else if (isPortletAvailable()) {
-			instance = new PortletContextHelper();
-		} else {
-			throw new IllegalArgumentException(
-					"Unrecognized application context");
-		}
-		return instance;
-	}
+    public static ExternalContextHelper getInstance(final FacesContext context) {
+        ExternalContextHelper instance;
+        if (isServletContext(context)) {
+            instance = new ServletContextHelper();
+        } else if (isPortletAvailable()) {
+            instance = new PortletContextHelper();
+        } else {
+            throw new IllegalArgumentException(
+                    "Unrecognized application context");
+        }
+        return instance;
+    }
 
-	protected static boolean isPortletAvailable() {
-		boolean portletAvailable = false;
-		try {
-			Class.forName(PORTLET_CLASS);
-			portletAvailable = true;
-		} catch (final ClassNotFoundException e) {
-			portletAvailable = false;
-		} catch (final NoClassDefFoundError e) {
-			portletAvailable = false;
-		}
-		return portletAvailable;
-	}
+    protected static boolean isPortletAvailable() {
+        boolean portletAvailable = false;
+        try {
+            Class.forName(PORTLET_CLASS);
+            portletAvailable = true;
+        } catch (final ClassNotFoundException e) {
+            portletAvailable = false;
+        } catch (final NoClassDefFoundError e) {
+            portletAvailable = false;
+        }
+        return portletAvailable;
+    }
 
-	protected static String getPortletVersion() {
-		final boolean portletAvailable = isPortletAvailable();
+    protected static String getPortletVersion() {
+        final boolean portletAvailable = isPortletAvailable();
 
-		String portletVersion = null;
-		try {
-			Class.forName(PORTLET_RESOURCEURL_CLASS);
-			portletVersion = "2.0";
-		} catch (final ClassNotFoundException e) {
-			portletVersion = portletAvailable ? "1.0" : null;
-		} catch (final NoClassDefFoundError e) {
-			portletVersion = portletAvailable ? "1.0" : null;
-		}
-		return portletVersion;
-	}
+        String portletVersion = null;
+        try {
+            Class.forName(PORTLET_RESOURCEURL_CLASS);
+            portletVersion = "2.0";
+        } catch (final ClassNotFoundException e) {
+            portletVersion = portletAvailable ? "1.0" : null;
+        } catch (final NoClassDefFoundError e) {
+            portletVersion = portletAvailable ? "1.0" : null;
+        }
+        return portletVersion;
+    }
 
-	private static boolean isServletContext(final FacesContext context) {
-		final Object ctx = context.getExternalContext().getContext();
-		return (ctx instanceof ServletContext);
-	}
+    private static boolean isServletContext(final FacesContext context) {
+        final Object ctx = context.getExternalContext().getContext();
+        return (ctx instanceof ServletContext);
+    }
 
-	protected ExternalContextHelper() {
-	}
+    protected ExternalContextHelper() {
+    }
 
-	/**
-	 * Gets the request uri.
-	 * 
-	 * @param context
-	 *            the context
-	 * 
-	 * @return the request uri
-	 */
-	public abstract String getRequestURI(final FacesContext context);
+    /**
+     * Gets the request uri.
+     *
+     * @param context
+     *            the context
+     *
+     * @return the request uri
+     */
+    public abstract String getRequestURI(final FacesContext context);
 
-	public abstract void writeHeaders(FacesContext context,
-			ReportRenderer renderer, UIReport report) throws IOException;
+    public abstract void writeHeaders(FacesContext context,
+            ReportRenderer renderer, UIReport report) throws IOException;
 
-	/**
-	 * Write response.
-	 * 
-	 * @param context
-	 *            the context
-	 * @param contentType
-	 *            the content type
-	 * @param data
-	 *            the data
-	 * 
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 */
-	public abstract void writeResponse(final FacesContext context,
-			final String contentType, final byte[] data) throws IOException;
+    /**
+     * Write response.
+     *
+     * @param context
+     *            the context
+     * @param contentType
+     *            the content type
+     * @param data
+     *            the data
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    public abstract void writeResponse(final FacesContext context,
+            final String contentType, final byte[] data) throws IOException;
 
-	protected String encodeContentDisposition(final ReportRenderer renderer,
-			final UIReport report, final String enc) throws IOException {
-		final StringBuffer disposition = new StringBuffer();
-		if (report.getName() != null) {
-			disposition.append(renderer.getContentDisposition());
-			disposition.append("; filename=");
-			disposition.append(URLEncoder.encode(report.getName(), enc));
-		}
-		return disposition.toString();
-	}
-
+    protected String encodeContentDisposition(final ReportRenderer renderer,
+            final UIReport report, final String enc) throws IOException {
+        final StringBuffer disposition = new StringBuffer();
+        if (report.getName() != null) {
+            disposition.append(renderer.getContentDisposition());
+            disposition.append("; filename=");
+            disposition.append(URLEncoder.encode(report.getName(), enc));
+        }
+        return disposition.toString();
+    }
 }

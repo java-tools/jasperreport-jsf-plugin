@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -23,17 +23,16 @@ package net.sf.jasperreports.jsf.validation;
  */
 public class IllegalDataSourceTypeException extends IllegalAttributeValueException {
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1358551817454303121L;
+    /** The Constant serialVersionUID. */
+    private static final long serialVersionUID = 1358551817454303121L;
 
-	/**
-	 * Instantiates a new illegal data source type exception.
-	 * 
-	 * @param msg
-	 *            the msg
-	 */
-	public IllegalDataSourceTypeException(final String msg) {
-		super(msg);
-	}
-
+    /**
+     * Instantiates a new illegal data source type exception.
+     *
+     * @param msg
+     *            the msg
+     */
+    public IllegalDataSourceTypeException(final String msg) {
+        super(msg);
+    }
 }

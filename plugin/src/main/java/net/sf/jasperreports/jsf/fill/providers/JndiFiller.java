@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -35,32 +35,31 @@ import net.sf.jasperreports.jsf.fill.FillerException;
  */
 public final class JndiFiller extends AbstractSQLFiller {
 
-	protected JndiFiller(final UIDataSource dataSource) {
-		super(dataSource);
-	}
+    protected JndiFiller(final UIDataSource dataSource) {
+        super(dataSource);
+    }
+    
+    /** The Constant logger. */
+    private static final Logger logger = Logger.getLogger(
+            JndiFiller.class.getPackage().getName(),
+            "net.sf.jasperreports.jsf.LogMessages");
 
-	/** The Constant logger. */
-	private static final Logger logger = Logger.getLogger(JndiFiller.class
-			.getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
+    /*
+     * (non-Javadoc)
+     *
+     * @see net.sf.jasperreports.jsf.fill.AbstractQueryFiller#getConnection()
+     */
+    @Override
+    protected Connection getConnection() throws Exception {
+        final String dataSourceName = (String) getDataSourceComponent().getValue();
+        if (dataSourceName == null || dataSourceName.length() == 0) {
+            throw new FillerException("JNDI Filler requires a JNDI name"
+                    + " from a dataSource component");
+        }
+        logger.log(Level.FINE, "JRJSF_0005", dataSourceName);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sf.jasperreports.jsf.fill.AbstractQueryFiller#getConnection()
-	 */
-	@Override
-	protected Connection getConnection() throws Exception {
-		final String dataSourceName = (String) getDataSourceComponent()
-				.getValue();
-		if (dataSourceName == null || dataSourceName.length() == 0) {
-			throw new FillerException("JNDI Filler requires a JNDI name"
-					+ " from a dataSource component");
-		}
-		logger.log(Level.FINE, "JRJSF_0005", dataSourceName);
-
-		final Context jndi = new InitialContext();
-		final DataSource ds = (DataSource) jndi.lookup(dataSourceName);
-		return ds.getConnection();
-	}
-
+        final Context jndi = new InitialContext();
+        final DataSource ds = (DataSource) jndi.lookup(dataSourceName);
+        return ds.getConnection();
+    }
 }

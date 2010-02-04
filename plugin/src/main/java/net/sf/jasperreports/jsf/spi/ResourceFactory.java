@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -34,20 +34,19 @@ import net.sf.jasperreports.jsf.resource.Resource;
  */
 public interface ResourceFactory {
 
-	public boolean acceptsResource(String name);
+    public boolean acceptsResource(String name);
 
-	/**
-	 * Creates a new <tt>Resource</tt> instance
-	 * 
-	 * @param context
-	 *            the current <tt>FacesContext</tt>
-	 * @param name
-	 *            the resource name
-	 * @return a new <tt>Resource</tt> instance
-	 * @throws IOException
-	 *             if the resource can't be loaded.
-	 */
-	public Resource createResource(FacesContext context, String name)
-			throws IOException;
-
+    /**
+     * Creates a new <tt>Resource</tt> instance
+     *
+     * @param context
+     *            the current <tt>FacesContext</tt>
+     * @param name
+     *            the resource name
+     * @return a new <tt>Resource</tt> instance
+     * @throws IOException
+     *             if the resource can't be loaded.
+     */
+    public Resource createResource(FacesContext context, String name)
+            throws IOException;
 }

@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -26,16 +26,15 @@ import net.sf.jasperreports.jsf.util.Util;
 
 public class ClasspathResourceFactory implements ResourceFactory {
 
-	private static final String PREFIX = "classpath:";
+    private static final String PREFIX = "classpath:";
 
-	public boolean acceptsResource(final String name) {
-		return name.startsWith(PREFIX);
-	}
+    public boolean acceptsResource(final String name) {
+        return name.startsWith(PREFIX);
+    }
 
-	public Resource createResource(final FacesContext context, final String name) {
-		final ClassLoader classLoader = Util.getClassLoader(this);
-		return new ClasspathResource(name.substring(PREFIX.length()),
-				classLoader);
-	}
-
+    public Resource createResource(final FacesContext context, final String name) {
+        final ClassLoader classLoader = Util.getClassLoader(this);
+        return new ClasspathResource(name.substring(PREFIX.length()),
+                classLoader);
+    }
 }

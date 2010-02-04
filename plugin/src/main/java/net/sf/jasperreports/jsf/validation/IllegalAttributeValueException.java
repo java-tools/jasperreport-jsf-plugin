@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -20,17 +20,16 @@ package net.sf.jasperreports.jsf.validation;
 
 public class IllegalAttributeValueException extends ValidationException {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -306710637470588621L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -306710637470588621L;
 
-	public IllegalAttributeValueException(final String msg) {
-		super(msg);
-	}
-	
-	public IllegalAttributeValueException(final String msg, final Throwable t) {
-		super(msg, t);
-	}
-	
+    public IllegalAttributeValueException(final String msg) {
+        super(msg);
+    }
+
+    public IllegalAttributeValueException(final String msg, final Throwable t) {
+        super(msg, t);
+    }
 }

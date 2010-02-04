@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -31,44 +31,43 @@ import net.sf.jasperreports.jsf.resource.ResourceException;
  */
 public final class ResourceLoader {
 
-	private static final Collection<ResourceFactory> resourceFactoryCache = Services
-			.set(ResourceFactory.class);
+    private static final Collection<ResourceFactory> resourceFactoryCache =
+            Services.set(ResourceFactory.class);
 
-	/**
-	 * Gets the resource loader.
-	 * 
-	 * @param context
-	 *            the context
-	 * @param name
-	 *            the name
-	 * 
-	 * @return the resource loader
-	 */
-	public static Resource getResource(final FacesContext context,
-			final String name) throws IOException, ResourceException {
-		if ((name == null) || (name.length() == 0)) {
-			throw new IllegalArgumentException();
-		}
+    /**
+     * Gets the resource loader.
+     *
+     * @param context
+     *            the context
+     * @param name
+     *            the name
+     *
+     * @return the resource loader
+     */
+    public static Resource getResource(final FacesContext context,
+            final String name) throws IOException, ResourceException {
+        if ((name == null) || (name.length() == 0)) {
+            throw new IllegalArgumentException();
+        }
 
-		final ResourceFactory factory = getResourceFactory(name);
-		if (factory == null) {
-			throw new ResourceFactoryNotFoundException(
-					"No factory for resource: " + name);
-		}
-		return factory.createResource(context, name);
-	}
+        final ResourceFactory factory = getResourceFactory(name);
+        if (factory == null) {
+            throw new ResourceFactoryNotFoundException(
+                    "No factory for resource: " + name);
+        }
+        return factory.createResource(context, name);
+    }
 
-	private static ResourceFactory getResourceFactory(final String name)
-			throws ResourceException {
-		for (final ResourceFactory factory : resourceFactoryCache) {
-			if (factory.acceptsResource(name)) {
-				return factory;
-			}
-		}
-		return null;
-	}
+    private static ResourceFactory getResourceFactory(final String name)
+            throws ResourceException {
+        for (final ResourceFactory factory : resourceFactoryCache) {
+            if (factory.acceptsResource(name)) {
+                return factory;
+            }
+        }
+        return null;
+    }
 
-	private ResourceLoader() {
-	}
-
+    private ResourceLoader() {
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -31,37 +31,34 @@ import net.sf.jasperreports.jsf.export.AbstractJRExporter;
  */
 public final class XmlExporter extends AbstractJRExporter {
 
-	public static final String CONTENT_TYPE = "text/xml";
+    public static final String CONTENT_TYPE = "text/xml";
+    /** The Constant ATTR_DTD_LOCATION. */
+    public static final String ATTR_DTD_LOCATION = "DTD_LOCATION";
+    /** The Constant ATTR_IS_EMBEDDING_IMAGES. */
+    public static final String ATTR_IS_EMBEDDING_IMAGES = "IS_EMBEDDING_IMAGES";
 
-	/** The Constant ATTR_DTD_LOCATION. */
-	public static final String ATTR_DTD_LOCATION = "DTD_LOCATION";
+    protected XmlExporter(final UIComponent component) {
+        super(component);
+    }
 
-	/** The Constant ATTR_IS_EMBEDDING_IMAGES. */
-	public static final String ATTR_IS_EMBEDDING_IMAGES = "IS_EMBEDDING_IMAGES";
+    public String getContentType() {
+        return CONTENT_TYPE;
+    }
 
-	protected XmlExporter(final UIComponent component) {
-		super(component);
-	}
-
-	public String getContentType() {
-		return CONTENT_TYPE;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
-	 * .context.FacesContext)
-	 */
-	@Override
-	protected JRExporter createJRExporter(final FacesContext context) {
-		final JRXmlExporter exporter = new JRXmlExporter();
-		setParameterUsingAttribute(exporter, 
-				JRXmlExporterParameter.DTD_LOCATION, ATTR_DTD_LOCATION);
-		setParameterUsingAttribute(exporter, 
-				JRXmlExporterParameter.IS_EMBEDDING_IMAGES, ATTR_IS_EMBEDDING_IMAGES);
-		return exporter;
-	}
-
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
+     * .context.FacesContext)
+     */
+    @Override
+    protected JRExporter createJRExporter(final FacesContext context) {
+        final JRXmlExporter exporter = new JRXmlExporter();
+        setParameterUsingAttribute(exporter,
+                JRXmlExporterParameter.DTD_LOCATION, ATTR_DTD_LOCATION);
+        setParameterUsingAttribute(exporter,
+                JRXmlExporterParameter.IS_EMBEDDING_IMAGES, ATTR_IS_EMBEDDING_IMAGES);
+        return exporter;
+    }
 }

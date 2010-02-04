@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -29,24 +29,23 @@ import net.sf.jasperreports.jsf.validation.Validator;
 
 public abstract class AbstractFillerFactory implements FillerFactory {
 
-	public Filler createFiller(final FacesContext context,
-			final UIDataSource dataSource) throws JRFacesException {
-		if (dataSource != null) {
-			processValidators(context, dataSource);
-		}
-		return doCreateFiller(context, dataSource);
-	}
+    public Filler createFiller(final FacesContext context,
+            final UIDataSource dataSource) throws JRFacesException {
+        if (dataSource != null) {
+            processValidators(context, dataSource);
+        }
+        return doCreateFiller(context, dataSource);
+    }
 
-	protected abstract Filler doCreateFiller(FacesContext context,
-			UIDataSource dataSource) throws JRFacesException;
+    protected abstract Filler doCreateFiller(FacesContext context,
+            UIDataSource dataSource) throws JRFacesException;
 
-	protected void processValidators(final FacesContext context,
-			final UIDataSource dataSource) throws ValidationException {
-		final Validator validator = ValidatorLoader.getValidator(context,
-				dataSource);
-		if (validator != null) {
-			validator.validate(context, dataSource);
-		}
-	}
-
+    protected void processValidators(final FacesContext context,
+            final UIDataSource dataSource) throws ValidationException {
+        final Validator validator = ValidatorLoader.getValidator(context,
+                dataSource);
+        if (validator != null) {
+            validator.validate(context, dataSource);
+        }
+    }
 }

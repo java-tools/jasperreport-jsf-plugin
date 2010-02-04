@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -45,175 +45,170 @@ import net.sf.jasperreports.jsf.util.Util;
  * The Class AbstractReportRenderer.
  */
 abstract class AbstractReportRenderer extends Renderer implements
-		ReportRenderer {
+        ReportRenderer {
 
-	/** The Constant PASSTHRU_ATTRS. */
-	private static final String[] PASSTHRU_ATTRS = { "dir", "lang", "title",
-			"style", "datafld", "datasrc", "dataformatas", "ondblclick",
-			"onmousedown", "onmousemove", "onmouseout", "onmouseover",
-			"onmouseup", "accesskey", "tabindex" };
+    /** The Constant PASSTHRU_ATTRS. */
+    private static final String[] PASSTHRU_ATTRS = {"dir", "lang", "title",
+        "style", "datafld", "datasrc", "dataformatas", "ondblclick",
+        "onmousedown", "onmousemove", "onmouseout", "onmouseover",
+        "onmouseup", "accesskey", "tabindex"};
 
-	private static final Logger logger = Logger.getLogger(
-			AbstractReportRenderer.class.getPackage().getName(),
-			"net.sf.jasperreports.jsf.LogMessages");
+    private static final Logger logger = Logger.getLogger(
+            AbstractReportRenderer.class.getPackage().getName(),
+            "net.sf.jasperreports.jsf.LogMessages");
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.faces.render.Renderer#getRendersChildren()
-	 */
-	@Override
-	public final boolean getRendersChildren() { // NOPMD by antonio.alonso on
-		// 20/10/08 15:41
-		return true;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see javax.faces.render.Renderer#getRendersChildren()
+     */
+    @Override
+    public final boolean getRendersChildren() { // NOPMD by antonio.alonso on
+        // 20/10/08 15:41
+        return true;
+    }
 
-	public void encodeContent(final FacesContext context, final UIReport report)
-			throws IOException {
-		if (context == null) {
-			throw new IllegalArgumentException("Faces' context is null");
-		}
-		if (report == null) {
-			throw new IllegalArgumentException("Report component is null");
-		}
+    public void encodeContent(final FacesContext context, final UIReport report)
+            throws IOException {
+        if (context == null) {
+            throw new IllegalArgumentException("Faces' context is null");
+        }
+        if (report == null) {
+            throw new IllegalArgumentException("Report component is null");
+        }
 
-		final String clientId = ((UIComponent) report).getClientId(context);
+        final String clientId = ((UIComponent) report).getClientId(context);
 
-		final Filler filler = FillerLoader.getFiller(context, report);
-		logger.log(Level.FINE, "JRJSF_0006", clientId);
-		final JasperPrint filledReport = filler.fill(context, report);
+        final Filler filler = FillerLoader.getFiller(context, report);
+        logger.log(Level.FINE, "JRJSF_0006", clientId);
+        final JasperPrint filledReport = filler.fill(context, report);
 
-		final ExternalContextHelper helper = ExternalContextHelper
-				.getInstance(context);
-		final Exporter exporter = ExporterLoader.getExporter(context, report);
-		final ByteArrayOutputStream reportData = new ByteArrayOutputStream();
-		try {
-			if (logger.isLoggable(Level.FINE)) {
-				logger.log(Level.FINE, "JRJSF_0010", new Object[] { clientId,
-						exporter.getContentType() });
-			}
-			exporter.export(context, filledReport, reportData);
-			helper.writeResponse(context, exporter.getContentType(), reportData
-					.toByteArray());
-		} finally {
-			try {
-				reportData.close();
-			} catch (final IOException e) {
-				// ignore
-			}
-		}
-	}
+        final ExternalContextHelper helper = ExternalContextHelper.getInstance(context);
+        final Exporter exporter = ExporterLoader.getExporter(context, report);
+        final ByteArrayOutputStream reportData = new ByteArrayOutputStream();
+        try {
+            if (logger.isLoggable(Level.FINE)) {
+                logger.log(Level.FINE, "JRJSF_0010", new Object[]{clientId,
+                            exporter.getContentType()});
+            }
+            exporter.export(context, filledReport, reportData);
+            helper.writeResponse(context, exporter.getContentType(), reportData.toByteArray());
+        } finally {
+            try {
+                reportData.close();
+            } catch (final IOException e) {
+                // ignore
+            }
+        }
+    }
 
-	public void encodeHeaders(final FacesContext context, final UIReport report)
-			throws IOException {
-		if (context == null) {
-			throw new IllegalArgumentException("Faces' context is null");
-		}
-		if (report == null) {
-			throw new IllegalArgumentException("Report component is null");
-		}
+    public void encodeHeaders(final FacesContext context, final UIReport report)
+            throws IOException {
+        if (context == null) {
+            throw new IllegalArgumentException("Faces' context is null");
+        }
+        if (report == null) {
+            throw new IllegalArgumentException("Report component is null");
+        }
 
-		final ExternalContextHelper helper = ExternalContextHelper
-				.getInstance(context);
-		helper.writeHeaders(context, this, report);
-	}
+        final ExternalContextHelper helper = ExternalContextHelper.getInstance(context);
+        helper.writeHeaders(context, this, report);
+    }
 
-	/**
-	 * Builds the report uri.
-	 * 
-	 * @param context
-	 *            the context
-	 * @param report
-	 *            the report
-	 * 
-	 * @return the string
-	 */
-	protected final String buildReportURI(final FacesContext context,
-			final UIComponent report) {
-		final StringBuffer reportURI = new StringBuffer(
-				ReportPhaseListener.BASE_URI);
+    /**
+     * Builds the report uri.
+     *
+     * @param context
+     *            the context
+     * @param report
+     *            the report
+     *
+     * @return the string
+     */
+    protected final String buildReportURI(final FacesContext context,
+            final UIComponent report) {
+        final StringBuffer reportURI = new StringBuffer(
+                ReportPhaseListener.BASE_URI);
 
-		final Configuration config = Configuration.getInstance(context);
-		String mapping = Util.getInvocationPath(context);
-		if (!config.getFacesMappings().contains(mapping)) {
-			if (logger.isLoggable(Level.WARNING)) {
-				logger.log(Level.WARNING, "JRJSF_0021", new Object[] { mapping,
-						config.getDefaultMapping() });
-			}
-			mapping = config.getDefaultMapping();
-		}
+        final Configuration config = Configuration.getInstance(context);
+        String mapping = Util.getInvocationPath(context);
+        if (!config.getFacesMappings().contains(mapping)) {
+            if (logger.isLoggable(Level.WARNING)) {
+                logger.log(Level.WARNING, "JRJSF_0021", new Object[]{mapping,
+                            config.getDefaultMapping()});
+            }
+            mapping = config.getDefaultMapping();
+        }
 
-		if (Util.isPrefixMapped(mapping)) {
-			reportURI.insert(0, mapping);
-		} else {
-			reportURI.append(mapping);
-		}
+        if (Util.isPrefixMapped(mapping)) {
+            reportURI.insert(0, mapping);
+        } else {
+            reportURI.append(mapping);
+        }
 
-		reportURI.append('?').append(ReportPhaseListener.PARAM_CLIENTID);
-		reportURI.append('=').append(report.getClientId(context));
+        reportURI.append('?').append(ReportPhaseListener.PARAM_CLIENTID);
+        reportURI.append('=').append(report.getClientId(context));
 
-		final ViewHandler viewHandler = context.getApplication()
-				.getViewHandler();
-		return context.getExternalContext().encodeResourceURL(
-				viewHandler.getResourceURL(context, reportURI.toString()));
-	}
+        final ViewHandler viewHandler = context.getApplication().getViewHandler();
+        return context.getExternalContext().encodeResourceURL(
+                viewHandler.getResourceURL(context, reportURI.toString()));
+    }
 
-	protected final void registerComponent(final FacesContext context,
-			final UIComponent report) {
-		final String clientId = report.getClientId(context);
-		context.getExternalContext().getSessionMap().put(
-				ReportPhaseListener.REPORT_COMPONENT_KEY_PREFIX + clientId,
-				report);
-		if (logger.isLoggable(Level.FINEST)) {
-			logger.log(Level.FINEST, "JRJSF_0013", clientId);
-		}
-	}
+    protected final void registerComponent(final FacesContext context,
+            final UIComponent report) {
+        final String clientId = report.getClientId(context);
+        context.getExternalContext().getSessionMap().put(
+                ReportPhaseListener.REPORT_COMPONENT_KEY_PREFIX + clientId,
+                report);
+        if (logger.isLoggable(Level.FINEST)) {
+            logger.log(Level.FINEST, "JRJSF_0013", clientId);
+        }
+    }
 
-	/**
-	 * Render id attribute.
-	 * 
-	 * @param context
-	 *            the context
-	 * @param report
-	 *            the report
-	 * 
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 */
-	protected final void renderIdAttribute(final FacesContext context,
-			final UIComponent report) throws IOException {
-		final String id = report.getId();
-		if ((id != null) && !id.startsWith(UIViewRoot.UNIQUE_ID_PREFIX)) {
-			final ResponseWriter writer = context.getResponseWriter();
-			writer.writeAttribute("id", report.getClientId(context), "id");
-		}
-	}
+    /**
+     * Render id attribute.
+     *
+     * @param context
+     *            the context
+     * @param report
+     *            the report
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    protected final void renderIdAttribute(final FacesContext context,
+            final UIComponent report) throws IOException {
+        final String id = report.getId();
+        if ((id != null) && !id.startsWith(UIViewRoot.UNIQUE_ID_PREFIX)) {
+            final ResponseWriter writer = context.getResponseWriter();
+            writer.writeAttribute("id", report.getClientId(context), "id");
+        }
+    }
 
-	/**
-	 * Render attributes.
-	 * 
-	 * @param writer
-	 *            the writer
-	 * @param report
-	 *            the report
-	 * 
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 */
-	protected void renderAttributes(final ResponseWriter writer,
-			final UIComponent report) throws IOException {
-		final String styleClass = (String) report.getAttributes().get(
-				"styleClass");
-		if (styleClass != null) {
-			writer.writeAttribute("class", styleClass, null);
-		}
+    /**
+     * Render attributes.
+     *
+     * @param writer
+     *            the writer
+     * @param report
+     *            the report
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    protected void renderAttributes(final ResponseWriter writer,
+            final UIComponent report) throws IOException {
+        final String styleClass = (String) report.getAttributes().get(
+                "styleClass");
+        if (styleClass != null) {
+            writer.writeAttribute("class", styleClass, null);
+        }
 
-		for (final String attrName : PASSTHRU_ATTRS) {
-			final Object value = report.getAttributes().get(attrName);
-			if (value != null) {
-				writer.writeAttribute(attrName, value, null);
-			}
-		}
-	}
-
+        for (final String attrName : PASSTHRU_ATTRS) {
+            final Object value = report.getAttributes().get(attrName);
+            if (value != null) {
+                writer.writeAttribute(attrName, value, null);
+            }
+        }
+    }
 }

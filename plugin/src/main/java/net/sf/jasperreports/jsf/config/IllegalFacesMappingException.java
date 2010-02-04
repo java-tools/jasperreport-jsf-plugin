@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -20,13 +20,12 @@ package net.sf.jasperreports.jsf.config;
 
 public class IllegalFacesMappingException extends ConfigurationException {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3793797448078858440L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 3793797448078858440L;
 
-	public IllegalFacesMappingException(final String mapping) {
-		super(mapping);
-	}
-
+    public IllegalFacesMappingException(final String mapping) {
+        super(mapping);
+    }
 }

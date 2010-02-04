@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -30,24 +30,23 @@ import net.sf.jasperreports.jsf.spi.ResourceLoader;
 
 public class FacesFileResolver implements FileResolver {
 
-	private final FacesContext context;
-	
-	public FacesFileResolver(final FacesContext context) {
-		super();
-		if(context == null) {
-			throw new IllegalArgumentException("'context' can't be null");
-		}
-		this.context = context;
-	}
+    private final FacesContext context;
 
-	public File resolveFile(final String name) {
-		Resource resource;
-		try {
-			resource = ResourceLoader.getResource(context, name);
-		} catch(final IOException e) {
-			throw new JRFacesException(e);
-		}
-		return new File(resource.getPath());
-	}
+    public FacesFileResolver(final FacesContext context) {
+        super();
+        if (context == null) {
+            throw new IllegalArgumentException("'context' can't be null");
+        }
+        this.context = context;
+    }
 
+    public File resolveFile(final String name) {
+        Resource resource;
+        try {
+            resource = ResourceLoader.getResource(context, name);
+        } catch (final IOException e) {
+            throw new JRFacesException(e);
+        }
+        return new File(resource.getPath());
+    }
 }

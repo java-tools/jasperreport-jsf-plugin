@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -33,23 +33,21 @@ import com.meterware.httpunit.WebResponse;
 @RunWith(Parameterized.class)
 public class ReportLinkTest extends ReportTestBase {
 
-	@Parameters
-	public static Collection<?> linkIdentifiers() {
-		return Arrays.asList(new Object[][] { { "reportLink" } });
-	}
+    @Parameters
+    public static Collection<?> linkIdentifiers() {
+        return Arrays.asList(new Object[][]{{"reportLink"}});
+    }
+    private final String linkId;
 
-	private final String linkId;
+    public ReportLinkTest(final String linkId) {
+        this.linkId = linkId;
+    }
 
-	public ReportLinkTest(final String linkId) {
-		this.linkId = linkId;
-	}
-
-	@Test
-	public void clickOnLink() throws Exception {
-		final WebResponse response = getResponse("/ReportLinkTest.jsf");
-		final WebLink link = response.getLinkWithID(linkId);
-		Assert.assertNotNull("Link '" + linkId + "' is null", link);
-		link.click();
-	}
-
+    @Test
+    public void clickOnLink() throws Exception {
+        final WebResponse response = getResponse("/ReportLinkTest.jsf");
+        final WebLink link = response.getLinkWithID(linkId);
+        Assert.assertNotNull("Link '" + linkId + "' is null", link);
+        link.click();
+    }
 }

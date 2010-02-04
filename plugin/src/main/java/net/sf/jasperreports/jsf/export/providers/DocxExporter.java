@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -27,28 +27,25 @@ import net.sf.jasperreports.engine.export.ooxml.JRDocxExporterParameter;
 import net.sf.jasperreports.jsf.export.AbstractJRExporter;
 
 public final class DocxExporter extends AbstractJRExporter {
-	
-	public static final String CONTENT_TYPE = 
-		"application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-	
-	//public static final String ATTR_FLEXIBLE_ROW_HEIGHT = "FLEXIBLE_ROW_HEIGHT";
-	
-	public static final String ATTR_FRAMES_AS_NESTED_TABLES = "FRAMES_AS_NESTED_TABLES";
-	
-	protected DocxExporter(final UIComponent component) {
-		super(component);
-	}
-	
-	public String getContentType() {
-		return CONTENT_TYPE;
-	}
 
-	@Override
-	protected JRExporter createJRExporter(final FacesContext context) {
-		final JRDocxExporter exporter = new JRDocxExporter();
-		setParameterUsingAttribute(exporter, 
-				JRDocxExporterParameter.FRAMES_AS_NESTED_TABLES, ATTR_FRAMES_AS_NESTED_TABLES);
-		return exporter;
-	}	
+    public static final String CONTENT_TYPE =
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    //public static final String ATTR_FLEXIBLE_ROW_HEIGHT = "FLEXIBLE_ROW_HEIGHT";
+    public static final String ATTR_FRAMES_AS_NESTED_TABLES = "FRAMES_AS_NESTED_TABLES";
 
+    protected DocxExporter(final UIComponent component) {
+        super(component);
+    }
+
+    public String getContentType() {
+        return CONTENT_TYPE;
+    }
+
+    @Override
+    protected JRExporter createJRExporter(final FacesContext context) {
+        final JRDocxExporter exporter = new JRDocxExporter();
+        setParameterUsingAttribute(exporter,
+                JRDocxExporterParameter.FRAMES_AS_NESTED_TABLES, ATTR_FRAMES_AS_NESTED_TABLES);
+        return exporter;
+    }
 }

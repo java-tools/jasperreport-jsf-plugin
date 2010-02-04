@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -31,57 +31,50 @@ import net.sf.jasperreports.jsf.export.AbstractJRExporter;
  */
 public final class TextExporter extends AbstractJRExporter {
 
-	public static final String CONTENT_TYPE = "text/plain";
+    public static final String CONTENT_TYPE = "text/plain";
+    /** The Constant ATTR_BETWEEN_PAGES_TEXT. */
+    public static final String ATTR_BETWEEN_PAGES_TEXT = "BETWEEN_PAGES_TEXT";
+    /** The Constant ATTR_CHARACTER_HEIGHT. */
+    public static final String ATTR_CHARACTER_HEIGHT = "CHARACTER_HEIGHT";
+    /** The Constant ATTR_CHARACTER_WIDTH. */
+    public static final String ATTR_CHARACTER_WIDTH = "CHARACTER_WIDTH";
+    /** The Constant ATTR_LINE_SEPARATOR. */
+    public static final String ATTR_LINE_SEPARATOR = "LINE_SEPARATOR";
+    /** The Constant ATTR_PAGE_HEIGHT. */
+    public static final String ATTR_PAGE_HEIGHT = "PAGE_HEIGHT";
+    /** The Constant ATTR_PAGE_WIDTH. */
+    public static final String ATTR_PAGE_WIDTH = "PAGE_WIDTH";
 
-	/** The Constant ATTR_BETWEEN_PAGES_TEXT. */
-	public static final String ATTR_BETWEEN_PAGES_TEXT = "BETWEEN_PAGES_TEXT";
+    protected TextExporter(final UIComponent component) {
+        super(component);
+    }
 
-	/** The Constant ATTR_CHARACTER_HEIGHT. */
-	public static final String ATTR_CHARACTER_HEIGHT = "CHARACTER_HEIGHT";
+    public String getContentType() {
+        return CONTENT_TYPE;
+    }
 
-	/** The Constant ATTR_CHARACTER_WIDTH. */
-	public static final String ATTR_CHARACTER_WIDTH = "CHARACTER_WIDTH";
-
-	/** The Constant ATTR_LINE_SEPARATOR. */
-	public static final String ATTR_LINE_SEPARATOR = "LINE_SEPARATOR";
-
-	/** The Constant ATTR_PAGE_HEIGHT. */
-	public static final String ATTR_PAGE_HEIGHT = "PAGE_HEIGHT";
-
-	/** The Constant ATTR_PAGE_WIDTH. */
-	public static final String ATTR_PAGE_WIDTH = "PAGE_WIDTH";
-
-	protected TextExporter(final UIComponent component) {
-		super(component);
-	}
-
-	public String getContentType() {
-		return CONTENT_TYPE;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
-	 * .context.FacesContext)
-	 */
-	@Override
-	protected JRExporter createJRExporter(final FacesContext context) {
-		final JRTextExporter exporter = new JRTextExporter();
-		setParameterUsingAttribute(exporter, 
-				JRTextExporterParameter.BETWEEN_PAGES_TEXT, ATTR_BETWEEN_PAGES_TEXT);
-		setParameterUsingAttribute(exporter, 
-				JRTextExporterParameter.CHARACTER_HEIGHT, ATTR_CHARACTER_HEIGHT);
-		setParameterUsingAttribute(exporter, 
-				JRTextExporterParameter.CHARACTER_WIDTH, ATTR_CHARACTER_WIDTH);
-		setParameterUsingAttribute(exporter, 
-				JRTextExporterParameter.LINE_SEPARATOR, ATTR_LINE_SEPARATOR);
-		setParameterUsingAttribute(exporter, 
-				JRTextExporterParameter.PAGE_HEIGHT, ATTR_PAGE_HEIGHT);
-		setParameterUsingAttribute(exporter, 
-				JRTextExporterParameter.PAGE_WIDTH, ATTR_PAGE_WIDTH);
-		return exporter;
-	}
-
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
+     * .context.FacesContext)
+     */
+    @Override
+    protected JRExporter createJRExporter(final FacesContext context) {
+        final JRTextExporter exporter = new JRTextExporter();
+        setParameterUsingAttribute(exporter,
+                JRTextExporterParameter.BETWEEN_PAGES_TEXT, ATTR_BETWEEN_PAGES_TEXT);
+        setParameterUsingAttribute(exporter,
+                JRTextExporterParameter.CHARACTER_HEIGHT, ATTR_CHARACTER_HEIGHT);
+        setParameterUsingAttribute(exporter,
+                JRTextExporterParameter.CHARACTER_WIDTH, ATTR_CHARACTER_WIDTH);
+        setParameterUsingAttribute(exporter,
+                JRTextExporterParameter.LINE_SEPARATOR, ATTR_LINE_SEPARATOR);
+        setParameterUsingAttribute(exporter,
+                JRTextExporterParameter.PAGE_HEIGHT, ATTR_PAGE_HEIGHT);
+        setParameterUsingAttribute(exporter,
+                JRTextExporterParameter.PAGE_WIDTH, ATTR_PAGE_WIDTH);
+        return exporter;
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -22,20 +22,19 @@ import javax.faces.component.UIComponent;
 
 public abstract class AbstractExporter implements Exporter {
 
-	/** The component. */
-	private transient final UIComponent component;
+    /** The component. */
+    private transient final UIComponent component;
 
-	public AbstractExporter(final UIComponent component) {
-		this.component = component;
-	}
+    public AbstractExporter(final UIComponent component) {
+        this.component = component;
+    }
 
-	/**
-	 * Gets the component.
-	 * 
-	 * @return the component
-	 */
-	public final UIComponent getComponent() {
-		return component;
-	}
-
+    /**
+     * Gets the component.
+     *
+     * @return the component
+     */
+    public final UIComponent getComponent() {
+        return component;
+    }
 }

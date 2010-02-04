@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -27,24 +27,24 @@ import javax.servlet.ServletContextListener;
 
 public class ConfigurationStartupListener implements ServletContextListener {
 
-	private static final Logger logger = Logger.getLogger(
-			ConfigurationStartupListener.class.getPackage().getName(), 
-			"net.sf.jasperreports.jsf.LogMessages");
-	
-	public void contextDestroyed(ServletContextEvent sce) { }
+    private static final Logger logger = Logger.getLogger(
+            ConfigurationStartupListener.class.getPackage().getName(),
+            "net.sf.jasperreports.jsf.LogMessages");
 
-	public void contextInitialized(ServletContextEvent sce) {
-		if(logger.isLoggable(Level.FINE)) {
-			logger.log(Level.FINE, "JRJSF_0022");
-		}
-		
-		ServletContext context = sce.getServletContext();
-		Configuration config = new Configuration(context);
-		context.setAttribute(Configuration.INSTANCE_KEY, config);
-		
-		if(logger.isLoggable(Level.INFO)) {
-			logger.log(Level.INFO, "JRJSF_0023");
-		}
-	}
+    public void contextDestroyed(ServletContextEvent sce) {
+    }
 
+    public void contextInitialized(ServletContextEvent sce) {
+        if (logger.isLoggable(Level.FINE)) {
+            logger.log(Level.FINE, "JRJSF_0022");
+        }
+
+        ServletContext context = sce.getServletContext();
+        Configuration config = new Configuration(context);
+        context.setAttribute(Configuration.INSTANCE_KEY, config);
+
+        if (logger.isLoggable(Level.INFO)) {
+            logger.log(Level.INFO, "JRJSF_0023");
+        }
+    }
 }

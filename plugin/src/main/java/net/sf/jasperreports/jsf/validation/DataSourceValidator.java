@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -25,16 +25,15 @@ import net.sf.jasperreports.jsf.component.UIDataSource;
 
 public abstract class DataSourceValidator implements Validator {
 
-	public void validate(final FacesContext context, final UIComponent component)
-			throws ValidationException {
-		if (!(component instanceof UIDataSource)) {
-			throw new IllegalArgumentException(
-					"'component' must be a UIDataSource");
-		}
-		doValidate(context, (UIDataSource) component);
-	}
+    public void validate(final FacesContext context, final UIComponent component)
+            throws ValidationException {
+        if (!(component instanceof UIDataSource)) {
+            throw new IllegalArgumentException(
+                    "'component' must be a UIDataSource");
+        }
+        doValidate(context, (UIDataSource) component);
+    }
 
-	protected abstract void doValidate(FacesContext context,
-			UIDataSource dataSource) throws ValidationException;
-
+    protected abstract void doValidate(FacesContext context,
+            UIDataSource dataSource) throws ValidationException;
 }

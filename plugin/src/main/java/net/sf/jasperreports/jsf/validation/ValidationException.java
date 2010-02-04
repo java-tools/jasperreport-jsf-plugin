@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -22,21 +22,20 @@ import net.sf.jasperreports.jsf.JRFacesException;
 
 public class ValidationException extends JRFacesException {
 
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 8248094331118863059L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 8248094331118863059L;
 
-	public ValidationException(final String msg, final Throwable t) {
-		super(msg, t);
-	}
+    public ValidationException(final String msg, final Throwable t) {
+        super(msg, t);
+    }
 
-	public ValidationException(final String msg) {
-		super(msg);
-	}
+    public ValidationException(final String msg) {
+        super(msg);
+    }
 
-	public ValidationException(final Throwable t) {
-		super(t);
-	}
-
+    public ValidationException(final Throwable t) {
+        super(t);
+    }
 }

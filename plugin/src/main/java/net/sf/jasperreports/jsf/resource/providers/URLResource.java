@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -27,23 +27,22 @@ import net.sf.jasperreports.jsf.resource.Resource;
 
 public final class URLResource extends AbstractResource implements Resource {
 
-	private final URL location;
+    private final URL location;
 
-	protected URLResource(final String name, final URL location) {
-		super(name);
-		this.location = location;
-	}
+    protected URLResource(final String name, final URL location) {
+        super(name);
+        this.location = location;
+    }
 
-	public InputStream getInputStream() throws IOException {
-		return location.openStream();
-	}
+    public InputStream getInputStream() throws IOException {
+        return location.openStream();
+    }
 
-	public URL getLocation() throws IOException {
-		return location;
-	}
+    public URL getLocation() throws IOException {
+        return location;
+    }
 
-	public String getPath() {
-		return location.getPath();
-	}
-
+    public String getPath() {
+        return location.getPath();
+    }
 }

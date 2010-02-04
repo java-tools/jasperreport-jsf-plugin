@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -38,37 +38,37 @@ import net.sf.jasperreports.jsf.fill.FillerException;
  */
 public final class MapFiller extends AbstractJRDataSourceFiller {
 
-	private static final Logger logger = Logger.getLogger(BeanFiller.class
-			.getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
+    private static final Logger logger = Logger.getLogger(
+            BeanFiller.class.getPackage().getName(),
+            "net.sf.jasperreports.jsf.LogMessages");
 
-	protected MapFiller(final UIDataSource dataSource) {
-		super(dataSource);
-	}
+    protected MapFiller(final UIDataSource dataSource) {
+        super(dataSource);
+    }
 
-	@Override
-	protected JRDataSource getJRDataSource(final FacesContext context)
-			throws FillerException {
-		JRDataSource dataSource;
+    @Override
+    protected JRDataSource getJRDataSource(final FacesContext context)
+            throws FillerException {
+        JRDataSource dataSource;
 
-		final Object value = getDataSourceComponent().getValue();
-		if (value == null) {
-			if (logger.isLoggable(Level.WARNING)) {
-				logger.log(Level.WARNING, "JRJSF_0020",
-						getDataSourceComponent().getClientId(context));
-			}
-			dataSource = new JREmptyDataSource();
-		} else if (value instanceof Collection<?>) {
-			dataSource = new JRMapCollectionDataSource((Collection<?>) value);
-		} else {
-			Map<?, ?>[] mapArray;
-			if (!value.getClass().isArray()) {
-				mapArray = new Map[] { (Map<?, ?>) value };
-			} else {
-				mapArray = (Map[]) value;
-			}
-			dataSource = new JRMapArrayDataSource(mapArray);
-		}
-		return dataSource;
-	}
-
+        final Object value = getDataSourceComponent().getValue();
+        if (value == null) {
+            if (logger.isLoggable(Level.WARNING)) {
+                logger.log(Level.WARNING, "JRJSF_0020",
+                        getDataSourceComponent().getClientId(context));
+            }
+            dataSource = new JREmptyDataSource();
+        } else if (value instanceof Collection<?>) {
+            dataSource = new JRMapCollectionDataSource((Collection<?>) value);
+        } else {
+            Map<?, ?>[] mapArray;
+            if (!value.getClass().isArray()) {
+                mapArray = new Map[]{(Map<?, ?>) value};
+            } else {
+                mapArray = (Map[]) value;
+            }
+            dataSource = new JRMapArrayDataSource(mapArray);
+        }
+        return dataSource;
+    }
 }

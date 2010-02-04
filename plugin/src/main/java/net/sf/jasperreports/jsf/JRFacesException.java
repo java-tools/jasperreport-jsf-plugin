@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -25,45 +25,44 @@ import javax.faces.FacesException;
  */
 public class JRFacesException extends FacesException {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 282841613696573983L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 282841613696573983L;
 
-	public JRFacesException() {
-		super();
-	}
+    public JRFacesException() {
+        super();
+    }
 
-	/**
-	 * Instantiates a new jR faces exception.
-	 * 
-	 * @param msg
-	 *            the msg
-	 * @param t
-	 *            the t
-	 */
-	public JRFacesException(final String msg, final Throwable t) {
-		super(msg, t);
-	}
+    /**
+     * Instantiates a new jR faces exception.
+     *
+     * @param msg
+     *            the msg
+     * @param t
+     *            the t
+     */
+    public JRFacesException(final String msg, final Throwable t) {
+        super(msg, t);
+    }
 
-	/**
-	 * Instantiates a new jR faces exception.
-	 * 
-	 * @param msg
-	 *            the msg
-	 */
-	public JRFacesException(final String msg) {
-		super(msg);
-	}
+    /**
+     * Instantiates a new jR faces exception.
+     *
+     * @param msg
+     *            the msg
+     */
+    public JRFacesException(final String msg) {
+        super(msg);
+    }
 
-	/**
-	 * Instantiates a new jR faces exception.
-	 * 
-	 * @param t
-	 *            the t
-	 */
-	public JRFacesException(final Throwable t) {
-		super(t);
-	}
-
+    /**
+     * Instantiates a new jR faces exception.
+     *
+     * @param t
+     *            the t
+     */
+    public JRFacesException(final Throwable t) {
+        super(t);
+    }
 }

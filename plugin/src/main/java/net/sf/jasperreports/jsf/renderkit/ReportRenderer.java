@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -26,12 +26,11 @@ import net.sf.jasperreports.jsf.component.UIReport;
 
 public interface ReportRenderer {
 
-	public String getContentDisposition();
+    public String getContentDisposition();
 
-	public void encodeContent(FacesContext context, UIReport report)
-			throws IOException;
+    public void encodeContent(FacesContext context, UIReport report)
+            throws IOException;
 
-	public void encodeHeaders(FacesContext context, UIReport report)
-			throws IOException;
-
+    public void encodeHeaders(FacesContext context, UIReport report)
+            throws IOException;
 }
