@@ -51,7 +51,7 @@ the Faces tree.
 		<tag-class>
 			net.sf.jasperreports.jsf.taglib.DataSourceTag
 		</tag-class>
-		<body-content>empty</body-content>
+		<body-content>JSP</body-content>
 		<attribute>
 			<name>id</name>
 			<required>false</required>
