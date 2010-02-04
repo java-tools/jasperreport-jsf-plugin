@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -29,117 +29,114 @@ import net.sf.jasperreports.jsf.component.UIDataSource;
  */
 public class DataSourceTag extends UIComponentELTag {
 
-	/** The query. */
-	private ValueExpression query;
+    /** The query. */
+    private ValueExpression query;
+    /** The type. */
+    private ValueExpression type;
+    /** The value. */
+    private ValueExpression value;
 
-	/** The type. */
-	private ValueExpression type;
+    /**
+     * Sets the query.
+     *
+     * @param query
+     *            el query a establecer
+     */
+    public void setQuery(final ValueExpression query) {
+        this.query = query;
+    }
 
-	/** The value. */
-	private ValueExpression value;
+    /**
+     * Sets the type.
+     *
+     * @param type
+     *            el type a establecer
+     */
+    public void setType(final ValueExpression type) {
+        this.type = type;
+    }
 
-	/**
-	 * Sets the query.
-	 * 
-	 * @param query
-	 *            el query a establecer
-	 */
-	public void setQuery(final ValueExpression query) {
-		this.query = query;
-	}
+    /**
+     * Sets the value.
+     *
+     * @param value
+     *            el value a establecer
+     */
+    public void setValue(final ValueExpression value) {
+        this.value = value;
+    }
 
-	/**
-	 * Sets the type.
-	 * 
-	 * @param type
-	 *            el type a establecer
-	 */
-	public void setType(final ValueExpression type) {
-		this.type = type;
-	}
+    // TagSupport
 
-	/**
-	 * Sets the value.
-	 * 
-	 * @param value
-	 *            el value a establecer
-	 */
-	public void setValue(final ValueExpression value) {
-		this.value = value;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see javax.faces.webapp.UIComponentELTag#release()
+     */
+    @Override
+    public void release() {
+        super.release();
+        query = null;
+        type = null;
+        value = null;
+    }
 
-	// TagSupport
+    // UIComponentELTag
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.faces.webapp.UIComponentELTag#release()
-	 */
-	@Override
-	public void release() {
-		super.release();
-		query = null;
-		type = null;
-		value = null;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see javax.faces.webapp.UIComponentTagBase#getComponentType()
+     */
+    @Override
+    public String getComponentType() {
+        return UIDataSource.COMPONENT_TYPE;
+    }
 
-	// UIComponentELTag
+    /*
+     * (non-Javadoc)
+     *
+     * @see javax.faces.webapp.UIComponentTagBase#getRendererType()
+     */
+    @Override
+    public String getRendererType() {
+        return null;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.faces.webapp.UIComponentTagBase#getComponentType()
-	 */
-	@Override
-	public String getComponentType() {
-		return UIDataSource.COMPONENT_TYPE;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * javax.faces.webapp.UIComponentELTag#setProperties(javax.faces.component
+     * .UIComponent)
+     */
+    @Override
+    protected void setProperties(final UIComponent component) {
+        super.setProperties(component);
+        final UIDataSource dataSource = (UIDataSource) component;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.faces.webapp.UIComponentTagBase#getRendererType()
-	 */
-	@Override
-	public String getRendererType() {
-		return null;
-	}
+        if (query != null) {
+            if (query.isLiteralText()) {
+                dataSource.setQuery(query.getExpressionString());
+            } else {
+                dataSource.setValueExpression("query", query);
+            }
+        }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.faces.webapp.UIComponentELTag#setProperties(javax.faces.component
-	 * .UIComponent)
-	 */
-	@Override
-	protected void setProperties(final UIComponent component) {
-		super.setProperties(component);
-		final UIDataSource dataSource = (UIDataSource) component;
+        if (type != null) {
+            if (type.isLiteralText()) {
+                dataSource.setType(type.getExpressionString());
+            } else {
+                dataSource.setValueExpression("type", type);
+            }
+        }
 
-		if (query != null) {
-			if (query.isLiteralText()) {
-				dataSource.setQuery(query.getExpressionString());
-			} else {
-				dataSource.setValueExpression("query", query);
-			}
-		}
-
-		if (type != null) {
-			if (type.isLiteralText()) {
-				dataSource.setType(type.getExpressionString());
-			} else {
-				dataSource.setValueExpression("type", type);
-			}
-		}
-
-		if (value != null) {
-			if (value.isLiteralText()) {
-				dataSource.setValue(value.getExpressionString());
-			} else {
-				dataSource.setValueExpression("value", value);
-			}
-		}
-	}
-
+        if (value != null) {
+            if (value.isLiteralText()) {
+                dataSource.setValue(value.getExpressionString());
+            } else {
+                dataSource.setValueExpression("value", value);
+            }
+        }
+    }
 }

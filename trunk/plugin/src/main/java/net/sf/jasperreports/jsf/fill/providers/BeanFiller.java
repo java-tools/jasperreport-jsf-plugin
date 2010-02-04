@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -37,37 +37,37 @@ import net.sf.jasperreports.jsf.fill.FillerException;
  */
 public final class BeanFiller extends AbstractJRDataSourceFiller {
 
-	private static final Logger logger = Logger.getLogger(BeanFiller.class
-			.getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
+    private static final Logger logger = Logger.getLogger(
+            BeanFiller.class.getPackage().getName(),
+            "net.sf.jasperreports.jsf.LogMessages");
 
-	protected BeanFiller(final UIDataSource dataSource) {
-		super(dataSource);
-	}
+    protected BeanFiller(final UIDataSource dataSource) {
+        super(dataSource);
+    }
 
-	@Override
-	protected JRDataSource getJRDataSource(final FacesContext context)
-			throws FillerException {
-		JRDataSource dataSource;
+    @Override
+    protected JRDataSource getJRDataSource(final FacesContext context)
+            throws FillerException {
+        JRDataSource dataSource;
 
-		final Object value = getDataSourceComponent().getValue();
-		if (value == null) {
-			if (logger.isLoggable(Level.WARNING)) {
-				logger.log(Level.WARNING, "JRJSF_0020",
-						getDataSourceComponent().getClientId(context));
-			}
-			dataSource = new JREmptyDataSource();
-		} else if (value instanceof Collection<?>) {
-			dataSource = new JRBeanCollectionDataSource((Collection<?>) value);
-		} else {
-			Object[] beanArray;
-			if (!value.getClass().isArray()) {
-				beanArray = new Object[] { value };
-			} else {
-				beanArray = (Object[]) value;
-			}
-			dataSource = new JRBeanArrayDataSource(beanArray);
-		}
-		return dataSource;
-	}
-
+        final Object value = getDataSourceComponent().getValue();
+        if (value == null) {
+            if (logger.isLoggable(Level.WARNING)) {
+                logger.log(Level.WARNING, "JRJSF_0020",
+                        getDataSourceComponent().getClientId(context));
+            }
+            dataSource = new JREmptyDataSource();
+        } else if (value instanceof Collection<?>) {
+            dataSource = new JRBeanCollectionDataSource((Collection<?>) value);
+        } else {
+            Object[] beanArray;
+            if (!value.getClass().isArray()) {
+                beanArray = new Object[]{value};
+            } else {
+                beanArray = (Object[]) value;
+            }
+            dataSource = new JRBeanArrayDataSource(beanArray);
+        }
+        return dataSource;
+    }
 }

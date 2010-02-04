@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -34,56 +34,55 @@ import net.sf.jasperreports.jsf.resource.Resource;
  */
 public final class ContextResource extends AbstractResource implements Resource {
 
-	/** The context. */
-	private final ExternalContext context;
+    /** The context. */
+    private final ExternalContext context;
 
-	/**
-	 * Instantiates a new context resource loader.
-	 * 
-	 * @param servletContext
-	 *            the servlet context
-	 */
-	protected ContextResource(final String name,
-			final ExternalContext servletContext) {
-		super(name);
-		if (servletContext == null) {
-			throw new IllegalArgumentException();
-		}
-		context = servletContext;
-	}
+    /**
+     * Instantiates a new context resource loader.
+     *
+     * @param servletContext
+     *            the servlet context
+     */
+    protected ContextResource(final String name,
+            final ExternalContext servletContext) {
+        super(name);
+        if (servletContext == null) {
+            throw new IllegalArgumentException();
+        }
+        context = servletContext;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sf.jasperreports.jsf.util.ResourceLoader#getResource(java.lang.String
-	 * )
-	 */
-	public URL getLocation() throws MalformedURLException {
-		return context.getResource(getName());
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * net.sf.jasperreports.jsf.util.ResourceLoader#getResource(java.lang.String
+     * )
+     */
+    public URL getLocation() throws MalformedURLException {
+        return context.getResource(getName());
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sf.jasperreports.jsf.util.ResourceLoader#getResourceAsStream(java
-	 * .lang.String)
-	 */
-	public InputStream getInputStream() {
-		return context.getResourceAsStream(getName());
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * net.sf.jasperreports.jsf.util.ResourceLoader#getResourceAsStream(java
+     * .lang.String)
+     */
+    public InputStream getInputStream() {
+        return context.getResourceAsStream(getName());
+    }
 
-	public String getPath() {
-		final Object wrappedContext = context.getContext();
-		if (wrappedContext instanceof ServletContext) {
-			return ((ServletContext) wrappedContext).getRealPath(getName());
-		} else if (wrappedContext instanceof PortletContext) {
-			return ((PortletContext) wrappedContext).getRealPath(getName());
-		} else {
-			throw new IllegalStateException("Unrecognized context class: "
-					+ wrappedContext.getClass().getName());
-		}
-	}
-
+    public String getPath() {
+        final Object wrappedContext = context.getContext();
+        if (wrappedContext instanceof ServletContext) {
+            return ((ServletContext) wrappedContext).getRealPath(getName());
+        } else if (wrappedContext instanceof PortletContext) {
+            return ((PortletContext) wrappedContext).getRealPath(getName());
+        } else {
+            throw new IllegalStateException("Unrecognized context class: "
+                    + wrappedContext.getClass().getName());
+        }
+    }
 }

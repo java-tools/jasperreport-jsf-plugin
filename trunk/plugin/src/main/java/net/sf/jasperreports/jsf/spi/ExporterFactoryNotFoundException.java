@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -23,19 +23,18 @@ package net.sf.jasperreports.jsf.spi;
  */
 public class ExporterFactoryNotFoundException extends ServiceException {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6514110062785484535L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 6514110062785484535L;
 
-	/**
-	 * Instantiates a new exporter not found exception.
-	 * 
-	 * @param msg
-	 *            the msg
-	 */
-	public ExporterFactoryNotFoundException(final String msg) {
-		super(msg);
-	}
-
+    /**
+     * Instantiates a new exporter not found exception.
+     *
+     * @param msg
+     *            the msg
+     */
+    public ExporterFactoryNotFoundException(final String msg) {
+        super(msg);
+    }
 }

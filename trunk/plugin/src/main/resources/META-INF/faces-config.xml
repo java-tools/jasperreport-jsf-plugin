@@ -2,91 +2,91 @@
 
 <!--  
   JasperReports JSF Plugin
-  Copyright (C) 2009 A. Alonso Dominguez
- 
+  Copyright (C) 2010 A. Alonso Dominguez
+
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
   version 2.1 of the License, or (at your option) any later version.
- 
+
   This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
   Lesser General Public License for more details.
- 
+
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- 
+
   A. Alonso Dominguez
   alonsoft@users.sf.net
 -->
 
 <faces-config xmlns="http://java.sun.com/xml/ns/javaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
-    version="1.2">
-    
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
+              version="1.2">
+
     <lifecycle>
-    	<phase-listener>
-    		net.sf.jasperreports.jsf.ReportPhaseListener
-    	</phase-listener>
+        <phase-listener>
+            net.sf.jasperreports.jsf.ReportPhaseListener
+        </phase-listener>
     </lifecycle>
-    
+
     <component>
-    	<display-name>Data Source Component</display-name>
-    	<component-type>
-    		net.sf.jasperreports.DataSource
-    	</component-type>
-    	<component-class>
-    		net.sf.jasperreports.jsf.component.UIDataSource
-    	</component-class>
+        <display-name>Data Source Component</display-name>
+        <component-type>
+            net.sf.jasperreports.DataSource
+        </component-type>
+        <component-class>
+            net.sf.jasperreports.jsf.component.UIDataSource
+        </component-class>
     </component>
-    
+
     <component>
-    	<display-name>HTML Embedded Report Component</display-name>
-    	<component-type>
-    		net.sf.jasperreports.HtmlReport
-    	</component-type>
-    	<component-class>
-    		net.sf.jasperreports.jsf.component.html.HtmlReport
-    	</component-class>
+        <display-name>HTML Embedded Report Component</display-name>
+        <component-type>
+            net.sf.jasperreports.HtmlReport
+        </component-type>
+        <component-class>
+            net.sf.jasperreports.jsf.component.html.HtmlReport
+        </component-class>
     </component>
-    
+
     <component>
-    	<display-name>HTML Link Report Component</display-name>
-    	<component-type>
-    		net.sf.jasperreports.HtmlReportLink
-    	</component-type>
-    	<component-class>
-    		net.sf.jasperreports.jsf.component.html.HtmlReportLink
-    	</component-class>
+        <display-name>HTML Link Report Component</display-name>
+        <component-type>
+            net.sf.jasperreports.HtmlReportLink
+        </component-type>
+        <component-class>
+            net.sf.jasperreports.jsf.component.html.HtmlReportLink
+        </component-class>
     </component>
-    
+
     <render-kit>
-    	<renderer>
-    		<component-family>
-    			net.sf.jasperreports.Report
-    		</component-family>
-    		<renderer-type>
-    			net.sf.jasperreports.Embed
-    		</renderer-type>
-    		<renderer-class>
-    			net.sf.jasperreports.jsf.renderkit.EmbedRenderer
-    		</renderer-class>
-    	</renderer>
-    	
-    	<renderer>
-    		<component-family>
-    			net.sf.jasperreports.Report
-    		</component-family>
-    		<renderer-type>
-    			net.sf.jasperreports.Link
-    		</renderer-type>
-    		<renderer-class>
-    			net.sf.jasperreports.jsf.renderkit.LinkRenderer
-    		</renderer-class>
-    	</renderer>
+        <renderer>
+            <component-family>
+                net.sf.jasperreports.Report
+            </component-family>
+            <renderer-type>
+                net.sf.jasperreports.Embed
+            </renderer-type>
+            <renderer-class>
+                net.sf.jasperreports.jsf.renderkit.EmbedRenderer
+            </renderer-class>
+        </renderer>
+
+        <renderer>
+            <component-family>
+                net.sf.jasperreports.Report
+            </component-family>
+            <renderer-type>
+                net.sf.jasperreports.Link
+            </renderer-type>
+            <renderer-class>
+                net.sf.jasperreports.jsf.renderkit.LinkRenderer
+            </renderer-class>
+        </renderer>
     </render-kit>
-    
+
 </faces-config>

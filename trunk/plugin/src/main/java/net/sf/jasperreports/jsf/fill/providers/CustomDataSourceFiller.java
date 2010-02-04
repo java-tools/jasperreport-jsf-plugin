@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -31,25 +31,25 @@ import net.sf.jasperreports.jsf.fill.FillerException;
 
 public class CustomDataSourceFiller extends AbstractJRDataSourceFiller {
 
-	private static final Logger logger = Logger.getLogger(BeanFiller.class
-			.getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
-	
-	protected CustomDataSourceFiller(final UIDataSource dataSource) {
-		super(dataSource);
-	}
+    private static final Logger logger = Logger.getLogger(
+            BeanFiller.class.getPackage().getName(),
+            "net.sf.jasperreports.jsf.LogMessages");
 
-	@Override
-	protected JRDataSource getJRDataSource(final FacesContext context)
-			throws FillerException {
-		JRDataSource dataSource = (JRDataSource) getDataSourceComponent().getValue();
-		if (dataSource == null) {
-			if (logger.isLoggable(Level.WARNING)) {
-				logger.log(Level.WARNING, "JRJSF_0020",
-						getDataSourceComponent().getClientId(context));
-			}
-			dataSource = new JREmptyDataSource();
-		}
-		return dataSource;
-	}
+    protected CustomDataSourceFiller(final UIDataSource dataSource) {
+        super(dataSource);
+    }
 
+    @Override
+    protected JRDataSource getJRDataSource(final FacesContext context)
+            throws FillerException {
+        JRDataSource dataSource = (JRDataSource) getDataSourceComponent().getValue();
+        if (dataSource == null) {
+            if (logger.isLoggable(Level.WARNING)) {
+                logger.log(Level.WARNING, "JRJSF_0020",
+                        getDataSourceComponent().getClientId(context));
+            }
+            dataSource = new JREmptyDataSource();
+        }
+        return dataSource;
+    }
 }

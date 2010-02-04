@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -30,259 +30,254 @@ import javax.faces.context.FacesContext;
  */
 public final class UIReportImplementor implements StateHolder {
 
-	/** The callback. */
-	private final UIComponentBase callback;
+    /** The callback. */
+    private final UIComponentBase callback;
+    /** The data source. */
+    private String dataSource;
 
-	/** The data source. */
-	private String dataSource;
+    private String name;
+    /** The path. */
+    private String path;
+    /** The subreport dir. */
+    private String subreportDir;
+    /** The format. */
+    private String format;
 
-	private String name;
+    /**
+     * Instantiates a new uI report implementor.
+     *
+     * @param callback
+     *            the callback
+     */
+    public UIReportImplementor(final UIComponentBase callback) {
+        super();
+        if (callback == null) {
+            throw new IllegalArgumentException();
+        }
+        if (!(callback instanceof UIReport)) {
+            throw new IllegalArgumentException();
+        }
+        this.callback = callback;
+    }
 
-	/** The path. */
-	private String path;
+    /*
+     * (non-Javadoc)
+     *
+     * @see net.sf.jasperreports.jsf.component.UIReport#getDataSource()
+     */
+    public String getDataSource() {
+        if (dataSource != null) {
+            return dataSource;
+        }
+        final ValueExpression ve = getValueExpression("dataSource");
+        if (ve != null) {
+            try {
+                return (String) ve.getValue(getFacesContext().getELContext());
+            } catch (final ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return dataSource;
+        }
+    }
 
-	/** The subreport dir. */
-	private String subreportDir;
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * net.sf.jasperreports.jsf.component.UIReport#setDataSource(java.lang.String
+     * )
+     */
+    public void setDataSource(final String dataSource) {
+        this.dataSource = dataSource;
+    }
 
-	/** The format. */
-	private String format;
+    public String getName() {
+        if (name != null) {
+            return name;
+        }
+        final ValueExpression ve = getValueExpression("name");
+        if (ve != null) {
+            try {
+                return (String) ve.getValue(getFacesContext().getELContext());
+            } catch (final ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return name;
+        }
+    }
 
-	/**
-	 * Instantiates a new uI report implementor.
-	 * 
-	 * @param callback
-	 *            the callback
-	 */
-	public UIReportImplementor(final UIComponentBase callback) {
-		super();
-		if (callback == null) {
-			throw new IllegalArgumentException();
-		}
-		if (!(callback instanceof UIReport)) {
-			throw new IllegalArgumentException();
-		}
-		this.callback = callback;
-	}
+    public void setName(final String name) {
+        this.name = name;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sf.jasperreports.jsf.component.UIReport#getDataSource()
-	 */
-	public String getDataSource() {
-		if (dataSource != null) {
-			return dataSource;
-		}
-		final ValueExpression ve = getValueExpression("dataSource");
-		if (ve != null) {
-			try {
-				return (String) ve.getValue(getFacesContext().getELContext());
-			} catch (final ELException e) {
-				throw new FacesException(e);
-			}
-		} else {
-			return dataSource;
-		}
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see net.sf.jasperreports.jsf.component.UIReport#getPath()
+     */
+    public String getPath() {
+        if (path != null) {
+            return path;
+        }
+        final ValueExpression ve = getValueExpression("path");
+        if (ve != null) {
+            try {
+                return (String) ve.getValue(getFacesContext().getELContext());
+            } catch (final ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return path;
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sf.jasperreports.jsf.component.UIReport#setDataSource(java.lang.String
-	 * )
-	 */
-	public void setDataSource(final String dataSource) {
-		this.dataSource = dataSource;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * net.sf.jasperreports.jsf.component.UIReport#setPath(java.lang.String)
+     */
+    public void setPath(final String path) {
+        this.path = path;
+    }
 
-	public String getName() {
-		if (name != null) {
-			return name;
-		}
-		final ValueExpression ve = getValueExpression("name");
-		if (ve != null) {
-			try {
-				return (String) ve.getValue(getFacesContext().getELContext());
-			} catch (final ELException e) {
-				throw new FacesException(e);
-			}
-		} else {
-			return name;
-		}
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see net.sf.jasperreports.jsf.component.UIReport#getSubreportDir()
+     */
+    public String getSubreportDir() {
+        if (subreportDir != null) {
+            return subreportDir;
+        }
+        final ValueExpression ve = getValueExpression("subreportDir");
+        if (ve != null) {
+            try {
+                return (String) ve.getValue(getFacesContext().getELContext());
+            } catch (final ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return subreportDir;
+        }
+    }
 
-	public void setName(final String name) {
-		this.name = name;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * net.sf.jasperreports.jsf.component.UIReport#setSubreportDir(java.lang
+     * .String)
+     */
+    public void setSubreportDir(final String subreportDir) {
+        this.subreportDir = subreportDir;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sf.jasperreports.jsf.component.UIReport#getPath()
-	 */
-	public String getPath() {
-		if (path != null) {
-			return path;
-		}
-		final ValueExpression ve = getValueExpression("path");
-		if (ve != null) {
-			try {
-				return (String) ve.getValue(getFacesContext().getELContext());
-			} catch (final ELException e) {
-				throw new FacesException(e);
-			}
-		} else {
-			return path;
-		}
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see net.sf.jasperreports.jsf.component.UIReport#getFormat()
+     */
+    public String getFormat() {
+        if (format != null) {
+            return format;
+        }
+        final ValueExpression ve = getValueExpression("format");
+        if (ve != null) {
+            try {
+                return (String) ve.getValue(getFacesContext().getELContext());
+            } catch (final ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return format;
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sf.jasperreports.jsf.component.UIReport#setPath(java.lang.String)
-	 */
-	public void setPath(final String path) {
-		this.path = path;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * net.sf.jasperreports.jsf.component.UIReport#setFormat(java.lang.String)
+     */
+    public void setFormat(final String type) {
+        format = type;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sf.jasperreports.jsf.component.UIReport#getSubreportDir()
-	 */
-	public String getSubreportDir() {
-		if (subreportDir != null) {
-			return subreportDir;
-		}
-		final ValueExpression ve = getValueExpression("subreportDir");
-		if (ve != null) {
-			try {
-				return (String) ve.getValue(getFacesContext().getELContext());
-			} catch (final ELException e) {
-				throw new FacesException(e);
-			}
-		} else {
-			return subreportDir;
-		}
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see javax.faces.component.StateHolder#isTransient()
+     */
+    public boolean isTransient() {
+        return callback.isTransient();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sf.jasperreports.jsf.component.UIReport#setSubreportDir(java.lang
-	 * .String)
-	 */
-	public void setSubreportDir(final String subreportDir) {
-		this.subreportDir = subreportDir;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @seejavax.faces.component.StateHolder#restoreState(javax.faces.context.
+     * FacesContext, java.lang.Object)
+     */
+    public void restoreState(final FacesContext context, final Object state) {
+        final Object[] values = (Object[]) state;
+        dataSource = (String) values[0];
+        path = (String) values[1];
+        subreportDir = (String) values[2];
+        format = (String) values[3];
+        name = (String) values[4];
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sf.jasperreports.jsf.component.UIReport#getFormat()
-	 */
-	public String getFormat() {
-		if (format != null) {
-			return format;
-		}
-		final ValueExpression ve = getValueExpression("format");
-		if (ve != null) {
-			try {
-				return (String) ve.getValue(getFacesContext().getELContext());
-			} catch (final ELException e) {
-				throw new FacesException(e);
-			}
-		} else {
-			return format;
-		}
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext
+     * )
+     */
+    public Object saveState(final FacesContext context) {
+        final Object[] values = new Object[5];
+        values[0] = dataSource;
+        values[1] = path;
+        values[2] = subreportDir;
+        values[3] = format;
+        values[4] = name;
+        return values;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sf.jasperreports.jsf.component.UIReport#setFormat(java.lang.String)
-	 */
-	public void setFormat(final String type) {
-		format = type;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see javax.faces.component.StateHolder#setTransient(boolean)
+     */
+    public void setTransient(final boolean newTransientValue) {
+        callback.setTransient(newTransientValue);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.faces.component.StateHolder#isTransient()
-	 */
-	public boolean isTransient() {
-		return callback.isTransient();
-	}
+    /**
+     * Gets the faces context.
+     *
+     * @return the faces context
+     */
+    private FacesContext getFacesContext() {
+        final FacesContext context = FacesContext.getCurrentInstance();
+        if (context == null) {
+            throw new IllegalStateException();
+        }
+        return context;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seejavax.faces.component.StateHolder#restoreState(javax.faces.context.
-	 * FacesContext, java.lang.Object)
-	 */
-	public void restoreState(final FacesContext context, final Object state) {
-		final Object[] values = (Object[]) state;
-		dataSource = (String) values[0];
-		path = (String) values[1];
-		subreportDir = (String) values[2];
-		format = (String) values[3];
-		name = (String) values[4];
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext
-	 * )
-	 */
-	public Object saveState(final FacesContext context) {
-		final Object[] values = new Object[5];
-		values[0] = dataSource;
-		values[1] = path;
-		values[2] = subreportDir;
-		values[3] = format;
-		values[4] = name;
-		return values;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.faces.component.StateHolder#setTransient(boolean)
-	 */
-	public void setTransient(final boolean newTransientValue) {
-		callback.setTransient(newTransientValue);
-	}
-
-	/**
-	 * Gets the faces context.
-	 * 
-	 * @return the faces context
-	 */
-	private FacesContext getFacesContext() {
-		final FacesContext context = FacesContext.getCurrentInstance();
-		if (context == null) {
-			throw new IllegalStateException();
-		}
-		return context;
-	}
-
-	/**
-	 * Gets the value expression.
-	 * 
-	 * @param key
-	 *            the key
-	 * 
-	 * @return the value expression
-	 */
-	private ValueExpression getValueExpression(final String key) {
-		return callback.getValueExpression(key);
-	}
-
+    /**
+     * Gets the value expression.
+     *
+     * @param key
+     *            the key
+     *
+     * @return the value expression
+     */
+    private ValueExpression getValueExpression(final String key) {
+        return callback.getValueExpression(key);
+    }
 }

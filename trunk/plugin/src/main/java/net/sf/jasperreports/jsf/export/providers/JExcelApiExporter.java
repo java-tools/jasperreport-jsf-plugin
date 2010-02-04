@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -27,26 +27,24 @@ import net.sf.jasperreports.jsf.export.ExporterException;
 
 public final class JExcelApiExporter extends AbstractXlsExporter {
 
-	public static final String CONTENT_TYPE = "application/vnd.ms-excel";
-	
-	public static final String ATTR_CREATE_CUSTOM_PALETTE = "CREATE_CUSTOM_PALETTE";
-	
-	protected JExcelApiExporter(final UIComponent component) {
-		super(component);
-	}
+    public static final String CONTENT_TYPE = "application/vnd.ms-excel";
+    public static final String ATTR_CREATE_CUSTOM_PALETTE = "CREATE_CUSTOM_PALETTE";
 
-	public String getContentType() {
-		return CONTENT_TYPE;
-	}
-	
-	@Override
-	protected JRXlsAbstractExporter createJRXlsExporter(final FacesContext context)
-			throws ExporterException {
-		final JRXlsAbstractExporter exporter = 
-			new net.sf.jasperreports.engine.export.JExcelApiExporter();
-		setParameterUsingAttribute(exporter, 
-				JExcelApiExporterParameter.CREATE_CUSTOM_PALETTE, ATTR_CREATE_CUSTOM_PALETTE);
-		return exporter;
-	}
+    protected JExcelApiExporter(final UIComponent component) {
+        super(component);
+    }
 
+    public String getContentType() {
+        return CONTENT_TYPE;
+    }
+
+    @Override
+    protected JRXlsAbstractExporter createJRXlsExporter(final FacesContext context)
+            throws ExporterException {
+        final JRXlsAbstractExporter exporter =
+                new net.sf.jasperreports.engine.export.JExcelApiExporter();
+        setParameterUsingAttribute(exporter,
+                JExcelApiExporterParameter.CREATE_CUSTOM_PALETTE, ATTR_CREATE_CUSTOM_PALETTE);
+        return exporter;
+    }
 }

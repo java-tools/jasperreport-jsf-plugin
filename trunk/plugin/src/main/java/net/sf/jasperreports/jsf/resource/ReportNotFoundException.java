@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -23,29 +23,28 @@ package net.sf.jasperreports.jsf.resource;
  */
 public class ReportNotFoundException extends ResourceException {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3585888152288225298L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 3585888152288225298L;
 
-	/**
-	 * Instantiates a new report not found exception.
-	 * 
-	 * @param msg
-	 *            the msg
-	 */
-	public ReportNotFoundException(final String msg) {
-		super(msg);
-	}
+    /**
+     * Instantiates a new report not found exception.
+     *
+     * @param msg
+     *            the msg
+     */
+    public ReportNotFoundException(final String msg) {
+        super(msg);
+    }
 
-	/**
-	 * Instantiates a new report not found exception.
-	 * 
-	 * @param msg
-	 *            the msg
-	 */
-	public ReportNotFoundException(final String msg, final Throwable t) {
-		super(msg, t);
-	}
-
+    /**
+     * Instantiates a new report not found exception.
+     *
+     * @param msg
+     *            the msg
+     */
+    public ReportNotFoundException(final String msg, final Throwable t) {
+        super(msg, t);
+    }
 }

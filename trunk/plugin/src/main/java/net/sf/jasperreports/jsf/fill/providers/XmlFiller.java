@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -54,120 +54,118 @@ import org.xml.sax.SAXException;
  */
 public final class XmlFiller extends AbstractJRDataSourceFiller {
 
-	private static final Logger logger = Logger.getLogger(BeanFiller.class
-			.getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
+    private static final Logger logger = Logger.getLogger(
+            BeanFiller.class.getPackage().getName(),
+            "net.sf.jasperreports.jsf.LogMessages");
 
-	protected XmlFiller(final UIDataSource dataSource) {
-		super(dataSource);
-	}
+    protected XmlFiller(final UIDataSource dataSource) {
+        super(dataSource);
+    }
 
-	@Override
-	protected JRDataSource getJRDataSource(final FacesContext context)
-			throws FillerException {
-		JRDataSource dataSource;
+    @Override
+    protected JRDataSource getJRDataSource(final FacesContext context)
+            throws FillerException {
+        JRDataSource dataSource;
 
-		final Document xmlDocument = getXmlDocument(context);
-		if (xmlDocument == null) {
-			if (logger.isLoggable(Level.WARNING)) {
-				logger.log(Level.WARNING, "JRJSF_0020",
-						getDataSourceComponent().getClientId(context));
-			}
-			dataSource = new JREmptyDataSource();
-		} else {
-			final String query = getDataSourceComponent().getQuery();
-			try {
-				if ((query != null) && (query.length() > 0)) {
-					dataSource = new JRXmlDataSource(xmlDocument,
-							parseQuery(query));
-				} else {
-					dataSource = new JRXmlDataSource(xmlDocument);
-				}
-			} catch (final JRException e) {
-				throw new FillerException(e);
-			}
-		}
-		return dataSource;
-	}
+        final Document xmlDocument = getXmlDocument(context);
+        if (xmlDocument == null) {
+            if (logger.isLoggable(Level.WARNING)) {
+                logger.log(Level.WARNING, "JRJSF_0020",
+                        getDataSourceComponent().getClientId(context));
+            }
+            dataSource = new JREmptyDataSource();
+        } else {
+            final String query = getDataSourceComponent().getQuery();
+            try {
+                if ((query != null) && (query.length() > 0)) {
+                    dataSource = new JRXmlDataSource(xmlDocument,
+                            parseQuery(query));
+                } else {
+                    dataSource = new JRXmlDataSource(xmlDocument);
+                }
+            } catch (final JRException e) {
+                throw new FillerException(e);
+            }
+        }
+        return dataSource;
+    }
 
-	private Document getXmlDocument(final FacesContext context)
-			throws FillerException {
-		final Object value = getDataSourceComponent().getValue();
-		if (value == null) {
-			return null;
-		}
+    private Document getXmlDocument(final FacesContext context)
+            throws FillerException {
+        final Object value = getDataSourceComponent().getValue();
+        if (value == null) {
+            return null;
+        }
 
-		if (value instanceof Document) {
-			return (Document) value;
-		}
+        if (value instanceof Document) {
+            return (Document) value;
+        }
 
-		InputStream stream = null;
-		boolean closeStream = true;
-		try {
-			if (value instanceof File) {
-				stream = new FileInputStream((File) value);
-			} else if (value instanceof URL) {
-				stream = ((URL) value).openStream();
-			} else if (value instanceof String) {
-				final Resource resource = ResourceLoader.getResource(context,
-						(String) value);
-				stream = resource.getInputStream();
-			} else if (value instanceof InputStream) {
-				stream = (InputStream) value;
-				closeStream = false;
-			}
-		} catch (final IOException e) {
-			throw new FillerException(e);
-		}
+        InputStream stream = null;
+        boolean closeStream = true;
+        try {
+            if (value instanceof File) {
+                stream = new FileInputStream((File) value);
+            } else if (value instanceof URL) {
+                stream = ((URL) value).openStream();
+            } else if (value instanceof String) {
+                final Resource resource = ResourceLoader.getResource(context,
+                        (String) value);
+                stream = resource.getInputStream();
+            } else if (value instanceof InputStream) {
+                stream = (InputStream) value;
+                closeStream = false;
+            }
+        } catch (final IOException e) {
+            throw new FillerException(e);
+        }
 
-		if (stream == null) {
-			throw new FillerException("Unrecognized XML "
-					+ "data source type: " + value.getClass());
-		}
+        if (stream == null) {
+            throw new FillerException("Unrecognized XML "
+                    + "data source type: " + value.getClass());
+        }
 
-		try {
-			return parseStream(stream);
-		} finally {
-			if (stream != null && closeStream) {
-				try {
-					stream.close();
-				} catch (final IOException e) {
-				}
-			}
-			stream = null;
-		}
-	}
+        try {
+            return parseStream(stream);
+        } finally {
+            if (stream != null && closeStream) {
+                try {
+                    stream.close();
+                } catch (final IOException e) {
+                }
+            }
+            stream = null;
+        }
+    }
 
-	private String parseQuery(final String query) {
-		final List<Object> params = new ArrayList<Object>();
-		for (final UIComponent kid : getDataSourceComponent().getChildren()) {
-			if (!(kid instanceof UIParameter)) {
-				continue;
-			}
+    private String parseQuery(final String query) {
+        final List<Object> params = new ArrayList<Object>();
+        for (final UIComponent kid : getDataSourceComponent().getChildren()) {
+            if (!(kid instanceof UIParameter)) {
+                continue;
+            }
 
-			final Object value = ((UIParameter) kid).getValue();
-			params.add(value);
-		}
+            final Object value = ((UIParameter) kid).getValue();
+            params.add(value);
+        }
 
-		return MessageFormat.format(query, params.toArray(new Object[params
-				.size()]));
-	}
+        return MessageFormat.format(query, params.toArray(new Object[params.size()]));
+    }
 
-	private Document parseStream(final InputStream stream)
-			throws FillerException {
-		Document result;
-		try {
-			final DocumentBuilderFactory builderFactory = DocumentBuilderFactory
-					.newInstance();
-			final DocumentBuilder builder = builderFactory.newDocumentBuilder();
-			result = builder.parse(stream);
-		} catch (final SAXException e) {
-			throw new FillerException(e);
-		} catch (final ParserConfigurationException e) {
-			throw new FillerException(e);
-		} catch (final IOException e) {
-			throw new FillerException(e);
-		}
-		return result;
-	}
-
+    private Document parseStream(final InputStream stream)
+            throws FillerException {
+        Document result;
+        try {
+            final DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+            final DocumentBuilder builder = builderFactory.newDocumentBuilder();
+            result = builder.parse(stream);
+        } catch (final SAXException e) {
+            throw new FillerException(e);
+        } catch (final ParserConfigurationException e) {
+            throw new FillerException(e);
+        } catch (final IOException e) {
+            throw new FillerException(e);
+        }
+        return result;
+    }
 }

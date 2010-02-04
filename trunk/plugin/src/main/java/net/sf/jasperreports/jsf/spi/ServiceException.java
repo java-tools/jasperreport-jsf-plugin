@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -22,21 +22,20 @@ import net.sf.jasperreports.jsf.JRFacesException;
 
 public class ServiceException extends JRFacesException {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1423243248011040084L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1423243248011040084L;
 
-	public ServiceException(final String msg, final Throwable t) {
-		super(msg, t);
-	}
+    public ServiceException(final String msg, final Throwable t) {
+        super(msg, t);
+    }
 
-	public ServiceException(final String msg) {
-		super(msg);
-	}
+    public ServiceException(final String msg) {
+        super(msg);
+    }
 
-	public ServiceException(final Throwable t) {
-		super(t);
-	}
-
+    public ServiceException(final Throwable t) {
+        super(t);
+    }
 }

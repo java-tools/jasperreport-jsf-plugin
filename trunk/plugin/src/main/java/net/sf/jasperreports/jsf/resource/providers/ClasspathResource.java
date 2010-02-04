@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -26,39 +26,38 @@ import net.sf.jasperreports.jsf.resource.AbstractResource;
 import net.sf.jasperreports.jsf.resource.Resource;
 
 public final class ClasspathResource extends AbstractResource implements
-		Resource {
+        Resource {
 
-	private final ClassLoader classLoader;
+    private final ClassLoader classLoader;
 
-	protected ClasspathResource(final String name, final ClassLoader classLoader) {
-		super(name);
-		this.classLoader = classLoader;
-	}
+    protected ClasspathResource(final String name, final ClassLoader classLoader) {
+        super(name);
+        this.classLoader = classLoader;
+    }
 
-	public InputStream getInputStream() throws IOException {
-		return classLoader.getResourceAsStream(getName());
-	}
+    public InputStream getInputStream() throws IOException {
+        return classLoader.getResourceAsStream(getName());
+    }
 
-	public URL getLocation() throws IOException {
-		final URL location = classLoader.getResource(getName());
-		if (location == null) {
-			throwLocationNotFoundException();
-		}
-		return location;
-	}
+    public URL getLocation() throws IOException {
+        final URL location = classLoader.getResource(getName());
+        if (location == null) {
+            throwLocationNotFoundException();
+        }
+        return location;
+    }
 
-	public String getPath() {
-		final URL location = classLoader.getResource(getName());
-		if (location == null) {
-			throwLocationNotFoundException();
-		}
-		return location.getPath();
-	}
+    public String getPath() {
+        final URL location = classLoader.getResource(getName());
+        if (location == null) {
+            throwLocationNotFoundException();
+        }
+        return location.getPath();
+    }
 
-	private void throwLocationNotFoundException() {
-		throw new IllegalStateException(
-				"Resource location for classpath resource '" + getName()
-						+ "' couldn't be identified.");
-	}
-
+    private void throwLocationNotFoundException() {
+        throw new IllegalStateException(
+                "Resource location for classpath resource '" + getName()
+                + "' couldn't be identified.");
+    }
 }

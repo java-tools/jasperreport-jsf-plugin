@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -28,21 +28,19 @@ import net.sf.jasperreports.jsf.validation.ValidationException;
 
 public class JdbcDataSourceValidator extends DataSourceValidatorBase {
 
-	/** The Constant REQUIRED_DATASOURCE_ATTRS. */
-	public static final String[] REQUIRED_DATASOURCE_ATTRS = { 
-			JdbcFiller.ATTR_DRIVER_CLASS_NAME,
-	};
+    /** The Constant REQUIRED_DATASOURCE_ATTRS. */
+    public static final String[] REQUIRED_DATASOURCE_ATTRS = {
+        JdbcFiller.ATTR_DRIVER_CLASS_NAME,};
 
-	@Override
-	protected void doValidate(final FacesContext context,
-			final UIDataSource dataSource) throws ValidationException {
-		super.doValidate(context, dataSource);
-		for (final String attr : REQUIRED_DATASOURCE_ATTRS) {
-			if (null == dataSource.getAttributes().get(attr)) {
-				throw new MissedAttributeException(
-						dataSource.getType() + " : " + attr);
-			}
-		}
-	}
-
+    @Override
+    protected void doValidate(final FacesContext context,
+            final UIDataSource dataSource) throws ValidationException {
+        super.doValidate(context, dataSource);
+        for (final String attr : REQUIRED_DATASOURCE_ATTRS) {
+            if (null == dataSource.getAttributes().get(attr)) {
+                throw new MissedAttributeException(
+                        dataSource.getType() + " : " + attr);
+            }
+        }
+    }
 }

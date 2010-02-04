@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -25,13 +25,12 @@ import net.sf.jasperreports.jsf.spi.ExporterLoader;
 
 public class ReportValidatorBase extends ReportValidator {
 
-	@Override
-	protected void doValidate(final FacesContext context, final UIReport report)
-			throws ValidationException {
-		if (!ExporterLoader.getAvailableExportFormats().contains(
-				report.getFormat())) {
-			throw new IllegalOutputFormatException(report.getFormat());
-		}
-	}
-
+    @Override
+    protected void doValidate(final FacesContext context, final UIReport report)
+            throws ValidationException {
+        if (!ExporterLoader.getAvailableExportFormats().contains(
+                report.getFormat())) {
+            throw new IllegalOutputFormatException(report.getFormat());
+        }
+    }
 }

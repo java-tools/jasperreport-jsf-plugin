@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -29,132 +29,128 @@ import net.sf.jasperreports.jsf.component.UIReport;
  */
 public abstract class AbstractReportTag extends UIComponentELTag {
 
-	/** The data source. */
-	private ValueExpression dataSource;
+    /** The data source. */
+    private ValueExpression dataSource;
 
-	private ValueExpression name;
+    private ValueExpression name;
+    /** The path. */
+    private ValueExpression path;
+    /** The subreport dir. */
+    private ValueExpression subreportDir;
+    /** The format. */
+    private ValueExpression format;
 
-	/** The path. */
-	private ValueExpression path;
+    /**
+     * Sets the data source.
+     *
+     * @param dataSource
+     *            the new data source
+     */
+    public void setDataSource(final ValueExpression dataSource) {
+        this.dataSource = dataSource;
+    }
 
-	/** The subreport dir. */
-	private ValueExpression subreportDir;
+    public void setName(final ValueExpression name) {
+        this.name = name;
+    }
 
-	/** The format. */
-	private ValueExpression format;
+    /**
+     * Sets the path.
+     *
+     * @param report
+     *            the new path
+     */
+    public void setPath(final ValueExpression report) {
+        path = report;
+    }
 
-	/**
-	 * Sets the data source.
-	 * 
-	 * @param dataSource
-	 *            the new data source
-	 */
-	public void setDataSource(final ValueExpression dataSource) {
-		this.dataSource = dataSource;
-	}
+    /**
+     * Sets the subreport dir.
+     *
+     * @param subreportDir
+     *            the new subreport dir
+     */
+    public void setSubreportDir(final ValueExpression subreportDir) {
+        this.subreportDir = subreportDir;
+    }
 
-	public void setName(final ValueExpression name) {
-		this.name = name;
-	}
+    /**
+     * Sets the format.
+     *
+     * @param type
+     *            the new format
+     */
+    public void setFormat(final ValueExpression type) {
+        format = type;
+    }
 
-	/**
-	 * Sets the path.
-	 * 
-	 * @param report
-	 *            the new path
-	 */
-	public void setPath(final ValueExpression report) {
-		path = report;
-	}
+    // TagSupport
 
-	/**
-	 * Sets the subreport dir.
-	 * 
-	 * @param subreportDir
-	 *            the new subreport dir
-	 */
-	public void setSubreportDir(final ValueExpression subreportDir) {
-		this.subreportDir = subreportDir;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see javax.faces.webapp.UIComponentELTag#release()
+     */
+    @Override
+    public void release() {
+        super.release();
+        dataSource = null;
+        path = null;
+        subreportDir = null;
+        format = null;
+        name = null;
+    }
 
-	/**
-	 * Sets the format.
-	 * 
-	 * @param type
-	 *            the new format
-	 */
-	public void setFormat(final ValueExpression type) {
-		format = type;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * javax.faces.webapp.UIComponentELTag#setProperties(javax.faces.component
+     * .UIComponent)
+     */
+    @Override
+    protected void setProperties(final UIComponent component) {
+        super.setProperties(component);
 
-	// TagSupport
+        final UIReport jreport = (UIReport) component;
+        if (dataSource != null) {
+            if (dataSource.isLiteralText()) {
+                jreport.setDataSource(dataSource.getExpressionString());
+            } else {
+                component.setValueExpression("dataSource", dataSource);
+            }
+        }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.faces.webapp.UIComponentELTag#release()
-	 */
-	@Override
-	public void release() {
-		super.release();
-		dataSource = null;
-		path = null;
-		subreportDir = null;
-		format = null;
-		name = null;
-	}
+        if (name != null) {
+            if (name.isLiteralText()) {
+                jreport.setName(name.getExpressionString());
+            } else {
+                component.setValueExpression("name", name);
+            }
+        }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.faces.webapp.UIComponentELTag#setProperties(javax.faces.component
-	 * .UIComponent)
-	 */
-	@Override
-	protected void setProperties(final UIComponent component) {
-		super.setProperties(component);
+        if (path != null) {
+            if (path.isLiteralText()) {
+                jreport.setPath(path.getExpressionString());
+            } else {
+                component.setValueExpression("report", path);
+            }
+        }
 
-		final UIReport jreport = (UIReport) component;
-		if (dataSource != null) {
-			if (dataSource.isLiteralText()) {
-				jreport.setDataSource(dataSource.getExpressionString());
-			} else {
-				component.setValueExpression("dataSource", dataSource);
-			}
-		}
+        if (subreportDir != null) {
+            if (subreportDir.isLiteralText()) {
+                jreport.setSubreportDir(subreportDir.getExpressionString());
+            } else {
+                component.setValueExpression("subreportDir", subreportDir);
+            }
+        }
 
-		if (name != null) {
-			if (name.isLiteralText()) {
-				jreport.setName(name.getExpressionString());
-			} else {
-				component.setValueExpression("name", name);
-			}
-		}
-
-		if (path != null) {
-			if (path.isLiteralText()) {
-				jreport.setPath(path.getExpressionString());
-			} else {
-				component.setValueExpression("report", path);
-			}
-		}
-
-		if (subreportDir != null) {
-			if (subreportDir.isLiteralText()) {
-				jreport.setSubreportDir(subreportDir.getExpressionString());
-			} else {
-				component.setValueExpression("subreportDir", subreportDir);
-			}
-		}
-
-		if (format != null) {
-			if (format.isLiteralText()) {
-				jreport.setFormat(format.getExpressionString());
-			} else {
-				component.setValueExpression("format", format);
-			}
-		}
-	}
-
+        if (format != null) {
+            if (format.isLiteralText()) {
+                jreport.setFormat(format.getExpressionString());
+            } else {
+                component.setValueExpression("format", format);
+            }
+        }
+    }
 }

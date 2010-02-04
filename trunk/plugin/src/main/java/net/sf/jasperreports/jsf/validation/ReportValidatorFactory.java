@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -29,26 +29,25 @@ import net.sf.jasperreports.jsf.spi.ValidatorFactory;
 
 public final class ReportValidatorFactory implements ValidatorFactory {
 
-	private static final Map<String, ReportValidator> validatorCacheMap = Services
-			.map(ReportValidator.class);
+    private static final Map<String, ReportValidator> validatorCacheMap =
+            Services.map(ReportValidator.class);
 
-	public boolean acceptsComponent(final UIComponent component) {
-		return (component instanceof UIReport);
-	}
+    public boolean acceptsComponent(final UIComponent component) {
+        return (component instanceof UIReport);
+    }
 
-	public ReportValidator createValidator(final FacesContext context,
-			final UIComponent component) throws ValidationException {
-		if (!(component instanceof UIReport)) {
-			throw new IllegalArgumentException("");
-		}
+    public ReportValidator createValidator(final FacesContext context,
+            final UIComponent component) throws ValidationException {
+        if (!(component instanceof UIReport)) {
+            throw new IllegalArgumentException("");
+        }
 
-		final UIReport report = (UIReport) component;
-		ReportValidator result = null;
-		result = validatorCacheMap.get(report.getFormat());
-		if (result == null) {
-			result = validatorCacheMap.get(null);
-		}
-		return result;
-	}
-
+        final UIReport report = (UIReport) component;
+        ReportValidator result = null;
+        result = validatorCacheMap.get(report.getFormat());
+        if (result == null) {
+            result = validatorCacheMap.get(null);
+        }
+        return result;
+    }
 }

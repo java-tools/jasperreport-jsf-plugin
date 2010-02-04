@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -35,116 +35,114 @@ import org.xml.sax.SAXException;
 
 class XmlHelper {
 
-	public static Element getChildElement(final Element element,
-			final String tagName) {
-		return getChildElement(element, null, tagName);
-	}
+    public static Element getChildElement(final Element element,
+            final String tagName) {
+        return getChildElement(element, null, tagName);
+    }
 
-	public static Element getChildElement(final Element element,
-			final String namespace, final String tagName) {
-		final NodeList childNodes = element.getChildNodes();
-		final int numChildren = childNodes.getLength();
+    public static Element getChildElement(final Element element,
+            final String namespace, final String tagName) {
+        final NodeList childNodes = element.getChildNodes();
+        final int numChildren = childNodes.getLength();
 
-		for (int i = 0; i < numChildren; i++) {
-			final Node childNode = childNodes.item(i);
-			if (childNode.getNodeType() != Node.ELEMENT_NODE) {
-				continue;
-			}
-			final Element childElement = (Element) childNode;
-			String childTagName = childElement.getTagName();
-			final String childPrefix = childElement.getPrefix();
-			final String childNamespace = (childPrefix != null ? childElement
-					.lookupNamespaceURI(childPrefix) : null);
+        for (int i = 0; i < numChildren; i++) {
+            final Node childNode = childNodes.item(i);
+            if (childNode.getNodeType() != Node.ELEMENT_NODE) {
+                continue;
+            }
+            final Element childElement = (Element) childNode;
+            String childTagName = childElement.getTagName();
+            final String childPrefix = childElement.getPrefix();
+            final String childNamespace = (childPrefix != null ? childElement
+                    .lookupNamespaceURI(childPrefix) : null);
 
-			if (namespace != null) {
-				if (!namespace.equals(childNamespace)) {
-					continue;
-				} else {
-					childTagName = childElement.getLocalName();
-				}
-			}
+            if (namespace != null) {
+                if (!namespace.equals(childNamespace)) {
+                    continue;
+                } else {
+                    childTagName = childElement.getLocalName();
+                }
+            }
 
-			if (!childTagName.equals(tagName)) {
-				continue;
-			}
-			return childElement;
-		}
-		return null;
-	}
+            if (!childTagName.equals(tagName)) {
+                continue;
+            }
+            return childElement;
+        }
+        return null;
+    }
 
-	public static List<Element> getChildElements(final Element element,
-			final String tagName) {
-		return getChildElements(element, null, tagName);
-	}
+    public static List<Element> getChildElements(final Element element,
+            final String tagName) {
+        return getChildElements(element, null, tagName);
+    }
 
-	public static List<Element> getChildElements(final Element element,
-			final String namespace, final String tagName) {
-		final List<Element> elements = getElementList(element);
-		final int numElements = elements.size();
-		final List<Element> childElements = new ArrayList<Element>();
-		for (int i = 0; i < numElements; i++) {
-			final Element childElement = elements.get(i);
-			String childTagName = childElement.getTagName();
-			final String childPrefix = childElement.getPrefix();
-			final String childNamespace = (childPrefix != null ? childElement
-					.lookupNamespaceURI(childPrefix) : null);
+    public static List<Element> getChildElements(final Element element,
+            final String namespace, final String tagName) {
+        final List<Element> elements = getElementList(element);
+        final int numElements = elements.size();
+        final List<Element> childElements = new ArrayList<Element>();
+        for (int i = 0; i < numElements; i++) {
+            final Element childElement = elements.get(i);
+            String childTagName = childElement.getTagName();
+            final String childPrefix = childElement.getPrefix();
+            final String childNamespace = (childPrefix != null ? childElement
+                    .lookupNamespaceURI(childPrefix) : null);
 
-			if (namespace != null) {
-				if (!namespace.equals(childNamespace)) {
-					continue;
-				} else {
-					childTagName = childElement.getLocalName();
-				}
-			}
+            if (namespace != null) {
+                if (!namespace.equals(childNamespace)) {
+                    continue;
+                } else {
+                    childTagName = childElement.getLocalName();
+                }
+            }
 
-			if (!childTagName.equals(tagName)) {
-				continue;
-			}
-			childElements.add(childElement);
-		}
-		return childElements;
-	}
+            if (!childTagName.equals(tagName)) {
+                continue;
+            }
+            childElements.add(childElement);
+        }
+        return childElements;
+    }
 
-	public static String getChildText(final Element element,
-			final String tagName) {
-		final Element child = getChildElement(element, tagName);
-		return getText(child);
-	}
+    public static String getChildText(final Element element,
+            final String tagName) {
+        final Element child = getChildElement(element, tagName);
+        return getText(child);
+    }
 
-	public static String getText(final Element element) {
-		final Node node = element.getFirstChild();
-		if (node != null && node.getNodeType() == Node.TEXT_NODE) {
-			return node.getNodeValue().trim();
-		}
-		return null;
-	}
+    public static String getText(final Element element) {
+        final Node node = element.getFirstChild();
+        if (node != null && node.getNodeType() == Node.TEXT_NODE) {
+            return node.getNodeValue().trim();
+        }
+        return null;
+    }
 
-	private static List<Element> getElementList(final Element element) {
-		final List<Element> elementList = new ArrayList<Element>();
+    private static List<Element> getElementList(final Element element) {
+        final List<Element> elementList = new ArrayList<Element>();
 
-		final NodeList childNodes = element.getChildNodes();
-		final int numChildren = childNodes.getLength();
+        final NodeList childNodes = element.getChildNodes();
+        final int numChildren = childNodes.getLength();
 
-		for (int i = 0; i < numChildren; i++) {
-			final Node childNode = childNodes.item(i);
-			if (childNode.getNodeType() != Node.ELEMENT_NODE) {
-				continue;
-			}
-			elementList.add((Element) childNode);
-		}
+        for (int i = 0; i < numChildren; i++) {
+            final Node childNode = childNodes.item(i);
+            if (childNode.getNodeType() != Node.ELEMENT_NODE) {
+                continue;
+            }
+            elementList.add((Element) childNode);
+        }
 
-		return elementList;
-	}
+        return elementList;
+    }
 
-	public static Document loadDocument(final InputStream stream)
-			throws ParserConfigurationException, SAXException, IOException {
-		final DocumentBuilderFactory factory = DocumentBuilderFactory
-				.newInstance();
-		final DocumentBuilder builder = factory.newDocumentBuilder();
-		return builder.parse(stream);
-	}
+    public static Document loadDocument(final InputStream stream)
+            throws ParserConfigurationException, SAXException, IOException {
+        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        final DocumentBuilder builder = factory.newDocumentBuilder();
+        return builder.parse(stream);
+    }
 
-	private XmlHelper() {
-	}
-
+    private XmlHelper() {
+    }
 }

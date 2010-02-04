@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -25,13 +25,12 @@ import net.sf.jasperreports.jsf.spi.FillerLoader;
 
 public class DataSourceValidatorBase extends DataSourceValidator {
 
-	@Override
-	protected void doValidate(final FacesContext context,
-			final UIDataSource dataSource) throws ValidationException {
-		if (!FillerLoader.getAvailableDataSourceTypes().contains(
-				dataSource.getType())) {
-			throw new IllegalDataSourceTypeException(dataSource.getType());
-		}
-	}
-
+    @Override
+    protected void doValidate(final FacesContext context,
+            final UIDataSource dataSource) throws ValidationException {
+        if (!FillerLoader.getAvailableDataSourceTypes().contains(
+                dataSource.getType())) {
+            throw new IllegalDataSourceTypeException(dataSource.getType());
+        }
+    }
 }

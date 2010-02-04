@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -31,41 +31,37 @@ import net.sf.jasperreports.jsf.export.AbstractJRExporter;
  */
 public final class PdfExporter extends AbstractJRExporter {
 
-	public static final String CONTENT_TYPE = "application/pdf";
+    public static final String CONTENT_TYPE = "application/pdf";
+    /** The Constant ATTR_IS_COMPRESSED. */
+    public static final String ATTR_IS_COMPRESSED = "IS_COMPRESSED";
+    /** The Constant ATTR_IS_ENCRYPTED. */
+    public static final String ATTR_IS_ENCRYPTED = "IS_ENCRYPTED";
+    public static final String ATTR_IS_TAGGED = "IS_TAGGED";
 
-	/** The Constant ATTR_IS_COMPRESSED. */
-	public static final String ATTR_IS_COMPRESSED = "IS_COMPRESSED";
+    protected PdfExporter(final UIComponent component) {
+        super(component);
+    }
 
-	/** The Constant ATTR_IS_ENCRYPTED. */
-	public static final String ATTR_IS_ENCRYPTED = "IS_ENCRYPTED";
+    public String getContentType() {
+        return CONTENT_TYPE;
+    }
 
-	public static final String ATTR_IS_TAGGED = "IS_TAGGED";
-	
-	protected PdfExporter(final UIComponent component) {
-		super(component);
-	}
-
-	public String getContentType() {
-		return CONTENT_TYPE;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
-	 * .context.FacesContext)
-	 */
-	@Override
-	protected JRExporter createJRExporter(final FacesContext context) {
-		final JRPdfExporter exporter = new JRPdfExporter();
-		setParameterUsingAttribute(exporter, 
-				JRPdfExporterParameter.IS_COMPRESSED, ATTR_IS_COMPRESSED);
-		setParameterUsingAttribute(exporter, 
-				JRPdfExporterParameter.IS_ENCRYPTED, ATTR_IS_ENCRYPTED);
-		setParameterUsingAttribute(exporter, 
-				JRPdfExporterParameter.IS_TAGGED, ATTR_IS_TAGGED);
-		return exporter;
-	}
-
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
+     * .context.FacesContext)
+     */
+    @Override
+    protected JRExporter createJRExporter(final FacesContext context) {
+        final JRPdfExporter exporter = new JRPdfExporter();
+        setParameterUsingAttribute(exporter,
+                JRPdfExporterParameter.IS_COMPRESSED, ATTR_IS_COMPRESSED);
+        setParameterUsingAttribute(exporter,
+                JRPdfExporterParameter.IS_ENCRYPTED, ATTR_IS_ENCRYPTED);
+        setParameterUsingAttribute(exporter,
+                JRPdfExporterParameter.IS_TAGGED, ATTR_IS_TAGGED);
+        return exporter;
+    }
 }

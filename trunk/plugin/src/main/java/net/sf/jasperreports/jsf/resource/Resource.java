@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -31,34 +31,33 @@ import java.net.URL;
  */
 public interface Resource {
 
-	/**
-	 * Name of the resource
-	 */
-	public String getName();
+    /**
+     * Name of the resource
+     */
+    public String getName();
 
-	/**
-	 * Obtains the URL location of this resource
-	 * 
-	 * @return The location of the resource
-	 * @throws IOException
-	 */
-	public URL getLocation() throws IOException;
+    /**
+     * Obtains the URL location of this resource
+     *
+     * @return The location of the resource
+     * @throws IOException
+     */
+    public URL getLocation() throws IOException;
 
-	/**
-	 * Obtains an InputStream which can be used to read the resource data.
-	 * <p>
-	 * Users of this stream are responsible of closing it
-	 * 
-	 * @return An InputStream to read the resource data
-	 * @throws IOException
-	 */
-	public InputStream getInputStream() throws IOException;
+    /**
+     * Obtains an InputStream which can be used to read the resource data.
+     * <p>
+     * Users of this stream are responsible of closing it
+     *
+     * @return An InputStream to read the resource data
+     * @throws IOException
+     */
+    public InputStream getInputStream() throws IOException;
 
-	/**
-	 * The path part of the resource
-	 * 
-	 * @return
-	 */
-	public String getPath();
-
+    /**
+     * The path part of the resource
+     *
+     * @return
+     */
+    public String getPath();
 }

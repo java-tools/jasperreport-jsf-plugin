@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -42,99 +42,98 @@ import net.sf.jasperreports.jsf.component.UIDataSource;
  */
 public abstract class AbstractSQLFiller extends AbstractFiller {
 
-	public AbstractSQLFiller(final UIDataSource dataSource) {
-		super(dataSource);
-	}
+    public AbstractSQLFiller(final UIDataSource dataSource) {
+        super(dataSource);
+    }
 
-	protected abstract Connection getConnection() throws Exception;
+    protected abstract Connection getConnection() throws Exception;
 
-	/**
-	 * Execute query.
-	 * 
-	 * @param conn
-	 *            the conn
-	 * 
-	 * @return the result set
-	 * 
-	 * @throws JRFacesException
-	 *             the JR faces exception
-	 * @throws FillerException
-	 *             the filler exception
-	 */
-	protected ResultSet executeQuery(final Connection conn, final String query)
-			throws FillerException {
-		PreparedStatement st = null;
-		try {
-			int paramIdx = 1;
-			st = conn.prepareStatement(query);
-			for (final UIComponent kid : getDataSourceComponent().getChildren()) {
-				if (!(kid instanceof UIParameter)) {
-					continue;
-				}
-				final UIParameter param = (UIParameter) kid;
-				st.setObject(paramIdx++, param.getValue());
-			}
-			return st.executeQuery();
-		} catch (final SQLException e) {
-			throw new FillerException(e);
-		} finally {
-			if (st != null) {
-				try {
-					st.close();
-				} catch (final SQLException e) {
-					// ignore
-				}
-			}
-		}
-	}
+    /**
+     * Execute query.
+     *
+     * @param conn
+     *            the conn
+     *
+     * @return the result set
+     *
+     * @throws JRFacesException
+     *             the JR faces exception
+     * @throws FillerException
+     *             the filler exception
+     */
+    protected ResultSet executeQuery(final Connection conn, final String query)
+            throws FillerException {
+        PreparedStatement st = null;
+        try {
+            int paramIdx = 1;
+            st = conn.prepareStatement(query);
+            for (final UIComponent kid : getDataSourceComponent().getChildren()) {
+                if (!(kid instanceof UIParameter)) {
+                    continue;
+                }
+                final UIParameter param = (UIParameter) kid;
+                st.setObject(paramIdx++, param.getValue());
+            }
+            return st.executeQuery();
+        } catch (final SQLException e) {
+            throw new FillerException(e);
+        } finally {
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (final SQLException e) {
+                    // ignore
+                }
+            }
+        }
+    }
 
-	@Override
-	protected final JasperPrint doFill(final FacesContext context,
-			final InputStream reportStream, final Map<String, Object> params)
-			throws FillerException {
-		Connection conn = null;
-		try {
-			conn = getConnection();
-		} catch (final Exception e) {
-			throw new FillerException(e);
-		}
+    @Override
+    protected final JasperPrint doFill(final FacesContext context,
+            final InputStream reportStream, final Map<String, Object> params)
+            throws FillerException {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+        } catch (final Exception e) {
+            throw new FillerException(e);
+        }
 
-		ResultSet rs = null;
-		JRDataSource dataSource = null;
-		JasperPrint result = null;
-		try {
-			final String query = getDataSourceComponent().getQuery();
-			if ((query != null) && (query.length() > 0)) {
-				rs = executeQuery(conn, query);
-				dataSource = new JRResultSetDataSource(rs);
-			}
+        ResultSet rs = null;
+        JRDataSource dataSource = null;
+        JasperPrint result = null;
+        try {
+            final String query = getDataSourceComponent().getQuery();
+            if ((query != null) && (query.length() > 0)) {
+                rs = executeQuery(conn, query);
+                dataSource = new JRResultSetDataSource(rs);
+            }
 
-			if (dataSource == null) {
-				result = JasperFillManager.fillReport(reportStream, params,
-						conn);
-			} else {
-				result = JasperFillManager.fillReport(reportStream, params,
-						dataSource);
-			}
-		} catch (final JRException e) {
-			throw new FillerException(e);
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-					rs = null;
-				} catch (final SQLException e) {
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-					conn = null;
-				} catch (final SQLException e) {
-				}
-			}
-		}
-		return result;
-	}
-
+            if (dataSource == null) {
+                result = JasperFillManager.fillReport(reportStream, params,
+                        conn);
+            } else {
+                result = JasperFillManager.fillReport(reportStream, params,
+                        dataSource);
+            }
+        } catch (final JRException e) {
+            throw new FillerException(e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                    rs = null;
+                } catch (final SQLException e) {
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                    conn = null;
+                } catch (final SQLException e) {
+                }
+            }
+        }
+        return result;
+    }
 }

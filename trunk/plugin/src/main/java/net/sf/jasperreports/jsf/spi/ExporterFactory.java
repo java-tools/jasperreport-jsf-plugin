@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -26,7 +26,6 @@ import net.sf.jasperreports.jsf.export.Exporter;
 
 public interface ExporterFactory {
 
-	public Exporter createExporter(FacesContext context, UIReport report)
-			throws JRFacesException;
-
+    public Exporter createExporter(FacesContext context, UIReport report)
+            throws JRFacesException;
 }

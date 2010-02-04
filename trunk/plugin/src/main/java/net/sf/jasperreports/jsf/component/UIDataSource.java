@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2008 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -29,174 +29,168 @@ import javax.faces.context.FacesContext;
  */
 public class UIDataSource extends UIComponentBase {
 
-	/** The Constant COMPONENT_FAMILY. */
-	public static final String COMPONENT_FAMILY = "net.sf.jasperreports.DataSource";
+    /** The Constant COMPONENT_FAMILY. */
+    public static final String COMPONENT_FAMILY = "net.sf.jasperreports.DataSource";
+    /** The Constant COMPONENT_TYPE. */
+    public static final String COMPONENT_TYPE = "net.sf.jasperreports.DataSource";
 
-	/** The Constant COMPONENT_TYPE. */
-	public static final String COMPONENT_TYPE = "net.sf.jasperreports.DataSource";
+    // Fields
 
-	// Fields
+    /** The query. */
+    private String query;
+    /** The type. */
+    private String type;
+    /** The type set. */
+    private boolean typeSet;
+    /** The value. */
+    private Object value;
 
-	/** The query. */
-	private String query;
+    /**
+     * Instantiates a new uI data source.
+     */
+    public UIDataSource() {
+        super();
+        setRendererType(null);
+    }
 
-	/** The type. */
-	private String type;
+    // Properties
+    /**
+     * Gets the query.
+     *
+     * @return the query
+     */
+    public String getQuery() {
+        if (query != null) {
+            return query;
+        }
+        final ValueExpression ve = getValueExpression("query");
+        if (ve != null) {
+            try {
+                return (String) ve.getValue(getFacesContext().getELContext());
+            } catch (final ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return query;
+        }
+    }
 
-	/** The type set. */
-	private boolean typeSet;
+    /**
+     * Sets the query.
+     *
+     * @param query
+     *            the new query
+     */
+    public void setQuery(final String query) {
+        this.query = query;
+    }
 
-	/** The value. */
-	private Object value;
+    /**
+     * Gets the type.
+     *
+     * @return the type
+     */
+    public String getType() {
+        if (typeSet) {
+            return type;
+        }
+        final ValueExpression ve = getValueExpression("type");
+        if (ve != null) {
+            try {
+                return (String) ve.getValue(getFacesContext().getELContext());
+            } catch (final ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return type;
+        }
+    }
 
-	/**
-	 * Instantiates a new uI data source.
-	 */
-	public UIDataSource() {
-		super();
-		setRendererType(null);
-	}
+    /**
+     * Sets the type.
+     *
+     * @param type
+     *            the new type
+     */
+    public void setType(final String type) {
+        this.type = type;
+        typeSet = true;
+    }
 
-	// Properties
+    /**
+     * Gets the value.
+     *
+     * @return the value
+     */
+    public Object getValue() {
+        if (value != null) {
+            return value;
+        }
+        final ValueExpression ve = getValueExpression("value");
+        if (ve != null) {
+            try {
+                return ve.getValue(getFacesContext().getELContext());
+            } catch (final ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return value;
+        }
+    }
 
-	/**
-	 * Gets the query.
-	 * 
-	 * @return the query
-	 */
-	public String getQuery() {
-		if (query != null) {
-			return query;
-		}
-		final ValueExpression ve = getValueExpression("query");
-		if (ve != null) {
-			try {
-				return (String) ve.getValue(getFacesContext().getELContext());
-			} catch (final ELException e) {
-				throw new FacesException(e);
-			}
-		} else {
-			return query;
-		}
-	}
+    /**
+     * Sets the value.
+     *
+     * @param value
+     *            the new value
+     */
+    public void setValue(final Object value) {
+        this.value = value;
+    }
 
-	/**
-	 * Sets the query.
-	 * 
-	 * @param query
-	 *            the new query
-	 */
-	public void setQuery(final String query) {
-		this.query = query;
-	}
+    // UIComponent
 
-	/**
-	 * Gets the type.
-	 * 
-	 * @return the type
-	 */
-	public String getType() {
-		if (typeSet) {
-			return type;
-		}
-		final ValueExpression ve = getValueExpression("type");
-		if (ve != null) {
-			try {
-				return (String) ve.getValue(getFacesContext().getELContext());
-			} catch (final ELException e) {
-				throw new FacesException(e);
-			}
-		} else {
-			return type;
-		}
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see javax.faces.component.UIComponent#getFamily()
+     */
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	/**
-	 * Sets the type.
-	 * 
-	 * @param type
-	 *            the new type
-	 */
-	public void setType(final String type) {
-		this.type = type;
-		typeSet = true;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * javax.faces.component.UIComponentBase#restoreState(javax.faces.context
+     * .FacesContext, java.lang.Object)
+     */
+    @Override
+    public void restoreState(final FacesContext context, final Object state) {
+        final Object[] values = (Object[]) state;
+        super.restoreState(context, values[0]);
+        query = (String) values[1];
+        type = (String) values[2];
+        typeSet = ((Boolean) values[3]).booleanValue();
+        value = values[4];
+    }
 
-	/**
-	 * Gets the value.
-	 * 
-	 * @return the value
-	 */
-	public Object getValue() {
-		if (value != null) {
-			return value;
-		}
-		final ValueExpression ve = getValueExpression("value");
-		if (ve != null) {
-			try {
-				return ve.getValue(getFacesContext().getELContext());
-			} catch (final ELException e) {
-				throw new FacesException(e);
-			}
-		} else {
-			return value;
-		}
-	}
-
-	/**
-	 * Sets the value.
-	 * 
-	 * @param value
-	 *            the new value
-	 */
-	public void setValue(final Object value) {
-		this.value = value;
-	}
-
-	// UIComponent
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.faces.component.UIComponent#getFamily()
-	 */
-	@Override
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.faces.component.UIComponentBase#restoreState(javax.faces.context
-	 * .FacesContext, java.lang.Object)
-	 */
-	@Override
-	public void restoreState(final FacesContext context, final Object state) {
-		final Object[] values = (Object[]) state;
-		super.restoreState(context, values[0]);
-		query = (String) values[1];
-		type = (String) values[2];
-		typeSet = ((Boolean) values[3]).booleanValue();
-		value = values[4];
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seejavax.faces.component.UIComponentBase#saveState(javax.faces.context.
-	 * FacesContext)
-	 */
-	@Override
-	public Object saveState(final FacesContext context) {
-		final Object[] values = new Object[5];
-		values[0] = super.saveState(context);
-		values[1] = query;
-		values[2] = type;
-		values[3] = Boolean.valueOf(typeSet);
-		values[4] = value;
-		return values;
-	}
-
+    /*
+     * (non-Javadoc)
+     *
+     * @seejavax.faces.component.UIComponentBase#saveState(javax.faces.context.
+     * FacesContext)
+     */
+    @Override
+    public Object saveState(final FacesContext context) {
+        final Object[] values = new Object[5];
+        values[0] = super.saveState(context);
+        values[1] = query;
+        values[2] = type;
+        values[3] = Boolean.valueOf(typeSet);
+        values[4] = value;
+        return values;
+    }
 }

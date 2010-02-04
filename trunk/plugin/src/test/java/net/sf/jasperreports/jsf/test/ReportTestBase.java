@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -36,70 +36,66 @@ import com.meterware.servletunit.ServletUnitClient;
  */
 public abstract class ReportTestBase {
 
-	private static final Logger logger = Logger.getLogger(ReportTestBase.class
-			.getPackage()
-			+ ".test");
+    private static final Logger logger = Logger.getLogger(
+            ReportTestBase.class.getPackage().getName());
 
-	/** The context dir. */
-	private File contextDir;
+    /** The context dir. */
+    private File contextDir;
+    /** The context path. */
+    private String contextPath;
 
-	/** The context path. */
-	private String contextPath;
+    /** The runner. */
+    private transient ServletRunner runner;
+    private transient ServletUnitClient client;
 
-	/** The runner. */
-	private transient ServletRunner runner;
+    /*
+     * (non-Javadoc)
+     *
+     * @see junit.framework.TestCase#setUp()
+     */
+    @Before
+    public void startContainer() throws Exception {
+        contextDir = new File(System.getProperty("context-dir"));
+        contextPath = System.getProperty("context-path");
 
-	private transient ServletUnitClient client;
+        logger.info("Starting web application '" + contextPath
+                + "' from directory: " + contextDir);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see junit.framework.TestCase#setUp()
-	 */
-	@Before
-	public void startContainer() throws Exception {
-		contextDir = new File(System.getProperty("context-dir"));
-		contextPath = System.getProperty("context-path");
+        final File webXml = new File(contextDir, "WEB-INF/web.xml");
+        runner = new ServletRunner(webXml, contextPath);
+    }
 
-		logger.info("Starting web application '" + contextPath
-				+ "' from directory: " + contextDir);
+    /*
+     * (non-Javadoc)
+     *
+     * @see junit.framework.TestCase#tearDown()
+     */
+    @After
+    public void stopContainer() throws Exception {
+        if (client != null) {
+            client.clearContents();
+        }
+        client = null;
 
-		final File webXml = new File(contextDir, "WEB-INF/web.xml");
-		runner = new ServletRunner(webXml, contextPath);
-	}
+        runner.shutDown();
+        runner = null;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see junit.framework.TestCase#tearDown()
-	 */
-	@After
-	public void stopContainer() throws Exception {
-		if (client != null) {
-			client.clearContents();
-		}
-		client = null;
+    protected final ServletUnitClient getClient() {
+        if (client == null) {
+            client = runner.newClient();
+        }
+        return client;
+    }
 
-		runner.shutDown();
-		runner = null;
-	}
+    protected WebResponse getCurrentPage() {
+        final ServletUnitClient client = getClient();
+        return client.getCurrentPage();
+    }
 
-	protected final ServletUnitClient getClient() {
-		if (client == null) {
-			client = runner.newClient();
-		}
-		return client;
-	}
-
-	protected WebResponse getCurrentPage() {
-		final ServletUnitClient client = getClient();
-		return client.getCurrentPage();
-	}
-
-	protected WebResponse getResponse(final String path)
-			throws MalformedURLException, IOException, SAXException {
-		final ServletUnitClient client = getClient();
-		return client.getResponse("http://localhost" + contextPath + path);
-	}
-
+    protected WebResponse getResponse(final String path)
+            throws MalformedURLException, IOException, SAXException {
+        final ServletUnitClient client = getClient();
+        return client.getResponse("http://localhost" + contextPath + path);
+    }
 }

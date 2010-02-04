@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -35,52 +35,50 @@ import net.sf.jasperreports.jsf.export.ExporterException;
  */
 public final class ExporterLoader {
 
-	/** The exporter cache map. */
-	private static final Map<String, ExporterFactory> exporterCacheMap = Services
-			.map(ExporterFactory.class);
+    /** The exporter cache map. */
+    private static final Map<String, ExporterFactory> exporterCacheMap =
+            Services.map(ExporterFactory.class);
 
-	public static Set<String> getAvailableExportFormats() {
-		return Collections.unmodifiableSet(exporterCacheMap.keySet());
-	}
+    public static Set<String> getAvailableExportFormats() {
+        return Collections.unmodifiableSet(exporterCacheMap.keySet());
+    }
 
-	/**
-	 * Gets the single instance of Exporter.
-	 * 
-	 * @param report
-	 *            the report
-	 * @param context
-	 *            the context
-	 * 
-	 * @return single instance of Exporter
-	 * 
-	 * @throws ExporterException
-	 *             the exporter exception
-	 */
-	public static Exporter getExporter(final FacesContext context,
-			final UIReport report) throws ExporterException {
-		if (!(report instanceof UIComponent)) {
-			throw new IllegalArgumentException();
-		}
+    /**
+     * Gets the single instance of Exporter.
+     *
+     * @param report
+     *            the report
+     * @param context
+     *            the context
+     *
+     * @return single instance of Exporter
+     *
+     * @throws ExporterException
+     *             the exporter exception
+     */
+    public static Exporter getExporter(final FacesContext context,
+            final UIReport report) throws ExporterException {
+        if (!(report instanceof UIComponent)) {
+            throw new IllegalArgumentException();
+        }
 
-		final ExporterFactory factory = getExporterFactory(context, report);
-		return factory.createExporter(context, report);
-	}
+        final ExporterFactory factory = getExporterFactory(context, report);
+        return factory.createExporter(context, report);
+    }
 
-	private static ExporterFactory getExporterFactory(
-			final FacesContext context, final UIReport report)
-			throws JRFacesException {
-		final ExporterFactory exporterFactory = exporterCacheMap.get(report
-				.getFormat());
-		if (exporterFactory == null) {
-			throw new ExporterFactoryNotFoundException(report.getFormat());
-		}
-		return exporterFactory;
-	}
+    private static ExporterFactory getExporterFactory(
+            final FacesContext context, final UIReport report)
+            throws JRFacesException {
+        final ExporterFactory exporterFactory = exporterCacheMap.get(report.getFormat());
+        if (exporterFactory == null) {
+            throw new ExporterFactoryNotFoundException(report.getFormat());
+        }
+        return exporterFactory;
+    }
 
-	/**
-	 * Instantiates a new exporter factory.
-	 */
-	private ExporterLoader() {
-	}
-
+    /**
+     * Instantiates a new exporter factory.
+     */
+    private ExporterLoader() {
+    }
 }

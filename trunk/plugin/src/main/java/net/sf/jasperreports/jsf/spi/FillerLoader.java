@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -44,134 +44,130 @@ import net.sf.jasperreports.jsf.fill.FillerException;
  */
 public final class FillerLoader {
 
-	private static final Logger logger = Logger.getLogger(FillerLoader.class
-			.getPackage().getName(), "net.sf.jasperreports.jsf.LogMessages");
+    private static final Logger logger = Logger.getLogger(
+            FillerLoader.class.getPackage().getName(),
+            "net.sf.jasperreports.jsf.LogMessages");
 
-	/** The exporter cache map. */
-	private static final Map<String, FillerFactory> fillerCacheMap = Services
-			.map(FillerFactory.class);
+    /** The exporter cache map. */
+    private static final Map<String, FillerFactory> fillerCacheMap =
+            Services.map(FillerFactory.class);
+    /** The Constant DEFAULT_FILLER_INSTANCE. */
+    private static final Filler DEFAULT_FILLER_INSTANCE = new NoopFiller();
 
-	/** The Constant DEFAULT_FILLER_INSTANCE. */
-	private static final Filler DEFAULT_FILLER_INSTANCE = new NoopFiller();
+    public static Set<String> getAvailableDataSourceTypes() {
+        return Collections.unmodifiableSet(fillerCacheMap.keySet());
+    }
 
-	public static Set<String> getAvailableDataSourceTypes() {
-		return Collections.unmodifiableSet(fillerCacheMap.keySet());
-	}
+    /**
+     * Gets the filler.
+     *
+     * @param context
+     *            the context
+     * @param report
+     *            the report
+     *
+     * @return the filler
+     *
+     * @throws FillerException
+     *             the filler exception
+     */
+    public static Filler getFiller(final FacesContext context,
+            final UIReport report) throws FillerException {
+        if (!(report instanceof UIComponent)) {
+            throw new IllegalArgumentException();
+        }
 
-	/**
-	 * Gets the filler.
-	 * 
-	 * @param context
-	 *            the context
-	 * @param report
-	 *            the report
-	 * 
-	 * @return the filler
-	 * 
-	 * @throws FillerException
-	 *             the filler exception
-	 */
-	public static Filler getFiller(final FacesContext context,
-			final UIReport report) throws FillerException {
-		if (!(report instanceof UIComponent)) {
-			throw new IllegalArgumentException();
-		}
+        Filler result;
+        final UIDataSource dataSource = getDataSourceComponent(context, report);
+        if (dataSource == null) {
+            result = DEFAULT_FILLER_INSTANCE;
+        } else if (dataSource.getType() == null) {
+            result = DEFAULT_FILLER_INSTANCE;
+        } else {
+            final FillerFactory factory = getFillerFactory(context, dataSource);
+            result = factory.createFiller(context, dataSource);
+        }
+        return result;
+    }
 
-		Filler result;
-		final UIDataSource dataSource = getDataSourceComponent(context, report);
-		if (dataSource == null) {
-			result = DEFAULT_FILLER_INSTANCE;
-		} else if (dataSource.getType() == null) {
-			result = DEFAULT_FILLER_INSTANCE;
-		} else {
-			final FillerFactory factory = getFillerFactory(context, dataSource);
-			result = factory.createFiller(context, dataSource);
-		}
-		return result;
-	}
+    private static FillerFactory getFillerFactory(final FacesContext context,
+            final UIDataSource dataSource) throws JRFacesException {
+        FillerFactory result;
 
-	private static FillerFactory getFillerFactory(final FacesContext context,
-			final UIDataSource dataSource) throws JRFacesException {
-		FillerFactory result;
+        result = fillerCacheMap.get(dataSource.getType());
+        if (result == null) {
+            throw new FillerFactoryNotFoundException(dataSource.getType());
+        }
+        return result;
+    }
 
-		result = fillerCacheMap.get(dataSource.getType());
-		if (result == null) {
-			throw new FillerFactoryNotFoundException(dataSource.getType());
-		}
-		return result;
-	}
+    /**
+     * Gets the data source component.
+     *
+     * @param context
+     *            the context
+     * @param report
+     *            the report
+     *
+     * @return the data source component
+     */
+    private static UIDataSource getDataSourceComponent(
+            final FacesContext context, final UIReport report) {
+        UIDataSource dataSource = null;
+        for (final UIComponent child : ((UIComponent) report).getChildren()) {
+            if (child instanceof UIDataSource) {
+                dataSource = (UIDataSource) child;
+                break;
+            }
+        }
+        if ((dataSource == null) && (report.getDataSource() != null)) {
+            final String dataSourceId = report.getDataSource();
+            dataSource = (UIDataSource) ((UIComponent) report).findComponent(dataSourceId);
+            if (dataSource == null) {
+                UIComponent container = (UIComponent) report;
+                while (!(container instanceof NamingContainer)) {
+                    container = container.getParent();
+                }
+                dataSource = (UIDataSource) container.findComponent(dataSourceId);
+            }
+        }
+        if ((dataSource != null) && logger.isLoggable(Level.FINE)) {
+            final String dsClientId = dataSource.getClientId(context);
+            logger.log(Level.FINE, "JRJSF_0009", dsClientId);
+        }
+        return dataSource;
+    }
 
-	/**
-	 * Gets the data source component.
-	 * 
-	 * @param context
-	 *            the context
-	 * @param report
-	 *            the report
-	 * 
-	 * @return the data source component
-	 */
-	private static UIDataSource getDataSourceComponent(
-			final FacesContext context, final UIReport report) {
-		UIDataSource dataSource = null;
-		for (final UIComponent child : ((UIComponent) report).getChildren()) {
-			if (child instanceof UIDataSource) {
-				dataSource = (UIDataSource) child;
-				break;
-			}
-		}
-		if ((dataSource == null) && (report.getDataSource() != null)) {
-			final String dataSourceId = report.getDataSource();
-			dataSource = (UIDataSource) ((UIComponent) report)
-					.findComponent(dataSourceId);
-			if (dataSource == null) {
-				UIComponent container = (UIComponent) report;
-				while (!(container instanceof NamingContainer)) {
-					container = container.getParent();
-				}
-				dataSource = (UIDataSource) container
-						.findComponent(dataSourceId);
-			}
-		}
-		if ((dataSource != null) && logger.isLoggable(Level.FINE)) {
-			final String dsClientId = dataSource.getClientId(context);
-			logger.log(Level.FINE, "JRJSF_0009", dsClientId);
-		}
-		return dataSource;
-	}
+    /**
+     * The Class StaticFiller.
+     */
+    private static final class NoopFiller extends AbstractFiller {
 
-	/**
-	 * The Class StaticFiller.
-	 */
-	private static final class NoopFiller extends AbstractFiller {
+        public NoopFiller() {
+            super(null);
+        }
 
-		public NoopFiller() {
-			super(null);
-		}
+        /*
+         * (non-Javadoc)
+         *
+         * @seenet.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.
+         * FacesContext , java.io.InputStream, java.util.Map)
+         */
+        @Override
+        protected JasperPrint doFill(final FacesContext context,
+                final InputStream reportStream, final Map<String, Object> params)
+                throws FillerException {
+            try {
+                return JasperFillManager.fillReport(reportStream, params);
+            } catch (final JRException e) {
+                throw new FillerException(e);
+            }
+        }
+    }
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @seenet.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.
-		 * FacesContext , java.io.InputStream, java.util.Map)
-		 */
-		@Override
-		protected JasperPrint doFill(final FacesContext context,
-				final InputStream reportStream, final Map<String, Object> params)
-				throws FillerException {
-			try {
-				return JasperFillManager.fillReport(reportStream, params);
-			} catch (final JRException e) {
-				throw new FillerException(e);
-			}
-		}
-
-	}
-
-	/**
-	 * Instantiates a new filler factory.
-	 */
-	private FillerLoader() {
-	}
-
+    /**
+     * Instantiates a new filler factory.
+     */
+    private FillerLoader() {
+    }
 }

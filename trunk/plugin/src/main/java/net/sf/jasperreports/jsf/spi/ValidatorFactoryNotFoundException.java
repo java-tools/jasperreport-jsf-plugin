@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -20,17 +20,16 @@ package net.sf.jasperreports.jsf.spi;
 
 public class ValidatorFactoryNotFoundException extends ServiceException {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3770336216185029903L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -3770336216185029903L;
 
-	public ValidatorFactoryNotFoundException(final String msg, final Throwable t) {
-		super(msg, t);
-	}
+    public ValidatorFactoryNotFoundException(final String msg, final Throwable t) {
+        super(msg, t);
+    }
 
-	public ValidatorFactoryNotFoundException(final String msg) {
-		super(msg);
-	}
-
+    public ValidatorFactoryNotFoundException(final String msg) {
+        super(msg);
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -29,54 +29,53 @@ import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 
 final class PortletContextHelper extends ExternalContextHelper {
 
-	protected PortletContextHelper() {
-	}
+    protected PortletContextHelper() {
+    }
 
-	@Override
-	public String getRequestURI(final FacesContext context) {
-		if ("2.0".equals(getPortletVersion())) {
-			final ResourceRequest request = (ResourceRequest) context
-					.getExternalContext().getRequest();
-			return request.getResourceID();
-		} else {
-			return null;
-		}
-	}
+    @Override
+    public String getRequestURI(final FacesContext context) {
+        if ("2.0".equals(getPortletVersion())) {
+            final ResourceRequest request = (ResourceRequest)
+                    context.getExternalContext().getRequest();
+            return request.getResourceID();
+        } else {
+            return null;
+        }
+    }
 
-	@Override
-	public void writeHeaders(final FacesContext context,
-			final ReportRenderer renderer, final UIReport report)
-			throws IOException {
-		if ("2.0".equals(getPortletVersion())) {
-			final ResourceResponse response = (ResourceResponse) context
-					.getExternalContext().getResponse();
-			response.setProperty("Cache-Type", "no-cache");
-			response.setProperty("Expires", "0");
+    @Override
+    public void writeHeaders(final FacesContext context,
+            final ReportRenderer renderer, final UIReport report)
+            throws IOException {
+        if ("2.0".equals(getPortletVersion())) {
+            final ResourceResponse response = (ResourceResponse)
+                    context.getExternalContext().getResponse();
+            response.setProperty("Cache-Type", "no-cache");
+            response.setProperty("Expires", "0");
 
-			if (report.getName() != null) {
-				response.setProperty("Content-Disposition",
-						encodeContentDisposition(renderer, report, response
-								.getCharacterEncoding()));
-			}
-		} else {
-			throw new IllegalStateException(
-					"Only Resource Request/Response state is allowed");
-		}
-	}
+            if (report.getName() != null) {
+                response.setProperty("Content-Disposition",
+                        encodeContentDisposition(renderer, report,
+                        response.getCharacterEncoding()));
+            }
+        } else {
+            throw new IllegalStateException(
+                    "Only Resource Request/Response state is allowed");
+        }
+    }
 
-	@Override
-	public void writeResponse(final FacesContext context,
-			final String contentType, final byte[] data) throws IOException {
-		if ("2.0".equals(getPortletVersion())) {
-			final ResourceResponse response = (ResourceResponse) context
-					.getExternalContext().getResponse();
-			response.setContentType(contentType);
-			response.setContentLength(data.length);
-			response.getPortletOutputStream().write(data);
-		} else {
-			throw new IllegalStateException(
-					"Only Resource Request/Response state is allowed");
-		}
-	}
-
+    @Override
+    public void writeResponse(final FacesContext context,
+            final String contentType, final byte[] data) throws IOException {
+        if ("2.0".equals(getPortletVersion())) {
+            final ResourceResponse response = (ResourceResponse)
+                    context.getExternalContext().getResponse();
+            response.setContentType(contentType);
+            response.setContentLength(data.length);
+            response.getPortletOutputStream().write(data);
+        } else {
+            throw new IllegalStateException(
+                    "Only Resource Request/Response state is allowed");
+        }
+    }
 }

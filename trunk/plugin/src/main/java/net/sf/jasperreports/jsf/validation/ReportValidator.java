@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -25,15 +25,14 @@ import net.sf.jasperreports.jsf.component.UIReport;
 
 public abstract class ReportValidator implements Validator {
 
-	public void validate(final FacesContext context, final UIComponent component)
-			throws ValidationException {
-		if (!(component instanceof UIReport)) {
-			throw new IllegalArgumentException("");
-		}
-		doValidate(context, (UIReport) component);
-	}
+    public void validate(final FacesContext context, final UIComponent component)
+            throws ValidationException {
+        if (!(component instanceof UIReport)) {
+            throw new IllegalArgumentException("");
+        }
+        doValidate(context, (UIReport) component);
+    }
 
-	protected abstract void doValidate(FacesContext context, UIReport report)
-			throws ValidationException;
-
+    protected abstract void doValidate(FacesContext context, UIReport report)
+            throws ValidationException;
 }

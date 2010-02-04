@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -25,39 +25,38 @@ import net.sf.jasperreports.jsf.JRFacesException;
  */
 public class ExporterException extends JRFacesException {
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 3447264929238791580L;
+    /** The Constant serialVersionUID. */
+    private static final long serialVersionUID = 3447264929238791580L;
 
-	/**
-	 * Instantiates a new exporter exception.
-	 * 
-	 * @param msg
-	 *            the msg
-	 * @param t
-	 *            the t
-	 */
-	public ExporterException(final String msg, final Throwable t) {
-		super(msg, t);
-	}
+    /**
+     * Instantiates a new exporter exception.
+     *
+     * @param msg
+     *            the msg
+     * @param t
+     *            the t
+     */
+    public ExporterException(final String msg, final Throwable t) {
+        super(msg, t);
+    }
 
-	/**
-	 * Instantiates a new exporter exception.
-	 * 
-	 * @param msg
-	 *            the msg
-	 */
-	public ExporterException(final String msg) {
-		super(msg);
-	}
+    /**
+     * Instantiates a new exporter exception.
+     *
+     * @param msg
+     *            the msg
+     */
+    public ExporterException(final String msg) {
+        super(msg);
+    }
 
-	/**
-	 * Instantiates a new exporter exception.
-	 * 
-	 * @param t
-	 *            the t
-	 */
-	public ExporterException(final Throwable t) {
-		super(t);
-	}
-
+    /**
+     * Instantiates a new exporter exception.
+     *
+     * @param t
+     *            the t
+     */
+    public ExporterException(final Throwable t) {
+        super(t);
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -25,12 +25,11 @@ import net.sf.jasperreports.jsf.spi.ResourceFactory;
 
 public class ContextResourceFactory implements ResourceFactory {
 
-	public boolean acceptsResource(final String name) {
-		return (name.indexOf(":") < 0) && name.startsWith("/");
-	}
+    public boolean acceptsResource(final String name) {
+        return (name.indexOf(":") < 0) && name.startsWith("/");
+    }
 
-	public Resource createResource(final FacesContext context, final String name) {
-		return new ContextResource(name, context.getExternalContext());
-	}
-
+    public Resource createResource(final FacesContext context, final String name) {
+        return new ContextResource(name, context.getExternalContext());
+    }
 }
