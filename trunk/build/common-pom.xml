@@ -1,6 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <!--  
   JasperReports JSF Plugin
-  Copyright (C) 2009 A. Alonso Dominguez
+  Copyright (C) 20010 A. Alonso Dominguez
  
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -20,7 +22,9 @@
   alonsoft@users.sf.net
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <name>JasperReports JSF Plugin</name>
@@ -76,7 +80,6 @@
     </site>
   </distributionManagement>
 
-  <!--
   <repositories>
     <repository>
       <id>maven1-repository.dev.java.net</id>
@@ -89,12 +92,13 @@
       <name>Java.net Repository for Maven 2</name>
       <url>http://download.java.net/maven/2</url>
     </repository>
+  <!--
     <repository>
       <id>portal-repository.dev.java.net</id>
       <name>Java.net Portal Repository for Maven</name>
       <url>https://portal.dev.java.net/nonav/repository</url>
     </repository>
-  </repositories>
   -->
+  </repositories>
 
 </project>
