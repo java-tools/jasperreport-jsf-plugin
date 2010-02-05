@@ -16,21 +16,18 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.resource.providers;
+package net.sf.jasperreports.jsf.util;
 
-import javax.faces.context.FacesContext;
+import net.sf.jasperreports.engine.export.JRHyperlinkTargetProducer;
+import net.sf.jasperreports.engine.export.JRHyperlinkTargetProducerFactory;
 
-import net.sf.jasperreports.jsf.resource.Resource;
-import net.sf.jasperreports.jsf.spi.ResourceFactory;
+public class FacesHyperlinkTargetProducerFactory extends JRHyperlinkTargetProducerFactory {
 
-public class ContextResourceFactory implements ResourceFactory {
-
-	public boolean acceptsResource(final String name) {
-		return (name.indexOf(":") < 0)
-			&& name.startsWith("/");
+	@Override
+	public JRHyperlinkTargetProducer getHyperlinkTargetProducer(
+			String linkTarget) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-    public Resource createResource(final FacesContext context, final String name) {
-        return new ContextResource(name, context.getExternalContext());
-    }
 }
