@@ -30,10 +30,10 @@ public final class ClasspathResource extends AbstractResource implements
 
     private final ClassLoader classLoader;
 
-    protected ClasspathResource(final String name, final ClassLoader classLoader) {
-        super(name);
-        this.classLoader = classLoader;
-    }
+	public ClasspathResource(final String name, final ClassLoader classLoader) {
+		super(name);
+		this.classLoader = classLoader;
+	}
 
     public InputStream getInputStream() throws IOException {
         return classLoader.getResourceAsStream(getName());
@@ -55,9 +55,14 @@ public final class ClasspathResource extends AbstractResource implements
         return location.getPath();
     }
 
-    private void throwLocationNotFoundException() {
-        throw new IllegalStateException(
-                "Resource location for classpath resource '" + getName()
-                + "' couldn't be identified.");
-    }
+	public boolean isRemote() {
+		return false;
+	}
+
+	private void throwLocationNotFoundException() {
+		throw new IllegalStateException(
+				"Resource location for classpath resource '" + getName()
+						+ "' couldn't be identified.");
+	}
+
 }

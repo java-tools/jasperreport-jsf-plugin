@@ -19,6 +19,7 @@
 package net.sf.jasperreports.jsf.resource.providers;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.faces.context.FacesContext;
@@ -28,9 +29,15 @@ import net.sf.jasperreports.jsf.spi.ResourceFactory;
 
 public class URLResourceFactory implements ResourceFactory {
 
-    public boolean acceptsResource(final String name) {
-        return (name.indexOf("://") >= 0);
-    }
+	public boolean acceptsResource(final String name) {
+		if(name.indexOf("://") < 0) return false;
+		try {
+			new URL(name);
+			return true;
+		} catch(MalformedURLException e) {
+			return false;
+		}
+	}
 
     public Resource createResource(final FacesContext context, final String name)
             throws IOException {
