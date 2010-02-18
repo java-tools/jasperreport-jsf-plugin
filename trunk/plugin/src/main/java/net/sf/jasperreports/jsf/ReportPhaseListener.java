@@ -52,6 +52,8 @@ public final class ReportPhaseListener implements PhaseListener {
 	/** The Constant PARAM_CLIENTID. */
 	public static final String PARAM_CLIENTID = "clientId";
 
+	public static final String PARAM_VIEWSTATE = "viewState";
+	
 	/** The Constant REPORT_COMPONENT_KEY_PREFIX. */
 	public static final String REPORT_COMPONENT_KEY_PREFIX = UIReport.COMPONENT_FAMILY
 			+ "/";

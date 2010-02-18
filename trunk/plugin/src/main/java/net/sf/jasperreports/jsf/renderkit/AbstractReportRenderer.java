@@ -148,12 +148,18 @@ abstract class AbstractReportRenderer extends Renderer implements
 
         reportURI.append('?').append(ReportPhaseListener.PARAM_CLIENTID);
         reportURI.append('=').append(report.getClientId(context));
+		reportURI.append('&').append(ReportPhaseListener.PARAM_VIEWSTATE);
+		reportURI.append('=').append(getViewState(context));
 
         final ViewHandler viewHandler = context.getApplication().getViewHandler();
         return context.getExternalContext().encodeResourceURL(
                 viewHandler.getResourceURL(context, reportURI.toString()));
     }
 
+	protected String getViewState(final FacesContext context) {
+		return "";
+	}
+	
     protected final void registerComponent(final FacesContext context,
             final UIComponent report) {
         final String clientId = report.getClientId(context);

@@ -48,6 +48,7 @@
             <set name="subreportDir" bindingType="VB" />
             <set name="format" bindingType="VB" />
             <!-- HTML iframe attributes -->
+            <set name="layout" bindingType="VB" />
             <set name="frameborder" bindingType="VB" />
             <set name="marginheight" bindingType="VB" />
             <set name="marginwidth" bindingType="VB" />

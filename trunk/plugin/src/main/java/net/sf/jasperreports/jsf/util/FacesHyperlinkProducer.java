@@ -19,6 +19,7 @@
 package net.sf.jasperreports.jsf.util;
 
 import java.io.Writer;
+import java.io.StringWriter;
 import java.util.List;
 
 import javax.faces.FactoryFinder;
@@ -79,6 +80,9 @@ public class FacesHyperlinkProducer implements JRHyperlinkProducer {
      */
     public String getHyperlink(final JRPrintHyperlink link) {
         final StringBuffer sb = new StringBuffer();
+		final StringWriter sw = new StringWriter();
+		final ResponseWriter writer = getResponseWriter(context, sw);
+		
         sb.append("<a");
         sb.append(" href=\"").append(buildHref(link)).append("\"");
         if (link.getHyperlinkAnchor() != null) {
