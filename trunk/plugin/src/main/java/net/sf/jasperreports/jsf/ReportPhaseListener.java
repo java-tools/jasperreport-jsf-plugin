@@ -81,9 +81,9 @@ public final class ReportPhaseListener implements PhaseListener {
 	public void beforePhase(final PhaseEvent event) throws FacesException {
 		final FacesContext context = event.getFacesContext();
 		final ExternalContextHelper helper = ExternalContextHelper
-				.getInstance(context);
+				.getInstance(context.getExternalContext());
 
-		final String uri = helper.getRequestURI(context);
+		final String uri = helper.getRequestURI(context.getExternalContext());
 		if (uri != null && uri.indexOf(BASE_URI) > -1) {
 			try {
 				final ExternalContext extContext = context.getExternalContext();

@@ -19,20 +19,20 @@
 package net.sf.jasperreports.jsf.spi;
 
 import java.io.IOException;
-import java.util.Collection;
-
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.ResourceException;
+import net.sf.jasperreports.jsf.resource.UnresolvedResourceException;
+import net.sf.jasperreports.jsf.resource.providers.DefaultResourceResolver;
 
 /**
  * The Class ResourceLoader.
  */
 public final class ResourceLoader {
 
-    private static final Collection<ResourceFactory> resourceFactoryCache =
-            Services.set(ResourceFactory.class);
+    private static final ResourceResolver DEFAULT_RESOLVER =
+            new DefaultResourceResolver();
 
     /**
      * Gets the resource loader.
@@ -50,24 +50,15 @@ public final class ResourceLoader {
             throw new IllegalArgumentException();
         }
 
-        final ResourceFactory factory = getResourceFactory(name);
-        if (factory == null) {
-            throw new ResourceFactoryNotFoundException(
-                    "No factory for resource: " + name);
+        final ResourceResolver resolver = Services.chain(ResourceResolver.class,
+                DEFAULT_RESOLVER);
+        Resource resource = resolver.resolveResource(context, name);
+        if (resource == null) {
+            throw new UnresolvedResourceException(name);
         }
-        return factory.createResource(context, name);
+        return resource;
     }
 
-    private static ResourceFactory getResourceFactory(final String name)
-            throws ResourceException {
-        for (final ResourceFactory factory : resourceFactoryCache) {
-            if (factory.acceptsResource(name)) {
-                return factory;
-            }
-        }
-        return null;
-    }
-
-    private ResourceLoader() {
-    }
+    private ResourceLoader() { }
+    
 }

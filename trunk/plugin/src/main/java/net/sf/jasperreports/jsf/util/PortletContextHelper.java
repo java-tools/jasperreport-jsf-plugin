@@ -19,8 +19,8 @@
 package net.sf.jasperreports.jsf.util;
 
 import java.io.IOException;
-
-import javax.faces.context.FacesContext;
+import javax.faces.context.ExternalContext;
+import javax.portlet.PortletContext;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
@@ -33,10 +33,10 @@ final class PortletContextHelper extends ExternalContextHelper {
     }
 
     @Override
-    public String getRequestURI(final FacesContext context) {
+    public String getRequestURI(final ExternalContext context) {
         if ("2.0".equals(getPortletVersion())) {
             final ResourceRequest request = (ResourceRequest)
-                    context.getExternalContext().getRequest();
+                    context.getRequest();
             return request.getResourceID();
         } else {
             return null;
@@ -44,12 +44,18 @@ final class PortletContextHelper extends ExternalContextHelper {
     }
 
     @Override
-    public void writeHeaders(final FacesContext context,
+    public String getResourceRealPath(final ExternalContext context, String name) {
+        PortletContext ctx = (PortletContext) context.getContext();
+        return ctx.getRealPath(name);
+    }
+
+    @Override
+    public void writeHeaders(final ExternalContext context,
             final ReportRenderer renderer, final UIReport report)
             throws IOException {
         if ("2.0".equals(getPortletVersion())) {
             final ResourceResponse response = (ResourceResponse)
-                    context.getExternalContext().getResponse();
+                    context.getResponse();
             response.setProperty("Cache-Type", "no-cache");
             response.setProperty("Expires", "0");
 
@@ -65,11 +71,11 @@ final class PortletContextHelper extends ExternalContextHelper {
     }
 
     @Override
-    public void writeResponse(final FacesContext context,
+    public void writeResponse(final ExternalContext context,
             final String contentType, final byte[] data) throws IOException {
         if ("2.0".equals(getPortletVersion())) {
             final ResourceResponse response = (ResourceResponse)
-                    context.getExternalContext().getResponse();
+                    context.getResponse();
             response.setContentType(contentType);
             response.setContentLength(data.length);
             response.getPortletOutputStream().write(data);

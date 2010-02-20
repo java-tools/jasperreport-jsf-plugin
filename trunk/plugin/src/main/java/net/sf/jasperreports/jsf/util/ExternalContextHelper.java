@@ -20,6 +20,7 @@ package net.sf.jasperreports.jsf.util;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import javax.faces.context.ExternalContext;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
@@ -35,7 +36,7 @@ public abstract class ExternalContextHelper {
     /** The Constant PORTLET_RESOURCEURL_CLASS. */
     private static final String PORTLET_RESOURCEURL_CLASS = "javax.portlet.ResourceURL";
 
-    public static ExternalContextHelper getInstance(final FacesContext context) {
+    public static ExternalContextHelper getInstance(final ExternalContext context) {
         ExternalContextHelper instance;
         if (isServletContext(context)) {
             instance = new ServletContextHelper();
@@ -76,8 +77,8 @@ public abstract class ExternalContextHelper {
         return portletVersion;
     }
 
-    private static boolean isServletContext(final FacesContext context) {
-        final Object ctx = context.getExternalContext().getContext();
+    private static boolean isServletContext(final ExternalContext context) {
+        final Object ctx = context.getContext();
         return (ctx instanceof ServletContext);
     }
 
@@ -92,9 +93,12 @@ public abstract class ExternalContextHelper {
      *
      * @return the request uri
      */
-    public abstract String getRequestURI(final FacesContext context);
+    public abstract String getRequestURI(final ExternalContext context);
 
-    public abstract void writeHeaders(FacesContext context,
+    public abstract String getResourceRealPath(
+            final ExternalContext context, String name);
+
+    public abstract void writeHeaders(ExternalContext context,
             ReportRenderer renderer, UIReport report) throws IOException;
 
     /**
@@ -110,7 +114,7 @@ public abstract class ExternalContextHelper {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    public abstract void writeResponse(final FacesContext context,
+    public abstract void writeResponse(final ExternalContext context,
             final String contentType, final byte[] data) throws IOException;
 
     protected String encodeContentDisposition(final ReportRenderer renderer,

@@ -16,25 +16,22 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.resource.providers;
+package net.sf.jasperreports.jsf.resource;
 
-import javax.faces.context.FacesContext;
+import net.sf.jasperreports.jsf.spi.ServiceException;
 
-import net.sf.jasperreports.jsf.resource.Resource;
-import net.sf.jasperreports.jsf.spi.ResourceFactory;
-import net.sf.jasperreports.jsf.util.Util;
+public class UnresolvedResourceException extends ServiceException {
 
-public class ClasspathResourceFactory implements ResourceFactory {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 5741641651418076357L;
 
-    private static final String PREFIX = "classpath:";
-
-    public boolean acceptsResource(final String name) {
-        return name.startsWith(PREFIX);
+    public UnresolvedResourceException(final String msg, final Throwable t) {
+        super(msg, t);
     }
 
-    public Resource createResource(final FacesContext context, final String name) {
-        final ClassLoader classLoader = Util.getClassLoader(this);
-        return new ClasspathResource(name.substring(PREFIX.length()),
-                classLoader);
+    public UnresolvedResourceException(final String msg) {
+        super(msg);
     }
 }

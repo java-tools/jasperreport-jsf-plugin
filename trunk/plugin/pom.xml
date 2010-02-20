@@ -38,6 +38,37 @@
     <artifactId>jasperreports-jsf</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+        <test.logging.conf>${basedir}/src/test/conf/logging.properties</test.logging.conf>
+        <test.context.dir>${basedir}/src/test/webapp</test.context.dir>
+        <test.context.path>/jasperforge</test.context.path>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>simple-nodb</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <test.web.xml>web-simple.xml</test.web.xml>
+            </properties>
+        </profile>
+        <profile>
+            <id>simple-db</id>
+            <dependencies>
+                <dependency>
+                    <groupId>hsqldb</groupId>
+                    <artifactId>hsqldb</artifactId>
+                    <version>1.8.0.7</version>
+                </dependency>
+            </dependencies>
+            <properties>
+                <test.web.xml>web-simpledb.xml</test.web.xml>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <testResources>
             <testResource>
@@ -68,15 +99,19 @@
                     <systemProperties>
                         <property>
                             <name>java.util.logging.config.file</name>
-                            <value>${basedir}/src/test/conf/logging.properties</value>
+                            <value>${test.logging.conf}</value>
                         </property>
                         <property>
                             <name>context-dir</name>
-                            <value>${basedir}/src/test/webapp</value>
+                            <value>${test.context.dir}</value>
                         </property>
                         <property>
                             <name>context-path</name>
-                            <value>/jasperforge</value>
+                            <value>${test.context.path}</value>
+                        </property>
+                        <property>
+                            <name>web-xml</name>
+                            <vale>${test.web.xml}</vale>
                         </property>
                     </systemProperties>
                 </configuration>
