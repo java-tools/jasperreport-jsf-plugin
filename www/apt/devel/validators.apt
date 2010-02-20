@@ -1,6 +1,6 @@
 ~~ 
 ~~ JasperReports JSF Plugin
-~~ Copyright (C) 2009 A. Alonso Dominguez
+~~ Copyright (C) 2010 A. Alonso Dominguez
 ~~
 ~~ This library is free software; you can redistribute it and/or
 ~~ modify it under the terms of the GNU Lesser General Public
@@ -20,7 +20,7 @@
 ~~ alonsoft@users.sf.net
 ~~ 
 
-            ---
+                        ---
 			Validators
 			---
 			A. Alonso Dominguez
@@ -91,7 +91,6 @@ Here is an example:
 
 +---
 :net.sf.jasperreports.jsf.validation.ReportValidatorBase
-graph2d:net.sf.jasperreports.jsf.validation.providers.Graphics2DExporterValidator
 +---
 
   When no validator is found for the current data source type, the default one
