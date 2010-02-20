@@ -21,6 +21,7 @@ package net.sf.jasperreports.jsf.util;
 import java.io.IOException;
 import javax.faces.context.ExternalContext;
 import javax.portlet.PortletContext;
+import javax.portlet.PortletRequest;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
@@ -41,6 +42,12 @@ final class PortletContextHelper extends ExternalContextHelper {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public String getRequestServerName(final ExternalContext context) {
+        final PortletRequest request = (PortletRequest) context.getRequest();
+        return request.getServerName();
     }
 
     @Override

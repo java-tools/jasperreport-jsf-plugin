@@ -31,7 +31,13 @@ import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 
 final class ServletContextHelper extends ExternalContextHelper {
 
-    protected ServletContextHelper() {
+    protected ServletContextHelper() { }
+
+    @Override
+    public String getRequestServerName(final ExternalContext context) {
+        final HttpServletRequest request = (HttpServletRequest)
+                context.getRequest();
+        return request.getServerName();
     }
 
     @Override

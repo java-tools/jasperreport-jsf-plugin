@@ -23,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 
 import javax.faces.context.FacesContext;
 
@@ -81,7 +82,15 @@ public class FacesFileResolver implements FileResolver {
         return tempFile;
     }
 
-    protected boolean isRemote(Resource resource) {
+    protected boolean isRemote(Resource resource) throws IOException {
+        URL resourceURL = resource.getLocation();
+        if (!"file".equals(resourceURL.getProtocol())) {
+            ExternalContextHelper helper = ExternalContextHelper.getInstance(
+                    context.getExternalContext());
+            return !(resourceURL.getHost().equals(helper.getRequestServerName(
+                    context.getExternalContext())));
+        }
         return false;
     }
+    
 }

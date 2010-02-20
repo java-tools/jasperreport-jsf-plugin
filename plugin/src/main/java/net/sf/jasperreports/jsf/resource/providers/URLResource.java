@@ -29,10 +29,10 @@ public final class URLResource extends AbstractResource implements Resource {
 
     private final URL location;
 
-	public URLResource(final String name, final URL location) {
-		super(name);
-		this.location = location;
-	}
+    protected URLResource(final String name, final URL location) {
+        super(name);
+        this.location = location;
+    }
 
     public InputStream getInputStream() throws IOException {
         return location.openStream();
@@ -45,9 +45,8 @@ public final class URLResource extends AbstractResource implements Resource {
     public String getPath() {
         return location.getPath();
     }
-	
-    public boolean isRemote() {
-		return !"file".equals(location.getProtocol());
-	}
 
+    public boolean isRemote() {
+        return !"file".equals(location.getProtocol());
+    }
 }
