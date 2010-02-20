@@ -16,20 +16,19 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.spi;
+package net.sf.jasperreports.jsf.test.simple;
 
-public class ResourceFactoryNotFoundException extends ServiceException {
+import org.junit.Assert;
+import org.junit.Test;
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 5741641651418076357L;
+import com.meterware.httpunit.WebResponse;
+import net.sf.jasperreports.jsf.test.ReportTestBase;
 
-    public ResourceFactoryNotFoundException(final String msg, final Throwable t) {
-        super(msg, t);
-    }
+public class InlineReportTest extends ReportTestBase {
 
-    public ResourceFactoryNotFoundException(final String msg) {
-        super(msg);
+    @Test
+    public void renderInline() throws Exception {
+        final WebResponse response = getResponse("/ReportInlineTest.jsf");
+        Assert.assertNotNull(response);
     }
 }

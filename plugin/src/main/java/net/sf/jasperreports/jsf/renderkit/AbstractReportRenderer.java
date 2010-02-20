@@ -83,7 +83,8 @@ abstract class AbstractReportRenderer extends Renderer implements
         logger.log(Level.FINE, "JRJSF_0006", clientId);
         final JasperPrint filledReport = filler.fill(context, report);
 
-        final ExternalContextHelper helper = ExternalContextHelper.getInstance(context);
+        final ExternalContextHelper helper = ExternalContextHelper.getInstance(
+                context.getExternalContext());
         final Exporter exporter = ExporterLoader.getExporter(context, report);
         final ByteArrayOutputStream reportData = new ByteArrayOutputStream();
         try {
@@ -92,7 +93,8 @@ abstract class AbstractReportRenderer extends Renderer implements
                             exporter.getContentType()});
             }
             exporter.export(context, filledReport, reportData);
-            helper.writeResponse(context, exporter.getContentType(), reportData.toByteArray());
+            helper.writeResponse(context.getExternalContext(),
+                    exporter.getContentType(), reportData.toByteArray());
         } finally {
             try {
                 reportData.close();
@@ -111,8 +113,9 @@ abstract class AbstractReportRenderer extends Renderer implements
             throw new IllegalArgumentException("Report component is null");
         }
 
-        final ExternalContextHelper helper = ExternalContextHelper.getInstance(context);
-        helper.writeHeaders(context, this, report);
+        final ExternalContextHelper helper = ExternalContextHelper.getInstance(
+                context.getExternalContext());
+        helper.writeHeaders(context.getExternalContext(), this, report);
     }
 
     /**

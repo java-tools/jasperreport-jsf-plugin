@@ -19,8 +19,10 @@
 package net.sf.jasperreports.jsf.util;
 
 import java.io.IOException;
+import javax.faces.context.ExternalContext;
 
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -33,18 +35,24 @@ final class ServletContextHelper extends ExternalContextHelper {
     }
 
     @Override
-    public String getRequestURI(final FacesContext context) {
+    public String getRequestURI(final ExternalContext context) {
         final HttpServletRequest request = (HttpServletRequest)
-                context.getExternalContext().getRequest();
+                context.getRequest();
         return request.getRequestURI();
     }
 
     @Override
-    public void writeHeaders(final FacesContext context,
+    public String getResourceRealPath(final ExternalContext context, String name) {
+        final ServletContext ctx = (ServletContext) context.getContext();
+        return ctx.getRealPath(name);
+    }
+
+    @Override
+    public void writeHeaders(final ExternalContext context,
             final ReportRenderer renderer, final UIReport report)
             throws IOException {
         final HttpServletResponse response = (HttpServletResponse)
-                context.getExternalContext().getResponse();
+                context.getResponse();
         response.setHeader("Cache-Type", "no-cache");
         response.setHeader("Expires", "0");
 
@@ -55,10 +63,10 @@ final class ServletContextHelper extends ExternalContextHelper {
     }
 
     @Override
-    public void writeResponse(final FacesContext context,
+    public void writeResponse(final ExternalContext context,
             final String contentType, final byte[] data) throws IOException {
         final HttpServletResponse response = (HttpServletResponse)
-                context.getExternalContext().getResponse();
+                context.getResponse();
         response.setContentType(contentType);
         response.setContentLength(data.length);
         response.getOutputStream().write(data);

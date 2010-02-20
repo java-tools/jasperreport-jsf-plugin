@@ -23,19 +23,19 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.faces.context.ExternalContext;
-import javax.portlet.PortletContext;
-import javax.servlet.ServletContext;
 
 import net.sf.jasperreports.jsf.resource.AbstractResource;
 import net.sf.jasperreports.jsf.resource.Resource;
+import net.sf.jasperreports.jsf.util.ExternalContextHelper;
 
 /**
  * The Class ContextResourceLoader.
  */
-public final class ContextResource extends AbstractResource implements Resource {
+public class ContextResource extends AbstractResource
+        implements Resource {
 
     /** The context. */
-    private final ExternalContext context;
+    protected final ExternalContext context;
 
 	/**
 	 * Instantiates a new context resource loader.
@@ -75,19 +75,8 @@ public final class ContextResource extends AbstractResource implements Resource 
     }
 
     public String getPath() {
-        final Object wrappedContext = context.getContext();
-        if (wrappedContext instanceof ServletContext) {
-            return ((ServletContext) wrappedContext).getRealPath(getName());
-        } else if (wrappedContext instanceof PortletContext) {
-            return ((PortletContext) wrappedContext).getRealPath(getName());
-        } else {
-            throw new IllegalStateException("Unrecognized context class: "
-                    + wrappedContext.getClass().getName());
-        }
+        ExternalContextHelper helper = ExternalContextHelper.getInstance(context);
+        return helper.getResourceRealPath(context, getName());
     }
-	
-    public boolean isRemote() {
-		return false;
-	}
-
+    
 }

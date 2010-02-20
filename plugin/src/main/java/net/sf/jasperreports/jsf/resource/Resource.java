@@ -60,7 +60,5 @@ public interface Resource {
 	 * @return
 	 */
 	public String getPath();
-
-	public boolean isRemote();
 	
 }
