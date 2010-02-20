@@ -1,6 +1,20 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ *
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1 of the License, or (at
+ * your option) any later version. This library is distributed in the hope
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place, Suite 330, Boston, MA 02111-1307 USA A.
+ *
+ * Alonso Dominguez
+ * alonsoft@users.sf.net
  */
 package net.sf.jasperreports.jsf.resource.providers;
 
@@ -20,6 +34,10 @@ import net.sf.jasperreports.jsf.util.Util;
 public class DefaultResourceResolver implements ResourceResolver {
 
     public Resource resolveResource(FacesContext context, String name) {
+        if (name == null || name.length() == 0) {
+            throw new IllegalArgumentException("Resource name must be provided.");
+        }
+
         try {
             final URL url = new URL(name);
             return new URLResource(name, url);
@@ -29,46 +47,38 @@ public class DefaultResourceResolver implements ResourceResolver {
                 return new ClasspathResource(
                         name.substring(ClasspathResource.PREFIX.length()),
                         loader);
+            } else if (name.startsWith("/")) {
+                return new ContextResource(name, context.getExternalContext());
             } else if (loader.getResourceAsStream(name) != null) {
                 return new ClasspathResource(name, loader);
             } else {
-                return resolveContextResource(context, name);
+                ExternalContextHelper helper = ExternalContextHelper.getInstance(
+                        context.getExternalContext());
+                String rootPath = resolveCurrentPath(context);
+                File resourceFile = new File(helper.getResourceRealPath(
+                        context.getExternalContext(), rootPath), name);
+                if(resourceFile.exists()) {
+                    String absName = rootPath + name;
+                    return new ContextResource(absName, context.getExternalContext());
+                }
             }
         }
-    }
 
-    protected Resource resolveContextResource(FacesContext context, String name) {
-        ExternalContextHelper helper = ExternalContextHelper.getInstance(
-                context.getExternalContext());
-        if (name.startsWith("/")) {
-            return new ContextResource(name, context.getExternalContext());
-        } else {
-            String rootPath = resolveCurrentPath(context);
-            File resourceFile = new File(helper.getResourceRealPath(
-                    context.getExternalContext(), rootPath), name);
-            if(resourceFile.exists()) {
-                String absName = rootPath + name;
-                return new ContextResource(absName, context.getExternalContext());
-            }
-        }
+        // Can't resolve resource
         return null;
     }
 
     protected String resolveCurrentPath(FacesContext context) {
-        // TODO implement mechanism to find the current invokation path
-        return null;
-    }
-
-    private boolean isUrl(String name) {
-        if (!name.contains("://")) {
-            return false;
+        String currentPath = "";
+        String viewId = context.getViewRoot().getViewId();
+        int lastSlash = viewId.lastIndexOf('/');
+        if (lastSlash > 0) {
+            currentPath = viewId.substring(0, lastSlash);
+            if (!currentPath.endsWith("/")) {
+                currentPath += "/";
+            }
         }
-        try {
-            new URL(name);
-            return true;
-        } catch (MalformedURLException e) {
-            return false;
-        }
+        return currentPath;
     }
     
 }

@@ -37,20 +37,20 @@ public class ContextResource extends AbstractResource
     /** The context. */
     protected final ExternalContext context;
 
-	/**
-	 * Instantiates a new context resource loader.
-	 * 
-	 * @param servletContext
-	 *            the servlet context
-	 */
-	public ContextResource(final String name,
-			final ExternalContext servletContext) {
-		super(name);
-		if (servletContext == null) {
-			throw new IllegalArgumentException();
-		}
-		context = servletContext;
-	}
+    /**
+     * Instantiates a new context resource loader.
+     *
+     * @param servletContext
+     *            the servlet context
+     */
+    protected ContextResource(final String name,
+            final ExternalContext servletContext) {
+        super(name);
+        if (servletContext == null) {
+            throw new IllegalArgumentException();
+        }
+        context = servletContext;
+    }
 
     /*
      * (non-Javadoc)
@@ -78,5 +78,4 @@ public class ContextResource extends AbstractResource
         ExternalContextHelper helper = ExternalContextHelper.getInstance(context);
         return helper.getResourceRealPath(context, getName());
     }
-    
 }

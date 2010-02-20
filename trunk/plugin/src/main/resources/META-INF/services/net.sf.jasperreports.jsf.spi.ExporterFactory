@@ -20,7 +20,6 @@
 #
 :net.sf.jasperreports.jsf.export.providers.PdfExporterFactory
 docx:net.sf.jasperreports.jsf.export.providers.DocxExporterFactory
-graph2d:net.sf.jasperreports.jsf.export.providers.Graphics2DExporterFactory
 pdf:net.sf.jasperreports.jsf.export.providers.PdfExporterFactory
 csv:net.sf.jasperreports.jsf.export.providers.CsvExporterFactory
 html:net.sf.jasperreports.jsf.export.providers.HtmlExporterFactory

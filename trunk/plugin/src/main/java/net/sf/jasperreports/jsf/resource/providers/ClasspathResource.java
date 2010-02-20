@@ -29,13 +29,12 @@ public final class ClasspathResource extends AbstractResource
         implements Resource {
 
     public static final String PREFIX = "classpath:";
-
     private final ClassLoader classLoader;
 
-	public ClasspathResource(final String name, final ClassLoader classLoader) {
-		super(name);
-		this.classLoader = classLoader;
-	}
+    protected ClasspathResource(final String name, final ClassLoader classLoader) {
+        super(name);
+        this.classLoader = classLoader;
+    }
 
     public InputStream getInputStream() throws IOException {
         return classLoader.getResourceAsStream(getName());
@@ -57,14 +56,13 @@ public final class ClasspathResource extends AbstractResource
         return location.getPath();
     }
 
-	public boolean isRemote() {
-		return false;
-	}
+    public boolean isRemote() {
+        return false;
+    }
 
-	private void throwLocationNotFoundException() {
-		throw new IllegalStateException(
-				"Resource location for classpath resource '" + getName()
-						+ "' couldn't be identified.");
-	}
-
+    private void throwLocationNotFoundException() {
+        throw new IllegalStateException(
+                "Resource location for classpath resource '" + getName()
+                + "' couldn't be identified.");
+    }
 }

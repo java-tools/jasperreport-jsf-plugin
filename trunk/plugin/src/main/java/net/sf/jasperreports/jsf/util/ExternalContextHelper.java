@@ -30,6 +30,9 @@ import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 
 public abstract class ExternalContextHelper {
 
+    private static final String INSTANCE_KEY =
+            ExternalContextHelper.class.getName();
+
     /** The Constant PORTLET_CLASS. */
     private static final String PORTLET_CLASS = "javax.portlet.Portlet";
 
@@ -37,14 +40,18 @@ public abstract class ExternalContextHelper {
     private static final String PORTLET_RESOURCEURL_CLASS = "javax.portlet.ResourceURL";
 
     public static ExternalContextHelper getInstance(final ExternalContext context) {
-        ExternalContextHelper instance;
-        if (isServletContext(context)) {
-            instance = new ServletContextHelper();
-        } else if (isPortletAvailable()) {
-            instance = new PortletContextHelper();
-        } else {
-            throw new IllegalArgumentException(
-                    "Unrecognized application context");
+        ExternalContextHelper instance = (ExternalContextHelper)
+                context.getApplicationMap().get(INSTANCE_KEY);
+        if (instance == null) {
+            if (isServletContext(context)) {
+                instance = new ServletContextHelper();
+            } else if (isPortletAvailable()) {
+                instance = new PortletContextHelper();
+            } else {
+                throw new IllegalArgumentException(
+                        "Unrecognized application context");
+            }
+            context.getApplicationMap().put(INSTANCE_KEY, instance);
         }
         return instance;
     }
@@ -82,8 +89,7 @@ public abstract class ExternalContextHelper {
         return (ctx instanceof ServletContext);
     }
 
-    protected ExternalContextHelper() {
-    }
+    protected ExternalContextHelper() { }
 
     /**
      * Gets the request uri.
@@ -94,6 +100,8 @@ public abstract class ExternalContextHelper {
      * @return the request uri
      */
     public abstract String getRequestURI(final ExternalContext context);
+
+    public abstract String getRequestServerName(final ExternalContext context);
 
     public abstract String getResourceRealPath(
             final ExternalContext context, String name);
