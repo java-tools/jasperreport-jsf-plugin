@@ -1,6 +1,6 @@
 ~~ 
 ~~ JasperReports JSF Plugin
-~~ Copyright (C) 2009 A. Alonso Dominguez
+~~ Copyright (C) 2010 A. Alonso Dominguez
 ~~
 ~~ This library is free software; you can redistribute it and/or
 ~~ modify it under the terms of the GNU Lesser General Public
@@ -27,12 +27,26 @@
 
 Features for last beta version
 
-  Here is a list of features and bug fixes implemented in the last
-beta version for JasperReports JSF Plugin
+  This page is dedicated to showing fixes and features added (or improved) in 
+each release of JasperReports JSF Plugin. When using the library pay attention
+to this list when using any of the functionalities provided.
+
+* 1.0-RC1
+
+  * Improved built-in resource loading mechanism
+
+  * Removed support for <<<java.awt.Graphics2D>>> output formal (useless in servlet
+or portlet environments).
+
+  * Bug 2943601: <jr:dataSource> doesn't accept <f:attribute>
+
+  * Patch 2945905: Report's linked resources not being rendered.
+
+* 1.0-beta-3
 
   * Added support for JasperReports 3.5.2 and later
   
-  * Added <<<.docx>>>, <<<java.awt.Graphics2D>>> output formats
+  * Added <<<.docx>>> and <<<java.awt.Graphics2D>>> (EXPERIMENTAL) output formats
   
   * Tight integration between JSF and JasperReports by means of engine's classes implementations
 

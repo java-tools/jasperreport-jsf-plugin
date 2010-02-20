@@ -2,7 +2,7 @@
 
 <!--  
   JasperReports JSF Plugin
-  Copyright (C) 2009 A. Alonso Dominguez
+  Copyright (C) 2010 A. Alonso Dominguez
  
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -50,8 +50,9 @@
   
   <body>
     <links>
-      <item name="SF Project Page" href="http://sourceforge.net/projects/jasperreportjsf" />
       <item name="JasperReports" href="http://jasperreports.sourceforge.net" />
+      <item name="SF Project Page" href="http://sourceforge.net/projects/jasperreportjsf" />
+      <item name="JF Project Page" href="http://jasperforge.org/plugins/project/project_home.php?group_id=106" />
     </links>
     
     <menu name="Main Menu">
