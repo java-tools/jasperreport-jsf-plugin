@@ -38,19 +38,20 @@ public class DefaultResourceResolver implements ResourceResolver {
             throw new IllegalArgumentException("Resource name must be provided.");
         }
 
+        Resource resource = null;
         try {
             final URL url = new URL(name);
-            return new URLResource(name, url);
+            resource = new URLResource(name, url);
         } catch (MalformedURLException e) {
             final ClassLoader loader = Util.getClassLoader(this);
             if (name.startsWith(ClasspathResource.PREFIX)) {
-                return new ClasspathResource(
+                resource = new ClasspathResource(
                         name.substring(ClasspathResource.PREFIX.length()),
                         loader);
             } else if (name.startsWith("/")) {
-                return new ContextResource(name, context.getExternalContext());
+                resource = new ContextResource(name, context.getExternalContext());
             } else if (loader.getResourceAsStream(name) != null) {
-                return new ClasspathResource(name, loader);
+                resource = new ClasspathResource(name, loader);
             } else {
                 ExternalContextHelper helper = ExternalContextHelper.getInstance(
                         context.getExternalContext());
@@ -59,25 +60,30 @@ public class DefaultResourceResolver implements ResourceResolver {
                         context.getExternalContext(), rootPath), name);
                 if(resourceFile.exists()) {
                     String absName = rootPath + name;
-                    return new ContextResource(absName, context.getExternalContext());
+                    resource = new ContextResource(absName,
+                            context.getExternalContext());
                 }
             }
         }
 
-        // Can't resolve resource
-        return null;
+        // If at this point 'resource' is null then the resource couldn't
+        // be resolved by this ResourceResolver implementation
+        return resource;
     }
 
     protected String resolveCurrentPath(FacesContext context) {
         String currentPath = "";
         String viewId = context.getViewRoot().getViewId();
+
         int lastSlash = viewId.lastIndexOf('/');
         if (lastSlash > 0) {
             currentPath = viewId.substring(0, lastSlash);
-            if (!currentPath.endsWith("/")) {
-                currentPath += "/";
-            }
         }
+
+        if (!currentPath.endsWith("/")) {
+            currentPath += "/";
+        }
+        
         return currentPath;
     }
     

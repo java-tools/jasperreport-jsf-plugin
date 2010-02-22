@@ -69,6 +69,7 @@ public final class Configuration {
         }
         return instance;
     }
+
     private final List<String> facesMappings = new ArrayList<String>();
     private String defaultMapping;
 
@@ -173,4 +174,5 @@ public final class Configuration {
         }
         return mapping;
     }
+    
 }
