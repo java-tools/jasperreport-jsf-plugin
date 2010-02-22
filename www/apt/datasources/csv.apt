@@ -28,8 +28,9 @@
 
 Usage of the CSV DataSource
 
-  When using this kind of data source we will require a backing
-bean which will offer the data to the data source component.
+  When using this kind of data source we can load the data from a resource 
+resolvable through the built-in resource loading mechanism or by means of a
+backing bean which will offer the data to the data source component.
 
 * Configuring the data source
 
@@ -59,22 +60,46 @@ reflected in the following table:
 
 ** Simple Usage
 
+  The most simple usage is based on the built-in resource loading mechanism
+implemented inside the plugin using following way:
+
++---
+<jr:dataSource type="csv" value="classpath:META-INF/datasource/test.csv" />
++---
+
+** Using a backing bean
+
   First of all, we need to design a JSF Managed Bean which will build the
 CSV data that will be used by the data source component.
 
 +---
-
-import java.io.File;
+import java.io.*;
+import javax.annotation.PreDestroy;
 
 public class CSVDataBean {
 
-	...
+    private InputStream csvFile;
 
-	public File getCsvFile() {
-		// Obtain a csv file from disk	
-	}
+    public InputStream getCsvFile() {
+        if (csvFile == null) {
+            // Obtain a csv file from disk
+            csvFile = new FileInputStream( ... );
+        }
+        return csvFile;
+    }
 
-	...
+    @PreDestroy
+    public void release() {
+        if (csvFile != null) {
+            try {
+                csvFile.close();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    ...
 }
 +---
 
@@ -83,13 +108,6 @@ the report or report link.
 
 +---
 <jr:dataSource type="csv" value="#{CSVDataBean.csvFile}" />
-+---
-
-  You can also take use of the resource loading mechanism implemented inside
-the plugin using following way:
-
-+---
-<jr:dataSource type="csv" value="classpath:META-INF/datasource/test.csv" />
 +---
 
 ** Using Queries

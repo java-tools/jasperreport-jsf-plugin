@@ -78,32 +78,35 @@ application context or, from an external URL. Following there are some examples:
 
 *** Classpath Resources
 
-  When loading classpath resources we need to use the prefix <<<classpath:>>> in the <<<path>>> attribute:
+  When loading classpath resources we need to use the prefix <<<classpath:>>> in
+the <<<path>>> attribute:
 
 +--
 <jr:report path="classpath:reports/orders.jasper">
-	...
+    ...
 </jr:report>
 +-- 
 
 *** External URL Resources
 
-  When loading resources from an URL simply use any normal URL as the value of the <<<path>>> attribute:
+  When loading resources from an URL simply use any normal URL as the value of
+the <<<path>>> attribute:
 
 +--
 <jr:report path="http://www.example.com/reports/orders.jasper">
-	...
+    ...
 </jr:report>
 +--
 
 *** Context-relative Resources 
 
-  Context-relative resources are the default way of loading reports. When loading this kind of resources
-just use an absolute path to the given resource. This path will be resolved inside the application context.
+  Context-relative resources are the default way of loading reports. When loading
+this kind of resources just use an absolute path to the given resource. This path
+will be resolved inside the application context.
 
 +--
 <jr:report path="/reports/orders.jasper">
-	...
+    ...
 </jr:report>
 +--
 
@@ -114,7 +117,7 @@ the report component tag that you are using.
 
 +---
 <jr:report path="/reports/orders.jasper">
-	<f:param name="CITY" value="Melbourne" />
+    <f:param name="CITY" value="Melbourne" />
 </jr:report>
 +---
 
@@ -131,7 +134,7 @@ attributes using the <<<f:attribute>>> tag nested inside the report component th
 
 +---
 <jr:report path="..." format="csv">
-	<f:attribute name="FIELD_DELIMITER" value=":" />
+    <f:attribute name="FIELD_DELIMITER" value=":" />
 </jr:report>
 +---
 
@@ -143,8 +146,6 @@ attributes using the <<<f:attribute>>> tag nested inside the report component th
 | <<<docx>>>         | application/vnd.openxmlformats-officedocument.wordprocessingml.document | Exports to a Office 2007 Word document     |
 *--------------------+-------------------------------------------------------------------------+--------------------------------------------+
 | <<<pdf>>>          | application/pdf                                                         | Exports to a PDF document                  |
-*--------------------+-------------------------------------------------------------------------+--------------------------------------------+
-| <<<graph2d>>>      | NO MIME TYPE                                                            | Exports to a <<<java.awt.Graphics2D>>>     |
 *--------------------+-------------------------------------------------------------------------+--------------------------------------------+
 | <<<csv>>>          | text/plain                                                              | Exports to a CSV text file                 |
 *--------------------+-------------------------------------------------------------------------+--------------------------------------------+
