@@ -79,7 +79,8 @@ public abstract class AbstractJRExporter extends AbstractExporter {
 
         exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
         exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, stream);
-        exporter.setParameter(JRExporterParameter.CLASS_LOADER, Util.getClassLoader(getComponent()));
+        exporter.setParameter(JRExporterParameter.CLASS_LOADER,
+                Util.getClassLoader(getComponent()));
 
         setParameterUsingAttribute(exporter,
                 JRExporterParameter.CHARACTER_ENCODING, ATTR_CHARACTER_ENCODING);
@@ -101,10 +102,12 @@ public abstract class AbstractJRExporter extends AbstractExporter {
         final FileResolver fr = new FacesFileResolver(context);
         exporter.setParameter(JRExporterParameter.FILE_RESOLVER, fr);
 
+        /* EXPERIMENTAL: Goal is the ability of linking reports to faces views
         final JRHyperlinkProducerFactory hpf = new FacesHyperlinkProducerFactory(
                 context, getComponent());
         exporter.setParameter(
                 JRExporterParameter.HYPERLINK_PRODUCER_FACTORY, hpf);
+        */
 
         try {
             exporter.exportReport();

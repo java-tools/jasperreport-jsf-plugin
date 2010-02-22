@@ -35,6 +35,9 @@ import javax.faces.context.FacesContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stream.StreamSource;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
@@ -47,6 +50,7 @@ import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.spi.ResourceLoader;
 
 import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -67,7 +71,17 @@ public final class XmlFiller extends AbstractJRDataSourceFiller {
             throws FillerException {
         JRDataSource dataSource;
 
-        final Document xmlDocument = getXmlDocument(context);
+        final Document xmlDocument;
+        try {
+            xmlDocument = getXmlDocument(context);
+        } catch (final ParserConfigurationException ex) {
+            throw new FillerException(ex);
+        } catch (final SAXException ex) {
+            throw new FillerException(ex);
+        } catch (final IOException ex) {
+            throw new FillerException(ex);
+        }
+
         if (xmlDocument == null) {
             if (logger.isLoggable(Level.WARNING)) {
                 logger.log(Level.WARNING, "JRJSF_0020",
@@ -87,24 +101,44 @@ public final class XmlFiller extends AbstractJRDataSourceFiller {
                 throw new FillerException(e);
             }
         }
+
         return dataSource;
     }
 
-    private Document getXmlDocument(final FacesContext context)
-            throws FillerException {
+    protected Document getXmlDocument(final FacesContext context)
+            throws ParserConfigurationException, SAXException, IOException {
         final Object value = getDataSourceComponent().getValue();
         if (value == null) {
             return null;
         }
 
+        Document document;
+        // First of all detect pre-built doms
         if (value instanceof Document) {
-            return (Document) value;
-        }
-
-        InputStream stream = null;
-        boolean closeStream = true;
-        try {
-            if (value instanceof File) {
+            document = (Document) value;
+        } else if (value instanceof DOMSource) {
+            final DOMSource source = (DOMSource) value;
+            final DocumentBuilder builder = getDocumentBuilder();
+            document = builder.newDocument();
+            document.appendChild(source.getNode());
+        } else if ((value instanceof InputSource)
+                || (value instanceof SAXSource)) {
+            InputSource inputSource;
+            if (value instanceof SAXSource) {
+                final SAXSource source = (SAXSource) value;
+                inputSource = source.getInputSource();
+            } else {
+                inputSource = (InputSource) value;
+            }
+            final DocumentBuilder builder = getDocumentBuilder();
+            document = builder.parse(inputSource);
+        } else {
+            InputStream stream = null;
+            boolean closeStream = true;
+            if (value instanceof StreamSource) {
+                final StreamSource source = (StreamSource) value;
+                stream = source.getInputStream();
+            } else if (value instanceof File) {
                 stream = new FileInputStream((File) value);
             } else if (value instanceof URL) {
                 stream = ((URL) value).openStream();
@@ -116,26 +150,26 @@ public final class XmlFiller extends AbstractJRDataSourceFiller {
                 stream = (InputStream) value;
                 closeStream = false;
             }
-        } catch (final IOException e) {
-            throw new FillerException(e);
-        }
 
-        if (stream == null) {
-            throw new FillerException("Unrecognized XML "
-                    + "data source type: " + value.getClass());
-        }
-
-        try {
-            return parseStream(stream);
-        } finally {
-            if (stream != null && closeStream) {
-                try {
-                    stream.close();
-                } catch (final IOException e) {
-                }
+            if (stream == null) {
+                throw new FillerException("Unrecognized XML "
+                        + "data source type: " + value.getClass());
             }
-            stream = null;
+
+            try {
+                final DocumentBuilder builder = getDocumentBuilder();
+                document = builder.parse(stream);
+            } finally {
+                if (stream != null && closeStream) {
+                    try {
+                        stream.close();
+                    } catch (final IOException e) { }
+                }
+                stream = null;
+            }
         }
+
+        return document;
     }
 
     private String parseQuery(final String query) {
@@ -149,23 +183,14 @@ public final class XmlFiller extends AbstractJRDataSourceFiller {
             params.add(value);
         }
 
-        return MessageFormat.format(query, params.toArray(new Object[params.size()]));
+        return MessageFormat.format(query,
+                params.toArray(new Object[params.size()]));
     }
 
-    private Document parseStream(final InputStream stream)
-            throws FillerException {
-        Document result;
-        try {
-            final DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-            final DocumentBuilder builder = builderFactory.newDocumentBuilder();
-            result = builder.parse(stream);
-        } catch (final SAXException e) {
-            throw new FillerException(e);
-        } catch (final ParserConfigurationException e) {
-            throw new FillerException(e);
-        } catch (final IOException e) {
-            throw new FillerException(e);
-        }
-        return result;
+    private DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {
+        final DocumentBuilderFactory builderFactory =
+                DocumentBuilderFactory.newInstance();
+        return builderFactory.newDocumentBuilder();
     }
+
 }
