@@ -28,8 +28,9 @@
 
 Usage of the XML DataSource
 
-  When using this kind of data source we will require a backing
-bean which will offer the data to the data source component.
+  When using this kind of data source we can load the data from a resource
+resolvable through the built-in resource loading mechanism or by means of a
+backing bean which will offer the data to the data source component.
 
 * Configuring the data source
 
@@ -44,26 +45,82 @@ reflected in the following table:
 | query           | true     | XPath query used to obtain the result set. |
 *-----------------+----------*--------------------------------------------+
 
-** Examples
+  Valid values for attribute <<<value>>> are:
 
-*** Simple Usage
+  * <<<java.io.File>>>: A file handle to a resource accessible by the server
+    which is running the application.
+
+  * <<<java.net.URL>>>: An URL to a resource accessible through internet
+
+  * <<<java.lang.String>>>: A path to any kind of resource. It will be loaded using
+    the built-in resource loading mechanism.
+
+  * <<<java.io.InputStream>>>: A stream ready to be used to read the XML data. In
+    this case, application is responsible of closing the stream
+
+  * <<<org.xml.sax.InputSource>>>: A SAX input source is valid enough to provide
+the data to the report components.
+
+  * <<<org.w3c.dom.Document>>>: A pre-loaded or dynamically created XML document.
+
+  * <<<javax.xml.transform.Source>>>: Any of the 3 implementations of the <<<Source>>>
+interface provided by the JDK: <<<DOMSource>>>, <<<SAXSource>>> and <<<StreamSource>>>.
+
+* Examples
+
+** Simple Usage
+
+  The most simple usage is based on the built-in resource loading mechanism
+implemented inside the plugin using following way:
+
++---
+<jr:dataSource type="xml" value="classpath:META-INF/datasource/test.xml" />
++---
+
+** Using a backing bean
 
   First of all, we need to design a JSF Managed Bean which will build the
 XML document that will be used by the data source component.
 
 +---
+import java.io.*;
+import javax.annotation.PreDestroy;
 import org.w3c.dom.Document;
 import ...;
 
 public class XMLDataBean {
 
-	...
+    private InputStream xmlStream = null;
 
-	public Document getXmlDocument() {
-		// Build an XML Document	
-	}
+    ...
 
-	...
+    // Dynamically created XML document
+    public Document getXmlDocument() {
+        // Build an XML Document
+    }
+
+    public InputStream getXmlStream() {
+        if (xmlStream == null) {
+            // Instantiate an input stream from a xml source
+        }
+        return xmlStream;
+    }
+
+    @PreDestroy
+    public void release() {
+        if (xmlStream != null) {
+            try {
+                xmlStream.close();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Release other resources
+    }
+
+    ...
+
 }
 +---
 
@@ -74,18 +131,9 @@ the report or report link.
 <jr:dataSource type="xml" value="#{XMLDataBean.xmlDocument}" />
 +---
 
-  Other valid values for attribute <<<value>>> are:
-  
-  * <<<java.io.File>>>: A file handle to a resource accessible by the server 
-    which is running the application.
-  
-  * <<<java.net.URL>>>: An URL to a resource accessible through internet
-  
-  * <<<java.lang.String>>>: A path to any kind of resource. It will be loaded using
-    the built-in resource loading mechanism.
-  
-  * <<<java.io.InputStream>>>: A stream ready to be used to read the XML data. In
-    this case, application is responsible of closing the stream
++---
+<jr:dataSource type="xml" value="#{XMLDataBean.xmlStream}" />
++---
 
 *** Using Queries
 
@@ -96,10 +144,10 @@ should be an XPath query.
 
 +---
 <jr:dataSource type="xml"
-	value="#{XMLDataBean.xmlDocument}"
-	query="SALES/ORDER[@city='{0}']"
+    value="#{XMLDataBean.xmlDocument}"
+    query="SALES/ORDER[@city='{0}']"
 >
-	<f:param value="Melbourne" />
+    <f:param value="Melbourne" />
 </jr:dataSource>
 +---
 

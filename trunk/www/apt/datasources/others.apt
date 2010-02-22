@@ -64,21 +64,21 @@ import java.util.*;
 
 public class BeanDataBean {
 	
-	...
+    ...
 	
-	public OrderBean[] getOrderArray() {
-		List<OrderBean> orderColl = new ArrayList<OrderBean>();
-		...
-		return orderColl.toArray(new OrderBean[orderColl.size()]);
-	}
+    public OrderBean[] getOrderArray() {
+        List<OrderBean> orderColl = new ArrayList<OrderBean>();
+        ...
+        return orderColl.toArray(new OrderBean[orderColl.size()]);
+    }
 	
-	public Collection<OrderBean> getOrderCollection() {
-		Set<OrderBean> orderSet = new HashSet<OrderSet>();
-		...
-		return Collections.unmodifiableSet(orderSet);
-	}
+    public Collection<OrderBean> getOrderCollection() {
+        Set<OrderBean> orderSet = new HashSet<OrderSet>();
+        ...
+        return Collections.unmodifiableSet(orderSet);
+    }
 	
-	...
+    ...
 	
 }
 +---
@@ -100,9 +100,46 @@ the report or report link.
   
 * ResultSet data sources
 
-  This is the most simple data source that can be used. The only required
-attribute is <<<value>>> and its type should be always a <<<java.sql.ResultSet>>>.
+  This is the most simple data source that can be used. When using JDBC result sets
+the value of the <<<type>>> atribute must be "<<<resultSet>>>" and the type for 
+the <<<value>>> attribute is must be always a <<<java.sql.ResultSet>>>.
 Be careful, since application is responsible of closing the result set.
+
+<<ManagedBean example>>>:
++---
+import java.sql.*;
+import javax.annotation.PreDestroy;
+import ...
+
+public class ResultSetReportBean {
+
+    private ResultSet reportData = null;
+
+    public ResultSet getReportData() {
+        if (reportData == null) {
+            // Obtain a JDBC connection and execute a SQL query
+        }
+        return reportData;
+    }
+
+    @PreDestroy
+    public void release() {
+        if (reportData != null) {
+            try {
+                reportData.close();
+            } catch(SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+}
++---
+
+<<<JSF view example>>>:
++---
+<jr:dataSource type="resultSet" value="#{resultSetReport.reportData}" />
++---
 
 * User defined data sources
 
@@ -113,27 +150,36 @@ component to make use of it.
 
   When using custom data sources you will need a class to implement the interface
 <<<net.sf.jasperreports.engine.JRDataSource>>>, a managed bean that will be used
-to provide the data source to the JSF Component and the <<<jr:dataSource>>> definition:
+to provide the data source to the JSF Component and the <<<jr:dataSource>>> definition.
+
+  <<Note>>: Any I/O resources opened needed to obtain the data must be released
+by the application.
 
 +---
+import javax.annotation.PreDestroy;
 import net.sf.jasperreports.engine.JRDataSource;
 ...
 
 public class CustomDataSourceBean {
 
-	public JRDataSource getData() {
-		return new CustomDataSource( ... );
-	}
+    public JRDataSource getData() {
+        return new CustomDataSource( ... );
+    }
 
-	private class CustomDataSource implements JRDataSource {
+    private class CustomDataSource implements JRDataSource {
 	
-		public CustomDataSource( ... ) {
-			...
-		}
+        public CustomDataSource( ... ) {
+            ...
+        }
 	
-		// other methods
+        // other methods
 	
-	}
+    }
+
+    @PreDestroy
+    public void release() {
+        // Release resources here
+    }
 
 }
 +---
