@@ -22,7 +22,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.resource.AbstractResource;
 import net.sf.jasperreports.jsf.resource.Resource;
@@ -34,22 +34,14 @@ import net.sf.jasperreports.jsf.util.ExternalContextHelper;
 public class ContextResource extends AbstractResource
         implements Resource {
 
-    /** The context. */
-    protected final ExternalContext context;
-
     /**
      * Instantiates a new context resource loader.
      *
      * @param servletContext
      *            the servlet context
      */
-    protected ContextResource(final String name,
-            final ExternalContext servletContext) {
+    protected ContextResource(final String name) {
         super(name);
-        if (servletContext == null) {
-            throw new IllegalArgumentException();
-        }
-        context = servletContext;
     }
 
     /*
@@ -60,7 +52,7 @@ public class ContextResource extends AbstractResource
      * )
      */
     public URL getLocation() throws MalformedURLException {
-        return context.getResource(getName());
+        return getFacesContext().getExternalContext().getResource(getName());
     }
 
     /*
@@ -71,11 +63,23 @@ public class ContextResource extends AbstractResource
      * .lang.String)
      */
     public InputStream getInputStream() {
-        return context.getResourceAsStream(getName());
+        return getFacesContext().getExternalContext().getResourceAsStream(getName());
     }
 
     public String getPath() {
-        ExternalContextHelper helper = ExternalContextHelper.getInstance(context);
-        return helper.getResourceRealPath(context, getName());
+        ExternalContextHelper helper = ExternalContextHelper.getInstance(
+                getFacesContext().getExternalContext());
+        return helper.getResourceRealPath(
+                getFacesContext().getExternalContext(), getName());
     }
+
+    protected FacesContext getFacesContext() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (context == null) {
+            throw new IllegalStateException("Context reosurces are valid just " +
+                    "inside a Faces' request.");
+        }
+        return context;
+    }
+
 }

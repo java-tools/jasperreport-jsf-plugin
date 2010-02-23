@@ -49,7 +49,7 @@ public class DefaultResourceResolver implements ResourceResolver {
                         name.substring(ClasspathResource.PREFIX.length()),
                         loader);
             } else if (name.startsWith("/")) {
-                resource = new ContextResource(name, context.getExternalContext());
+                resource = new ContextResource(name);
             } else if (loader.getResourceAsStream(name) != null) {
                 resource = new ClasspathResource(name, loader);
             } else {
@@ -60,8 +60,7 @@ public class DefaultResourceResolver implements ResourceResolver {
                         context.getExternalContext(), rootPath), name);
                 if(resourceFile.exists()) {
                     String absName = rootPath + name;
-                    resource = new ContextResource(absName,
-                            context.getExternalContext());
+                    resource = new ContextResource(absName);
                 }
             }
         }

@@ -18,9 +18,7 @@
  */
 package net.sf.jasperreports.jsf.resource;
 
-import net.sf.jasperreports.jsf.spi.ServiceException;
-
-public class UnresolvedResourceException extends ServiceException {
+public class UnresolvedResourceException extends ResourceException {
 
     /**
      *
