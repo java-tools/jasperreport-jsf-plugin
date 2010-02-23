@@ -69,7 +69,8 @@ public class FacesFileResolver implements FileResolver {
     }
 
     protected File downloadResource(Resource resource) throws IOException {
-        File tempFile = File.createTempFile(resource.getName(), null);
+        File tempFile = File.createTempFile(
+                resource.getLocation().getFile(), null);
         InputStream is = resource.getInputStream();
         OutputStream os = new FileOutputStream(tempFile);
 

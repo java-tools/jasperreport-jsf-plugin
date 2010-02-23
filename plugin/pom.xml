@@ -38,36 +38,17 @@
     <artifactId>jasperreports-jsf</artifactId>
     <packaging>jar</packaging>
 
+    <scm>
+    <connection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/trunk/plugin</connection>
+    <developerConnection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/trunk/plugin</developerConnection>
+    <url>http://jasperreportjsf.svn.sourceforge.net/viewvc/jasperreportjsf/trunk/plugin</url>
+  </scm>
+
     <properties>
         <test.logging.conf>${basedir}/src/test/conf/logging.properties</test.logging.conf>
         <test.context.dir>${basedir}/src/test/webapp</test.context.dir>
         <test.context.path>/jasperforge</test.context.path>
     </properties>
-
-    <profiles>
-        <profile>
-            <id>simple-nodb</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <test.web.xml>web-simple.xml</test.web.xml>
-            </properties>
-        </profile>
-        <profile>
-            <id>simple-db</id>
-            <dependencies>
-                <dependency>
-                    <groupId>hsqldb</groupId>
-                    <artifactId>hsqldb</artifactId>
-                    <version>1.8.0.7</version>
-                </dependency>
-            </dependencies>
-            <properties>
-                <test.web.xml>web-simpledb.xml</test.web.xml>
-            </properties>
-        </profile>
-    </profiles>
 
     <build>
         <testResources>
@@ -181,9 +162,9 @@
                 </configuration>
             </plugin>
             <!--plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-changelog-plugin</artifactId>
-      </plugin-->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-changelog-plugin</artifactId>
+            </plugin-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>

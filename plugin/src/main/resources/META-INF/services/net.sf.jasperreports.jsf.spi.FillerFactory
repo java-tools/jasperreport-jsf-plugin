@@ -26,4 +26,5 @@ jndi:net.sf.jasperreports.jsf.fill.providers.JndiFillerFactory
 map:net.sf.jasperreports.jsf.fill.providers.MapFillerFactory
 resultset:net.sf.jasperreports.jsf.fill.providers.ResultSetFillerFactory
 xml:net.sf.jasperreports.jsf.fill.providers.XmlFillerFactory
+xls:net.sf.jasperreports.jsf.fill.providers.XlsFillerFactory
 custom:net.sf.jasperreports.jsf.fill.providers.CustomDataSourceFillerFactory
