@@ -38,6 +38,12 @@
   <artifactId>jasperreports-jsf-root</artifactId>
   <packaging>pom</packaging>
 
+  <scm>
+    <connection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/trunk</connection>
+    <developerConnection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/trunk</developerConnection>
+    <url>http://jasperreportjsf.svn.sourceforge.net/viewvc/jasperreportjsf/trunk</url>
+  </scm>
+
   <modules>
     <module>plugin</module>
     <module>samples</module>
@@ -50,8 +56,8 @@
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptors>
-            <descriptor>build/assembly/bin.xml</descriptor>
-            <descriptor>build/assembly/src.xml</descriptor>
+            <descriptor>${basedir}/build/assembly/bin.xml</descriptor>
+            <descriptor>${basedir}/build/assembly/src.xml</descriptor>
           </descriptors>
         </configuration>
       </plugin>

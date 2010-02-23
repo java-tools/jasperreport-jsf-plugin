@@ -55,9 +55,9 @@ reflected in the following table:
 two listed attributes, the other three (<<<driverClassName>>>, <<<username>>> and
 <<<password>>>) must be provided using the <<<f:attribute>>> tag.
 
-** Examples
+* Examples
 
-*** Simple Usage
+** Simple Usage
 
   This usage of the dataSource will give to the report a <<<java.sql.Connection>>>
 instance. The report must be desgined with a default query.
@@ -84,7 +84,7 @@ instance. The report must be desgined with a default query.
 </jr:dataSource>
 +---
 
-*** Using queries
+** Using queries
 
   This kind of usage will give to the report a JasperReports' <<<ResultSetDataSource>>>
 instance. The report doesn't need to be designed with a default query.

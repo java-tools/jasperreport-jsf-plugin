@@ -135,7 +135,7 @@ the report or report link.
 <jr:dataSource type="xml" value="#{XMLDataBean.xmlStream}" />
 +---
 
-*** Using Queries
+** Using Queries
 
   The same way you can use queries with JDBC or JNDI data sources, you can
 also use queries with XML data sources. In this case, the difference is

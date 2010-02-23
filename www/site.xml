@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <!--  
   JasperReports JSF Plugin
@@ -74,6 +74,9 @@
         <item name="XML" href="datasources/xml.html" />
         <item name="Others" href="datasources/others.html" />
       </item>
+      <item name="Sample Applications" href="samples/index.html">
+        <item name="Use cases" href="samples/parametrized_report.html" />
+      </item>
     </menu>
     
     <menu name="Developer Documentation">
@@ -85,7 +88,7 @@
       </item>
       <item name="Reference">
         <item name="API Docs" href="apidocs/index.html" />
-        <item name="TLD Docs" href="tlddoc/index.html" />
+        <item name="TLD Docs" href="plugin/tlddoc/index.html" />
       </item>
     </menu>
     
