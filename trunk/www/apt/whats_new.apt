@@ -41,6 +41,8 @@ or portlet environments).
   * {{{datasources/xml.html}XML datasource}} now supports <<<org.xml.sax.InputSource>>>
 and <<<javax.xml.transform.Source>>> value types.
 
+  * Added support for {{{datasources/xls.html}XLS data sources}}
+
   * Bug 2943601: <jr:dataSource> doesn't accept <f:attribute>
 
   * Patch 2945905: Report's linked resources not being rendered.

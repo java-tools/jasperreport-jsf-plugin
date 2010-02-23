@@ -80,6 +80,8 @@ that must be used for the <<<type>>> attribute of the data source component.
 *---------------------------------------------------------+---------*
 | {{{xml.html}XML DataSource}}                            | xml     |
 *---------------------------------------------------------+---------*
+| {{{xls.html}XLS DataSource}}                            | xls     |
+*---------------------------------------------------------+---------*
 | {{{other.html}Other Supported DataSources}}             | other   |
 *---------------------------------------------------------+---------*
 

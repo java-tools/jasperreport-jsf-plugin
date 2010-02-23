@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <!--  
   JasperReports JSF Plugin
@@ -27,6 +27,24 @@
   <formats>
     <format>zip</format>
   </formats>
+  <moduleSets>
+    <moduleSet>
+      <includes>
+        <include>net.sf.jasperreports:jasperreports-jsf</include>
+      </includes>
+      <binaries>
+        <outputDirectory>/</outputDirectory>
+      </binaries>
+    </moduleSet>
+    <moduleSet>
+      <includes>
+        <include>net.sf.jasperreports.jsf.samples:*</include>
+      </includes>
+      <binaries>
+        <outputDirectory>/samples</outputDirectory>
+      </binaries>
+    </moduleSet>
+  </moduleSets>
   <dependencySets>
     <dependencySet>
       <outputDirectory>/lib</outputDirectory>
@@ -50,6 +68,18 @@
     <fileSet>
       <directory>target/site</directory>
       <outputDirectory>/doc</outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>plugin/target/site</directory>
+      <outputDirectory>/doc/plugin</outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>samples/simple/target/site</directory>
+      <outputDirectory>/doc/samples/simple</outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>samples/simple-db/target/site</directory>
+      <outputDirectory>/doc/samples-db/simple</outputDirectory>
     </fileSet>
   </fileSets>
 </assembly>

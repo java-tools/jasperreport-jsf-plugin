@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <!--  
   JasperReports JSF Plugin
@@ -31,16 +31,16 @@
     <fileSet>
       <directory>.</directory>
       <outputDirectory>/</outputDirectory>
-	  <useDefaultExcludes>true</useDefaultExcludes>
-	  <includes>
-        <include>LICENSE*</include>
-        <include>README*</include>
-        <include>NOTICE*</include>
-        <include>pom.xml</include>
-      </includes>
-	  <excludes>
-		<exclude>**/target/**</exclude>
-	  </excludes>
+        <useDefaultExcludes>true</useDefaultExcludes>
+	<includes>
+          <include>LICENSE*</include>
+          <include>README*</include>
+          <include>NOTICE*</include>
+          <include>pom.xml</include>
+        </includes>
+        <excludes>
+          <exclude>**/target/**</exclude>
+        </excludes>
     </fileSet>
   </fileSets>
 </assembly>

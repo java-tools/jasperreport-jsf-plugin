@@ -27,7 +27,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <name>JasperReports JSF Plugin</name>
+  <name>JasperReports JSF Plugin - Common POM</name>
   <url>http://jasperreportjsf.sourceforge.net</url>
 
   <groupId>net.sf.jasperreports</groupId>
@@ -47,12 +47,6 @@
       <url>http://www.opensource.org/licenses/lgpl-license.php</url>
     </license>
   </licenses>
-
-  <scm>
-    <connection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/trunk</connection>
-    <developerConnection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/trunk</developerConnection>
-    <url>http://jasperreportjsf.svn.sourceforge.net/viewvc/jasperreportjsf/trunk</url>
-  </scm>
 
   <issueManagement>
     <system>SourceForge.net</system>
@@ -100,5 +94,10 @@
     </repository>
   -->
   </repositories>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+  </properties>
 
 </project>
