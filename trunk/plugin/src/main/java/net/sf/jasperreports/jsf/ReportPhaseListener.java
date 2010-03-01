@@ -47,7 +47,8 @@ public final class ReportPhaseListener implements PhaseListener {
     private static final long serialVersionUID = -124696216613450702L;
 
     /** The Constant BASE_URI. */
-    public static final String BASE_URI = "/___jasperreportsjsf";
+    public static final String BASE_URI = "/" +
+            ReportPhaseListener.class.getPackage().getName();
 
     /** The Constant PARAM_CLIENTID. */
     public static final String PARAM_CLIENTID = "clientId";

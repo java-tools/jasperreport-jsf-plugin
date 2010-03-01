@@ -19,6 +19,7 @@
 package net.sf.jasperreports.jsf.spi;
 
 import java.io.IOException;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.resource.Resource;
@@ -45,14 +46,15 @@ public final class ResourceLoader {
      * @return the resource loader
      */
     public static Resource getResource(final FacesContext context,
-            final String name) throws IOException, ResourceException {
+            final UIComponent component, final String name)
+    throws IOException, ResourceException {
         if ((name == null) || (name.length() == 0)) {
             throw new IllegalArgumentException();
         }
 
         final ResourceResolver resolver = Services.chain(ResourceResolver.class,
                 DEFAULT_RESOLVER);
-        Resource resource = resolver.resolveResource(context, name);
+        Resource resource = resolver.resolveResource(context, component, name);
         if (resource == null) {
             throw new UnresolvedResourceException(name);
         }

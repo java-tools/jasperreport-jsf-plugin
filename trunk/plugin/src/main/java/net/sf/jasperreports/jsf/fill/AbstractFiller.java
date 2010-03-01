@@ -91,7 +91,7 @@ public abstract class AbstractFiller implements Filler {
         InputStream reportStream = null;
         try {
             final Resource resource = ResourceLoader.getResource(context,
-                    reportName);
+                    (UIComponent) report, reportName);
             reportStream = resource.getInputStream();
         } catch (final IOException e) {
             throw new FillerException(reportName, e);
@@ -164,7 +164,8 @@ public abstract class AbstractFiller implements Filler {
         if (subreportDir != null) {
             Resource resource = null;
             try {
-                resource = ResourceLoader.getResource(context, subreportDir);
+                resource = ResourceLoader.getResource(context,
+                        (UIComponent) report, subreportDir);
             } catch (final IOException e) {
                 throw new FillerException(e);
             }

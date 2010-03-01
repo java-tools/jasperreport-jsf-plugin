@@ -24,11 +24,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import javax.faces.component.UIComponent;
 
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.util.FileResolver;
 import net.sf.jasperreports.jsf.JRFacesException;
+import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.spi.ResourceLoader;
 
@@ -36,14 +38,14 @@ public class FacesFileResolver implements FileResolver {
 
     private static final int BUFFER_SIZE = 2048;
     
-    private final FacesContext context;
+    private final UIReport report;
 
-    public FacesFileResolver(final FacesContext context) {
+    public FacesFileResolver(final UIReport report) {
         super();
-        if (context == null) {
+        if (report == null) {
             throw new IllegalArgumentException("'context' can't be null");
         }
-        this.context = context;
+        this.report = report;
     }
 
     public File resolveFile(final String name) {
@@ -65,7 +67,8 @@ public class FacesFileResolver implements FileResolver {
     }
 
     protected Resource resolveResource(String name) throws IOException {
-        return ResourceLoader.getResource(context, name);
+        return ResourceLoader.getResource(getFacesContext(),
+                (UIComponent) report, name);
     }
 
     protected File downloadResource(Resource resource) throws IOException {
@@ -83,13 +86,17 @@ public class FacesFileResolver implements FileResolver {
         return tempFile;
     }
 
+    protected FacesContext getFacesContext() {
+        return FacesContext.getCurrentInstance();
+    }
+
     protected boolean isRemote(Resource resource) throws IOException {
         URL resourceURL = resource.getLocation();
         if (!"file".equals(resourceURL.getProtocol())) {
             ExternalContextHelper helper = ExternalContextHelper.getInstance(
-                    context.getExternalContext());
+                    getFacesContext().getExternalContext());
             return !(resourceURL.getHost().equals(helper.getRequestServerName(
-                    context.getExternalContext())));
+                    getFacesContext().getExternalContext())));
         }
         return false;
     }

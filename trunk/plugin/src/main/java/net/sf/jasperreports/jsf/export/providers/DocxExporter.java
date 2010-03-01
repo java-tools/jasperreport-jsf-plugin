@@ -26,6 +26,13 @@ import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporterParameter;
 import net.sf.jasperreports.jsf.export.AbstractJRExporter;
 
+/**
+ * Exports the reports contents to a MS Office 2007 (Word) document.
+ * <p>
+ * <b>Requires JasperReports 3.5.x</b>
+ * 
+ * @author A. Alonso Dominguez
+ */
 public final class DocxExporter extends AbstractJRExporter {
 
     public static final String CONTENT_TYPE =
