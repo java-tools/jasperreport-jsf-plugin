@@ -33,7 +33,7 @@ to this list when using any of the functionalities provided.
 
 * 1.0-RC1
 
-  * Improved built-in resource loading mechanism
+  * Enhanced built-in resource loading mechanism
 
   * Removed support for <<<java.awt.Graphics2D>>> output formal (useless in servlet
 or portlet environments).

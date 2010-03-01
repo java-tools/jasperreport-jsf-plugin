@@ -38,7 +38,6 @@
   </bannerRight>
   
   <publishDate position="left" />
-  
   <version position="left" />
   
   <poweredBy>
@@ -46,13 +45,16 @@
           img="http://maven.apache.org/images/logos/maven-feather.png"/>
     <logo name="JasperReports" href="http://www.jaspersoft.com/jasperreports"
           img="http://jasperforge.org/uploads/projects/logo/jasperreports_thumbnail.jpg"/>
+    <logo name="Donate" href="http://sourceforge.net/donate/index.php?group_id=212447"
+          img="http://images.sourceforge.net/images/project-support.jpg"
+          width="88" height="32" border="0" alt="Support this Project" />
   </poweredBy>
   
   <body>
-    <links>
-      <item name="JasperReports" href="http://jasperreports.sourceforge.net" />
+    <links>      
       <item name="SF Project Page" href="http://sourceforge.net/projects/jasperreportjsf" />
       <item name="JF Project Page" href="http://jasperforge.org/plugins/project/project_home.php?group_id=106" />
+      <item name="JasperReports" href="http://jasperreports.sourceforge.net" />
     </links>
     
     <menu name="Main Menu">
@@ -72,6 +74,7 @@
         <item name="JNDI" href="datasources/jndi.html" />
         <item name="CSV" href="datasources/csv.html" />
         <item name="XML" href="datasources/xml.html" />
+        <item name="XLS" href="datasources/xls.html" />
         <item name="Others" href="datasources/others.html" />
       </item>
       <item name="Sample Applications" href="samples/index.html">
@@ -80,6 +83,7 @@
     </menu>
     
     <menu name="Developer Documentation">
+      <item name="Build instructions" href="build.html" />
       <item name="Functional Features" href="devel/index.html">
         <item name="Fillers" href="devel/filler.html" />
         <item name="Exporters" href="devel/exporter.html" />
