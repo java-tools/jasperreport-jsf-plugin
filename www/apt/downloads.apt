@@ -29,6 +29,8 @@ Downloads
 
   Currently there not any final release of the JasperReport JSF Plugin. However
 you can obtain early access releases from 
-{{{http://sourceforge.net/project/showfiles.php?group_id=212447&package_id=255544}SourceForge's}} web site
+{{{http://sourceforge.net/project/showfiles.php?group_id=212447&package_id=255544}SourceForge's web site}}
 
-  The most updated code can be found at our {{{http://jasperreportjsf.svn.sourceforge.net/viewvc/jasperreportjsf/trunk/}Subversion Repository}}
+  The most updated code can be found at our {{{source-repository.html}source repository}},
+please, follow {{{build.html}this instructions}} to obtain a work copy and
+build it from scratch.

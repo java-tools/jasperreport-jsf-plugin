@@ -105,7 +105,7 @@ the value of the <<<type>>> atribute must be "<<<resultSet>>>" and the type for
 the <<<value>>> attribute is must be always a <<<java.sql.ResultSet>>>.
 Be careful, since application is responsible of closing the result set.
 
-<<ManagedBean example>>>:
+<<ManagedBean example>>:
 +---
 import java.sql.*;
 import javax.annotation.PreDestroy;
@@ -136,7 +136,7 @@ public class ResultSetReportBean {
 }
 +---
 
-<<<JSF view example>>>:
+<<JSF view example>>:
 +---
 <jr:dataSource type="resultSet" value="#{resultSetReport.reportData}" />
 +---

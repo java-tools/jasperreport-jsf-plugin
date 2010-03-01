@@ -36,6 +36,10 @@
 
   <packaging>pom</packaging>
 
+  <prerequisites>
+    <maven>2.0.8</maven>
+  </prerequisites>
+
   <organization>
     <name>SourceForge.net</name>
     <url>http://www.sourceforge.net</url>
@@ -99,5 +103,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
+
+  <build>
+    <defaultGoal>install</defaultGoal>
+  </build>
 
 </project>
