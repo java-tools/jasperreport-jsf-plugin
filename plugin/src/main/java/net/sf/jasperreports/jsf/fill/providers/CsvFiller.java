@@ -78,7 +78,7 @@ public final class CsvFiller extends AbstractJRDataSourceFiller {
         } else if (value instanceof String) {
             try {
                 final Resource resource = ResourceLoader.getResource(context,
-                        (String) value);
+                        getDataSourceComponent(), (String) value);
                 dataSourceStream = resource.getInputStream();
             } catch (final ResourceException e) {
                 throw new FillerException(e);

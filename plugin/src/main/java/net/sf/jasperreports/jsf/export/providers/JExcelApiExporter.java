@@ -25,11 +25,25 @@ import net.sf.jasperreports.engine.export.JExcelApiExporterParameter;
 import net.sf.jasperreports.engine.export.JRXlsAbstractExporter;
 import net.sf.jasperreports.jsf.export.ExporterException;
 
+/**
+ * Exports the report contents to an Excel file using the JExcel API.
+ *
+ * @author A. Alonso Dominguez
+ */
 public final class JExcelApiExporter extends AbstractXlsExporter {
 
+    /** MIME type of the exported report. */
     public static final String CONTENT_TYPE = "application/vnd.ms-excel";
-    public static final String ATTR_CREATE_CUSTOM_PALETTE = "CREATE_CUSTOM_PALETTE";
 
+    /** 'CREATE_CUSTOM_PALLETE' exporter attribute name. */
+    public static final String ATTR_CREATE_CUSTOM_PALETTE =
+            "CREATE_CUSTOM_PALETTE";
+
+    /**
+     * Creates a new instance of a JExcelApiExporter.
+     *
+     * @param component the report component
+     */
     protected JExcelApiExporter(final UIComponent component) {
         super(component);
     }
@@ -39,12 +53,14 @@ public final class JExcelApiExporter extends AbstractXlsExporter {
     }
 
     @Override
-    protected JRXlsAbstractExporter createJRXlsExporter(final FacesContext context)
+    protected JRXlsAbstractExporter createJRXlsExporter(
+            final FacesContext context)
             throws ExporterException {
         final JRXlsAbstractExporter exporter =
                 new net.sf.jasperreports.engine.export.JExcelApiExporter();
         setParameterUsingAttribute(exporter,
-                JExcelApiExporterParameter.CREATE_CUSTOM_PALETTE, ATTR_CREATE_CUSTOM_PALETTE);
+                JExcelApiExporterParameter.CREATE_CUSTOM_PALETTE,
+                ATTR_CREATE_CUSTOM_PALETTE);
         return exporter;
     }
 }

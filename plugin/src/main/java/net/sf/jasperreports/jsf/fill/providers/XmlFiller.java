@@ -144,7 +144,7 @@ public final class XmlFiller extends AbstractJRDataSourceFiller {
                 stream = ((URL) value).openStream();
             } else if (value instanceof String) {
                 final Resource resource = ResourceLoader.getResource(context,
-                        (String) value);
+                        getDataSourceComponent(), (String) value);
                 stream = resource.getInputStream();
             } else if (value instanceof InputStream) {
                 stream = (InputStream) value;

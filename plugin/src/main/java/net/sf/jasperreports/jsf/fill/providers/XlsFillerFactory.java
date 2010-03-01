@@ -25,15 +25,17 @@ import net.sf.jasperreports.jsf.fill.AbstractFillerFactory;
 import net.sf.jasperreports.jsf.fill.Filler;
 
 /**
+ * Provides with <code>XlsFiller</code> instances to plugin's
+ * internal render mechanism.
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
 public class XlsFillerFactory extends AbstractFillerFactory {
 
     @Override
     protected Filler doCreateFiller(FacesContext context,
             UIDataSource dataSource) throws JRFacesException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new XlsFiller(dataSource);
     }
 
 }

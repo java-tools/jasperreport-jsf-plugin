@@ -62,6 +62,27 @@ public final class Util {
         return loader;
     }
 
+    public static String normalizePath(String path) {
+        if (path == null || path.length() == 0) {
+            throw new IllegalArgumentException("'path' can't be null or empty");
+        }
+
+        StringBuilder normalized = new StringBuilder();
+        int slash, lastIdx = 0;
+        while(-1 != (slash = path.indexOf("/", lastIdx))) {
+            if (slash == 0 && normalized.length() == 0) {
+                normalized.append("/");
+                continue;
+            }
+
+            String pathElem = path.substring(lastIdx, slash - 1);
+            if (pathElem.equals("..")) {
+                
+            }
+        }
+        return normalized.toString();
+    }
+
     /**
      * Gets the faces mapping.
      *
@@ -181,6 +202,17 @@ public final class Util {
         }
     }
 
-    private Util() {
+    private static String lastPathElement(String path) {
+        int lastSlash = path.lastIndexOf("/");
+        if (lastSlash <= 0) {
+            return null;
+        } else if (lastSlash == path.length() - 1) {
+            return lastPathElement(path.substring(0, path.length() - 1));
+        } else {
+            return path.substring(lastSlash, path.length());
+        }
     }
+
+    private Util() { }
+
 }

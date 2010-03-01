@@ -214,21 +214,9 @@
         </dependency>
 
         <dependency>
-            <groupId>javax.faces</groupId>
-            <artifactId>jsf-impl</artifactId>
-            <version>1.2_12</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tomcat</groupId>
-            <artifactId>jasper</artifactId>
-            <version>6.0.18</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
-            <version>3.5.3</version>
+            <version>3.7.1</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -240,6 +228,26 @@
                     <groupId>jfree</groupId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>jexcelapi</groupId>
+            <artifactId>jxl</artifactId>
+            <version>2.6</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.faces</groupId>
+            <artifactId>jsf-impl</artifactId>
+            <version>1.2_12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>jasper</artifactId>
+            <version>6.0.18</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>httpunit</groupId>

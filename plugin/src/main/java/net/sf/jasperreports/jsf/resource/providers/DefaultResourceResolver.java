@@ -21,6 +21,7 @@ package net.sf.jasperreports.jsf.resource.providers;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.spi.ResourceResolver;
@@ -33,7 +34,8 @@ import net.sf.jasperreports.jsf.util.Util;
  */
 public class DefaultResourceResolver implements ResourceResolver {
 
-    public Resource resolveResource(FacesContext context, String name) {
+    public Resource resolveResource(FacesContext context, UIComponent component,
+            String name) {
         if (name == null || name.length() == 0) {
             throw new IllegalArgumentException("Resource name must be provided.");
         }
@@ -50,7 +52,7 @@ public class DefaultResourceResolver implements ResourceResolver {
                         loader);
             } else if (name.startsWith("/")) {
                 resource = new ContextResource(name);
-            } else if (loader.getResourceAsStream(name) != null) {
+            } else if (loader.getResource(name) != null) {
                 resource = new ClasspathResource(name, loader);
             } else {
                 ExternalContextHelper helper = ExternalContextHelper.getInstance(

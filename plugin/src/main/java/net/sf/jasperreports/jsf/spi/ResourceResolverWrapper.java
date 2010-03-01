@@ -18,6 +18,7 @@
  */
 package net.sf.jasperreports.jsf.spi;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import net.sf.jasperreports.jsf.resource.Resource;
 
@@ -27,8 +28,9 @@ import net.sf.jasperreports.jsf.resource.Resource;
  */
 public abstract class ResourceResolverWrapper implements ResourceResolver {
 
-    public Resource resolveResource(FacesContext context, String name) {
-        return getWrapped().resolveResource(context, name);
+    public Resource resolveResource(FacesContext context, UIComponent component,
+            String name) {
+        return getWrapped().resolveResource(context, component, name);
     }
 
     public abstract ResourceResolver getWrapped();
