@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -18,23 +18,29 @@
  */
 package net.sf.jasperreports.jsf;
 
+import net.sf.jasperreports.jsf.lifecycle.ReportLifecycle;
+import net.sf.jasperreports.jsf.component.UIReport;
+
 /**
- * The Class MalformedReportURLException.
  *
  * @author A. Alonso Dominguez
  */
-public class MalformedReportURLException extends JRFacesException {
+public final class Constants {
 
-    /** */
-    private static final long serialVersionUID = 3940886012138032361L;
+    /** Base string URI used to recognize Report render requests. */
+    public static final String BASE_URI = "/"
+            + ReportLifecycle.class.getPackage().getName();
 
-    /**
-     * Instantiates a new MalformedEeportURLException.
-     *
-     * @param msg the message
-     */
-    public MalformedReportURLException(final String msg) {
-        super(msg);
-    }
+    /** Parameter identifying the component which sended the request. */
+    public static final String PARAM_CLIENTID = "clientId";
+
+    public static final String PARAM_VIEWSTATE = "viewState";
+
+    /** Internal key prefix used to obtain the report component. */
+    public static final String REPORT_COMPONENT_KEY_PREFIX =
+            UIReport.COMPONENT_FAMILY + "/";
+
+    /** Private constructor to prevent instantiation. */
+    private Constants() { }
 
 }

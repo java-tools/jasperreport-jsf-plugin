@@ -69,7 +69,7 @@ public final class Util {
 
         StringBuilder normalized = new StringBuilder();
         int slash, lastIdx = 0;
-        while(-1 != (slash = path.indexOf("/", lastIdx))) {
+        while (-1 != (slash = path.indexOf("/", lastIdx))) {
             if (slash == 0 && normalized.length() == 0) {
                 normalized.append("/");
                 continue;

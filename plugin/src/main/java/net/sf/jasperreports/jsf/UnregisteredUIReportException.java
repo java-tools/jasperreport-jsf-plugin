@@ -18,15 +18,24 @@
  */
 package net.sf.jasperreports.jsf;
 
+/**
+ * Exception thrown when the report component which sended the request couldn't
+ * be located.
+ *
+ * @author A. Alonso Dominguez
+ */
 public class UnregisteredUIReportException extends JRFacesException {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4348741227510346006L;
+    /** */
+    private static final long serialVersionUID = 4348741227510346006L;
 
-	public UnregisteredUIReportException(final String msg) {
-		super(msg);
-	}
+    /**
+     * Instantiates a new UnregisteredUIReportException.
+     *
+     * @param msg the message
+     */
+    public UnregisteredUIReportException(final String msg) {
+        super(msg);
+    }
 
 }
