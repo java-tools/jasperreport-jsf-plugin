@@ -31,7 +31,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.jsf.ReportPhaseListener;
+import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.config.Configuration;
 import net.sf.jasperreports.jsf.export.Exporter;
@@ -130,8 +130,7 @@ abstract class AbstractReportRenderer extends Renderer implements
      */
     protected final String buildReportURI(final FacesContext context,
             final UIComponent report) {
-        final StringBuffer reportURI = new StringBuffer(
-                ReportPhaseListener.BASE_URI);
+        final StringBuffer reportURI = new StringBuffer(Constants.BASE_URI);
 
         final Configuration config = Configuration.getInstance(context);
         String mapping = Util.getInvocationPath(context);
@@ -149,7 +148,7 @@ abstract class AbstractReportRenderer extends Renderer implements
             reportURI.append(mapping);
         }
 
-        reportURI.append('?').append(ReportPhaseListener.PARAM_CLIENTID);
+        reportURI.append('?').append(Constants.PARAM_CLIENTID);
         reportURI.append('=').append(report.getClientId(context));
 
         final ViewHandler viewHandler = context.getApplication().getViewHandler();
@@ -165,7 +164,7 @@ abstract class AbstractReportRenderer extends Renderer implements
             final UIComponent report) {
         final String clientId = report.getClientId(context);
         context.getExternalContext().getSessionMap().put(
-                ReportPhaseListener.REPORT_COMPONENT_KEY_PREFIX + clientId,
+                Constants.REPORT_COMPONENT_KEY_PREFIX + clientId,
                 report);
         if (logger.isLoggable(Level.FINEST)) {
             logger.log(Level.FINEST, "JRJSF_0013", clientId);

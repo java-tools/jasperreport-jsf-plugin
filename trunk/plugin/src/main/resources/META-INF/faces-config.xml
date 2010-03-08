@@ -29,7 +29,7 @@
 
     <lifecycle>
         <phase-listener>
-            net.sf.jasperreports.jsf.ReportPhaseListener
+            net.sf.jasperreports.jsf.lifecycle.ReportLifecycle
         </phase-listener>
     </lifecycle>
 

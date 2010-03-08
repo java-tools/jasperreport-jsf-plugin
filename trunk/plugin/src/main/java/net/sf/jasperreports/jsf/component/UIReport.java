@@ -24,78 +24,100 @@ import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
 
 /**
- * The Interface UIReport.
+ * The interface UIReport represents a report component.
+ *
+ * @author A. Alonso Dominguez
  */
 public interface UIReport extends StateHolder {
 
     /** The Constant COMPONENT_FAMILY. */
-    public static final String COMPONENT_FAMILY = "net.sf.jasperreports.Report";
+    String COMPONENT_FAMILY = "net.sf.jasperreports.Report";
 
     /**
-     * Gets the data source.
+     * Gets the data source identifier.
      *
      * @return the data source
      */
-    public String getDataSource();
+    String getDataSource();
 
     /**
-     * Sets the data source.
+     * Sets the data source identifier.
      *
-     * @param dataSource
-     *            the new data source
+     * @param dataSource the new data source
      */
-    public void setDataSource(String dataSource);
-
-    public String getName();
-
-    public void setName(String name);
+    void setDataSource(String dataSource);
 
     /**
-     * Gets the path.
+     * Gets the name used to offer the rendered report file.
      *
-     * @return the path
+     * @return the report file name
      */
-    public String getPath();
+    String getName();
 
     /**
-     * Sets the path.
+     * Sets the name that will be used to offer the rendered report file.
      *
-     * @param path
-     *            the new path
+     * @param name the new report file name
      */
-    public void setPath(String path);
+    void setName(String name);
 
     /**
-     * Gets the subreport dir.
+     * Gets the path to the report file.
      *
-     * @return the subreport dir
+     * @return the path to the report file
      */
-    public String getSubreportDir();
+    String getPath();
 
     /**
-     * Sets the subreport dir.
+     * Sets the path to the report file.
      *
-     * @param subreportDir
-     *            the new subreport dir
+     * @param path the new path
      */
-    public void setSubreportDir(String subreportDir);
+    void setPath(String path);
 
     /**
-     * Gets the format.
+     * Gets the subreport directory.
      *
-     * @return the format
+     * @return the subreport directory
      */
-    public String getFormat();
+    String getSubreportDir();
 
     /**
-     * Sets the format.
+     * Sets the subreport directory.
      *
-     * @param format
-     *            the new format
+     * @param subreportDir the new subreport directory
      */
-    public void setFormat(String format);
+    void setSubreportDir(String subreportDir);
 
-    public void encodeContent(FacesContext context) throws IOException;
+    /**
+     * Gets the export format.
+     *
+     * @return the export format
+     */
+    String getFormat();
 
-    public void encodeHeaders(FacesContext context) throws IOException;
+    /**
+     * Sets the export format.
+     *
+     * @param format the new export format
+     */
+    void setFormat(String format);
+
+    /**
+     * Encodes the report component contents into the current response.
+     *
+     * @param context the faces context
+     * @throws IOException if some error happens while rendering the response
+     */
+    void encodeContent(FacesContext context) throws IOException;
+
+    /**
+     * Encodes the report component headers into the current response.
+     *
+     * @param context the faces context
+     * @throws IOException if some error happens while writing headers in
+     *                     the response
+     */
+    void encodeHeaders(FacesContext context) throws IOException;
+
 }

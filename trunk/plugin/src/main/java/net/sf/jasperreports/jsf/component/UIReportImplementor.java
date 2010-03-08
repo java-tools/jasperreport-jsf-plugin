@@ -32,6 +32,7 @@ public final class UIReportImplementor implements StateHolder {
 
     /** The callback. */
     private final UIComponentBase callback;
+
     /** The data source. */
     private String dataSource;
 
@@ -46,8 +47,7 @@ public final class UIReportImplementor implements StateHolder {
     /**
      * Instantiates a new uI report implementor.
      *
-     * @param callback
-     *            the callback
+     * @param callback the callback
      */
     public UIReportImplementor(final UIComponentBase callback) {
         super();

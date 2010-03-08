@@ -30,6 +30,7 @@ import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRHyperlinkProducerFactory;
 import net.sf.jasperreports.engine.util.FileResolver;
+import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.util.FacesFileResolver;
 import net.sf.jasperreports.jsf.util.FacesHyperlinkProducerFactory;
 import net.sf.jasperreports.jsf.util.Util;
@@ -99,7 +100,7 @@ public abstract class AbstractJRExporter extends AbstractExporter {
         setParameterUsingAttribute(exporter,
                 JRExporterParameter.OFFSET_Y, ATTR_OFFSET_Y);
 
-        final FileResolver fr = new FacesFileResolver(context);
+        final FileResolver fr = new FacesFileResolver((UIReport) super.getComponent());
         exporter.setParameter(JRExporterParameter.FILE_RESOLVER, fr);
 
         /* EXPERIMENTAL: Goal is the ability of linking reports to faces views

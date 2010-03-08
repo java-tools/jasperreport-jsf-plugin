@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -16,25 +16,14 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf;
+package net.sf.jasperreports.jsf.lifecycle;
 
 /**
- * The Class MalformedReportURLException.
  *
- * @author A. Alonso Dominguez
+ * @author aalonsodominguez
  */
-public class MalformedReportURLException extends JRFacesException {
+public class RestoreViewReportPhase extends ReportPhase {
 
-    /** */
-    private static final long serialVersionUID = 3940886012138032361L;
-
-    /**
-     * Instantiates a new MalformedEeportURLException.
-     *
-     * @param msg the message
-     */
-    public MalformedReportURLException(final String msg) {
-        super(msg);
-    }
-
+    protected RestoreViewReportPhase() { }
+    
 }

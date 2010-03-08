@@ -30,9 +30,12 @@ import javax.faces.context.FacesContext;
 public class UIDataSource extends UIComponentBase {
 
     /** The Constant COMPONENT_FAMILY. */
-    public static final String COMPONENT_FAMILY = "net.sf.jasperreports.DataSource";
+    public static final String COMPONENT_FAMILY =
+            "net.sf.jasperreports.DataSource";
+    
     /** The Constant COMPONENT_TYPE. */
-    public static final String COMPONENT_TYPE = "net.sf.jasperreports.DataSource";
+    public static final String COMPONENT_TYPE =
+            "net.sf.jasperreports.DataSource";
 
     // Fields
 
@@ -54,12 +57,13 @@ public class UIDataSource extends UIComponentBase {
     }
 
     // Properties
+
     /**
      * Gets the query.
      *
      * @return the query
      */
-    public String getQuery() {
+    public final String getQuery() {
         if (query != null) {
             return query;
         }
@@ -78,10 +82,9 @@ public class UIDataSource extends UIComponentBase {
     /**
      * Sets the query.
      *
-     * @param query
-     *            the new query
+     * @param query the new query
      */
-    public void setQuery(final String query) {
+    public final void setQuery(final String query) {
         this.query = query;
     }
 
@@ -90,7 +93,7 @@ public class UIDataSource extends UIComponentBase {
      *
      * @return the type
      */
-    public String getType() {
+    public final String getType() {
         if (typeSet) {
             return type;
         }
@@ -109,10 +112,9 @@ public class UIDataSource extends UIComponentBase {
     /**
      * Sets the type.
      *
-     * @param type
-     *            the new type
+     * @param type the new type
      */
-    public void setType(final String type) {
+    public final void setType(final String type) {
         this.type = type;
         typeSet = true;
     }
@@ -122,7 +124,7 @@ public class UIDataSource extends UIComponentBase {
      *
      * @return the value
      */
-    public Object getValue() {
+    public final Object getValue() {
         if (value != null) {
             return value;
         }
@@ -141,10 +143,9 @@ public class UIDataSource extends UIComponentBase {
     /**
      * Sets the value.
      *
-     * @param value
-     *            the new value
+     * @param value the new value
      */
-    public void setValue(final Object value) {
+    public final void setValue(final Object value) {
         this.value = value;
     }
 
@@ -180,7 +181,7 @@ public class UIDataSource extends UIComponentBase {
     /*
      * (non-Javadoc)
      *
-     * @seejavax.faces.component.UIComponentBase#saveState(javax.faces.context.
+     * @see javax.faces.component.UIComponentBase#saveState(javax.faces.context.
      * FacesContext)
      */
     @Override
@@ -193,4 +194,5 @@ public class UIDataSource extends UIComponentBase {
         values[4] = value;
         return values;
     }
+    
 }
