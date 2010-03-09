@@ -19,6 +19,7 @@
 package net.sf.jasperreports.jsf.lifecycle;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,40 +29,60 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
 
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.MalformedReportURLException;
 import net.sf.jasperreports.jsf.UnregisteredUIReportException;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.util.ExternalContextHelper;
 
 /**
  *
  * @author A. Alonso Dominguez
  */
-public class RenderResponseReportPhase extends ReportPhase
+public class RenderResponsePhaseListener extends AbstractReportPhaseListener
         implements ContextCallback {
 
     private static final Logger logger = Logger.getLogger(
-            RenderResponseReportPhase.class.getPackage().getName(),
+            RenderResponsePhaseListener.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
-    protected RenderResponseReportPhase() { }
+    protected RenderResponsePhaseListener() { }
 
-    @Override
-    public void doBeforePhase(FacesContext context) throws FacesException {
-        super.doBeforePhase(context);
+    public void afterPhase(PhaseEvent event) throws FacesException {
+        final FacesContext context = event.getFacesContext();
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        if (!isReportRequest(context) && Boolean.TRUE.equals(
+                requestMap.get(Constants.ATTR_REPORT_VIEW))) {
+            ExternalContextHelper helper = ExternalContextHelper.getInstance(
+                    context.getExternalContext());
+            Map<String, String> viewCacheMap = getViewCacheMap(context);
+
+            String viewId = helper.getViewId(context.getExternalContext());
+            String viewState = (String) requestMap.get(Constants.ATTR_VIEW_STATE);
+
+            viewCacheMap.put(viewId, viewState);
+        }
+    }
+
+    public void beforePhase(PhaseEvent event) throws FacesException {
+        FacesContext context = event.getFacesContext();
+        if (!isReportRequest(context)) {
+            return;
+        }
+
         try {
             final ExternalContext extContext = context.getExternalContext();
 
-            final String clientId = context.getExternalContext()
-                    .getRequestParameterMap().get(Constants.PARAM_CLIENTID);
+            final String clientId = context.getExternalContext().getRequestParameterMap().get(Constants.PARAM_CLIENTID);
             if (clientId == null) {
                 throw new MalformedReportURLException("Missed parameter: "
                         + Constants.PARAM_CLIENTID);
             }
 
-            final UIReport report = (UIReport) extContext.getSessionMap()
-                    .get(Constants.REPORT_COMPONENT_KEY_PREFIX + clientId);
+            final UIReport report = (UIReport) extContext.getSessionMap().get(Constants.REPORT_COMPONENT_KEY_PREFIX + clientId);
             if (report == null) {
                 throw new UnregisteredUIReportException(clientId);
             }
@@ -74,6 +95,10 @@ public class RenderResponseReportPhase extends ReportPhase
         } finally {
             context.responseComplete();
         }
+    }
+
+    public PhaseId getPhaseId() {
+        return PhaseId.RENDER_RESPONSE;
     }
 
     public void invokeContextCallback(FacesContext context, UIComponent target) {
@@ -100,5 +125,4 @@ public class RenderResponseReportPhase extends ReportPhase
             logger.log(Level.FINER, "JRJSF_0017", clientId);
         }
     }
-
 }
