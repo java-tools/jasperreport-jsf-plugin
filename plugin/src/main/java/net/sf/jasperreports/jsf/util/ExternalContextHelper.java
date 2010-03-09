@@ -20,6 +20,7 @@ package net.sf.jasperreports.jsf.util;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import javax.faces.application.ViewHandler;
 import javax.faces.context.ExternalContext;
 
 import javax.faces.context.FacesContext;
@@ -56,7 +57,7 @@ public abstract class ExternalContextHelper {
         return instance;
     }
 
-    protected static boolean isPortletAvailable() {
+    public static boolean isPortletAvailable() {
         boolean portletAvailable = false;
         try {
             Class.forName(PORTLET_CLASS);
@@ -69,7 +70,7 @@ public abstract class ExternalContextHelper {
         return portletAvailable;
     }
 
-    protected static String getPortletVersion() {
+    public static String getPortletVersion() {
         final boolean portletAvailable = isPortletAvailable();
 
         String portletVersion = null;
@@ -84,7 +85,7 @@ public abstract class ExternalContextHelper {
         return portletVersion;
     }
 
-    private static boolean isServletContext(final ExternalContext context) {
+    public static boolean isServletContext(final ExternalContext context) {
         final Object ctx = context.getContext();
         return (ctx instanceof ServletContext);
     }
@@ -105,6 +106,21 @@ public abstract class ExternalContextHelper {
 
     public abstract String getResourceRealPath(
             final ExternalContext context, String name);
+
+    public String getViewId(final ExternalContext context) {
+        String pathInfo = context.getRequestPathInfo();
+        String servletPath = context.getRequestServletPath();
+        if (pathInfo == null) {
+            String suffix = context.getInitParameter(
+                    ViewHandler.DEFAULT_SUFFIX_PARAM_NAME);
+            if (suffix == null || suffix.length() == 0) {
+                suffix = ViewHandler.DEFAULT_SUFFIX;
+            }
+            return servletPath.substring(0, servletPath.lastIndexOf('.')) + suffix;
+        } else {
+            return pathInfo;
+        }
+    }
 
     public abstract void writeHeaders(ExternalContext context,
             ReportRenderer renderer, UIReport report) throws IOException;

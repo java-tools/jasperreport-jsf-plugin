@@ -133,6 +133,9 @@ abstract class AbstractReportRenderer extends Renderer implements
         final StringBuffer reportURI = new StringBuffer(Constants.BASE_URI);
 
         final Configuration config = Configuration.getInstance(context);
+        final ExternalContextHelper helper = ExternalContextHelper.getInstance(
+                context.getExternalContext());
+
         String mapping = Util.getInvocationPath(context);
         if (!config.getFacesMappings().contains(mapping)) {
             if (logger.isLoggable(Level.WARNING)) {
@@ -150,22 +153,23 @@ abstract class AbstractReportRenderer extends Renderer implements
 
         reportURI.append('?').append(Constants.PARAM_CLIENTID);
         reportURI.append('=').append(report.getClientId(context));
+        reportURI.append('&').append(Constants.PARAM_VIEWID);
+	reportURI.append('=').append(helper.getViewId(
+                context.getExternalContext()));
 
-        final ViewHandler viewHandler = context.getApplication().getViewHandler();
+        final ViewHandler viewHandler = context.getApplication()
+                .getViewHandler();
         return context.getExternalContext().encodeResourceURL(
                 viewHandler.getResourceURL(context, reportURI.toString()));
     }
-
-	protected String getViewState(final FacesContext context) {
-		return "";
-	}
 	
     protected final void registerComponent(final FacesContext context,
             final UIComponent report) {
         final String clientId = report.getClientId(context);
-        context.getExternalContext().getSessionMap().put(
-                Constants.REPORT_COMPONENT_KEY_PREFIX + clientId,
-                report);
+
+        context.getExternalContext().getRequestMap().put(
+                Constants.ATTR_REPORT_VIEW, Boolean.TRUE);
+
         if (logger.isLoggable(Level.FINEST)) {
             logger.log(Level.FINEST, "JRJSF_0013", clientId);
         }

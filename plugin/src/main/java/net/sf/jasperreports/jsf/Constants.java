@@ -18,7 +18,6 @@
  */
 package net.sf.jasperreports.jsf;
 
-import net.sf.jasperreports.jsf.lifecycle.ReportLifecycle;
 import net.sf.jasperreports.jsf.component.UIReport;
 
 /**
@@ -27,14 +26,24 @@ import net.sf.jasperreports.jsf.component.UIReport;
  */
 public final class Constants {
 
+    public static final String PACKAGE_PREFIX =
+		Constants.class.getPackage().getName();
+
+    public static final String ATTR_REPORT_VIEW =
+            PACKAGE_PREFIX + ".REPORT_VIEW";
+
+    public static final String ATTR_VIEW_STATE =
+            PACKAGE_PREFIX + ".VIEW_STATE";
+
     /** Base string URI used to recognize Report render requests. */
-    public static final String BASE_URI = "/"
-            + ReportLifecycle.class.getPackage().getName();
+    public static final String BASE_URI = "/" + PACKAGE_PREFIX;
 
     /** Parameter identifying the component which sended the request. */
-    public static final String PARAM_CLIENTID = "clientId";
+    public static final String PARAM_CLIENTID = 
+            PACKAGE_PREFIX + ".clientId";
 
-    public static final String PARAM_VIEWSTATE = "viewState";
+    public static final String PARAM_VIEWID =
+            PACKAGE_PREFIX + ".viewId";
 
     /** Internal key prefix used to obtain the report component. */
     public static final String REPORT_COMPONENT_KEY_PREFIX =
