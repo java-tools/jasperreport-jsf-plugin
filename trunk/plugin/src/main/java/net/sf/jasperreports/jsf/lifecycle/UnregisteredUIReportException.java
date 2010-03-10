@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2009 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -16,7 +16,7 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf;
+package net.sf.jasperreports.jsf.lifecycle;
 
 /**
  * Exception thrown when the report component which sended the request couldn't
@@ -24,7 +24,7 @@ package net.sf.jasperreports.jsf;
  *
  * @author A. Alonso Dominguez
  */
-public class UnregisteredUIReportException extends JRFacesException {
+public class UnregisteredUIReportException extends ReportLifecycleException {
 
     /** */
     private static final long serialVersionUID = 4348741227510346006L;

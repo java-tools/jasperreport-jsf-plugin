@@ -42,8 +42,7 @@ import net.sf.jasperreports.jsf.util.Util;
  */
 public class RestoreViewPhaseListener extends AbstractReportPhaseListener {
 
-    protected RestoreViewPhaseListener() {
-    }
+    public RestoreViewPhaseListener() { }
 
     public void afterPhase(PhaseEvent event) throws FacesException {
         FacesContext context = event.getFacesContext();
