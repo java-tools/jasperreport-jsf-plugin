@@ -28,9 +28,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.component.ContextCallback;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -93,7 +95,7 @@ public final class XmlFiller extends AbstractJRDataSourceFiller {
             try {
                 if ((query != null) && (query.length() > 0)) {
                     dataSource = new JRXmlDataSource(xmlDocument,
-                            parseQuery(query));
+                            parseQuery(context, query));
                 } else {
                     dataSource = new JRXmlDataSource(xmlDocument);
                 }
@@ -172,16 +174,23 @@ public final class XmlFiller extends AbstractJRDataSourceFiller {
         return document;
     }
 
-    private String parseQuery(final String query) {
+    private String parseQuery(final FacesContext context, final String query) {
         final List<Object> params = new ArrayList<Object>();
-        for (final UIComponent kid : getDataSourceComponent().getChildren()) {
-            if (!(kid instanceof UIParameter)) {
-                continue;
-            }
+        String dataSourceId = getDataSourceComponent().getClientId(context);
+        UIViewRoot viewRoot = context.getViewRoot();
 
-            final Object value = ((UIParameter) kid).getValue();
-            params.add(value);
-        }
+        viewRoot.invokeOnComponent(context, dataSourceId, new ContextCallback() {
+            public void invokeContextCallback(FacesContext context, UIComponent target) {
+                for (final UIComponent kid : getDataSourceComponent().getChildren()) {
+                    if (!(kid instanceof UIParameter)) {
+                        continue;
+                    }
+
+                    final Object value = ((UIParameter) kid).getValue();
+                    params.add(value);
+                }
+            }
+        });
 
         return MessageFormat.format(query,
                 params.toArray(new Object[params.size()]));

@@ -33,8 +33,6 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 
 import net.sf.jasperreports.jsf.Constants;
-import net.sf.jasperreports.jsf.MalformedReportURLException;
-import net.sf.jasperreports.jsf.UnregisteredUIReportException;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.util.ExternalContextHelper;
 
@@ -49,11 +47,12 @@ public class RenderResponsePhaseListener extends AbstractReportPhaseListener
             RenderResponsePhaseListener.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
-    protected RenderResponsePhaseListener() { }
+    public RenderResponsePhaseListener() { }
 
     public void afterPhase(PhaseEvent event) throws FacesException {
         final FacesContext context = event.getFacesContext();
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        Map<String, Object> requestMap = context
+                .getExternalContext().getRequestMap();
         if (!isReportRequest(context) && Boolean.TRUE.equals(
                 requestMap.get(Constants.ATTR_REPORT_VIEW))) {
             ExternalContextHelper helper = ExternalContextHelper.getInstance(
@@ -61,7 +60,8 @@ public class RenderResponsePhaseListener extends AbstractReportPhaseListener
             Map<String, String> viewCacheMap = getViewCacheMap(context);
 
             String viewId = helper.getViewId(context.getExternalContext());
-            String viewState = (String) requestMap.get(Constants.ATTR_VIEW_STATE);
+            String viewState = (String) requestMap.get(
+                    Constants.ATTR_VIEW_STATE);
 
             viewCacheMap.put(viewId, viewState);
         }
@@ -75,22 +75,16 @@ public class RenderResponsePhaseListener extends AbstractReportPhaseListener
 
         try {
             final ExternalContext extContext = context.getExternalContext();
-
-            final String clientId = context.getExternalContext().getRequestParameterMap().get(Constants.PARAM_CLIENTID);
+            final String clientId = extContext
+                    .getRequestParameterMap().get(Constants.PARAM_CLIENTID);
             if (clientId == null) {
                 throw new MalformedReportURLException("Missed parameter: "
                         + Constants.PARAM_CLIENTID);
             }
 
-            final UIReport report = (UIReport) extContext.getSessionMap().get(Constants.REPORT_COMPONENT_KEY_PREFIX + clientId);
-            if (report == null) {
-                throw new UnregisteredUIReportException(clientId);
-            }
-
             UIViewRoot viewRoot = context.getViewRoot();
             if (!viewRoot.invokeOnComponent(context, clientId, this)) {
-                throw new ReportLifecycleException("No report with id '"
-                        + clientId + "' could be invoked for rendering.");
+                throw new UnregisteredUIReportException(clientId);
             }
         } finally {
             context.responseComplete();

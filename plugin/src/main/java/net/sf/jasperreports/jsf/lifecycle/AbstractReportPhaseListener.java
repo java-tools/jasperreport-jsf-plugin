@@ -37,7 +37,7 @@ import net.sf.jasperreports.jsf.util.ExternalContextHelper;
  * @see PhaseListener
  * @author A. Alonso Dominguez
  */
-public abstract class AbstractReportPhaseListener implements PhaseListener {
+abstract class AbstractReportPhaseListener implements PhaseListener {
 
     private static final String VIEW_CACHE_KEY =
             Constants.PACKAGE_PREFIX + ".VIEW_CACHE";

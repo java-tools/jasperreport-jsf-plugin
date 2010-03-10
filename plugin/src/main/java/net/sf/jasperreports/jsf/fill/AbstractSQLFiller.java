@@ -24,9 +24,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+import javax.faces.component.ContextCallback;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRDataSource;
@@ -41,6 +46,10 @@ import net.sf.jasperreports.jsf.component.UIDataSource;
  * The Class QueryFiller.
  */
 public abstract class AbstractSQLFiller extends AbstractFiller {
+
+    private static final Logger logger = Logger.getLogger(
+            AbstractSQLFiller.class.getPackage().getName(),
+            "net.sf.jasperreports.jsf.LogMessages");
 
     public AbstractSQLFiller(final UIDataSource dataSource) {
         super(dataSource);
@@ -61,22 +70,46 @@ public abstract class AbstractSQLFiller extends AbstractFiller {
      * @throws FillerException
      *             the filler exception
      */
-    protected ResultSet executeQuery(final Connection conn, final String query)
-            throws FillerException {
-        PreparedStatement st = null;
-        try {
-            int paramIdx = 1;
-            st = conn.prepareStatement(query);
-            for (final UIComponent kid : getDataSourceComponent().getChildren()) {
-                if (!(kid instanceof UIParameter)) {
-                    continue;
+    protected ResultSet executeQuery(final FacesContext context,
+            final Connection conn, final String query)
+            throws SQLException {
+        final PreparedStatement st = conn.prepareStatement(query);
+        String dataSourceId = getDataSourceComponent().getClientId(context);
+        UIViewRoot viewRoot = context.getViewRoot();
+
+        // Use the ContextCallback pattern so parameters can be evaluated
+        // against the proper values for managed beans
+        viewRoot.invokeOnComponent(context, dataSourceId, new ContextCallback(){
+            public void invokeContextCallback(FacesContext context,
+                    UIComponent target) {
+                int paramIdx = 1;
+                for (final UIComponent kid : getDataSourceComponent()
+                        .getChildren()) {
+                    if (!(kid instanceof UIParameter)) {
+                        continue;
+                    }
+
+                    final UIParameter param = (UIParameter) kid;
+                    try {
+                        st.setObject(paramIdx++, param.getValue());
+                    } catch (Exception e) {
+                        if (logger.isLoggable(Level.WARNING)) {
+                            LogRecord record = new LogRecord(
+                                    Level.WARNING, "JRJSF_0028");
+                            record.setParameters(new Object[]{
+                                    paramIdx, param.getName(), query
+                            });
+                            record.setThrown(e);
+                            logger.log(record);
+                        }
+                    }
                 }
-                final UIParameter param = (UIParameter) kid;
-                st.setObject(paramIdx++, param.getValue());
             }
+        });
+
+        
+        try {
             return st.executeQuery();
-        } catch (final SQLException e) {
-            throw new FillerException(e);
         } finally {
             if (st != null) {
                 try {
@@ -86,6 +119,7 @@ public abstract class AbstractSQLFiller extends AbstractFiller {
                 }
             }
         }
+
     }
 
     @Override
@@ -105,7 +139,7 @@ public abstract class AbstractSQLFiller extends AbstractFiller {
         try {
             final String query = getDataSourceComponent().getQuery();
             if ((query != null) && (query.length() > 0)) {
-                rs = executeQuery(conn, query);
+                rs = executeQuery(context, conn, query);
                 dataSource = new JRResultSetDataSource(rs);
             }
 
@@ -116,6 +150,8 @@ public abstract class AbstractSQLFiller extends AbstractFiller {
                 result = JasperFillManager.fillReport(reportStream, params,
                         dataSource);
             }
+        } catch (final SQLException e) {
+            throw new FillerException(e);
         } catch (final JRException e) {
             throw new FillerException(e);
         } finally {
