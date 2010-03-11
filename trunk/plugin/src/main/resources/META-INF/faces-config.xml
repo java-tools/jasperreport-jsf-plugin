@@ -81,7 +81,7 @@
                 net.sf.jasperreports.Embed
             </renderer-type>
             <renderer-class>
-                net.sf.jasperreports.jsf.renderkit.EmbedRenderer
+                net.sf.jasperreports.jsf.renderkit.html_basic.EmbedRenderer
             </renderer-class>
         </renderer>
 
@@ -93,7 +93,7 @@
                 net.sf.jasperreports.Link
             </renderer-type>
             <renderer-class>
-                net.sf.jasperreports.jsf.renderkit.LinkRenderer
+                net.sf.jasperreports.jsf.renderkit.html_basic.LinkRenderer
             </renderer-class>
         </renderer>
     </render-kit>
