@@ -27,9 +27,19 @@
               xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
               version="1.2">
 
+
+    <application>
+        <state-manager>
+            net.sf.jasperreports.jsf.application.StateManagerImpl
+        </state-manager>
+    </application>
+
     <lifecycle>
         <phase-listener>
-            net.sf.jasperreports.jsf.ReportPhaseListener
+            net.sf.jasperreports.jsf.lifecycle.RestoreViewPhaseListener
+        </phase-listener>
+        <phase-listener>
+            net.sf.jasperreports.jsf.lifecycle.RenderResponsePhaseListener
         </phase-listener>
     </lifecycle>
 

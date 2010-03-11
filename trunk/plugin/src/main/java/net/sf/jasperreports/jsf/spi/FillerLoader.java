@@ -155,7 +155,8 @@ public final class FillerLoader {
          */
         @Override
         protected JasperPrint doFill(final FacesContext context,
-                final InputStream reportStream, final Map<String, Object> params)
+                final InputStream reportStream,
+                final Map<String, Object> params)
                 throws FillerException {
             try {
                 return JasperFillManager.fillReport(reportStream, params);
@@ -165,9 +166,7 @@ public final class FillerLoader {
         }
     }
 
-    /**
-     * Instantiates a new filler factory.
-     */
-    private FillerLoader() {
-    }
+    /** Private constructor to prevent instantiation */
+    private FillerLoader() { }
+
 }

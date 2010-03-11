@@ -22,7 +22,7 @@ import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 
 import net.sf.jasperreports.jsf.component.html.HtmlReportLink;
-import net.sf.jasperreports.jsf.renderkit.LinkRenderer;
+import net.sf.jasperreports.jsf.renderkit.html_basic.LinkRenderer;
 
 /**
  * The Class ReportLinkTag.

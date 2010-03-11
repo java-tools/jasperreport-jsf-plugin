@@ -16,7 +16,7 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.renderkit;
+package net.sf.jasperreports.jsf.renderkit.html_basic;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -65,11 +65,12 @@ public class EmbedRenderer extends AbstractReportRenderer {
     @SuppressWarnings("unused")
     public void encodeBegin(final FacesContext context,
             final UIComponent component) throws IOException {
+        
+        logger.log(Level.FINE, "JRJSF_0002", component.getClientId(context));
+
         final ViewHandler viewHandler = context.getApplication().getViewHandler();
         final UIReport report = (UIReport) component;
         final String reportURI = buildReportURI(context, component);
-
-        logger.log(Level.FINE, "JRJSF_0002", component.getClientId(context));
 
         final ResponseWriter writer = context.getResponseWriter();
         if ("block".equals(component.getAttributes().get("layout"))) {

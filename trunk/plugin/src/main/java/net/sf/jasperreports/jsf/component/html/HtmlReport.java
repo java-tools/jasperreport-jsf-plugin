@@ -28,7 +28,7 @@ import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.component.UIReportImplementor;
-import net.sf.jasperreports.jsf.renderkit.EmbedRenderer;
+import net.sf.jasperreports.jsf.renderkit.html_basic.EmbedRenderer;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 
 /**

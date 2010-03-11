@@ -16,7 +16,7 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.renderkit;
+package net.sf.jasperreports.jsf.renderkit.html_basic;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -36,6 +36,7 @@ import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.config.Configuration;
 import net.sf.jasperreports.jsf.export.Exporter;
 import net.sf.jasperreports.jsf.fill.Filler;
+import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 import net.sf.jasperreports.jsf.spi.ExporterLoader;
 import net.sf.jasperreports.jsf.spi.FillerLoader;
 import net.sf.jasperreports.jsf.util.ExternalContextHelper;
@@ -98,9 +99,7 @@ abstract class AbstractReportRenderer extends Renderer implements
         } finally {
             try {
                 reportData.close();
-            } catch (final IOException e) {
-                // ignore
-            }
+            } catch (final IOException e) { }
         }
     }
 
@@ -154,15 +153,19 @@ abstract class AbstractReportRenderer extends Renderer implements
         reportURI.append('?').append(Constants.PARAM_CLIENTID);
         reportURI.append('=').append(report.getClientId(context));
         reportURI.append('&').append(Constants.PARAM_VIEWID);
-	reportURI.append('=').append(helper.getViewId(
+        reportURI.append('=').append(helper.getViewId(
                 context.getExternalContext()));
 
         final ViewHandler viewHandler = context.getApplication()
                 .getViewHandler();
-        return context.getExternalContext().encodeResourceURL(
+        final String result = context.getExternalContext().encodeResourceURL(
                 viewHandler.getResourceURL(context, reportURI.toString()));
+        if (logger.isLoggable(Level.FINER)) {
+            logger.log(Level.FINER, "JRJSF_0031", result);
+        }
+        return result;
     }
-	
+
     protected final void registerComponent(final FacesContext context,
             final UIComponent report) {
         final String clientId = report.getClientId(context);
@@ -170,8 +173,8 @@ abstract class AbstractReportRenderer extends Renderer implements
         context.getExternalContext().getRequestMap().put(
                 Constants.ATTR_REPORT_VIEW, Boolean.TRUE);
 
-        if (logger.isLoggable(Level.FINEST)) {
-            logger.log(Level.FINEST, "JRJSF_0013", clientId);
+        if (logger.isLoggable(Level.FINER)) {
+            logger.log(Level.FINER, "JRJSF_0013", clientId);
         }
     }
 

@@ -36,7 +36,7 @@ public class ReportLinkTest extends ReportTestBase {
 
     @Parameters
     public static Collection<?> linkIdentifiers() {
-        return Arrays.asList(new Object[][]{{"reportLink"}});
+        return Arrays.asList(new Object[][]{{"reportForm:reportLink"}});
     }
     private final String linkId;
 
@@ -49,6 +49,7 @@ public class ReportLinkTest extends ReportTestBase {
         final WebResponse response = getResponse("/ReportLinkTest.jsf");
         final WebLink link = response.getLinkWithID(linkId);
         Assert.assertNotNull("Link '" + linkId + "' is null", link);
+        System.out.println("---> Here I click the link");
         link.click();
     }
 }

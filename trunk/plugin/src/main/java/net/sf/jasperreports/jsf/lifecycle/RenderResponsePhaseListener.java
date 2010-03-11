@@ -43,6 +43,7 @@ import net.sf.jasperreports.jsf.util.ExternalContextHelper;
 public class RenderResponsePhaseListener extends AbstractReportPhaseListener
         implements ContextCallback {
 
+    /** The logger instance. */
     private static final Logger logger = Logger.getLogger(
             RenderResponsePhaseListener.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
@@ -63,6 +64,11 @@ public class RenderResponsePhaseListener extends AbstractReportPhaseListener
             String viewState = (String) requestMap.get(
                     Constants.ATTR_VIEW_STATE);
 
+            if (logger.isLoggable(Level.FINER)) {
+                logger.log(Level.FINER, "JRJSF_0032", new Object[]{
+                    viewId, viewState
+                });
+            }
             viewCacheMap.put(viewId, viewState);
         }
     }

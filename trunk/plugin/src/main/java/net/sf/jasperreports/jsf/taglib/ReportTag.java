@@ -22,7 +22,7 @@ import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 
 import net.sf.jasperreports.jsf.component.html.HtmlReport;
-import net.sf.jasperreports.jsf.renderkit.EmbedRenderer;
+import net.sf.jasperreports.jsf.renderkit.html_basic.EmbedRenderer;
 
 /**
  * The Class ReportTag.
