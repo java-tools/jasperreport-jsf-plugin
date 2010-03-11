@@ -1,6 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <!--  
   JasperReports JSF Plugin
-  Copyright (C) 2009 A. Alonso Dominguez
+  Copyright (C) 2010 A. Alonso Dominguez
  
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -20,7 +22,9 @@
   alonsoft@users.sf.net
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -30,10 +34,16 @@
     <relativePath>../../build/common-pom.xml</relativePath>
   </parent>
 
-  <name>JasperReports JSF Plugin - Samples - Simple DB</name>
+  <name>JasperReports JSF Plugin - Samples - JasperReport N' JSF Use Cases</name>
   <groupId>net.sf.jasperreports.jsf.samples</groupId>
-  <artifactId>simple-db</artifactId>
+  <artifactId>jrjsf-usecases</artifactId>
   <packaging>war</packaging>
+
+  <scm>
+    <connection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/trunk/samples/jrjsf-usecases</connection>
+    <developerConnection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/trunk/samples/jrjsf-usecases</developerConnection>
+    <url>http://jasperreportjsf.svn.sourceforge.net/viewvc/jasperreportjsf/trunk/samples/jrjsf-usecases</url>
+  </scm>
 
   <build>
     <plugins>
@@ -94,10 +104,10 @@
           </links>
         </configuration>
       </plugin>
-      <!--plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changelog-plugin</artifactId>
-      </plugin-->
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
