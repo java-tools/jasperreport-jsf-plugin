@@ -32,6 +32,9 @@ public final class Constants {
     public static final String ATTR_REPORT_VIEW =
             PACKAGE_PREFIX + ".REPORT_VIEW";
 
+    public static final String ATTR_POSTBACK =
+            PACKAGE_PREFIX + ".POSTBACK";
+
     public static final String ATTR_VIEW_STATE =
             PACKAGE_PREFIX + ".VIEW_STATE";
 

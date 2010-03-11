@@ -37,7 +37,12 @@ import net.sf.jasperreports.jsf.Constants;
 public class StateManagerImpl extends StateManagerWrapper {
 
     private static final int BUFFER_SIZE = 128;
+
     private StateManager delegate;
+
+    public StateManagerImpl(StateManager delegate) {
+        this.delegate = delegate;
+    }
 
     @Override
     public void writeState(FacesContext context, Object state)

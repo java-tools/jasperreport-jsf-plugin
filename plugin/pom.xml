@@ -217,7 +217,7 @@
             <groupId>jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
             <version>3.7.1</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
             <exclusions>
                 <exclusion>
                     <artifactId>jfreechart</artifactId>

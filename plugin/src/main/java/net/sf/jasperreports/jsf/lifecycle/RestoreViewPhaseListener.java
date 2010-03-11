@@ -18,29 +18,30 @@
  */
 package net.sf.jasperreports.jsf.lifecycle;
 
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
-import javax.faces.render.ResponseStateManager;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 
 import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.ReportHttpRenderRequest;
+import net.sf.jasperreports.jsf.ReportRenderRequest;
 import net.sf.jasperreports.jsf.config.Configuration;
 import net.sf.jasperreports.jsf.util.ExternalContextHelper;
-import net.sf.jasperreports.jsf.util.Util;
 
 /**
  *
  * @author aalonsodominguez
  */
 public class RestoreViewPhaseListener extends AbstractReportPhaseListener {
+
+    private static final Logger logger = Logger.getLogger(
+            RestoreViewPhaseListener.class.getPackage().getName(),
+            "net.sf.jasperreports.jsf.LogMessages");
 
     public RestoreViewPhaseListener() { }
 
@@ -58,18 +59,31 @@ public class RestoreViewPhaseListener extends AbstractReportPhaseListener {
     public void beforePhase(PhaseEvent event) throws FacesException {
         FacesContext context = event.getFacesContext();
         if (isReportRequest(context)) {
+            // Mark request as a postback to force view restoring
+            context.getExternalContext().getRequestMap().put(
+                    Constants.ATTR_POSTBACK, Boolean.TRUE);
+
             Configuration config = Configuration.getInstance(context);
             String viewId = context.getExternalContext()
                     .getRequestParameterMap().get(Constants.PARAM_VIEWID);
             String viewState = getViewCacheMap(context).get(viewId);
 
+            ReportRenderRequest renderRequest = null;
             if (ExternalContextHelper.isServletContext(
                     context.getExternalContext())) {
                 HttpServletRequest request = (HttpServletRequest)
                         context.getExternalContext().getRequest();
-                request = new RenderReportRequest(request, viewId,
+                request = new ReportHttpRenderRequest(request, viewId,
                         config.getDefaultMapping(), viewState);
                 context.getExternalContext().setRequest(request);
+                renderRequest = (ReportHttpRenderRequest) request;
+            }
+
+            if (logger.isLoggable(Level.FINE)) {
+                logger.log(Level.FINE, "JRJSF_0030", new Object[]{
+                    renderRequest.getViewId(),
+                    renderRequest.getReportClientId()
+                });
             }
         }
     }
@@ -78,73 +92,4 @@ public class RestoreViewPhaseListener extends AbstractReportPhaseListener {
         return PhaseId.RESTORE_VIEW;
     }
 
-    private class RenderReportRequest extends HttpServletRequestWrapper {
-
-        private String pathInfo;
-        private String servletPath;
-        private String viewState;
-
-        public RenderReportRequest(HttpServletRequest request,
-                String viewId, String facesMapping, String viewState) {
-            super(request);
-            this.viewState = viewState;
-            reverseEngineerPaths(viewId, facesMapping);
-        }
-
-        @Override
-        public String getParameter(String name) {
-            String[] values = getParameterValues(name);
-            if (values == null || values.length == 0) {
-                return null;
-            } else {
-                return values[0];
-            }
-        }
-
-        @Override
-        @SuppressWarnings("unchecked")
-        public Map<String, String[]> getParameterMap() {
-            Map<String, String[]> paramMap = new HashMap<String, String[]>();
-            paramMap.putAll(super.getParameterMap());
-            paramMap.put(ResponseStateManager.VIEW_STATE_PARAM,
-                    new String[]{viewState});
-            return Collections.unmodifiableMap(paramMap);
-        }
-
-        @Override
-        public Enumeration<String> getParameterNames() {
-            return Collections.enumeration(getParameterMap().keySet());
-        }
-
-        @Override
-        public String[] getParameterValues(String name) {
-            return getParameterMap().get(name);
-        }
-
-        @Override
-        public String getPathInfo() {
-            return pathInfo;
-        }
-
-        @Override
-        public String getServletPath() {
-            return servletPath;
-        }
-
-        private void reverseEngineerPaths(String viewId, String facesMapping) {
-            if (Util.isPrefixMapped(facesMapping)) {
-                int i = facesMapping.indexOf("/*");
-                if (i != -1) {
-                    servletPath = facesMapping.substring(0, i);
-                } else {
-                    servletPath = facesMapping;
-                }
-                pathInfo = viewId;
-            } else {
-                servletPath = viewId.substring(0, viewId.lastIndexOf('.'))
-                        + facesMapping.substring(facesMapping.indexOf('.'));
-                pathInfo = null;
-            }
-        }
-    }
 }
