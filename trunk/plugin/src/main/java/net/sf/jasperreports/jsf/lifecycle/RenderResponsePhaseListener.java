@@ -33,6 +33,7 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 
 import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.util.ExternalContextHelper;
 
@@ -40,7 +41,7 @@ import net.sf.jasperreports.jsf.util.ExternalContextHelper;
  *
  * @author A. Alonso Dominguez
  */
-public class RenderResponsePhaseListener extends AbstractReportPhaseListener
+public final class RenderResponsePhaseListener extends AbstractReportPhaseListener
         implements ContextCallback {
 
     /** The logger instance. */
@@ -120,7 +121,7 @@ public class RenderResponsePhaseListener extends AbstractReportPhaseListener
             report.encodeContent(context);
             report.encodeHeaders(context);
         } catch (final IOException e) {
-            throw new ReportLifecycleException(e);
+            throw new JRFacesException(e);
         } finally {
             logger.log(Level.FINER, "JRJSF_0017", clientId);
         }

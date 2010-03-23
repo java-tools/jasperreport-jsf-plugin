@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * The Class Util.
@@ -36,7 +35,8 @@ public final class Util {
             "net.sf.jasperreports.jsf.LogMessages");
     
     /** The Constant INVOCATION_PATH. */
-    private static final String INVOCATION_PATH = "net.sf.jasperreports.jsf.INVOCATION_PATH";
+    private static final String INVOCATION_PATH =
+            "net.sf.jasperreports.jsf.INVOCATION_PATH";
 
     /**
      * Gets the class loader.
@@ -60,27 +60,6 @@ public final class Util {
             }
         }
         return loader;
-    }
-
-    public static String normalizePath(String path) {
-        if (path == null || path.length() == 0) {
-            throw new IllegalArgumentException("'path' can't be null or empty");
-        }
-
-        StringBuilder normalized = new StringBuilder();
-        int slash, lastIdx = 0;
-        while (-1 != (slash = path.indexOf("/", lastIdx))) {
-            if (slash == 0 && normalized.length() == 0) {
-                normalized.append("/");
-                continue;
-            }
-
-            String pathElem = path.substring(lastIdx, slash - 1);
-            if (pathElem.equals("..")) {
-                
-            }
-        }
-        return normalized.toString();
     }
 
     /**
