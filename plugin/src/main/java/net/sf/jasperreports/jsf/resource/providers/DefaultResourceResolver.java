@@ -23,10 +23,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+
+import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.spi.ResourceResolver;
 import net.sf.jasperreports.jsf.util.ExternalContextHelper;
 import net.sf.jasperreports.jsf.util.Util;
+
+import org.apache.commons.io.FilenameUtils;
 
 /**
  *
@@ -37,7 +41,8 @@ public class DefaultResourceResolver implements ResourceResolver {
     public Resource resolveResource(FacesContext context, UIComponent component,
             String name) {
         if (name == null || name.length() == 0) {
-            throw new IllegalArgumentException("Resource name must be provided.");
+            throw new IllegalArgumentException(
+                    "Resource name must be provided.");
         }
 
         Resource resource = null;
@@ -57,35 +62,31 @@ public class DefaultResourceResolver implements ResourceResolver {
             } else {
                 ExternalContextHelper helper = ExternalContextHelper.getInstance(
                         context.getExternalContext());
-                String rootPath = resolveCurrentPath(context);
-                File resourceFile = new File(helper.getResourceRealPath(
-                        context.getExternalContext(), rootPath), name);
-                if(resourceFile.exists()) {
-                    String absName = rootPath + name;
-                    resource = new ContextResource(absName);
+                String rootPath;
+                
+                if ((component != null) && (component instanceof UIReport)) {
+                    UIReport report = (UIReport) component;
+                    rootPath = helper.getResourceRealPath(
+                            context.getExternalContext(),
+                            FilenameUtils.getPath(report.getPath()));
+                } else {
+                    String viewId = context.getViewRoot().getViewId();
+                    rootPath = helper.getResourceRealPath(
+                            context.getExternalContext(),
+                            FilenameUtils.getPath(viewId));
+                }
+
+                File resourceFile = new File(FilenameUtils.normalize(
+                        rootPath + name));
+                if (resourceFile.exists()) {
+                    resource = new FileResource(resourceFile);
                 }
             }
         }
-
+        
         // If at this point 'resource' is null then the resource couldn't
         // be resolved by this ResourceResolver implementation
         return resource;
     }
 
-    protected String resolveCurrentPath(FacesContext context) {
-        String currentPath = "";
-        String viewId = context.getViewRoot().getViewId();
-
-        int lastSlash = viewId.lastIndexOf('/');
-        if (lastSlash > 0) {
-            currentPath = viewId.substring(0, lastSlash);
-        }
-
-        if (!currentPath.endsWith("/")) {
-            currentPath += "/";
-        }
-        
-        return currentPath;
-    }
-    
 }
