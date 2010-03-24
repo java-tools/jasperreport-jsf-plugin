@@ -34,6 +34,11 @@
       </includes>
       <binaries>
         <outputDirectory>/</outputDirectory>
+        <dependencySets>
+          <dependencySet>
+            <outputDirectory>/lib</outputDirectory>
+          </dependencySet>
+        </dependencySets>
       </binaries>
     </moduleSet>
     <moduleSet>
@@ -59,6 +64,13 @@
       </includes>
     </fileSet>
     <fileSet>
+      <directory>build/legal</directory>
+      <includes>
+        <include>*.txt</include>
+      </includes>
+      <outputDirectory>/lib</outputDirectory>
+    </fileSet>
+    <fileSet>
       <directory>target</directory>
       <includes>
         <include>*.jar</include>
@@ -74,12 +86,8 @@
       <outputDirectory>/doc/plugin</outputDirectory>
     </fileSet>
     <fileSet>
-      <directory>samples/simple/target/site</directory>
-      <outputDirectory>/doc/samples/simple</outputDirectory>
-    </fileSet>
-    <fileSet>
-      <directory>samples/simple-db/target/site</directory>
-      <outputDirectory>/doc/samples-db/simple</outputDirectory>
+      <directory>samples/jrjsf-usecases/target/site</directory>
+      <outputDirectory>/doc/samples/jrjsf-usecases</outputDirectory>
     </fileSet>
   </fileSets>
 </assembly>
