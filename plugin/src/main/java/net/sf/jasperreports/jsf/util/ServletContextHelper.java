@@ -21,17 +21,34 @@ package net.sf.jasperreports.jsf.util;
 import java.io.IOException;
 import javax.faces.context.ExternalContext;
 
-import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.sf.jasperreports.jsf.Constants;
 
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.config.Configuration;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
+import net.sf.jasperreports.jsf.wrapper.ReportHttpRenderRequest;
+import net.sf.jasperreports.jsf.wrapper.ReportRenderRequest;
 
 final class ServletContextHelper extends ExternalContextHelper {
 
     protected ServletContextHelper() { }
+
+    @Override
+    public ReportRenderRequest restoreReportRequest(ExternalContext context) {
+        final Configuration config = Configuration.getInstance(context);
+        final String viewId = context.getRequestParameterMap()
+                .get(Constants.PARAM_VIEWID);
+        final String viewState = getViewCacheMap(context).get(viewId);
+
+        HttpServletRequest request = (HttpServletRequest) context.getRequest();
+        request = new ReportHttpRenderRequest(request, viewId,
+                config.getDefaultMapping(), viewState);
+        context.setRequest(request);
+        return (ReportRenderRequest) request;
+    }
 
     @Override
     public String getRequestServerName(final ExternalContext context) {

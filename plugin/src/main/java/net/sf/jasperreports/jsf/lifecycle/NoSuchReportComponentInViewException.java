@@ -24,7 +24,7 @@ package net.sf.jasperreports.jsf.lifecycle;
  *
  * @author A. Alonso Dominguez
  */
-public class UnregisteredUIReportException extends ReportLifecycleException {
+public class NoSuchReportComponentInViewException extends ReportLifecycleException {
 
     /** */
     private static final long serialVersionUID = 4348741227510346006L;
@@ -34,7 +34,7 @@ public class UnregisteredUIReportException extends ReportLifecycleException {
      *
      * @param msg the message
      */
-    public UnregisteredUIReportException(final String msg) {
+    public NoSuchReportComponentInViewException(final String msg) {
         super(msg);
     }
 

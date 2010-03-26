@@ -59,16 +59,15 @@ public final class RenderResponsePhaseListener extends AbstractReportPhaseListen
                 requestMap.get(Constants.ATTR_REPORT_VIEW))) {
             ExternalContextHelper helper = ExternalContextHelper.getInstance(
                     context.getExternalContext());
-            Map<String, String> viewCacheMap = getViewCacheMap(context);
+            Map<String, String> viewCacheMap = helper.getViewCacheMap(
+                    context.getExternalContext());
 
             String viewId = helper.getViewId(context.getExternalContext());
             String viewState = (String) requestMap.get(
                     Constants.ATTR_VIEW_STATE);
 
             if (logger.isLoggable(Level.FINER)) {
-                logger.log(Level.FINER, "JRJSF_0032", new Object[]{
-                    viewId, viewState
-                });
+                logger.log(Level.FINER, "JRJSF_0032", viewId);
             }
             viewCacheMap.put(viewId, viewState);
         }
@@ -91,7 +90,7 @@ public final class RenderResponsePhaseListener extends AbstractReportPhaseListen
 
             UIViewRoot viewRoot = context.getViewRoot();
             if (!viewRoot.invokeOnComponent(context, clientId, this)) {
-                throw new UnregisteredUIReportException(clientId);
+                throw new NoSuchReportComponentInViewException(clientId);
             }
         } finally {
             context.responseComplete();

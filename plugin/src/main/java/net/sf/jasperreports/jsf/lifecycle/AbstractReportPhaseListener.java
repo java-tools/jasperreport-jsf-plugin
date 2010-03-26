@@ -39,21 +39,6 @@ import net.sf.jasperreports.jsf.util.ExternalContextHelper;
  */
 abstract class AbstractReportPhaseListener implements PhaseListener {
 
-    private static final String VIEW_CACHE_KEY =
-            Constants.PACKAGE_PREFIX + ".VIEW_CACHE";
-
-    @SuppressWarnings("unchecked")
-    protected Map<String, String> getViewCacheMap(FacesContext context) {
-            Map<String, String> cacheMap = (Map) context.getExternalContext()
-                            .getSessionMap().get(VIEW_CACHE_KEY);
-            if (cacheMap == null) {
-                    cacheMap = new HashMap<String, String>();
-                    context.getExternalContext().getSessionMap().put(
-                                    VIEW_CACHE_KEY, cacheMap);
-            }
-            return cacheMap;
-    }
-
     protected boolean isReportRequest(final FacesContext context) {
         final ExternalContextHelper helper = ExternalContextHelper
                 .getInstance(context.getExternalContext());
@@ -61,5 +46,4 @@ abstract class AbstractReportPhaseListener implements PhaseListener {
         final String uri = helper.getRequestURI(context.getExternalContext());
         return (uri != null && uri.indexOf(Constants.BASE_URI) > -1);
     }
-
 }

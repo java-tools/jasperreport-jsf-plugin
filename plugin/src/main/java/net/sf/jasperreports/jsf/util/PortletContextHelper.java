@@ -27,10 +27,15 @@ import javax.portlet.ResourceResponse;
 
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
+import net.sf.jasperreports.jsf.wrapper.ReportRenderRequest;
 
 final class PortletContextHelper extends ExternalContextHelper {
 
-    protected PortletContextHelper() {
+    protected PortletContextHelper() { }
+
+    @Override
+    public ReportRenderRequest restoreReportRequest(ExternalContext context) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override

@@ -16,21 +16,16 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-
-package net.sf.jasperreports.jsf;
-
-import javax.portlet.ResourceRequest;
-import javax.portlet.filter.ResourceRequestWrapper;
+package net.sf.jasperreports.jsf.wrapper;
 
 /**
  *
  * @author aalonsodominguez
  */
-public abstract class ReportPortletRenderRequest extends ResourceRequestWrapper
-        implements ReportRenderRequest {
+public interface ReportRenderRequest {
 
-    public ReportPortletRenderRequest(ResourceRequest request) {
-        super(request);
-    }
+    public String getReportClientId();
+
+    public String getViewId();
 
 }

@@ -46,10 +46,12 @@ public class ReportLinkTest extends ReportTestBase {
 
     @Test
     public void clickOnLink() throws Exception {
-        final WebResponse response = getResponse("/ReportLinkTest.jsf");
-        final WebLink link = response.getLinkWithID(linkId);
+        final WebResponse jsfResponse = getResponse("/ReportLinkTest.jsf");
+        final WebLink link = jsfResponse.getLinkWithID(linkId);
         Assert.assertNotNull("Link '" + linkId + "' is null", link);
         System.out.println("---> Here I click the link");
-        link.click();
+        final WebResponse reportResponse = link.click();
+        Assert.assertEquals("Report content type is not of expected type",
+                "text/html", reportResponse.getContentType());
     }
 }

@@ -131,7 +131,8 @@ abstract class AbstractReportRenderer extends Renderer implements
             final UIComponent report) {
         final StringBuffer reportURI = new StringBuffer(Constants.BASE_URI);
 
-        final Configuration config = Configuration.getInstance(context);
+        final Configuration config = Configuration.getInstance(
+                context.getExternalContext());
         final ExternalContextHelper helper = ExternalContextHelper.getInstance(
                 context.getExternalContext());
 
@@ -166,15 +167,21 @@ abstract class AbstractReportRenderer extends Renderer implements
         return result;
     }
 
-    protected final void registerComponent(final FacesContext context,
-            final UIComponent report) {
-        final String clientId = report.getClientId(context);
+    protected final void registerReportView(final FacesContext context) {
+        if (Boolean.TRUE.equals(context.getExternalContext().getRequestMap()
+                .get(Constants.ATTR_REPORT_VIEW))) {
+            return;
+        }
+
+        final ExternalContextHelper helper = ExternalContextHelper.getInstance(
+                context.getExternalContext());
+        final String viewId = helper.getViewId(context.getExternalContext());
 
         context.getExternalContext().getRequestMap().put(
                 Constants.ATTR_REPORT_VIEW, Boolean.TRUE);
 
         if (logger.isLoggable(Level.FINER)) {
-            logger.log(Level.FINER, "JRJSF_0013", clientId);
+            logger.log(Level.FINER, "JRJSF_0013", viewId);
         }
     }
 
