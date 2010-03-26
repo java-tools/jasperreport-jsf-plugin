@@ -52,6 +52,9 @@ public final class Constants {
     public static final String REPORT_COMPONENT_KEY_PREFIX =
             UIReport.COMPONENT_FAMILY + "/";
 
+    public static final String VIEW_CACHE_KEY =
+            PACKAGE_PREFIX + ".VIEW_CACHE";
+
     /** Private constructor to prevent instantiation. */
     private Constants() { }
 

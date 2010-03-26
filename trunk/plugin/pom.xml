@@ -212,12 +212,15 @@
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
+
+        <!--
         <dependency>
             <groupId>net.sf.jsf4portlets</groupId>
             <artifactId>jsf4portlets</artifactId>
             <version>1.0-alpha-2</version>
             <scope>provided</scope>
         </dependency>
+        -->
 
         <dependency>
             <groupId>commons-io</groupId>
@@ -228,7 +231,7 @@
             <groupId>jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
             <version>3.7.1</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
             <exclusions>
                 <exclusion>
                     <artifactId>jfreechart</artifactId>
@@ -237,6 +240,10 @@
                 <exclusion>
                     <artifactId>jcommon</artifactId>
                     <groupId>jfree</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jdtcore</artifactId>
+                    <groupId>eclipse</groupId>
                 </exclusion>
             </exclusions>
         </dependency>

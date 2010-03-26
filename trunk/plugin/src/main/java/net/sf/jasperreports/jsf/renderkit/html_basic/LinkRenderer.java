@@ -90,7 +90,7 @@ public class LinkRenderer extends AbstractReportRenderer {
         final ResponseWriter writer = context.getResponseWriter();
         writer.endElement("a");
 
-        registerComponent(context, component);
+        registerReportView(context);
     }
 
     /*

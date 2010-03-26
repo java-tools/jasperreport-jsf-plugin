@@ -20,14 +20,17 @@ package net.sf.jasperreports.jsf.util;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 import javax.faces.application.ViewHandler;
 import javax.faces.context.ExternalContext;
 
-import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
+import net.sf.jasperreports.jsf.Constants;
 
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
+import net.sf.jasperreports.jsf.wrapper.ReportRenderRequest;
 
 public abstract class ExternalContextHelper {
 
@@ -92,6 +95,9 @@ public abstract class ExternalContextHelper {
 
     protected ExternalContextHelper() { }
 
+    public abstract ReportRenderRequest restoreReportRequest(
+            ExternalContext context);
+
     /**
      * Gets the request uri.
      *
@@ -106,6 +112,18 @@ public abstract class ExternalContextHelper {
 
     public abstract String getResourceRealPath(
             final ExternalContext context, String name);
+
+    @SuppressWarnings("unchecked")
+    public Map<String, String> getViewCacheMap(ExternalContext context) {
+        Map<String, String> cacheMap = (Map) context.getSessionMap()
+                .get(Constants.VIEW_CACHE_KEY);
+        if (cacheMap == null) {
+            cacheMap = new HashMap<String, String>();
+            context.getSessionMap().put(
+                    Constants.VIEW_CACHE_KEY, cacheMap);
+        }
+        return cacheMap;
+    }
 
     public String getViewId(final ExternalContext context) {
         String pathInfo = context.getRequestPathInfo();

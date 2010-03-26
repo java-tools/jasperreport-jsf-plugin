@@ -16,7 +16,7 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf;
+package net.sf.jasperreports.jsf.wrapper;
 
 import java.util.Collections;
 import java.util.Enumeration;
@@ -26,6 +26,7 @@ import java.util.Map;
 import javax.faces.render.ResponseStateManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import net.sf.jasperreports.jsf.Constants;
 
 import net.sf.jasperreports.jsf.util.Util;
 

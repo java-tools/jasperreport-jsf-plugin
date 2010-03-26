@@ -113,7 +113,7 @@ public class EmbedRenderer extends AbstractReportRenderer {
             writer.startElement("br", component);
         }
 
-        registerComponent(context, component);
+        registerReportView(context);
     }
 
     /*

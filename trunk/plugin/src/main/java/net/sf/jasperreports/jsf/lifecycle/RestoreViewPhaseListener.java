@@ -25,12 +25,9 @@ import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
-import javax.servlet.http.HttpServletRequest;
 
 import net.sf.jasperreports.jsf.Constants;
-import net.sf.jasperreports.jsf.ReportHttpRenderRequest;
-import net.sf.jasperreports.jsf.ReportRenderRequest;
-import net.sf.jasperreports.jsf.config.Configuration;
+import net.sf.jasperreports.jsf.wrapper.ReportRenderRequest;
 import net.sf.jasperreports.jsf.util.ExternalContextHelper;
 
 /**
@@ -63,21 +60,10 @@ public final class RestoreViewPhaseListener extends AbstractReportPhaseListener 
             context.getExternalContext().getRequestMap().put(
                     Constants.ATTR_POSTBACK, Boolean.TRUE);
 
-            Configuration config = Configuration.getInstance(context);
-            String viewId = context.getExternalContext()
-                    .getRequestParameterMap().get(Constants.PARAM_VIEWID);
-            String viewState = getViewCacheMap(context).get(viewId);
-
-            ReportRenderRequest renderRequest = null;
-            if (ExternalContextHelper.isServletContext(
-                    context.getExternalContext())) {
-                HttpServletRequest request = (HttpServletRequest)
-                        context.getExternalContext().getRequest();
-                request = new ReportHttpRenderRequest(request, viewId,
-                        config.getDefaultMapping(), viewState);
-                context.getExternalContext().setRequest(request);
-                renderRequest = (ReportHttpRenderRequest) request;
-            }
+            final ExternalContextHelper helper = ExternalContextHelper
+                    .getInstance(context.getExternalContext());
+            final ReportRenderRequest renderRequest = helper
+                    .restoreReportRequest(context.getExternalContext());
 
             if (logger.isLoggable(Level.FINE)) {
                 logger.log(Level.FINE, "JRJSF_0030", new Object[]{

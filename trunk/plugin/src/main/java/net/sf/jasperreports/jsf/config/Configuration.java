@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.context.ExternalContext;
 
 import javax.faces.context.FacesContext;
 import javax.faces.webapp.FacesServlet;
@@ -54,17 +55,17 @@ public final class Configuration {
     private static final String TAG_SERVLET_NAME = "servlet-name";
     private static final String WEB_XML = "/WEB-INF/web.xml";
 
-    public static Configuration getInstance(final FacesContext context)
+    public static Configuration getInstance(final ExternalContext context)
             throws ConfigurationException {
         if (context == null) {
             throw new IllegalArgumentException("context");
         }
 
-        Configuration instance = (Configuration) context.getExternalContext()
+        Configuration instance = (Configuration) context
                 .getApplicationMap().get(INSTANCE_KEY);
         if (instance == null) {
             instance = new Configuration(context);
-            context.getExternalContext().getApplicationMap().put(INSTANCE_KEY,
+            context.getApplicationMap().put(INSTANCE_KEY,
                     instance);
         }
         return instance;
@@ -86,9 +87,9 @@ public final class Configuration {
         loadMappings(webXml);
     }
 
-    protected Configuration(final FacesContext context)
+    protected Configuration(final ExternalContext context)
             throws ConfigurationException {
-        final InputStream is = context.getExternalContext()
+        final InputStream is = context
                 .getResourceAsStream(WEB_XML);
         Document webXml;
         try {
