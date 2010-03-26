@@ -26,6 +26,7 @@ import javax.faces.event.PhaseListener;
 
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.util.ExternalContextHelper;
+import net.sf.jasperreports.jsf.wrapper.ReportRenderRequest;
 
 /**
  * The listener interface for receiving reportPhase events. The class that is
@@ -40,10 +41,15 @@ import net.sf.jasperreports.jsf.util.ExternalContextHelper;
 abstract class AbstractReportPhaseListener implements PhaseListener {
 
     protected boolean isReportRequest(final FacesContext context) {
-        final ExternalContextHelper helper = ExternalContextHelper
-                .getInstance(context.getExternalContext());
+        Object request = context.getExternalContext().getRequest();
+        if (request instanceof ReportRenderRequest) {
+            return true;
+        } else {
+            final ExternalContextHelper helper = ExternalContextHelper
+                    .getInstance(context.getExternalContext());
 
-        final String uri = helper.getRequestURI(context.getExternalContext());
-        return (uri != null && uri.indexOf(Constants.BASE_URI) > -1);
+            final String uri = helper.getRequestURI(context.getExternalContext());
+            return (uri != null && uri.indexOf(Constants.BASE_URI) > -1);
+        }
     }
 }

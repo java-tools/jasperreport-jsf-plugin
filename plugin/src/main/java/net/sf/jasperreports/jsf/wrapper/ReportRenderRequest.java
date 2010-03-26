@@ -28,4 +28,6 @@ public interface ReportRenderRequest {
 
     public String getViewId();
 
+    public void release();
+
 }

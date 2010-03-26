@@ -213,14 +213,12 @@
             <optional>true</optional>
         </dependency>
 
-        <!--
         <dependency>
             <groupId>net.sf.jsf4portlets</groupId>
-            <artifactId>jsf4portlets</artifactId>
-            <version>1.0-alpha-2</version>
+            <artifactId>jsf4portlets-api</artifactId>
+            <version>2.0-beta-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        -->
 
         <dependency>
             <groupId>commons-io</groupId>

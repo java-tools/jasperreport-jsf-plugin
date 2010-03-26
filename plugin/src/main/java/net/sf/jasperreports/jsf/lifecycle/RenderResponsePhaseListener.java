@@ -36,6 +36,8 @@ import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.util.ExternalContextHelper;
+import net.sf.jasperreports.jsf.wrapper.ReportHttpRenderRequest;
+import net.sf.jasperreports.jsf.wrapper.ReportRenderRequest;
 
 /**
  *
@@ -70,6 +72,10 @@ public final class RenderResponsePhaseListener extends AbstractReportPhaseListen
                 logger.log(Level.FINER, "JRJSF_0032", viewId);
             }
             viewCacheMap.put(viewId, viewState);
+        } else {
+            ReportRenderRequest request = (ReportHttpRenderRequest) context
+                    .getExternalContext().getRequest();
+            request.release();
         }
     }
 
