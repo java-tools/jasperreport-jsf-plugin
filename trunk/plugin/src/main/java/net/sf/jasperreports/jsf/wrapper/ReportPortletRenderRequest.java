@@ -19,18 +19,74 @@
 
 package net.sf.jasperreports.jsf.wrapper;
 
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import javax.faces.render.ResponseStateManager;
 import javax.portlet.ResourceRequest;
+import javax.portlet.faces.Bridge;
 import javax.portlet.filter.ResourceRequestWrapper;
+import net.sf.jasperreports.jsf.Constants;
 
 /**
  *
  * @author aalonsodominguez
  */
-public abstract class ReportPortletRenderRequest extends ResourceRequestWrapper
+public class ReportPortletRenderRequest extends ResourceRequestWrapper
         implements ReportRenderRequest {
 
-    public ReportPortletRenderRequest(ResourceRequest request) {
+    private String oldViewId;
+    private String viewState;
+
+    public ReportPortletRenderRequest(ResourceRequest request, String viewId,
+            String viewState) {
         super(request);
+        this.oldViewId = (String) request.getAttribute(Bridge.VIEW_ID);
+        request.setAttribute(Bridge.VIEW_ID, viewId);
+
+        this.viewState = viewState;
+    }
+
+    @Override
+    public String getParameter(String name) {
+        String[] values = getParameterValues(name);
+        if (values == null || values.length == 0) {
+            return null;
+        } else {
+            return values[0];
+        }
+    }
+
+    @Override
+    public Map<String, String[]> getParameterMap() {
+        Map<String, String[]> paramMap = new HashMap<String, String[]>();
+        paramMap.putAll(super.getParameterMap());
+        paramMap.put(ResponseStateManager.VIEW_STATE_PARAM,
+                new String[]{viewState});
+        return Collections.unmodifiableMap(paramMap);
+    }
+
+    @Override
+    public Enumeration<String> getParameterNames() {
+        return Collections.enumeration(getParameterMap().keySet());
+    }
+
+    @Override
+    public String[] getParameterValues(String name) {
+        return getParameterMap().get(name);
+    }
+
+    public String getReportClientId() {
+        return getRequest().getParameter(Constants.PARAM_CLIENTID);
+    }
+
+    public String getViewId() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void release() {
+        getRequest().setAttribute(Bridge.VIEW_ID, oldViewId);
     }
 
 }

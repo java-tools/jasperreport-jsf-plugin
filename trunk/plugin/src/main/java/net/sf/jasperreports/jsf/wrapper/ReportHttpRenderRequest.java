@@ -98,6 +98,11 @@ public class ReportHttpRenderRequest extends HttpServletRequestWrapper
         return viewId;
     }
 
+    public void release() {
+        servletPath = null;
+        pathInfo = null;
+    }
+
     private void reverseEngineerPaths(String viewId, String facesMapping) {
         if (Util.isPrefixMapped(facesMapping)) {
             int i = facesMapping.indexOf("/*");

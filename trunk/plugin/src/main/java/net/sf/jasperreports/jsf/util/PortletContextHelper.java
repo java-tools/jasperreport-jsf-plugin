@@ -24,8 +24,10 @@ import javax.portlet.PortletContext;
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
+import net.sf.jasperreports.jsf.Constants;
 
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.config.Configuration;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 import net.sf.jasperreports.jsf.wrapper.ReportRenderRequest;
 
@@ -35,6 +37,11 @@ final class PortletContextHelper extends ExternalContextHelper {
 
     @Override
     public ReportRenderRequest restoreReportRequest(ExternalContext context) {
+        final Configuration config = Configuration.getInstance(context);
+        final String viewId = context.getRequestParameterMap()
+                .get(Constants.PARAM_VIEWID);
+        final String viewState = getViewCacheMap(context).get(viewId);
+
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
