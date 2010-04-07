@@ -80,7 +80,7 @@ final class PortletContextHelper extends ExternalContextHelper {
 
             if (report.getName() != null) {
                 response.setProperty("Content-Disposition",
-                        encodeContentDisposition(renderer, report,
+                        renderer.encodeContentDisposition(report,
                         response.getCharacterEncoding()));
             }
         } else {
