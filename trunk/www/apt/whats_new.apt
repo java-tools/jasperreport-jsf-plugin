@@ -33,6 +33,9 @@ to this list when using any of the functionalities provided.
 
 * 1.0-RC1
 
+  * New lifecycle that is not longer based on storing the report components into
+the user session
+
   * Enhanced built-in resource loading mechanism
 
   * Removed support for <<<java.awt.Graphics2D>>> output formal (useless in servlet
