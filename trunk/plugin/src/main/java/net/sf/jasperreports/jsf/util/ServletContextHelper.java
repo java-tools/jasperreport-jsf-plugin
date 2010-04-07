@@ -80,8 +80,9 @@ final class ServletContextHelper extends ExternalContextHelper {
         response.setHeader("Expires", "0");
 
         if (report.getName() != null) {
-            response.setHeader("Content-Disposition", encodeContentDisposition(
-                    renderer, report, response.getCharacterEncoding()));
+            response.setHeader("Content-Disposition", 
+                    renderer.encodeContentDisposition(report,
+                    response.getCharacterEncoding()));
         }
     }
 

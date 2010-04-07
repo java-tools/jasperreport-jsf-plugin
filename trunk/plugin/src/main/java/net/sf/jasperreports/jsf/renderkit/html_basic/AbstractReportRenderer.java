@@ -20,6 +20,7 @@ package net.sf.jasperreports.jsf.renderkit.html_basic;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -101,6 +102,18 @@ abstract class AbstractReportRenderer extends Renderer implements
                 reportData.close();
             } catch (final IOException e) { }
         }
+    }
+
+    public String encodeContentDisposition(
+            final UIReport report, final String encoding)
+            throws IOException {
+        final StringBuffer disposition = new StringBuffer();
+        if (report.getName() != null) {
+            disposition.append(getContentDisposition());
+            disposition.append("; filename=");
+            disposition.append(URLEncoder.encode(report.getName(), encoding));
+        }
+        return disposition.toString();
     }
 
     public void encodeHeaders(final FacesContext context, final UIReport report)

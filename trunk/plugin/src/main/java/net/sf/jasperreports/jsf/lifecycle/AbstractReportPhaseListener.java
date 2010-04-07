@@ -48,8 +48,10 @@ abstract class AbstractReportPhaseListener implements PhaseListener {
             final ExternalContextHelper helper = ExternalContextHelper
                     .getInstance(context.getExternalContext());
 
-            final String uri = helper.getRequestURI(context.getExternalContext());
+            final String uri = helper.getRequestURI(
+                    context.getExternalContext());
             return (uri != null && uri.indexOf(Constants.BASE_URI) > -1);
         }
     }
+
 }

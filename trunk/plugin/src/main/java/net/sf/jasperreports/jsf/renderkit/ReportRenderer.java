@@ -31,6 +31,10 @@ public interface ReportRenderer {
     public void encodeContent(FacesContext context, UIReport report)
             throws IOException;
 
+    public String encodeContentDisposition(
+            final UIReport report, final String encoding)
+            throws IOException;
+
     public void encodeHeaders(FacesContext context, UIReport report)
             throws IOException;
 }

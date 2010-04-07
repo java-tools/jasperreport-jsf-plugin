@@ -23,10 +23,12 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.faces.render.ResponseStateManager;
 import javax.portlet.ResourceRequest;
 import javax.portlet.faces.Bridge;
 import javax.portlet.filter.ResourceRequestWrapper;
+
 import net.sf.jasperreports.jsf.Constants;
 
 /**
@@ -82,7 +84,7 @@ public class ReportPortletRenderRequest extends ResourceRequestWrapper
     }
 
     public String getViewId() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return (String) getRequest().getAttribute(Bridge.VIEW_ID);
     }
 
     public void release() {
