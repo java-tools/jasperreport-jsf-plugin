@@ -77,4 +77,7 @@ runtime stacks:
 
 	* {{{http://tomcat.apache.org}Apache Tomcat 6.x}} + {{{http://javaserverfaces.dev.java.net}JSF 1.2}}
 	
-	* {{{http://tomcat.apache.org}Apache Tomcat 6.x}} + {{{http://javaserverfaces.dev.java.net}JSF 1.2}} + {{{http://portlet-container.dev.java.net}Open Portlet Container 2.0}}
+	* {{{http://tomcat.apache.org}Apache Tomcat 6.x}} +
+{{{http://javaserverfaces.dev.java.net}JSF 1.2}} +
+{{{http://portlet-container.dev.java.net}Open Portlet Container 2.0}} +
+{{{http://jsf4portlets.sourceforge.net}JSF 4 Portlets 2.0-beta}}

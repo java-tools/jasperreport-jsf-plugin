@@ -34,6 +34,7 @@
       </includes>
       <binaries>
         <outputDirectory>/</outputDirectory>
+        <unpack>false</unpack>
         <dependencySets>
           <dependencySet>
             <outputDirectory>/lib</outputDirectory>
