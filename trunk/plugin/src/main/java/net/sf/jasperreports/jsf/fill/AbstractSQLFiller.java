@@ -55,7 +55,7 @@ public abstract class AbstractSQLFiller extends AbstractFiller {
         super(dataSource);
     }
 
-    protected abstract Connection getConnection() throws Exception;
+    protected abstract Connection getConnection() throws FillerException;
 
     /**
      * Execute query.
@@ -127,28 +127,26 @@ public abstract class AbstractSQLFiller extends AbstractFiller {
             final InputStream reportStream, final Map<String, Object> params)
             throws FillerException {
         Connection conn = null;
-        try {
-            conn = getConnection();
-        } catch (final Exception e) {
-            throw new FillerException(e);
-        }
-
         ResultSet rs = null;
         JRDataSource dataSource = null;
         JasperPrint result = null;
         try {
+            conn = getConnection();
             final String query = getDataSourceComponent().getQuery();
             if ((query != null) && (query.length() > 0)) {
                 rs = executeQuery(context, conn, query);
                 dataSource = new JRResultSetDataSource(rs);
             }
 
-            if (dataSource == null) {
+            if (dataSource == null && conn != null) {
                 result = JasperFillManager.fillReport(reportStream, params,
                         conn);
-            } else {
+            } else if(dataSource != null && conn == null) {
                 result = JasperFillManager.fillReport(reportStream, params,
                         dataSource);
+            } else {
+                throw new FillerException(
+                        "No data source reference could be found!");
             }
         } catch (final SQLException e) {
             throw new FillerException(e);
