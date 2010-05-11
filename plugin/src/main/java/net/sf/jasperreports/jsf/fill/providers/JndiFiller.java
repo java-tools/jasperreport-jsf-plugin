@@ -19,11 +19,13 @@
 package net.sf.jasperreports.jsf.fill.providers;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import net.sf.jasperreports.jsf.component.UIDataSource;
@@ -50,7 +52,7 @@ public final class JndiFiller extends AbstractSQLFiller {
      * @see net.sf.jasperreports.jsf.fill.AbstractQueryFiller#getConnection()
      */
     @Override
-    protected Connection getConnection() throws Exception {
+    protected Connection getConnection() throws FillerException {
         final String dataSourceName = (String) getDataSourceComponent().getValue();
         if (dataSourceName == null || dataSourceName.length() == 0) {
             throw new FillerException("JNDI Filler requires a JNDI name"
@@ -58,8 +60,14 @@ public final class JndiFiller extends AbstractSQLFiller {
         }
         logger.log(Level.FINE, "JRJSF_0005", dataSourceName);
 
-        final Context jndi = new InitialContext();
-        final DataSource ds = (DataSource) jndi.lookup(dataSourceName);
-        return ds.getConnection();
+        try {
+            final Context jndi = new InitialContext();
+            final DataSource ds = (DataSource) jndi.lookup(dataSourceName);
+            return ds.getConnection();
+        } catch(NamingException e) {
+            throw new FillerException(e);
+        } catch(SQLException e) {
+            throw new FillerException(e);
+        }
     }
 }

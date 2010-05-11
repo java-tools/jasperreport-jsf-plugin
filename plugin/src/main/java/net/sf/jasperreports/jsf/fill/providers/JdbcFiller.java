@@ -51,7 +51,7 @@ public final class JdbcFiller extends AbstractSQLFiller {
      * @see net.sf.jasperreports.jsf.fill.AbstractQueryFiller#getConnection()
      */
     @Override
-    protected Connection getConnection() throws SQLException {
+    protected Connection getConnection() throws FillerException {
         final String driverClass = (String) getDataSourceComponent()
                 .getAttributes().get(ATTR_DRIVER_CLASS_NAME);
         if ((driverClass == null) || (driverClass.length() == 0)) {
