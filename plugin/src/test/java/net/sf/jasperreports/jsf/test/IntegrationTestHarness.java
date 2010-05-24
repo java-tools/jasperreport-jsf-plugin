@@ -34,10 +34,10 @@ import com.meterware.servletunit.ServletUnitClient;
 /**
  * The Class JasperReportTest.
  */
-public abstract class ReportTestBase {
+public abstract class IntegrationTestHarness {
 
     private static final Logger logger = Logger.getLogger(
-            ReportTestBase.class.getPackage().getName());
+            IntegrationTestHarness.class.getPackage().getName());
 
     /** The context dir. */
     private File contextDir;
