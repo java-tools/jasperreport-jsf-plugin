@@ -16,18 +16,19 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.taglib;
+package net.sf.jasperreports.jsf.taglib.html;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 
 import net.sf.jasperreports.jsf.component.html.HtmlReportLink;
-import net.sf.jasperreports.jsf.renderkit.html_basic.LinkRenderer;
+import net.sf.jasperreports.jsf.renderkit.html.OutputLinkRenderer;
+import net.sf.jasperreports.jsf.taglib.AbstractReportTag;
 
 /**
  * The Class ReportLinkTag.
  */
-public class ReportLinkTag extends AbstractReportTag {
+public class HtmlReportLinkTag extends AbstractReportTag {
 
     /** The target. */
     private ValueExpression target;
@@ -74,7 +75,7 @@ public class ReportLinkTag extends AbstractReportTag {
      */
     @Override
     public String getRendererType() {
-        return LinkRenderer.RENDERER_TYPE;
+        return OutputLinkRenderer.RENDERER_TYPE;
     }
 
     /*

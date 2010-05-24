@@ -16,7 +16,7 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.renderkit.html_basic;
+package net.sf.jasperreports.jsf.renderkit.html;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

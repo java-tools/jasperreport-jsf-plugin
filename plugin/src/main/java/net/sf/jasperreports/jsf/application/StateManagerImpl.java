@@ -32,7 +32,7 @@ import net.sf.jasperreports.jsf.Constants;
 
 /**
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
 public class StateManagerImpl extends StateManagerWrapper {
 

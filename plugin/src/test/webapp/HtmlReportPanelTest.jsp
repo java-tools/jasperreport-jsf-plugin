@@ -37,10 +37,10 @@
     <body>
         <f:view>
             <h:form>
-                <jr:report format="pdf"
+                <jr:reportPanel format="pdf"
                            path="/WEB-INF/report/Factura.jasper"
                            subreportDir="/WEB-INF/report/">
-                </jr:report>
+                </jr:reportPanel>
             </h:form>
         </f:view>
     </body>

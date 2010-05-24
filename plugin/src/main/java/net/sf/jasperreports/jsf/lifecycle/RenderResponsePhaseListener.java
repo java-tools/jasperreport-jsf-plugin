@@ -72,7 +72,7 @@ public final class RenderResponsePhaseListener extends AbstractReportPhaseListen
                 logger.log(Level.FINER, "JRJSF_0032", viewId);
             }
             viewCacheMap.put(viewId, viewState);
-        } else {
+        } else if (isReportRequest(context)) {
             ReportRenderRequest request = (ReportHttpRenderRequest) context
                     .getExternalContext().getRequest();
             request.release();

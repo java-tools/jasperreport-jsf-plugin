@@ -16,26 +16,26 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.test;
+package net.sf.jasperreports.jsf.taglib.html;
 
-import javax.faces.lifecycle.Lifecycle;
-
-import org.jboss.test.faces.mock.MockFacesEnvironment;
-import org.junit.BeforeClass;
+import net.sf.jasperreports.jsf.component.html.HtmlReportCommandLink;
+import net.sf.jasperreports.jsf.renderkit.html.CommandLinkRenderer;
+import net.sf.jasperreports.jsf.taglib.AbstractReportTag;
 
 /**
  *
- * @author antonio.alonso
+ * @author aalonsodominguez
  */
-public abstract class LifecycleTestHarness {
+public class HtmlReportCommandLinkTag extends AbstractReportTag {
 
-    protected MockFacesEnvironment env;
-    protected Lifecycle lifecycle;
+    @Override
+    public String getComponentType() {
+        return HtmlReportCommandLink.COMPONENT_TYPE;
+    }
 
-    @BeforeClass
-    public void initHarness() {
-        env = MockFacesEnvironment.createStrictEnvironment();
-        lifecycle = env.createMock(Lifecycle.class);
+    @Override
+    public String getRendererType() {
+        return CommandLinkRenderer.RENDERER_TYPE;
     }
 
 }

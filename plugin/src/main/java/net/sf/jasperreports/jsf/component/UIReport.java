@@ -23,6 +23,8 @@ import java.io.IOException;
 import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
 
+import net.sf.jasperreports.jsf.Constants;
+
 /**
  * The interface UIReport represents a report component.
  *
@@ -31,7 +33,7 @@ import javax.faces.context.FacesContext;
 public interface UIReport extends StateHolder {
 
     /** The Constant COMPONENT_FAMILY. */
-    String COMPONENT_FAMILY = "net.sf.jasperreports.Report";
+    String COMPONENT_FAMILY = Constants.PACKAGE_PREFIX + ".Report";
 
     /**
      * Gets the data source identifier.
@@ -103,6 +105,10 @@ public interface UIReport extends StateHolder {
      */
     void setFormat(String format);
 
+    boolean isImmediate();
+
+    void setImmediate(boolean immediate);
+    
     /**
      * Encodes the report component contents into the current response.
      *

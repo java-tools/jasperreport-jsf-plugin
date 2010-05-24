@@ -16,7 +16,7 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.test;
+package net.sf.jasperreports.jsf.test.framework;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,10 +34,16 @@ import com.meterware.servletunit.ServletUnitClient;
 /**
  * The Class JasperReportTest.
  */
-public abstract class IntegrationTestHarness {
+public abstract class ProfilerTestCase {
+
+    public static final String PROP_CONTEXT_DIR = "context-dir";
+    public static final String PROP_CONTEXT_PATH = "context-path";
+
+    private static final String HOSTNAME = "localhost";
+    private static final String WEB_XML = "WEB-INF/web.xml";
 
     private static final Logger logger = Logger.getLogger(
-            IntegrationTestHarness.class.getPackage().getName());
+            ProfilerTestCase.class.getPackage().getName());
 
     /** The context dir. */
     private File contextDir;
@@ -55,13 +61,13 @@ public abstract class IntegrationTestHarness {
      */
     @Before
     public void startContainer() throws Exception {
-        contextDir = new File(System.getProperty("context-dir"));
-        contextPath = System.getProperty("context-path");
+        contextDir = new File(System.getProperty(PROP_CONTEXT_DIR));
+        contextPath = System.getProperty(PROP_CONTEXT_PATH);
 
         logger.info("Starting web application '" + contextPath
                 + "' from directory: " + contextDir);
 
-        final File webXml = new File(contextDir, "WEB-INF/web.xml");
+        final File webXml = new File(contextDir, WEB_XML);
         runner = new ServletRunner(webXml, contextPath);
     }
 
@@ -96,6 +102,14 @@ public abstract class IntegrationTestHarness {
     protected WebResponse getResponse(final String path)
             throws MalformedURLException, IOException, SAXException {
         final ServletUnitClient client = getClient();
-        return client.getResponse("http://localhost" + contextPath + path);
+
+        StringBuilder url = new StringBuilder();
+        url.append("http://");
+        url.append(HOSTNAME);
+        url.append(contextPath);
+        url.append(path);
+
+        logger.finer("Invoking URL: " + url);
+        return client.getResponse(url.toString());
     }
 }

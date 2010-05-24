@@ -39,8 +39,8 @@
         </attributes>
     </component>
 
-    <component jsfid="jr:report"
-        componentType="net.sf.jasperreports.HtmlReport"
+    <component jsfid="jr:reportPanel"
+        componentType="net.sf.jasperreports.HtmlReportPanel"
         extends="baseHtml">
         <attributes>
             <set name="dataSource" bindingType="VB" />
@@ -59,6 +59,28 @@
 
     <component jsfid="jr:reportLink"
         componentType="net.sf.jasperreports.HtmlReportLink"
+        extends="baseHtml">
+        <attributes>
+            <set name="dataSource" bindingType="VB" />
+            <set name="path" bindingType="VB" />
+            <set name="subreportDir" bindingType="VB" />
+            <set name="format" bindingType="VB" />
+        </attributes>
+    </component>
+
+    <component jsfid="jr:reportCommandLink"
+        componentType="net.sf.jasperreports.HtmlReportCommandLink"
+        extends="baseHtml">
+        <attributes>
+            <set name="dataSource" bindingType="VB" />
+            <set name="path" bindingType="VB" />
+            <set name="subreportDir" bindingType="VB" />
+            <set name="format" bindingType="VB" />
+        </attributes>
+    </component>
+
+    <component jsfid="jr:form"
+        componentType="net.sf.jasperreports.HtmlReportForm"
         extends="baseHtml">
         <attributes>
             <set name="dataSource" bindingType="VB" />

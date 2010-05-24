@@ -25,19 +25,23 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
+import net.sf.jasperreports.jsf.Constants;
 
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.component.UIReportImplementor;
-import net.sf.jasperreports.jsf.renderkit.html_basic.EmbedRenderer;
+import net.sf.jasperreports.jsf.renderkit.html.PanelRenderer;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
+import net.sf.jasperreports.jsf.spi.ValidatorLoader;
+import net.sf.jasperreports.jsf.validation.Validator;
 
 /**
  * The Class HtmlReport.
  */
-public class HtmlReport extends HtmlPanelGroup implements UIReport {
+public class HtmlReportPanel extends HtmlPanelGroup implements UIReport {
 
     /** The Constant COMPONENT_TYPE. */
-    public static final String COMPONENT_TYPE = "net.sf.jasperreports.HtmlReport";
+    public static final String COMPONENT_TYPE = 
+            Constants.PACKAGE_PREFIX + ".HtmlReportPanel";
 
     // Report implementor
 
@@ -62,10 +66,10 @@ public class HtmlReport extends HtmlPanelGroup implements UIReport {
     /**
      * Instantiates a new html report.
      */
-    public HtmlReport() {
+    public HtmlReportPanel() {
         super();
         impl = new UIReportImplementor(this);
-        setRendererType(EmbedRenderer.RENDERER_TYPE);
+        setRendererType(PanelRenderer.RENDERER_TYPE);
     }
 
     /*
@@ -152,6 +156,14 @@ public class HtmlReport extends HtmlPanelGroup implements UIReport {
      */
     public void setFormat(final String type) {
         impl.setFormat(type);
+    }
+
+    public boolean isImmediate() {
+        return impl.isImmediate();
+    }
+
+    public void setImmediate(boolean immediate) {
+        impl.setImmediate(immediate);
     }
 
     /**
@@ -317,7 +329,7 @@ public class HtmlReport extends HtmlPanelGroup implements UIReport {
      */
     @Override
     public String getFamily() {
-        return UIReport.COMPONENT_FAMILY;
+        return super.getFamily() + "/" + UIReport.COMPONENT_FAMILY;
     }
 
     // UIReport encode methods
@@ -373,4 +385,19 @@ public class HtmlReport extends HtmlPanelGroup implements UIReport {
         values[7] = width;
         return values;
     }
+
+    @Override
+    public void processValidators(FacesContext context) {
+        super.processValidators(context);
+
+        if (!isRendered()) {
+            return;
+        }
+
+        final Validator validator = ValidatorLoader.getValidator(context, this);
+        if (validator != null) {
+            validator.validate(context, this);
+        }
+    }
+
 }

@@ -33,12 +33,25 @@
     <short-name>jr</short-name>
     <uri>http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_0.tld</uri>
 
+    <listener>
+        <listener-class>
+            net.sf.jasperreports.jsf.config.ConfigurationStartupListener
+        </listener-class>
+    </listener>
+
     <tag>
+        <description><![CDATA[
+Faces component tag used to provide to a report component 
+the data needed for rendering. Consult library documentation
+about how to use this tag and its possible locations within
+the Faces tree.
+        ]]></description>
+        <display-name>Data Source Tag</display-name>
         <name>dataSource</name>
         <tag-class>
             net.sf.jasperreports.jsf.taglib.DataSourceTag
         </tag-class>
-        <body-content>empty</body-content>
+        <body-content>JSP</body-content>
         <attribute>
             <name>id</name>
             <required>false</required>
@@ -52,13 +65,11 @@
             </deferred-value>
         </attribute>
         <attribute>
-            <name>driverClass</name>
-            <required>false</required>
-            <deferred-value>
-                <type>java.lang.String</type>
-            </deferred-value>
-        </attribute>
-        <attribute>
+            <description><![CDATA[
+Query to be used to filter the data obtained from
+the data source. The query language used depends
+on the type of data source the user is dealing with. 
+            ]]></description>
             <name>query</name>
             <required>false</required>
             <deferred-value>
@@ -66,6 +77,13 @@
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Selection of the data source type to be used.
+The value to be used depends of the available
+data source types provided by means of the
+<tt>Filler</tt> interface. To know more, consult 
+library documentation. 
+            ]]></description>
             <name>type</name>
             <required>false</required>
             <deferred-value>
@@ -73,6 +91,13 @@
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+This value depends of the type of data source
+being configured. It can be a JDBC URL, an XML
+document, a bean array, etc. Consult the library
+documentation to obtain information about possible
+values.
+            ]]></description>
             <name>value</name>
             <required>false</required>
             <deferred-value>
@@ -82,9 +107,15 @@
     </tag>
 
     <tag>
-        <name>report</name>
+        <description><![CDATA[
+Faces component tag used to insert an inline report
+within a faces component tree. Component will be
+rendered inside the page.
+        ]]></description>
+        <display-name>Html Report Panel Tag</display-name>
+        <name>reportPanel</name>
         <tag-class>
-            net.sf.jasperreports.jsf.taglib.ReportTag
+            net.sf.jasperreports.jsf.taglib.html.HtmlReportPanelTag
         </tag-class>
         <body-content>JSP</body-content>
         <attribute>
@@ -107,6 +138,10 @@
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Data source ID reference used to obtain the data
+needed to render the report.
+            ]]></description>
             <name>dataSource</name>
             <required>false</required>
             <deferred-value>
@@ -114,6 +149,24 @@
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+File name of the exported report. This value will
+be used inside the <tt>Content-Disposition</tt>
+header when rendering the report contents.
+            ]]></description>
+            <name>name</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Path to the report resource that should be rendered.
+Values of this attribute depend on available resource
+loaders. Consult library documentation to know more
+about the built-in resource loading mechanism.
+            ]]></description>
             <name>path</name>
             <required>true</required>
             <deferred-value>
@@ -121,6 +174,13 @@
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Path to the sub report location needed by the report 
+that should be rendered. Values of this attribute 
+depend on available resource loaders. Consult library 
+documentation to know more about the built-in resource 
+loading mechanism.
+            ]]></description>
             <name>subreportDir</name>
             <required>false</required>
             <deferred-value>
@@ -128,6 +188,11 @@
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Output format of the rendered report. Consult
+library documentation to know the possible
+values of this attribute.
+            ]]></description>
             <name>format</name>
             <required>false</required>
             <deferred-value>
@@ -163,6 +228,27 @@
             </deferred-value>
         </attribute>
         <attribute>
+            <name>layout</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
             <name>width</name>
             <required>false</required>
             <deferred-value>
@@ -172,9 +258,16 @@
     </tag>
 
     <tag>
+        <description><![CDATA[
+Faces component tag used to insert an report link
+within a faces component tree. Component will be
+rendered as link that when clicked outputs the
+report contents.
+        ]]></description>
+        <display-name>Report Link Tag</display-name>
         <name>reportLink</name>
         <tag-class>
-            net.sf.jasperreports.jsf.taglib.ReportLinkTag
+            net.sf.jasperreports.jsf.taglib.html.HtmlReportLinkTag
         </tag-class>
         <body-content>JSP</body-content>
         <attribute>
@@ -190,6 +283,20 @@
             </deferred-value>
         </attribute>
         <attribute>
+            <name>dir</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>lang</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
             <name>rendered</name>
             <required>false</required>
             <deferred-value>
@@ -197,6 +304,10 @@
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Data source ID reference used to obtain the data
+needed to render the report.
+            ]]></description>
             <name>dataSource</name>
             <required>false</required>
             <deferred-value>
@@ -204,6 +315,24 @@
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+File name of the exported report. This value will
+be used inside the <tt>Content-Disposition</tt>
+header when rendering the report contents.
+            ]]></description>
+            <name>name</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Path to the report resource that should be rendered.
+Values of this attribute depend on available resource
+loaders. Consult library documentation to know more
+about the built-in resource loading mechanism.
+            ]]></description>
             <name>path</name>
             <required>true</required>
             <deferred-value>
@@ -211,6 +340,13 @@
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Path to the sub report location needed by the report 
+that should be rendered. Values of this attribute 
+depend on available resource loaders. Consult library 
+documentation to know more about the built-in resource 
+loading mechanism.
+            ]]></description>
             <name>subreportDir</name>
             <required>false</required>
             <deferred-value>
@@ -218,7 +354,75 @@
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Output format of the rendered report. Consult
+library documentation to know the possible
+values of this attribute.
+            ]]></description>
             <name>format</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>accesskey</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>ondblclick</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>onmousedown</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>onmousemove</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>onmouseout</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>onmouseover</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>onmouseup</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
             <required>false</required>
             <deferred-value>
                 <type>java.lang.String</type>
@@ -229,6 +433,227 @@
             <required>false</required>
             <deferred-value>
                 <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>title</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>reportCommandLink</name>
+        <tag-class>
+            net.sf.jasperreports.jsf.taglib.html.HtmlReportCommandLinkTag
+        </tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>id</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>binding</name>
+            <required>false</required>
+            <deferred-value>
+                <type>javax.faces.component.UIComponent</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>dir</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>lang</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>rendered</name>
+            <required>false</required>
+            <deferred-value>
+                <type>boolean</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Data source ID reference used to obtain the data
+needed to render the report.
+            ]]></description>
+            <name>dataSource</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+File name of the exported report. This value will
+be used inside the <tt>Content-Disposition</tt>
+header when rendering the report contents.
+            ]]></description>
+            <name>name</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Path to the report resource that should be rendered.
+Values of this attribute depend on available resource
+loaders. Consult library documentation to know more
+about the built-in resource loading mechanism.
+            ]]></description>
+            <name>path</name>
+            <required>true</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Path to the sub report location needed by the report
+that should be rendered. Values of this attribute
+depend on available resource loaders. Consult library
+documentation to know more about the built-in resource
+loading mechanism.
+            ]]></description>
+            <name>subreportDir</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Output format of the rendered report. Consult
+library documentation to know the possible
+values of this attribute.
+            ]]></description>
+            <name>format</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>accesskey</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>ondblclick</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>onmousedown</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>onmousemove</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>onmouseout</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>onmouseover</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>onmouseup</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>title</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>form</name>
+        <tag-class>
+            net.sf.jasperreports.jsf.taglib.html.HtmlReportFormTag
+        </tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>id</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>binding</name>
+            <required>false</required>
+            <deferred-value>
+                <type>javax.faces.component.UIComponent</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>dir</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>lang</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>rendered</name>
+            <required>false</required>
+            <deferred-value>
+                <type>boolean</type>
             </deferred-value>
         </attribute>
     </tag>

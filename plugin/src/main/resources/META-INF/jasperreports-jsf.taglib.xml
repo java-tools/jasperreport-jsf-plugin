@@ -35,19 +35,19 @@
         <tag-name>dataSource</tag-name>
         <component>
             <component-type>
-                net.sf.jasperreports.DataSource
+                net.sf.jasperreports.jsf.DataSource
             </component-type>
         </component>
     </tag>
 
     <tag>
-        <tag-name>report</tag-name>
+        <tag-name>reportPanel</tag-name>
         <component>
             <component-type>
-                net.sf.jasperreports.HtmlReport
+                net.sf.jasperreports.jsf.HtmlReportPanel
             </component-type>
             <renderer-type>
-                net.sf.jasperreports.Embed
+                net.sf.jasperreports.jsf.Panel
             </renderer-type>
         </component>
     </tag>
@@ -56,12 +56,34 @@
         <tag-name>reportLink</tag-name>
         <component>
             <component-type>
-                net.sf.jasperreports.HtmlReportLink
+                net.sf.jasperreports.jsf.HtmlReportLink
             </component-type>
             <renderer-type>
-                net.sf.jasperreports.Link
+                net.sf.jasperreports.jsf.Link
             </renderer-type>
         </component>
+    </tag>
+
+    <tag>
+        <tag-name>reportCommandLink</tag-name>
+        <component>
+            <component-type>
+                net.sf.jasperreports.jsf.HtmlReportCommandLink
+            </component-type>
+            <renderer-type>
+                net.sf.jasperreports.jsf.Link
+            </renderer-type>
+        </component>
+    </tag>
+
+    <tag>
+        <tag-name>form</tag-name>
+        <component-type>
+            net.sf.jasperreports.jsf.HtmlReportForm
+        </component-type>
+        <renderer-type>
+            net.sf.jasperreports.jsf.Form
+        </renderer-type>
     </tag>
 
 </facelet-taglib>
