@@ -22,9 +22,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.meterware.httpunit.WebResponse;
-import net.sf.jasperreports.jsf.test.ReportTestBase;
+import net.sf.jasperreports.jsf.test.IntegrationTestHarness;
 
-public class InlineReportTest extends ReportTestBase {
+public class InlineReportTest extends IntegrationTestHarness {
 
     @Test
     public final void renderInline() throws Exception {

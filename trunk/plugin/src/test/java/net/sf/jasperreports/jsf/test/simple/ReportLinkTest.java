@@ -29,10 +29,10 @@ import org.junit.runners.Parameterized.Parameters;
 
 import com.meterware.httpunit.WebLink;
 import com.meterware.httpunit.WebResponse;
-import net.sf.jasperreports.jsf.test.ReportTestBase;
+import net.sf.jasperreports.jsf.test.IntegrationTestHarness;
 
 @RunWith(Parameterized.class)
-public class ReportLinkTest extends ReportTestBase {
+public class ReportLinkTest extends IntegrationTestHarness {
 
     @Parameters
     public static Collection<?> linkIdentifiers() {
