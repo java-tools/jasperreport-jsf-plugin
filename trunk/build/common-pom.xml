@@ -104,17 +104,6 @@
   -->
   </repositories>
 
-  <pluginRepositories>
-    <pluginRepository>
-      <id>snapshots.codehaus.org</id>
-      <name>Codehaus Snapshots</name>
-      <url>http://snapshots.repository.codehaus.org</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
-
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -131,8 +120,7 @@
     <jasperreports.version>3.7.1</jasperreports.version>
     <jxl.version>2.6</jxl.version>
 
-    <jsf-mock.version>1.0.0</jsf-mock.version>
-    <jsfunit.version>1.0.0.GA</jsfunit.version>
+    <jmock.version>2.5.1</jmock.version>
   </properties>
 
   <build>
@@ -154,32 +142,6 @@
             <downloadSources>true</downloadSources>
             <downloadJavadocs>true</downloadJavadocs>
           </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.cactus</groupId>
-          <artifactId>cactus-maven-plugin</artifactId>
-          <version>1.7</version>
-        </plugin>
-        <plugin>
-          <groupId>org.codehaus.cargo</groupId>
-          <artifactId>cargo-maven2-plugin</artifactId>
-          <version>1.0.1-beta-3</version>
-          <executions>
-            <execution>
-              <id>start-container</id>
-              <phase>pre-integration-test</phase>
-              <goals>
-                <goal>start</goal>
-              </goals>
-            </execution>
-            <execution>
-              <id>stop-container</id>
-              <phase>post-integration-test</phase>
-              <goals>
-                <goal>stop</goal>
-              </goals>
-            </execution>
-          </executions>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -218,7 +180,7 @@
         <scope>provided</scope>
       </dependency>
       <dependency>
-        <groupId>javax.servlet.jsp</groupId>
+        <groupId>javax.servlet</groupId>
         <artifactId>jstl</artifactId>
         <version>${jstl.version}</version>
         <scope>provided</scope>
@@ -273,7 +235,7 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>jexcelapi</groupId>
+        <groupId>net.sourceforge.jexcelapi</groupId>
         <artifactId>jxl</artifactId>
         <version>${jxl.version}</version>
         <scope>compile</scope>
@@ -287,45 +249,15 @@
         <scope>test</scope>
       </dependency>
       <dependency>
-        <groupId>org.jboss.jsfunit</groupId>
-        <artifactId>jboss-jsfunit-core</artifactId>
-        <version>${jsfunit.version}</version>
+        <groupId>org.jmock</groupId>
+        <artifactId>jmock-junit4</artifactId>
+        <version>${jmock.version}</version>
         <scope>test</scope>
-        <exclusions>
-          <exclusion>
-            <groupId>org.apache.myfaces.core</groupId>
-            <artifactId>myfaces-api</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.apache.myfaces.core</groupId>
-            <artifactId>myfaces-impl</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.ajax4jsf</groupId>
-            <artifactId>ajax4jsf</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.richfaces.framework</groupId>
-            <artifactId>richfaces-impl</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.richfaces.ui</groupId>
-            <artifactId>richfaces-ui</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.jboss.seam</groupId>
-            <artifactId>jboss-seam</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.jboss.seam</groupId>
-            <artifactId>jboss-seam-ui</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
-        <groupId>org.jboss.test-jsf</groupId>
-        <artifactId>jsf-mock</artifactId>
-        <version>${jsf-mock.version}</version>
+        <groupId>org.jmock</groupId>
+        <artifactId>jmock-legacy</artifactId>
+        <version>${jmock.version}</version>
         <scope>test</scope>
       </dependency>
     </dependencies>
