@@ -30,11 +30,14 @@ import javax.faces.context.FacesContext;
  */
 public final class UIReportImplementor implements StateHolder {
 
-    /** The callback. */
-    private final UIComponentBase callback;
+    /** The facade. */
+    private final UIComponentBase facade;
 
     /** The data source. */
     private String dataSource;
+
+    private boolean immediate;
+    private boolean immediateSet = false;
 
     private String name;
     /** The path. */
@@ -47,17 +50,17 @@ public final class UIReportImplementor implements StateHolder {
     /**
      * Instantiates a new uI report implementor.
      *
-     * @param callback the callback
+     * @param facade the facade
      */
-    public UIReportImplementor(final UIComponentBase callback) {
+    public UIReportImplementor(final UIComponentBase facade) {
         super();
-        if (callback == null) {
+        if (facade == null) {
             throw new IllegalArgumentException();
         }
-        if (!(callback instanceof UIReport)) {
+        if (!(facade instanceof UIReport)) {
             throw new IllegalArgumentException();
         }
-        this.callback = callback;
+        this.facade = facade;
     }
 
     /*
@@ -206,13 +209,34 @@ public final class UIReportImplementor implements StateHolder {
         format = type;
     }
 
+    public boolean isImmediate() {
+        if (immediateSet) {
+            return immediate;
+        }
+        ValueExpression ve = getValueExpression("immediate");
+        if (ve != null) {
+            try {
+                return (Boolean) ve.getValue(getFacesContext().getELContext());
+            } catch(ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return immediate;
+        }
+    }
+
+    public void setImmediate(boolean immediate) {
+        this.immediate = immediate;
+        this.immediateSet = true;
+    }
+
     /*
      * (non-Javadoc)
      *
      * @see javax.faces.component.StateHolder#isTransient()
      */
     public boolean isTransient() {
-        return callback.isTransient();
+        return facade.isTransient();
     }
 
     /*
@@ -228,6 +252,8 @@ public final class UIReportImplementor implements StateHolder {
         subreportDir = (String) values[2];
         format = (String) values[3];
         name = (String) values[4];
+        immediate = ((Boolean) values[5]).booleanValue();
+        immediateSet = ((Boolean) values[6]).booleanValue();
     }
 
     /*
@@ -238,12 +264,14 @@ public final class UIReportImplementor implements StateHolder {
      * )
      */
     public Object saveState(final FacesContext context) {
-        final Object[] values = new Object[5];
+        final Object[] values = new Object[7];
         values[0] = dataSource;
         values[1] = path;
         values[2] = subreportDir;
         values[3] = format;
         values[4] = name;
+        values[5] = immediate;
+        values[6] = immediateSet;
         return values;
     }
 
@@ -253,7 +281,7 @@ public final class UIReportImplementor implements StateHolder {
      * @see javax.faces.component.StateHolder#setTransient(boolean)
      */
     public void setTransient(final boolean newTransientValue) {
-        callback.setTransient(newTransientValue);
+        facade.setTransient(newTransientValue);
     }
 
     /**
@@ -272,12 +300,11 @@ public final class UIReportImplementor implements StateHolder {
     /**
      * Gets the value expression.
      *
-     * @param key
-     *            the key
-     *
+     * @param key the key
      * @return the value expression
      */
     private ValueExpression getValueExpression(final String key) {
-        return callback.getValueExpression(key);
+        return facade.getValueExpression(key);
     }
+    
 }

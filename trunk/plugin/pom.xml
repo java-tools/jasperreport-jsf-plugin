@@ -89,22 +89,13 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <!--skip>true</skip-->
+          <includes>
+            <include>**/test/cases/**/*Test.java</include>
+          </includes>
           <systemProperties>
             <property>
               <name>java.util.logging.config.file</name>
               <value>${test.logging.conf}</value>
-            </property>
-            <property>
-              <name>context-dir</name>
-              <value>${test.context.dir}</value>
-            </property>
-            <property>
-              <name>context-path</name>
-              <value>${test.context.path}</value>
-            </property>
-            <property>
-              <name>web-xml</name>
-              <vale>${test.web.xml}</vale>
             </property>
           </systemProperties>
         </configuration>
@@ -189,6 +180,10 @@
       <artifactId>el-api</artifactId>
     </dependency>
     <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+    </dependency>
+    <dependency>
       <groupId>javax.faces</groupId>
       <artifactId>jsf-api</artifactId>
     </dependency>
@@ -214,7 +209,7 @@
       <artifactId>jasperreports</artifactId>
     </dependency>
     <dependency>
-      <groupId>jexcelapi</groupId>
+      <groupId>net.sourceforge.jexcelapi</groupId>
       <artifactId>jxl</artifactId>
     </dependency>
 
@@ -224,12 +219,12 @@
       <artifactId>junit</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.jboss.jsfunit</groupId>
-      <artifactId>jboss-jsfunit-core</artifactId>
+      <groupId>org.jmock</groupId>
+      <artifactId>jmock-junit4</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.jboss.test-jsf</groupId>
-      <artifactId>jsf-mock</artifactId>
+      <groupId>org.jmock</groupId>
+      <artifactId>jmock-legacy</artifactId>
     </dependency>
 
     <dependency>
@@ -237,8 +232,7 @@
       <artifactId>httpunit</artifactId>
       <version>1.6.2</version>
       <scope>test</scope>
-    </dependency>
-        
+    </dependency>        
     <dependency>
       <groupId>rhino</groupId>
       <artifactId>js</artifactId>
@@ -258,22 +252,46 @@
   <profiles>
     <profile>
       <id>tomcat6x-servlet</id>
+      <properties>
+        <tomcat.version>6.0.26</tomcat.version>
+      </properties>
       <build>
         <plugins>
           <plugin>
-            <groupId>org.codehaus.cargo</groupId>
-            <artifactId>cargo-maven2-plugin</artifactId>
-            <configuration>
-              <wait>false</wait>
-              <timeout>20000</timeout>
-              <container>
-                <containerId>tomcat6x</containerId>
-                <zipUrlInstaller>
-                  <url>http://apache.speedbone.de/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.zip</url>
-                  <installDir>${basedir}/target/cargo/tomcat6x</installDir>
-                </zipUrlInstaller>
-              </container>
-            </configuration>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>integration-test</id>
+                <phase>integration-test</phase>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+                <configuration>
+                  <includes>
+                    <include>**/profiler/*Test.java</include>
+                  </includes>
+                  <systemProperties>
+                    <property>
+                      <name>java.util.logging.config.file</name>
+                      <value>${test.logging.conf}</value>
+                    </property>
+                    <property>
+                      <name>context-dir</name>
+                      <value>${test.context.dir}</value>
+                    </property>
+                    <property>
+                      <name>context-path</name>
+                      <value>${test.context.path}</value>
+                    </property>
+                    <property>
+                      <name>web-xml</name>
+                      <value>${test.web.xml}</value>
+                    </property>
+                  </systemProperties>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>
@@ -281,7 +299,7 @@
         <dependency>
           <groupId>org.apache.tomcat</groupId>
           <artifactId>jasper</artifactId>
-          <version>6.0.26</version>
+          <version>${tomcat.version}</version>
         </dependency>
       </dependencies>
     </profile>

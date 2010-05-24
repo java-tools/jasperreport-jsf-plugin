@@ -21,20 +21,34 @@ package net.sf.jasperreports.jsf;
 import net.sf.jasperreports.jsf.component.UIReport;
 
 /**
+ * Global constants used internally by the plugin.
  *
  * @author A. Alonso Dominguez
  */
 public final class Constants {
 
+    /** Prefix string pre-appended to every constant name. */
     public static final String PACKAGE_PREFIX =
 		Constants.class.getPackage().getName();
 
+    /**
+     * Request attribute used to mark a faces' view which contains at least
+     * one report component.
+     */
     public static final String ATTR_REPORT_VIEW =
             PACKAGE_PREFIX + ".REPORT_VIEW";
 
+    /**
+     * Request attribute used to notify that current request is report post
+     * back request.
+     */
     public static final String ATTR_POSTBACK =
             PACKAGE_PREFIX + ".POSTBACK";
 
+    /**
+     * Request attribute used internally to store the view state before being
+     * cached by the plugin.
+     */
     public static final String ATTR_VIEW_STATE =
             PACKAGE_PREFIX + ".VIEW_STATE";
 
@@ -42,9 +56,13 @@ public final class Constants {
     public static final String BASE_URI = "/" + PACKAGE_PREFIX + "/render";
 
     /** Parameter identifying the component which sended the request. */
-    public static final String PARAM_CLIENTID = 
+    public static final String PARAM_CLIENTID =
             PACKAGE_PREFIX + ".clientId";
 
+    /**
+     * Parameter indetinfying the viewId of the faces' view that needs
+     * to be restored.
+     */
     public static final String PARAM_VIEWID =
             PACKAGE_PREFIX + ".viewId";
 
@@ -52,6 +70,7 @@ public final class Constants {
     public static final String REPORT_COMPONENT_KEY_PREFIX =
             UIReport.COMPONENT_FAMILY + "/";
 
+    /** Session key used to store the view cache map. */
     public static final String VIEW_CACHE_KEY =
             PACKAGE_PREFIX + ".VIEW_CACHE";
 

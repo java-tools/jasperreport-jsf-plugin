@@ -35,6 +35,12 @@ import java.util.logging.Logger;
 
 import net.sf.jasperreports.jsf.util.Util;
 
+/**
+ * Utility class to handle the different kind of pluggable services required
+ * by the implementation.
+ *
+ * @author A. Alonso Dominguez
+ */
 public final class Services {
 
     /** The logger. */
@@ -42,9 +48,29 @@ public final class Services {
             Services.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
+    /** The root folder from where load service resource files. */
     private static final String SERVICES_ROOT = "META-INF/services/";
 
-    public static <T> T chain(final Class<T> clazz, T defaultInstance)
+    /**
+     * Loads a chain of services from the classpath.
+     * <p>
+     * Services are looked up following convention
+     * <tt>META-INF/services/[serviceClassName]</tt>. Service chains must be
+     * configured the same way that service sets but implementation classes
+     * must have a public constructor accepting another instance of the same
+     * service that may used as a delegator when implementing class doesn't know
+     * how to handle the request.
+     *
+     * @param <T>             Service type to be obtained.
+     * @param clazz           Service interface class object.
+     * @param defaultInstance Last service in the chain. May be
+     *        <code>null</code>.
+     *
+     * @return Chained service implementations offered as a single instance.
+     * @throws ServiceException If any error happens when loading the
+     *         service chain.
+     */
+    public static <T> T chain(final Class<T> clazz, final T defaultInstance)
             throws ServiceException {
         final ClassLoader loader = Util.getClassLoader(null);
         final Enumeration<URL> resources = getServiceResources(clazz, loader);
@@ -55,7 +81,8 @@ public final class Services {
             BufferedReader reader = null;
             try {
                 String line;
-                reader = new BufferedReader(new InputStreamReader(url.openStream()));
+                reader = new BufferedReader(new InputStreamReader(
+                        url.openStream()));
                 while (null != (line = reader.readLine())) {
                     // skip line comments
                     if (line.startsWith("#")) {
@@ -127,10 +154,15 @@ public final class Services {
     }
 
     /**
+     * Loads a service set from the classpath.
+     * <p>
+     * Services are looked up following convention
+     * <tt>META-INF/services/[serviceClassName]</tt>. Services set configuration
+     * files must contain a list of service implementation classes.
      *
-     * @param <T>
-     * @param clazz
-     * @return
+     * @param <T>   Service type to be obtained.
+     * @param clazz Service interface class object.
+     * @return a set of services of the requested type.
      */
     @SuppressWarnings("unchecked")
     public static <T> Set<T> set(final Class<T> clazz) throws ServiceException {
@@ -143,7 +175,8 @@ public final class Services {
             BufferedReader reader = null;
             try {
                 String line;
-                reader = new BufferedReader(new InputStreamReader(url.openStream()));
+                reader = new BufferedReader(new InputStreamReader(
+                        url.openStream()));
                 while (null != (line = reader.readLine())) {
                     // skip line comments
                     if (line.startsWith("#")) {
@@ -202,14 +235,11 @@ public final class Services {
      * <tt>META-INF/services/[serviceClassName]</tt>. When loading service maps,
      * service configuration file must contain entries as follows: <tt>
      * [key]:[implementation class]
-     * </tt>
+     * </tt>.
      *
-     * @param <T>
-     *            service type to be obtained
-     * @param resource
-     *            the resource
-     *
-     * @return the map< string, class< t>>
+     * @param <T>      Service type to be obtained.
+     * @param clazz    Service interface class object.
+     * @return the map of services.
      */
     @SuppressWarnings("unchecked")
     public static <T> Map<String, T> map(final Class<T> clazz)
@@ -223,7 +253,8 @@ public final class Services {
             BufferedReader reader = null;
             try {
                 String line;
-                reader = new BufferedReader(new InputStreamReader(url.openStream()));
+                reader = new BufferedReader(new InputStreamReader(
+                        url.openStream()));
                 while (null != (line = reader.readLine())) {
                     // skip line comments
                     if (line.startsWith("#")) {
@@ -279,6 +310,7 @@ public final class Services {
         return Collections.unmodifiableMap(serviceMap);
     }
 
+    /** Utility method to obtain an enumeration of service config files. */
     private static Enumeration<URL> getServiceResources(
             final Class<?> serviceClass, final ClassLoader classLoader)
             throws ServiceException {
@@ -292,6 +324,7 @@ public final class Services {
         return resources;
     }
 
-    private Services() {
-    }
+    /** Private constructor to prevent instantiation */
+    private Services() { }
+
 }

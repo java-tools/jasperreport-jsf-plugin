@@ -23,6 +23,9 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.spi.ValidatorLoader;
+import net.sf.jasperreports.jsf.validation.Validator;
 
 /**
  * The Class UIDataSource.
@@ -31,11 +34,11 @@ public class UIDataSource extends UIComponentBase {
 
     /** The Constant COMPONENT_FAMILY. */
     public static final String COMPONENT_FAMILY =
-            "net.sf.jasperreports.DataSource";
+            Constants.PACKAGE_PREFIX + ".DataSource";
     
     /** The Constant COMPONENT_TYPE. */
     public static final String COMPONENT_TYPE =
-            "net.sf.jasperreports.DataSource";
+            Constants.PACKAGE_PREFIX + ".DataSource";
 
     // Fields
 
@@ -193,6 +196,20 @@ public class UIDataSource extends UIComponentBase {
         values[3] = Boolean.valueOf(typeSet);
         values[4] = value;
         return values;
+    }
+
+    @Override
+    public void processValidators(FacesContext context) {
+        super.processValidators(context);
+
+        if (!isRendered()) {
+            return;
+        }
+
+        final Validator validator = ValidatorLoader.getValidator(context, this);
+        if (validator != null) {
+            validator.validate(context, this);
+        }
     }
     
 }

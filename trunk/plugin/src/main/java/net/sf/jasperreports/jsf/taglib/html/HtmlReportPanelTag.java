@@ -16,18 +16,19 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.taglib;
+package net.sf.jasperreports.jsf.taglib.html;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 
-import net.sf.jasperreports.jsf.component.html.HtmlReport;
-import net.sf.jasperreports.jsf.renderkit.html_basic.EmbedRenderer;
+import net.sf.jasperreports.jsf.component.html.HtmlReportPanel;
+import net.sf.jasperreports.jsf.renderkit.html.PanelRenderer;
+import net.sf.jasperreports.jsf.taglib.AbstractReportTag;
 
 /**
  * The Class ReportTag.
  */
-public class ReportTag extends AbstractReportTag {
+public class HtmlReportPanelTag extends AbstractReportTag {
 
     /** The frameborder. */
     private ValueExpression frameborder;
@@ -116,7 +117,7 @@ public class ReportTag extends AbstractReportTag {
      */
     @Override
     public String getComponentType() {
-        return HtmlReport.COMPONENT_TYPE;
+        return HtmlReportPanel.COMPONENT_TYPE;
     }
 
     /*
@@ -126,7 +127,7 @@ public class ReportTag extends AbstractReportTag {
      */
     @Override
     public String getRendererType() {
-        return EmbedRenderer.RENDERER_TYPE;
+        return PanelRenderer.RENDERER_TYPE;
     }
 
     /*
@@ -139,7 +140,7 @@ public class ReportTag extends AbstractReportTag {
     @Override
     protected void setProperties(final UIComponent component) {
         super.setProperties(component);
-        final HtmlReport report = (HtmlReport) component;
+        final HtmlReportPanel report = (HtmlReportPanel) component;
 
         if (frameborder != null) {
             if (frameborder.isLiteralText()) {

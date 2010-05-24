@@ -23,10 +23,13 @@ import java.io.IOException;
 import javax.faces.component.html.HtmlOutputLink;
 import javax.faces.context.FacesContext;
 
+import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.component.UIReportImplementor;
-import net.sf.jasperreports.jsf.renderkit.html_basic.LinkRenderer;
+import net.sf.jasperreports.jsf.renderkit.html.OutputLinkRenderer;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
+import net.sf.jasperreports.jsf.spi.ValidatorLoader;
+import net.sf.jasperreports.jsf.validation.Validator;
 
 /**
  * The Class HtmlReportLink.
@@ -34,8 +37,9 @@ import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 public class HtmlReportLink extends HtmlOutputLink implements UIReport {
 
     /** The Constant COMPONENT_TYPE. */
-    public static final String COMPONENT_TYPE = "net.sf.jasperreports.HtmlReportLink";
-    
+    public static final String COMPONENT_TYPE =
+            Constants.PACKAGE_PREFIX + ".HtmlReportLink";
+
     // Report implementor
 
     /** The impl. */
@@ -47,7 +51,7 @@ public class HtmlReportLink extends HtmlOutputLink implements UIReport {
     public HtmlReportLink() {
         super();
         impl = new UIReportImplementor(this);
-        setRendererType(LinkRenderer.RENDERER_TYPE);
+        setRendererType(OutputLinkRenderer.RENDERER_TYPE);
     }
 
     /*
@@ -136,14 +140,17 @@ public class HtmlReportLink extends HtmlOutputLink implements UIReport {
         impl.setFormat(type);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see javax.faces.component.UIOutput#getFamily()
-     */
+    public boolean isImmediate() {
+        return impl.isImmediate();
+    }
+
+    public void setImmediate(boolean immediate) {
+        impl.setImmediate(immediate);
+    }
+
     @Override
     public String getFamily() {
-        return UIReport.COMPONENT_FAMILY;
+        return super.getFamily() + "/" + UIReport.COMPONENT_FAMILY;
     }
 
     // UIReport encode methods
@@ -187,4 +194,19 @@ public class HtmlReportLink extends HtmlOutputLink implements UIReport {
         values[1] = impl.saveState(context);
         return values;
     }
+
+    @Override
+    public void processValidators(FacesContext context) {
+        super.processValidators(context);
+
+        if (!isRendered()) {
+            return;
+        }
+
+        final Validator validator = ValidatorLoader.getValidator(context, this);
+        if (validator != null) {
+            validator.validate(context, this);
+        }
+    }
+    
 }
