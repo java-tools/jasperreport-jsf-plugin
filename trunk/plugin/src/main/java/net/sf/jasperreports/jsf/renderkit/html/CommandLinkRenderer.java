@@ -25,7 +25,7 @@ import net.sf.jasperreports.jsf.Constants;
  *
  * @author aalonsodominguez
  */
-public class CommandLinkRenderer extends AbstractReportRenderer {
+public class CommandLinkRenderer extends HtmlReportRenderer {
 
     public static final String CONTENT_DISPOSITION = "inline";
 

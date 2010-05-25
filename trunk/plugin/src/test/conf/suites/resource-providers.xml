@@ -3,5 +3,16 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="ResourceSuite">
-  
+  <test name="ResourceClasses">
+    <classes>
+      <class name="net.sf.jasperreports.jsf.resource.providers.ClasspathResourceTest" />
+      <class name="net.sf.jasperreports.jsf.resource.providers.ContextResourceTest" />
+      <class name="net.sf.jasperreports.jsf.resource.providers.URLResourceTest" />
+    </classes>
+  </test>
+  <test name="ResourceResolver">
+    <classes>
+      <class name="net.sf.jasperreports.jsf.resource.providers.DefaultResourceResolverTest" />
+    </classes>
+  </test>
 </suite>

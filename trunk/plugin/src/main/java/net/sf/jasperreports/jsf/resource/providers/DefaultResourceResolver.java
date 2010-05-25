@@ -65,11 +65,18 @@ public class DefaultResourceResolver implements ResourceResolver {
                 String rootPath;
                 
                 if ((component != null) && (component instanceof UIReport)) {
+                    // If caller component is a report-based component then try to
+                    // resolve the resource relative to the report resource.
+
                     UIReport report = (UIReport) component;
                     rootPath = helper.getResourceRealPath(
                             context.getExternalContext(),
                             FilenameUtils.getPath(report.getPath()));
                 } else {
+                    // If caller component is not a report-based component or
+                    // there is not any component at all, resolve the resource
+                    // name relative to the current view.
+
                     String viewId = context.getViewRoot().getViewId();
                     rootPath = helper.getResourceRealPath(
                             context.getExternalContext(),

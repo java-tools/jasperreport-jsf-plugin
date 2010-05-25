@@ -35,7 +35,7 @@ import net.sf.jasperreports.jsf.component.UIReport;
  * 
  * @author A. Alonso Dominguez
  */
-public class OutputLinkRenderer extends AbstractReportRenderer {
+public class OutputLinkRenderer extends HtmlReportRenderer {
 
     public static final String CONTENT_DISPOSITION = "attachment";
 
