@@ -236,6 +236,10 @@
       <groupId>org.jmock</groupId>
       <artifactId>jmock-legacy</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.apache.shale</groupId>
+      <artifactId>shale-test</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>httpunit</groupId>
@@ -272,14 +276,14 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <executions>
               <execution>
-                <id>integration-test</id>
-                <phase>integration-test</phase>
+                <id>tomcat6x-servlet-test</id>
+                <phase>test</phase>
                 <goals>
                   <goal>test</goal>
                 </goals>
                 <configuration>
                   <includes>
-                    <include>**/profiler/*Test.java</include>
+                    <include>**/profiler/*ServletTest.java</include>
                   </includes>
                   <systemProperties>
                     <property>
@@ -310,6 +314,80 @@
           <groupId>org.apache.tomcat</groupId>
           <artifactId>jasper</artifactId>
           <version>${tomcat.version}</version>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>tomcat6x-portlet</id>
+      <properties>
+        <tomcat.version>6.0.26</tomcat.version>
+        <portletcontainer.version>2.0-m4</portletcontainer.version>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>tomcat6x-portlet-test</id>
+                <phase>test</phase>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+                <configuration>
+                  <includes>
+                    <include>**/profiler/*PortletTest.java</include>
+                  </includes>
+                  <systemProperties>
+                    <property>
+                      <name>java.util.logging.config.file</name>
+                      <value>${test.logging.conf}</value>
+                    </property>
+                    <property>
+                      <name>context-dir</name>
+                      <value>${test.context.dir}</value>
+                    </property>
+                    <property>
+                      <name>context-path</name>
+                      <value>${test.context.path}</value>
+                    </property>
+                    <property>
+                      <name>web-xml</name>
+                      <value>${test.web.xml}</value>
+                    </property>
+                  </systemProperties>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+      <dependencies>
+        <dependency>
+          <groupId>org.apache.tomcat</groupId>
+          <artifactId>jasper</artifactId>
+          <version>${tomcat.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.sun.portal.portletcontainer</groupId>
+          <artifactId>portletadmin</artifactId>
+          <version>${portletcontainer.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.sun.portal.portletcontainer</groupId>
+          <artifactId>portletappengine</artifactId>
+          <version>${portletcontainer.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.sun.portal.portletcontainer</groupId>
+          <artifactId>portletcontainer</artifactId>
+          <version>${portletcontainer.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>net.sf.jsf4portlets</groupId>
+          <artifactId>jsf4portlets-impl</artifactId>
+          <version>${jsf4portlets.version}</version>
         </dependency>
       </dependencies>
     </profile>

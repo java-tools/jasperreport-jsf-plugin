@@ -36,7 +36,7 @@ import net.sf.jasperreports.jsf.component.html.HtmlReportPanel;
  * 
  * @author A. Alonso Dominguez
  */
-public class PanelRenderer extends AbstractReportRenderer {
+public class PanelRenderer extends HtmlReportRenderer {
 
     public static final String CONTENT_DISPOSITION = "inline";
     

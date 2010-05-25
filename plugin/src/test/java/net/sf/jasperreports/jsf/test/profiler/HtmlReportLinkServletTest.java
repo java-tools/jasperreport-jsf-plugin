@@ -18,17 +18,40 @@
  */
 package net.sf.jasperreports.jsf.test.profiler;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
+import com.meterware.httpunit.WebLink;
 import com.meterware.httpunit.WebResponse;
 import net.sf.jasperreports.jsf.test.framework.ComponentProfilerTestCase;
 
-public class HtmlReportPanelTest extends ComponentProfilerTestCase {
+@RunWith(Parameterized.class)
+public class HtmlReportLinkServletTest extends ComponentProfilerTestCase {
+
+    @Parameters
+    public static Collection<?> linkIdentifiers() {
+        return Arrays.asList(new Object[][]{{"reportForm:reportLink"}});
+    }
+    private final String linkId;
+
+    public HtmlReportLinkServletTest(final String linkId) {
+        this.linkId = linkId;
+    }
 
     @Test
-    public final void renderPanel() throws Exception {
+    public void clickOnLink() throws Exception {
         final WebResponse reportView = getComponentView();
-        Assert.assertNotNull(reportView);
+        final WebLink link = reportView.getLinkWithID(linkId);
+        Assert.assertNotNull("Link '" + linkId + "' is null", link);
+        System.out.println("---> Here I click the link");
+        final WebResponse reportResponse = link.click();
+        Assert.assertEquals("Report content type is not of expected type",
+                "text/html", reportResponse.getContentType());
     }
 }
