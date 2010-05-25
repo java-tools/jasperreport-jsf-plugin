@@ -89,15 +89,20 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <!--skip>true</skip-->
-          <includes>
+          <!--includes>
             <include>**/test/cases/**/*Test.java</include>
-          </includes>
+          </includes-->
           <systemProperties>
             <property>
               <name>java.util.logging.config.file</name>
               <value>${test.logging.conf}</value>
             </property>
           </systemProperties>
+          <suiteXmlFiles>
+            <suiteXmlFile>src/test/conf/suites/exporter-providers.xml</suiteXmlFile>
+            <suiteXmlFile>src/test/conf/suites/filler-providers.xml</suiteXmlFile>
+            <suiteXmlFile>src/test/conf/suites/resource-providers.xml</suiteXmlFile>
+          </suiteXmlFiles>
         </configuration>
       </plugin>
             
@@ -217,6 +222,11 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <classifier>jdk15</classifier>
     </dependency>
     <dependency>
       <groupId>org.jmock</groupId>
