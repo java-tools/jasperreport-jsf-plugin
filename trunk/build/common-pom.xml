@@ -249,6 +249,13 @@
         <scope>test</scope>
       </dependency>
       <dependency>
+        <groupId>org.testng</groupId>
+        <artifactId>testng</artifactId>
+        <version>5.9</version>
+        <scope>test</scope>
+        <classifier>jdk15</classifier>
+      </dependency>
+      <dependency>
         <groupId>org.jmock</groupId>
         <artifactId>jmock-junit4</artifactId>
         <version>${jmock.version}</version>
