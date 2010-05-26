@@ -16,7 +16,7 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.test.profiler;
+package net.sf.jasperreports.jsf.webapp;
 
 import org.junit.Assert;
 import org.junit.Test;

@@ -48,7 +48,7 @@ public class DefaultResourceResolver implements ResourceResolver {
         Resource resource = null;
         try {
             final URL url = new URL(name);
-            resource = new URLResource(name, url);
+            resource = new URLResource(url);
         } catch (MalformedURLException e) {
             final ClassLoader loader = Util.getClassLoader(this);
             if (name.startsWith(ClasspathResource.PREFIX)) {
