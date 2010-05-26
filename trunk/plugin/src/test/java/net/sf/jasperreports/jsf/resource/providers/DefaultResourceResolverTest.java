@@ -18,7 +18,7 @@
  */
 package net.sf.jasperreports.jsf.resource.providers;
 
-import net.sf.jasperreports.jsf.component.html.HtmlReportPanel;
+import net.sf.jasperreports.jsf.component.html.HtmlReportFrame;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.test.MockFacesEnvironment;
 
@@ -37,7 +37,7 @@ public class DefaultResourceResolverTest {
 
     private MockFacesEnvironment facesEnv;
 
-    private HtmlReportPanel component;
+    private HtmlReportFrame component;
     private DefaultResourceResolver resolver;
 
     private Mockery context = new Mockery();
@@ -46,7 +46,7 @@ public class DefaultResourceResolverTest {
     public void init() {
         facesEnv = MockFacesEnvironment.getServletInstance();
 
-        component = new HtmlReportPanel();
+        component = new HtmlReportFrame();
         resolver = new DefaultResourceResolver();
     }
 

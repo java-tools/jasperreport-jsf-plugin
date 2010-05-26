@@ -21,14 +21,14 @@ package net.sf.jasperreports.jsf.taglib.html;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 
-import net.sf.jasperreports.jsf.component.html.HtmlReportPanel;
-import net.sf.jasperreports.jsf.renderkit.html.PanelRenderer;
+import net.sf.jasperreports.jsf.component.html.HtmlReportFrame;
+import net.sf.jasperreports.jsf.renderkit.html.FrameRenderer;
 import net.sf.jasperreports.jsf.taglib.AbstractReportTag;
 
 /**
  * The Class ReportTag.
  */
-public class HtmlReportPanelTag extends AbstractReportTag {
+public class HtmlReportFrameTag extends AbstractReportTag {
 
     /** The frameborder. */
     private ValueExpression frameborder;
@@ -117,7 +117,7 @@ public class HtmlReportPanelTag extends AbstractReportTag {
      */
     @Override
     public String getComponentType() {
-        return HtmlReportPanel.COMPONENT_TYPE;
+        return HtmlReportFrame.COMPONENT_TYPE;
     }
 
     /*
@@ -127,7 +127,7 @@ public class HtmlReportPanelTag extends AbstractReportTag {
      */
     @Override
     public String getRendererType() {
-        return PanelRenderer.RENDERER_TYPE;
+        return FrameRenderer.RENDERER_TYPE;
     }
 
     /*
@@ -140,7 +140,7 @@ public class HtmlReportPanelTag extends AbstractReportTag {
     @Override
     protected void setProperties(final UIComponent component) {
         super.setProperties(component);
-        final HtmlReportPanel report = (HtmlReportPanel) component;
+        final HtmlReportFrame report = (HtmlReportFrame) component;
 
         if (frameborder != null) {
             if (frameborder.isLiteralText()) {

@@ -29,18 +29,19 @@
 <view>
 
     <component jsfid="jr:dataSource"
-        componentType="net.sf.jasperreports.DataSource"
+        componentType="net.sf.jasperreports.jsf.DataSource"
         extends="baseComponent">
         <attributes>
             <set name="driverClass" bindingType="VB" />
+            <set name="data" bindingType="VB" />
             <set name="query" bindingType="VB" />
             <set name="type" bindingType="VB" />
             <set name="value" bindingType="VB" />
         </attributes>
     </component>
 
-    <component jsfid="jr:reportPanel"
-        componentType="net.sf.jasperreports.HtmlReportPanel"
+    <component jsfid="jr:reportFrame"
+        componentType="net.sf.jasperreports.jsf.HtmlReportFrame"
         extends="baseHtml">
         <attributes>
             <set name="dataSource" bindingType="VB" />
@@ -59,28 +60,6 @@
 
     <component jsfid="jr:reportLink"
         componentType="net.sf.jasperreports.HtmlReportLink"
-        extends="baseHtml">
-        <attributes>
-            <set name="dataSource" bindingType="VB" />
-            <set name="path" bindingType="VB" />
-            <set name="subreportDir" bindingType="VB" />
-            <set name="format" bindingType="VB" />
-        </attributes>
-    </component>
-
-    <component jsfid="jr:reportCommandLink"
-        componentType="net.sf.jasperreports.HtmlReportCommandLink"
-        extends="baseHtml">
-        <attributes>
-            <set name="dataSource" bindingType="VB" />
-            <set name="path" bindingType="VB" />
-            <set name="subreportDir" bindingType="VB" />
-            <set name="format" bindingType="VB" />
-        </attributes>
-    </component>
-
-    <component jsfid="jr:form"
-        componentType="net.sf.jasperreports.HtmlReportForm"
         extends="baseHtml">
         <attributes>
             <set name="dataSource" bindingType="VB" />

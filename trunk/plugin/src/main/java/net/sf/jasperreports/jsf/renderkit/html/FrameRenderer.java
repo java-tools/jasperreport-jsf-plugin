@@ -29,20 +29,20 @@ import javax.faces.context.ResponseWriter;
 import net.sf.jasperreports.jsf.Constants;
 
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.component.html.HtmlReportPanel;
+import net.sf.jasperreports.jsf.component.html.HtmlReportFrame;
 
 /**
  * The Class EmbedRenderer.
  * 
  * @author A. Alonso Dominguez
  */
-public class PanelRenderer extends HtmlReportRenderer {
+public class FrameRenderer extends HtmlReportRenderer {
 
     public static final String CONTENT_DISPOSITION = "inline";
     
     /** The Constant RENDERER_TYPE. */
     public static final String RENDERER_TYPE = 
-            Constants.PACKAGE_PREFIX + ".Panel";
+            Constants.PACKAGE_PREFIX + ".Frame";
     
     /** The Constant PASSTHRU_ATTRS. */
     private static final String[] PASSTHRU_ATTRS = {"marginheight",
@@ -50,7 +50,7 @@ public class PanelRenderer extends HtmlReportRenderer {
 
     /** The logger. */
     private static final Logger logger = Logger.getLogger(
-            PanelRenderer.class.getPackage().getName(),
+            FrameRenderer.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
     public String getContentDisposition() {
@@ -68,12 +68,9 @@ public class PanelRenderer extends HtmlReportRenderer {
     @SuppressWarnings("unused")
     public void encodeBegin(final FacesContext context,
             final UIComponent component) throws IOException {
-        
         logger.log(Level.FINE, "JRJSF_0002", component.getClientId(context));
 
-        final ViewHandler viewHandler = context.getApplication().getViewHandler();
-        final UIReport report = (UIReport) component;
-        final String reportURI = buildReportURI(context, component);
+        final String reportURI = encodeReportURL(context, component);
 
         final ResponseWriter writer = context.getResponseWriter();
         if ("block".equals(component.getAttributes().get("layout"))) {
@@ -131,7 +128,7 @@ public class PanelRenderer extends HtmlReportRenderer {
             final UIComponent report) throws IOException {
         super.renderAttributes(writer, report);
 
-        final HtmlReportPanel htmlReport = (HtmlReportPanel) report;
+        final HtmlReportFrame htmlReport = (HtmlReportFrame) report;
         if (htmlReport.getFrameborder()) {
             writer.writeAttribute("frameborder", "1", null);
         } else {

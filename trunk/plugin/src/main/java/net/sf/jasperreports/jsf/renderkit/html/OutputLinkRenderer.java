@@ -69,7 +69,7 @@ public class OutputLinkRenderer extends HtmlReportRenderer {
         final ViewHandler viewHandler = context
                 .getApplication().getViewHandler();
         final UIReport report = (UIReport) component;
-        final String reportURI = buildReportURI(context, component);
+        final String reportURI = encodeReportURL(context, component);
         final ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("a", component);

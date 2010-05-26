@@ -47,7 +47,7 @@ public final class ResultSetFiller extends AbstractJRDataSourceFiller {
     @Override
     protected JRDataSource getJRDataSource(final FacesContext context)
             throws FillerException {
-        final ResultSet rs = (ResultSet) getDataSourceComponent().getValue();
+        final ResultSet rs = (ResultSet) getDataSourceComponent().getData();
         if (rs == null) {
             if (logger.isLoggable(Level.WARNING)) {
                 logger.log(Level.WARNING, "JRJSF_0020",

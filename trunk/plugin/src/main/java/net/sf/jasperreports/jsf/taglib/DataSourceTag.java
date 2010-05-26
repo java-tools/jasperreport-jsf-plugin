@@ -29,12 +29,17 @@ import net.sf.jasperreports.jsf.component.UIDataSource;
  */
 public class DataSourceTag extends UIComponentELTag {
 
+    private ValueExpression data;
     /** The query. */
     private ValueExpression query;
     /** The type. */
     private ValueExpression type;
     /** The value. */
     private ValueExpression value;
+
+    public void setData(ValueExpression data) {
+        this.data = data;
+    }
 
     /**
      * Sets the query.
@@ -76,6 +81,7 @@ public class DataSourceTag extends UIComponentELTag {
     @Override
     public void release() {
         super.release();
+        data = null;
         query = null;
         type = null;
         value = null;
@@ -115,6 +121,14 @@ public class DataSourceTag extends UIComponentELTag {
         super.setProperties(component);
         final UIDataSource dataSource = (UIDataSource) component;
 
+        if (data != null) {
+            if (data.isLiteralText()) {
+                dataSource.setData(query.getExpressionString());
+            } else {
+                dataSource.setValueExpression("data", data);
+            }
+        }
+
         if (query != null) {
             if (query.isLiteralText()) {
                 dataSource.setQuery(query.getExpressionString());
@@ -133,7 +147,7 @@ public class DataSourceTag extends UIComponentELTag {
 
         if (value != null) {
             if (value.isLiteralText()) {
-                dataSource.setValue(value.getExpressionString());
+                dataSource.setData(value.getExpressionString());
             } else {
                 dataSource.setValueExpression("value", value);
             }

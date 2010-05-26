@@ -50,7 +50,7 @@ public final class BeanFiller extends AbstractJRDataSourceFiller {
             throws FillerException {
         JRDataSource dataSource;
 
-        final Object value = getDataSourceComponent().getValue();
+        final Object value = getDataSourceComponent().getData();
         if (value == null) {
             if (logger.isLoggable(Level.WARNING)) {
                 logger.log(Level.WARNING, "JRJSF_0020",
