@@ -29,8 +29,8 @@ public final class URLResource extends AbstractResource implements Resource {
 
     private final URL location;
 
-    protected URLResource(final String name, final URL location) {
-        super(name);
+    protected URLResource(final URL location) {
+        super(location.toString());
         this.location = location;
     }
 

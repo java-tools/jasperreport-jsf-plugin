@@ -16,33 +16,16 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.resource.providers;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.*;
+package net.sf.jasperreports.jsf.test;
 
 /**
  *
- * @author aalonsodominguez
+ * @author antonio.alonso
  */
-public class ContextResourceTest {
+public final class TestConstants {
 
-    public static final String RES_NAME = "";
+    public static final Object UNDEFINED_VALUE = "UNDEFINED";
 
-    private ContextResource resource;
-
-    @Before
-    public void createResource() {
-        resource = new ContextResource(RES_NAME);
-    }
-
-    @Test
-    public void getName() {
-        String name = resource.getName();
-        assertNotNull(name);
-        assertEquals(RES_NAME, name);
-    }
+    private TestConstants() { }
 
 }

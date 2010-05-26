@@ -50,6 +50,98 @@
     <test.context.path>/jasperforge</test.context.path>
   </properties>
 
+  <dependencies>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>jsp-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.el</groupId>
+      <artifactId>el-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.faces</groupId>
+      <artifactId>jsf-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.faces</groupId>
+      <artifactId>jsf-impl</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.portlet</groupId>
+      <artifactId>portlet-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>net.sf.jsf4portlets</groupId>
+      <artifactId>jsf4portlets-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>jasperreports</groupId>
+      <artifactId>jasperreports</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>net.sourceforge.jexcelapi</groupId>
+      <artifactId>jxl</artifactId>
+    </dependency>
+
+    <!-- Testing dependencies -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jmock</groupId>
+      <artifactId>jmock-junit4</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jmock</groupId>
+      <artifactId>jmock-legacy</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.shale</groupId>
+      <artifactId>shale-test</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>httpunit</groupId>
+      <artifactId>httpunit</artifactId>
+      <version>1.6.2</version>
+      <scope>test</scope>
+    </dependency>        
+    <dependency>
+      <groupId>rhino</groupId>
+      <artifactId>js</artifactId>
+      <version>1.7R1</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>nekohtml</groupId>
+      <artifactId>nekohtml</artifactId>
+      <version>1.9.6.2</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
   <build>
     <testResources>
       <testResource>
@@ -87,25 +179,25 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <!--skip>true</skip-->
-          <!--includes>
-            <include>**/test/cases/**/*Test.java</include>
-          </includes-->
-          <systemProperties>
-            <property>
-              <name>java.util.logging.config.file</name>
-              <value>${test.logging.conf}</value>
-            </property>
-          </systemProperties>
-          <suiteXmlFiles>
-            <suiteXmlFile>src/test/conf/suites/exporter-providers.xml</suiteXmlFile>
-            <suiteXmlFile>src/test/conf/suites/filler-providers.xml</suiteXmlFile>
-            <suiteXmlFile>src/test/conf/suites/resource-providers.xml</suiteXmlFile>
-          </suiteXmlFiles>
-        </configuration>
+        <executions>
+          <execution>
+            <id>default-test</id>
+            <configuration>
+              <excludes>
+                <exclude>**/webapp/*Test.java</exclude>
+                <exclude>**/test/**/*.java</exclude>
+              </excludes>
+              <systemProperties>
+                <property>
+                  <name>java.util.logging.config.file</name>
+                  <value>${test.logging.conf}</value>
+                </property>
+              </systemProperties>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
-            
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
@@ -171,98 +263,6 @@
     </plugins>
   </reporting>
 
-  <dependencies>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet.jsp</groupId>
-      <artifactId>jsp-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.el</groupId>
-      <artifactId>el-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>jstl</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.faces</groupId>
-      <artifactId>jsf-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.faces</groupId>
-      <artifactId>jsf-impl</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.portlet</groupId>
-      <artifactId>portlet-api</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>net.sf.jsf4portlets</groupId>
-      <artifactId>jsf4portlets-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>jasperreports</groupId>
-      <artifactId>jasperreports</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>net.sourceforge.jexcelapi</groupId>
-      <artifactId>jxl</artifactId>
-    </dependency>
-
-    <!-- Testing dependencies -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <classifier>jdk15</classifier>
-    </dependency>
-    <dependency>
-      <groupId>org.jmock</groupId>
-      <artifactId>jmock-junit4</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jmock</groupId>
-      <artifactId>jmock-legacy</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.shale</groupId>
-      <artifactId>shale-test</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>httpunit</groupId>
-      <artifactId>httpunit</artifactId>
-      <version>1.6.2</version>
-      <scope>test</scope>
-    </dependency>        
-    <dependency>
-      <groupId>rhino</groupId>
-      <artifactId>js</artifactId>
-      <version>1.7R1</version>
-      <type>jar</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>nekohtml</groupId>
-      <artifactId>nekohtml</artifactId>
-      <version>1.9.6.2</version>
-      <type>jar</type>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-
   <profiles>
     <profile>
       <id>tomcat6x-servlet</id>
@@ -283,7 +283,7 @@
                 </goals>
                 <configuration>
                   <includes>
-                    <include>**/profiler/*ServletTest.java</include>
+                    <include>**/webapp/*ServletTest.java</include>
                   </includes>
                   <systemProperties>
                     <property>
@@ -337,7 +337,7 @@
                 </goals>
                 <configuration>
                   <includes>
-                    <include>**/profiler/*PortletTest.java</include>
+                    <include>**/webapp/*PortletTest.java</include>
                   </includes>
                   <systemProperties>
                     <property>

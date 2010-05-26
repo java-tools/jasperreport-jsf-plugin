@@ -16,7 +16,7 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.test.profiler;
+package net.sf.jasperreports.jsf.webapp;
 
 import java.util.Arrays;
 import java.util.Collection;
