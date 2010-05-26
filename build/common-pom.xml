@@ -120,6 +120,7 @@
     <jasperreports.version>3.7.1</jasperreports.version>
     <jxl.version>2.6</jxl.version>
 
+    <junit.version>4.8.1</junit.version>
     <jmock.version>2.5.1</jmock.version>
   </properties>
 
@@ -208,6 +209,13 @@
         <scope>compile</scope>
       </dependency>
       <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>1.1.1</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
         <groupId>com.sun.facelets</groupId>
         <artifactId>jsf-facelets</artifactId>
         <version>1.1.14</version>
@@ -242,18 +250,12 @@
         <optional>true</optional>
       </dependency>
 
+      <!-- Testing utilities -->
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.4</version>
+        <version>${junit.version}</version>
         <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.testng</groupId>
-        <artifactId>testng</artifactId>
-        <version>5.9</version>
-        <scope>test</scope>
-        <classifier>jdk15</classifier>
       </dependency>
       <dependency>
         <groupId>org.jmock</groupId>
@@ -265,6 +267,12 @@
         <groupId>org.jmock</groupId>
         <artifactId>jmock-legacy</artifactId>
         <version>${jmock.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.shale</groupId>
+        <artifactId>shale-test</artifactId>
+        <version>1.0.5</version>
         <scope>test</scope>
       </dependency>
     </dependencies>
