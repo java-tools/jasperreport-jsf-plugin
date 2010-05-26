@@ -109,7 +109,7 @@ public final class XmlFiller extends AbstractJRDataSourceFiller {
 
     protected Document getXmlDocument(final FacesContext context)
             throws ParserConfigurationException, SAXException, IOException {
-        final Object value = getDataSourceComponent().getValue();
+        final Object value = getDataSourceComponent().getData();
         if (value == null) {
             return null;
         }

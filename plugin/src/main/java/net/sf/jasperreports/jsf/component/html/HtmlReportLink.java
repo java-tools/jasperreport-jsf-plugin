@@ -18,195 +18,67 @@
  */
 package net.sf.jasperreports.jsf.component.html;
 
-import java.io.IOException;
-
-import javax.faces.component.html.HtmlOutputLink;
+import javax.el.ELException;
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.component.UIReportImplementor;
 import net.sf.jasperreports.jsf.renderkit.html.OutputLinkRenderer;
-import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
-import net.sf.jasperreports.jsf.spi.ValidatorLoader;
-import net.sf.jasperreports.jsf.validation.Validator;
 
 /**
  * The Class HtmlReportLink.
  */
-public class HtmlReportLink extends HtmlOutputLink implements UIReport {
+public class HtmlReportLink extends UIReport {
 
     /** The Constant COMPONENT_TYPE. */
     public static final String COMPONENT_TYPE =
             Constants.PACKAGE_PREFIX + ".HtmlReportLink";
 
-    // Report implementor
-
-    /** The impl. */
-    private final UIReportImplementor impl;
+    private String target;
 
     /**
      * Instantiates a new html report link.
      */
     public HtmlReportLink() {
         super();
-        impl = new UIReportImplementor(this);
         setRendererType(OutputLinkRenderer.RENDERER_TYPE);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see net.sf.jasperreports.jsf.component.UIReport#getDataSource()
-     */
-    public String getDataSource() {
-        return impl.getDataSource();
+    public String getTarget() {
+        if (target != null) {
+            return target;
+        }
+        ValueExpression ve = getValueExpression("target");
+        if (ve != null) {
+            try {
+                return (String) ve.getValue(getFacesContext().getELContext());
+            } catch (ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return target;
+        }
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * net.sf.jasperreports.jsf.component.UIReport#setDataSource(java.lang.String
-     * )
-     */
-    public void setDataSource(final String dataSource) {
-        impl.setDataSource(dataSource);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see net.sf.jasperreports.jsf.component.UIReport#getPath()
-     */
-    public String getPath() {
-        return impl.getPath();
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * net.sf.jasperreports.jsf.component.UIReport#setPath(java.lang.String)
-     */
-    public void setPath(final String path) {
-        impl.setPath(path);
-    }
-
-    public String getName() {
-        return impl.getName();
-    }
-
-    public void setName(final String name) {
-        impl.setName(name);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see net.sf.jasperreports.jsf.component.UIReport#getSubreportDir()
-     */
-    public String getSubreportDir() {
-        return impl.getSubreportDir();
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * net.sf.jasperreports.jsf.component.UIReport#setSubreportDir(java.lang
-     * .String)
-     */
-    public void setSubreportDir(final String subreportDir) {
-        impl.setSubreportDir(subreportDir);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see net.sf.jasperreports.jsf.component.UIReport#getFormat()
-     */
-    public String getFormat() {
-        return impl.getFormat();
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * net.sf.jasperreports.jsf.component.UIReport#setFormat(java.lang.String)
-     */
-    public void setFormat(final String type) {
-        impl.setFormat(type);
-    }
-
-    public boolean isImmediate() {
-        return impl.isImmediate();
-    }
-
-    public void setImmediate(boolean immediate) {
-        impl.setImmediate(immediate);
+    public void setTarget(String target) {
+        this.target = target;
     }
 
     @Override
-    public String getFamily() {
-        return super.getFamily() + "/" + UIReport.COMPONENT_FAMILY;
-    }
-
-    // UIReport encode methods
-    public void encodeContent(final FacesContext context) throws IOException {
-        final ReportRenderer renderer = (ReportRenderer) getRenderer(context);
-        renderer.encodeContent(context, this);
-    }
-
-    public void encodeHeaders(final FacesContext context) throws IOException {
-        final ReportRenderer renderer = (ReportRenderer) getRenderer(context);
-        renderer.encodeHeaders(context, this);
-    }
-
-    // State saving/restoring methods
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * javax.faces.component.html.HtmlOutputLink#restoreState(javax.faces.context
-     * .FacesContext, java.lang.Object)
-     */
-    @Override
-    public void restoreState(final FacesContext context, final Object state) {
-        final Object[] values = (Object[]) state;
+    public void restoreState(FacesContext context, Object state) {
+        Object[] values = (Object[]) state;
         super.restoreState(context, values[0]);
-        impl.restoreState(context, values[1]);
+        target = (String) values[1];
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * javax.faces.component.html.HtmlOutputLink#saveState(javax.faces.context
-     * .FacesContext)
-     */
     @Override
-    public Object saveState(final FacesContext context) {
-        final Object[] values = new Object[2];
+    public Object saveState(FacesContext context) {
+        Object[] values = new Object[2];
         values[0] = super.saveState(context);
-        values[1] = impl.saveState(context);
+        values[1] = target;
         return values;
     }
 
-    @Override
-    public void processValidators(FacesContext context) {
-        super.processValidators(context);
-
-        if (!isRendered()) {
-            return;
-        }
-
-        final Validator validator = ValidatorLoader.getValidator(context, this);
-        if (validator != null) {
-            validator.validate(context, this);
-        }
-    }
-    
 }

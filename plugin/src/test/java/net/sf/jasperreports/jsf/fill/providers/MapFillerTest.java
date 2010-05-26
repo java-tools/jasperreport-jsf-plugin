@@ -79,7 +79,7 @@ public class MapFillerTest  {
         filler = new MapFiller(component);
 
         if (!TestConstants.UNDEFINED_VALUE.equals(data)) {
-            component.setValue(data);
+            component.setData(data);
         }
     }
 

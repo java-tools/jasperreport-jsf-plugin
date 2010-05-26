@@ -19,7 +19,7 @@
 package net.sf.jasperreports.jsf.component.html;
 
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
-import net.sf.jasperreports.jsf.renderkit.html.PanelRenderer;
+import net.sf.jasperreports.jsf.renderkit.html.FrameRenderer;
 import net.sf.jasperreports.jsf.test.MockFacesEnvironment;
 
 import org.jmock.Expectations;
@@ -41,17 +41,17 @@ public class HtmlReportPanelTest {
 
     private MockFacesEnvironment facesEnv;
 
-    private HtmlReportPanel reportPanel;
+    private HtmlReportFrame reportPanel;
     private ReportRenderer renderer;
 
     @Before
     public void initSupportClasses() {
         facesEnv = MockFacesEnvironment.getServletInstance();
 
-        reportPanel = new HtmlReportPanel();
+        reportPanel = new HtmlReportFrame();
         renderer = context.mock(ReportRenderer.class);
         facesEnv.getRenderKit().addRenderer(reportPanel.getFamily(),
-                PanelRenderer.RENDERER_TYPE, renderer);
+                FrameRenderer.RENDERER_TYPE, renderer);
     }
 
     @Test

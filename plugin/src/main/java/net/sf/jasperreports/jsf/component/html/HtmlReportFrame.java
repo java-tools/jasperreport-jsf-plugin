@@ -18,35 +18,23 @@
  */
 package net.sf.jasperreports.jsf.component.html;
 
-import java.io.IOException;
-
 import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
-import net.sf.jasperreports.jsf.Constants;
 
+import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.component.UIReportImplementor;
-import net.sf.jasperreports.jsf.renderkit.html.PanelRenderer;
-import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
-import net.sf.jasperreports.jsf.spi.ValidatorLoader;
-import net.sf.jasperreports.jsf.validation.Validator;
+import net.sf.jasperreports.jsf.renderkit.html.FrameRenderer;
 
 /**
  * The Class HtmlReport.
  */
-public class HtmlReportPanel extends HtmlPanelGroup implements UIReport {
+public class HtmlReportFrame extends UIReport {
 
     /** The Constant COMPONENT_TYPE. */
     public static final String COMPONENT_TYPE = 
-            Constants.PACKAGE_PREFIX + ".HtmlReportPanel";
-
-    // Report implementor
-
-    /** The impl. */
-    private final UIReportImplementor impl;
+            Constants.PACKAGE_PREFIX + ".HtmlReportFrame";
 
     // iframe attributes
 
@@ -66,104 +54,9 @@ public class HtmlReportPanel extends HtmlPanelGroup implements UIReport {
     /**
      * Instantiates a new html report.
      */
-    public HtmlReportPanel() {
+    public HtmlReportFrame() {
         super();
-        impl = new UIReportImplementor(this);
-        setRendererType(PanelRenderer.RENDERER_TYPE);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see net.sf.jasperreports.jsf.component.UIReport#getDataSource()
-     */
-    public String getDataSource() {
-        return impl.getDataSource();
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * net.sf.jasperreports.jsf.component.UIReport#setDataSource(java.lang.String
-     * )
-     */
-    public void setDataSource(final String dataSource) {
-        impl.setDataSource(dataSource);
-    }
-
-    public String getName() {
-        return impl.getName();
-    }
-
-    public void setName(final String name) {
-        impl.setName(name);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see net.sf.jasperreports.jsf.component.UIReport#getPath()
-     */
-    public String getPath() {
-        return impl.getPath();
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * net.sf.jasperreports.jsf.component.UIReport#setPath(java.lang.String)
-     */
-    public void setPath(final String path) {
-        impl.setPath(path);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see net.sf.jasperreports.jsf.component.UIReport#getSubreportDir()
-     */
-    public String getSubreportDir() {
-        return impl.getSubreportDir();
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * net.sf.jasperreports.jsf.component.UIReport#setSubreportDir(java.lang
-     * .String)
-     */
-    public void setSubreportDir(final String subreportDir) {
-        impl.setSubreportDir(subreportDir);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see net.sf.jasperreports.jsf.component.UIReport#getFormat()
-     */
-    public String getFormat() {
-        return impl.getFormat();
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * net.sf.jasperreports.jsf.component.UIReport#setFormat(java.lang.String)
-     */
-    public void setFormat(final String type) {
-        impl.setFormat(type);
-    }
-
-    public boolean isImmediate() {
-        return impl.isImmediate();
-    }
-
-    public void setImmediate(boolean immediate) {
-        impl.setImmediate(immediate);
+        setRendererType(FrameRenderer.RENDERER_TYPE);
     }
 
     /**
@@ -178,7 +71,8 @@ public class HtmlReportPanel extends HtmlPanelGroup implements UIReport {
         final ValueExpression ve = getValueExpression("frameborder");
         if (ve != null) {
             try {
-                return ((Boolean) ve.getValue(getFacesContext().getELContext())).booleanValue();
+                return ((Boolean) ve.getValue(getFacesContext()
+                        .getELContext())).booleanValue();
             } catch (final ELException e) {
                 throw new FacesException(e);
             }
@@ -322,27 +216,6 @@ public class HtmlReportPanel extends HtmlPanelGroup implements UIReport {
         this.width = width;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see javax.faces.component.UIPanel#getFamily()
-     */
-    @Override
-    public String getFamily() {
-        return super.getFamily() + "/" + UIReport.COMPONENT_FAMILY;
-    }
-
-    // UIReport encode methods
-    public void encodeContent(final FacesContext context) throws IOException {
-        final ReportRenderer renderer = (ReportRenderer) getRenderer(context);
-        renderer.encodeContent(context, this);
-    }
-
-    public void encodeHeaders(final FacesContext context) throws IOException {
-        final ReportRenderer renderer = (ReportRenderer) getRenderer(context);
-        renderer.encodeHeaders(context, this);
-    }
-
     // State saving/restoring methods
 
     /*
@@ -356,13 +229,12 @@ public class HtmlReportPanel extends HtmlPanelGroup implements UIReport {
     public void restoreState(final FacesContext context, final Object state) {
         final Object[] values = (Object[]) state;
         super.restoreState(context, values[0]);
-        impl.restoreState(context, values[1]);
-        frameborder = ((Boolean) values[2]).booleanValue();
-        frameborderSet = ((Boolean) values[3]).booleanValue();
-        marginheight = (String) values[4];
-        marginwidth = (String) values[5];
-        height = (String) values[6];
-        width = (String) values[7];
+        frameborder = ((Boolean) values[1]).booleanValue();
+        frameborderSet = ((Boolean) values[2]).booleanValue();
+        marginheight = (String) values[3];
+        marginwidth = (String) values[4];
+        height = (String) values[5];
+        width = (String) values[6];
     }
 
     /*
@@ -376,28 +248,13 @@ public class HtmlReportPanel extends HtmlPanelGroup implements UIReport {
     public Object saveState(final FacesContext context) {
         final Object[] values = new Object[8];
         values[0] = super.saveState(context);
-        values[1] = impl.saveState(context);
-        values[2] = Boolean.valueOf(frameborder);
-        values[3] = Boolean.valueOf(frameborderSet);
-        values[4] = marginheight;
-        values[5] = marginwidth;
-        values[6] = height;
-        values[7] = width;
+        values[1] = Boolean.valueOf(frameborder);
+        values[2] = Boolean.valueOf(frameborderSet);
+        values[3] = marginheight;
+        values[4] = marginwidth;
+        values[5] = height;
+        values[6] = width;
         return values;
-    }
-
-    @Override
-    public void processValidators(FacesContext context) {
-        super.processValidators(context);
-
-        if (!isRendered()) {
-            return;
-        }
-
-        final Validator validator = ValidatorLoader.getValidator(context, this);
-        if (validator != null) {
-            validator.validate(context, this);
-        }
     }
 
 }

@@ -39,24 +39,24 @@ public abstract class ReportRenderer extends Renderer {
 
     public abstract String getContentDisposition();
 
-    public void encodeContent(final FacesContext context, final UIReport report)
+    public void encodeContent(final FacesContext context, final UIReport component)
             throws IOException {
         if (context == null) {
             throw new IllegalArgumentException("Faces' context is null");
         }
-        if (report == null) {
+        if (component == null) {
             throw new IllegalArgumentException("Report component is null");
         }
 
-        final String clientId = ((UIComponent) report).getClientId(context);
+        final String clientId = component.getClientId(context);
 
-        final Filler filler = FillerLoader.getFiller(context, report);
+        final Filler filler = FillerLoader.getFiller(context, component);
         logger.log(Level.FINE, "JRJSF_0006", clientId);
-        final JasperPrint filledReport = filler.fill(context, report);
+        final JasperPrint filledReport = filler.fill(context, component);
 
         final ExternalContextHelper helper = ExternalContextHelper.getInstance(
                 context.getExternalContext());
-        final Exporter exporter = ExporterLoader.getExporter(context, report);
+        final Exporter exporter = ExporterLoader.getExporter(context, component);
         final ByteArrayOutputStream reportData = new ByteArrayOutputStream();
         try {
             if (logger.isLoggable(Level.FINE)) {
@@ -74,29 +74,29 @@ public abstract class ReportRenderer extends Renderer {
     }
 
     public String encodeContentDisposition(
-            final UIReport report, final String encoding)
+            final UIReport component, final String encoding)
             throws IOException {
         final StringBuffer disposition = new StringBuffer();
-        if (report.getName() != null) {
+        if (component.getName() != null) {
             disposition.append(getContentDisposition());
             disposition.append("; filename=");
-            disposition.append(URLEncoder.encode(report.getName(), encoding));
+            disposition.append(URLEncoder.encode(component.getName(), encoding));
         }
         return disposition.toString();
     }
 
-    public void encodeHeaders(final FacesContext context, final UIReport report)
+    public void encodeHeaders(final FacesContext context, final UIReport component)
             throws IOException {
         if (context == null) {
             throw new IllegalArgumentException("Faces' context is null");
         }
-        if (report == null) {
+        if (component == null) {
             throw new IllegalArgumentException("Report component is null");
         }
 
         final ExternalContextHelper helper = ExternalContextHelper.getInstance(
                 context.getExternalContext());
-        helper.writeHeaders(context.getExternalContext(), this, report);
+        helper.writeHeaders(context.getExternalContext(), this, component);
     }
 
     /**
@@ -109,8 +109,15 @@ public abstract class ReportRenderer extends Renderer {
      *
      * @return the string
      */
-    protected final String buildReportURI(final FacesContext context,
-            final UIComponent report) {
+    public String encodeReportURL(final FacesContext context,
+            final UIComponent component) {
+        if (context == null) {
+            throw new IllegalArgumentException();
+        }
+        if (component == null) {
+            throw new IllegalArgumentException();
+        }
+
         final StringBuffer reportURI = new StringBuffer(Constants.BASE_URI);
 
         final Configuration config = Configuration.getInstance(
@@ -134,7 +141,7 @@ public abstract class ReportRenderer extends Renderer {
         }
 
         reportURI.append('?').append(Constants.PARAM_CLIENTID);
-        reportURI.append('=').append(report.getClientId(context));
+        reportURI.append('=').append(component.getClientId(context));
         reportURI.append('&').append(Constants.PARAM_VIEWID);
         reportURI.append('=').append(helper.getViewId(
                 context.getExternalContext()));

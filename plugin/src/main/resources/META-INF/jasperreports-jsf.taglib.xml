@@ -41,13 +41,13 @@
     </tag>
 
     <tag>
-        <tag-name>reportPanel</tag-name>
+        <tag-name>reportFrame</tag-name>
         <component>
             <component-type>
-                net.sf.jasperreports.jsf.HtmlReportPanel
+                net.sf.jasperreports.jsf.HtmlReportFrame
             </component-type>
             <renderer-type>
-                net.sf.jasperreports.jsf.Panel
+                net.sf.jasperreports.jsf.Frame
             </renderer-type>
         </component>
     </tag>
@@ -62,28 +62,6 @@
                 net.sf.jasperreports.jsf.Link
             </renderer-type>
         </component>
-    </tag>
-
-    <tag>
-        <tag-name>reportCommandLink</tag-name>
-        <component>
-            <component-type>
-                net.sf.jasperreports.jsf.HtmlReportCommandLink
-            </component-type>
-            <renderer-type>
-                net.sf.jasperreports.jsf.Link
-            </renderer-type>
-        </component>
-    </tag>
-
-    <tag>
-        <tag-name>form</tag-name>
-        <component-type>
-            net.sf.jasperreports.jsf.HtmlReportForm
-        </component-type>
-        <renderer-type>
-            net.sf.jasperreports.jsf.Form
-        </renderer-type>
     </tag>
 
 </facelet-taglib>

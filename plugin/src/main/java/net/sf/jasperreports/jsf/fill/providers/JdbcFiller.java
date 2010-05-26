@@ -67,7 +67,7 @@ public final class JdbcFiller extends AbstractSQLFiller {
         }
         logger.log(Level.FINE, "JRJSF_0004", driverClass);
 
-        final String connectionURL = (String) getDataSourceComponent().getValue();
+        final String connectionURL = (String) getDataSourceComponent().getData();
         final String username = (String) getDataSourceComponent()
                 .getAttributes().get(ATTR_USERNAME);
         final String password = (String) getDataSourceComponent()

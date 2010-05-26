@@ -23,8 +23,11 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.spi.JRDataSourceLoader;
 import net.sf.jasperreports.jsf.spi.ValidatorLoader;
+import net.sf.jasperreports.jsf.validation.ValidationException;
 import net.sf.jasperreports.jsf.validation.Validator;
 
 /**
@@ -48,8 +51,12 @@ public class UIDataSource extends UIComponentBase {
     private String type;
     /** The type set. */
     private boolean typeSet;
-    /** The value. */
+    /** The data. */
+    private Object data;
+    private boolean valid;
+    /** The value */
     private Object value;
+    private boolean valueSet = false;
 
     /**
      * Instantiates a new uI data source.
@@ -123,6 +130,44 @@ public class UIDataSource extends UIComponentBase {
     }
 
     /**
+     * Gets the data.
+     *
+     * @return the data
+     */
+    public final Object getData() {
+        if (data != null) {
+            return data;
+        }
+        final ValueExpression ve = getValueExpression("data");
+        if (ve != null) {
+            try {
+                return ve.getValue(getFacesContext().getELContext());
+            } catch (final ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return data;
+        }
+    }
+
+    /**
+     * Sets the data.
+     *
+     * @param value the new value
+     */
+    public final void setData(final Object data) {
+        this.data = data;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
+    /**
      * Gets the value.
      *
      * @return the value
@@ -150,6 +195,7 @@ public class UIDataSource extends UIComponentBase {
      */
     public final void setValue(final Object value) {
         this.value = value;
+        valueSet = true;
     }
 
     // UIComponent
@@ -162,6 +208,11 @@ public class UIDataSource extends UIComponentBase {
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    public void resetValue() {
+        setValue(null);
+        setValid(true);
     }
 
     /*
@@ -178,7 +229,7 @@ public class UIDataSource extends UIComponentBase {
         query = (String) values[1];
         type = (String) values[2];
         typeSet = ((Boolean) values[3]).booleanValue();
-        value = values[4];
+        data = values[4];
     }
 
     /*
@@ -194,22 +245,95 @@ public class UIDataSource extends UIComponentBase {
         values[1] = query;
         values[2] = type;
         values[3] = Boolean.valueOf(typeSet);
-        values[4] = value;
+        values[4] = data;
         return values;
     }
 
     @Override
-    public void processValidators(FacesContext context) {
-        super.processValidators(context);
+    public void processUpdates(FacesContext context) {
+        if (context == null) {
+            throw new NullPointerException();
+        }
+        
+        super.processUpdates(context);
 
-        if (!isRendered()) {
-            return;
+        try {
+            updateModel(context);
+        } catch(RuntimeException e) {
+            context.renderResponse();
+            throw e;
+        }
+
+        if (!isValid()) {
+            context.renderResponse();
+        }
+    }
+
+    @Override
+    public void processValidators(FacesContext context) {
+        if (context == null) {
+            throw new NullPointerException();
+        }
+
+        super.processValidators(context);
+        executeValidate(context);
+    }
+
+    public void updateModel(FacesContext context) {
+        if (context == null) {
+            throw new NullPointerException();
+        }
+
+        if (!isValid() || !valueSet) {
+            return ;
+        }
+
+        Object providedValue = getValue();
+        if (providedValue == null) {
+            JRDataSource dataSource = JRDataSourceLoader.getInstance()
+                    .loadDataSource(context, this);
+            ValueExpression ve = getValueExpression("value");
+            if (ve != null) {
+                try {
+                    ve.setValue(context.getELContext(), dataSource);
+                } catch(ELException e) {
+                    setValid(false);
+                    throw e;
+                }
+            } else {
+                String clientId = getClientId(context);
+                context.getExternalContext().getRequestMap()
+                        .put(clientId, dataSource);
+            }
+        }
+    }
+
+    public void validate(FacesContext context) throws ValidationException {
+        if (context == null) {
+            throw new NullPointerException();
         }
 
         final Validator validator = ValidatorLoader.getValidator(context, this);
         if (validator != null) {
-            validator.validate(context, this);
+            try {
+                validator.validate(context, this);
+            } catch(ValidationException e) {
+                setValid(false);
+                throw e;
+            }
         }
     }
-    
+
+    protected void executeValidate(FacesContext context)
+            throws ValidationException {
+        Object providedValue = getValue();
+        if (providedValue == null) {
+            try {
+                validate(context);
+            } catch(ValidationException e) {
+                context.renderResponse();
+                throw e;
+            }
+        }
+    }
 }

@@ -49,7 +49,6 @@ public final class RestoreViewPhaseListener extends AbstractReportPhaseListener 
                 throw new ReportLifecycleException(
                         "Report holder view couldn't be restored");
             }
-            context.renderResponse();
         }
     }
 

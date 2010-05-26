@@ -42,7 +42,7 @@ public class CustomDataSourceFiller extends AbstractJRDataSourceFiller {
     @Override
     protected JRDataSource getJRDataSource(final FacesContext context)
             throws FillerException {
-        JRDataSource dataSource = (JRDataSource) getDataSourceComponent().getValue();
+        JRDataSource dataSource = (JRDataSource) getDataSourceComponent().getData();
         if (dataSource == null) {
             if (logger.isLoggable(Level.WARNING)) {
                 logger.log(Level.WARNING, "JRJSF_0020",
