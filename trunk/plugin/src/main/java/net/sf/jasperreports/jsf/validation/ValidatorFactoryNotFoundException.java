@@ -18,7 +18,7 @@
  */
 package net.sf.jasperreports.jsf.validation;
 
-import net.sf.jasperreports.jsf.spi.ServiceException;
+import net.sf.jasperreports.jsf.util.ServiceException;
 
 public class ValidatorFactoryNotFoundException extends ServiceException {
 

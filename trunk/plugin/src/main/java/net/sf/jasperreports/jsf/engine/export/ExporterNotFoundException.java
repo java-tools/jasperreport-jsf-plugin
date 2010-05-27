@@ -18,7 +18,7 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
-import net.sf.jasperreports.jsf.spi.ServiceException;
+import net.sf.jasperreports.jsf.util.ServiceException;
 
 /**
  * The Class ExporterNotFoundException.

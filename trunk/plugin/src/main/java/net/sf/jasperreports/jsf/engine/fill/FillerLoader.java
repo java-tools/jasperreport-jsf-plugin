@@ -5,7 +5,7 @@
 
 package net.sf.jasperreports.jsf.engine.fill;
 
-import net.sf.jasperreports.jsf.spi.Services;
+import net.sf.jasperreports.jsf.util.Services;
 
 /**
  *

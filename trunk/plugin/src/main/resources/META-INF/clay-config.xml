@@ -28,8 +28,8 @@
 
 <view>
 
-    <component jsfid="jr:dataSource"
-        componentType="net.sf.jasperreports.jsf.DataSource"
+    <component jsfid="jr:dataBroker"
+        componentType="net.sf.jasperreports.jsf.DataBroker"
         extends="baseComponent">
         <attributes>
             <set name="driverClass" bindingType="VB" />
