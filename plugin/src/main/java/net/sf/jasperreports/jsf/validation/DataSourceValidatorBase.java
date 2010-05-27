@@ -21,7 +21,7 @@ package net.sf.jasperreports.jsf.validation;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIDataBroker;
-import net.sf.jasperreports.jsf.engine.datasource.DataBrokerLoader;
+import net.sf.jasperreports.jsf.engine.databroker.DataBrokerLoader;
 
 public class DataSourceValidatorBase extends DataSourceValidator {
 

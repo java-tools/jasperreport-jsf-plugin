@@ -16,7 +16,7 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.engine.datasource;
+package net.sf.jasperreports.jsf.engine.databroker;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,8 +33,8 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.data.JRCsvDataSource;
 import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIDataBroker;
-import net.sf.jasperreports.jsf.engine.datasource.DataBroker;
-import net.sf.jasperreports.jsf.engine.datasource.JRDataSourceBroker;
+import net.sf.jasperreports.jsf.engine.databroker.DataBroker;
+import net.sf.jasperreports.jsf.engine.databroker.JRDataSourceBroker;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.ResourceException;
 import net.sf.jasperreports.jsf.resource.ResourceLoader;

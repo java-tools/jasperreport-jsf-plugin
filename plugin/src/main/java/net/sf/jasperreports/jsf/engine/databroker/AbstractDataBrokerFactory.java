@@ -16,22 +16,23 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.engine.datasource;
+package net.sf.jasperreports.jsf.engine.databroker;
 
 import javax.faces.context.FacesContext;
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.jsf.component.UIDataBroker;
-import net.sf.jasperreports.jsf.engine.datasource.DataBroker;
+
+import net.sf.jasperreports.jsf.engine.databroker.DataBroker;
 
 /**
  *
- * @author antonio.alonso
+ * @author aalonsodominguez
  */
-public interface DataBrokerFactory {
+public abstract class AbstractDataBrokerFactory implements DataBrokerFactory {
 
-    public DataBroker createDataBroker(FacesContext context,
-            UIDataBroker component);
-
-    public void dispose(FacesContext context, DataBroker broker);
+    public void dispose(FacesContext context, DataBroker broker) {
+//        if (!(dataSource instanceof DisposableDataSource)) {
+//            return;
+//        }
+//        ((DisposableDataSource) dataSource).dispose();
+    }
 
 }

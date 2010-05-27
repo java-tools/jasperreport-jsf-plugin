@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.sf.jasperreports.jsf.engine.datasource;
+package net.sf.jasperreports.jsf.engine.databroker;
 
 import java.util.Collections;
 import java.util.Map;
@@ -11,7 +11,7 @@ import java.util.Set;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIDataBroker;
-import net.sf.jasperreports.jsf.engine.datasource.DataBroker;
+import net.sf.jasperreports.jsf.engine.databroker.DataBroker;
 import net.sf.jasperreports.jsf.util.Services;
 
 /**
