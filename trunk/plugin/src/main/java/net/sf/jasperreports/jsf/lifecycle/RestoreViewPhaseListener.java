@@ -34,7 +34,7 @@ import net.sf.jasperreports.jsf.util.ExternalContextHelper;
  *
  * @author aalonsodominguez
  */
-public final class RestoreViewPhaseListener extends AbstractReportPhaseListener {
+public class RestoreViewPhaseListener extends AbstractReportPhaseListener {
 
     private static final Logger logger = Logger.getLogger(
             RestoreViewPhaseListener.class.getPackage().getName(),

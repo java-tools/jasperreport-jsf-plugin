@@ -43,7 +43,7 @@ import net.sf.jasperreports.jsf.wrapper.ReportRenderRequest;
  *
  * @author A. Alonso Dominguez
  */
-public final class RenderResponsePhaseListener extends AbstractReportPhaseListener
+public class RenderResponsePhaseListener extends AbstractReportPhaseListener
         implements ContextCallback {
 
     /** The logger instance. */

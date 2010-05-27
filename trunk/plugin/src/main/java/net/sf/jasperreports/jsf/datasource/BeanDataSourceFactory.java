@@ -53,4 +53,6 @@ public class BeanDataSourceFactory implements JRDataSourceFactory {
         return dataSource;
     }
 
+    public void dispose(FacesContext context, JRDataSource dataSource) { }
+
 }
