@@ -274,6 +274,20 @@
         <artifactId>shale-test</artifactId>
         <version>1.0.5</version>
         <scope>test</scope>
+        <exclusions>
+          <exclusion>
+            <groupId>htmlunit</groupId>
+            <artifactId>htmlunit</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>jmock</groupId>
+            <artifactId>jmock</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>jmock</groupId>
+            <artifactId>jmock-cglib</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
     </dependencies>
   </dependencyManagement>

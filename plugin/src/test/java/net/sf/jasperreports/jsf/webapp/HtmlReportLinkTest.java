@@ -29,10 +29,10 @@ import org.junit.runners.Parameterized.Parameters;
 
 import com.meterware.httpunit.WebLink;
 import com.meterware.httpunit.WebResponse;
-import net.sf.jasperreports.jsf.test.framework.ComponentProfilerTestCase;
+import net.sf.jasperreports.jsf.test.ComponentProfilerTestCase;
 
 @RunWith(Parameterized.class)
-public class HtmlReportLinkServletTest extends ComponentProfilerTestCase {
+public class HtmlReportLinkTest extends ComponentProfilerTestCase {
 
     @Parameters
     public static Collection<?> linkIdentifiers() {
@@ -40,7 +40,7 @@ public class HtmlReportLinkServletTest extends ComponentProfilerTestCase {
     }
     private final String linkId;
 
-    public HtmlReportLinkServletTest(final String linkId) {
+    public HtmlReportLinkTest(final String linkId) {
         this.linkId = linkId;
     }
 

@@ -303,6 +303,9 @@
                       <value>${test.web.xml}</value>
                     </property>
                   </systemProperties>
+                  <suiteXmlFiles>
+                    <suiteXmlFile>src/test/conf/suites/profile/tomcat6x.xml</suiteXmlFile>
+                  </suiteXmlFiles>
                 </configuration>
               </execution>
             </executions>
@@ -317,6 +320,7 @@
         </dependency>
       </dependencies>
     </profile>
+    
     <profile>
       <id>tomcat6x-portlet</id>
       <properties>

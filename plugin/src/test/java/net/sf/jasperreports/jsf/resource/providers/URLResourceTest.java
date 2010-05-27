@@ -59,7 +59,7 @@ public class URLResourceTest {
     }
 
     @Test
-    public void getName() {
+    public void getName(String locationUrl) {
         String resName = resource.getName();
         assertNotNull(resName);
         assertThat(location.toString(), equalTo(resName));

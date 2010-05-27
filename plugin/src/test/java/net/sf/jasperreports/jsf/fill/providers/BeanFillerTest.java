@@ -78,7 +78,7 @@ public class BeanFillerTest {
         filler = new BeanFiller(component);
 
         if (!TestConstants.UNDEFINED_VALUE.equals(data)) {
-            component.setData(data);
+            component.setValue(data);
         }
     }
 
