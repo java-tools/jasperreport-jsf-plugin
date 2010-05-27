@@ -18,4 +18,6 @@ public interface JRDataSourceFactory {
     public JRDataSource createDataSource(FacesContext context,
             UIDataSource component);
 
+    public void dispose(FacesContext context, JRDataSource dataSource);
+
 }
