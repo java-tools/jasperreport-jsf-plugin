@@ -16,7 +16,7 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.spi;
+package net.sf.jasperreports.jsf.resource;
 
 import net.sf.jasperreports.jsf.resource.URLResource;
 import net.sf.jasperreports.jsf.resource.ClasspathResource;
