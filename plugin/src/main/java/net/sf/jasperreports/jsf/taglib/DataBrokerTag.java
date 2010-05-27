@@ -27,7 +27,7 @@ import net.sf.jasperreports.jsf.component.UIDataBroker;
 /**
  * The Class DataSourceTag.
  */
-public class DataSourceTag extends UIComponentELTag {
+public class DataBrokerTag extends UIComponentELTag {
 
     private ValueExpression data;
     /** The query. */

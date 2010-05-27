@@ -43,12 +43,12 @@
     </lifecycle>
 
     <component>
-        <display-name>Data Source Component</display-name>
+        <display-name>Data Broker Component</display-name>
         <component-type>
-            net.sf.jasperreports.jsf.DataSource
+            net.sf.jasperreports.jsf.DataBroker
         </component-type>
         <component-class>
-            net.sf.jasperreports.jsf.component.UIDataSource
+            net.sf.jasperreports.jsf.component.UIDataBroker
         </component-class>
     </component>
 

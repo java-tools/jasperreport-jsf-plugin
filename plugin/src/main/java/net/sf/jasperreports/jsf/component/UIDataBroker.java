@@ -38,11 +38,11 @@ public class UIDataBroker extends UIComponentBase {
 
     /** The Constant COMPONENT_FAMILY. */
     public static final String COMPONENT_FAMILY =
-            Constants.PACKAGE_PREFIX + ".DataSource";
+            Constants.PACKAGE_PREFIX + ".DataBroker";
     
     /** The Constant COMPONENT_TYPE. */
     public static final String COMPONENT_TYPE =
-            Constants.PACKAGE_PREFIX + ".DataSource";
+            Constants.PACKAGE_PREFIX + ".DataBroker";
 
     // Fields
 

@@ -22,7 +22,7 @@ import java.util.Set;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import net.sf.jasperreports.jsf.spi.Services;
+import net.sf.jasperreports.jsf.util.Services;
 
 import net.sf.jasperreports.jsf.validation.Validator;
 

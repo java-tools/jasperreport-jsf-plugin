@@ -25,7 +25,7 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.ResourceException;
 import net.sf.jasperreports.jsf.resource.UnresolvedResourceException;
-import net.sf.jasperreports.jsf.spi.Services;
+import net.sf.jasperreports.jsf.util.Services;
 
 /**
  * The Class ResourceLoader.

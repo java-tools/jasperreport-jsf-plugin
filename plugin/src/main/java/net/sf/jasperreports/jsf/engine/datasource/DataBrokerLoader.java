@@ -12,7 +12,7 @@ import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIDataBroker;
 import net.sf.jasperreports.jsf.engine.datasource.DataBroker;
-import net.sf.jasperreports.jsf.spi.Services;
+import net.sf.jasperreports.jsf.util.Services;
 
 /**
  *

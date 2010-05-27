@@ -24,7 +24,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.spi.Services;
+import net.sf.jasperreports.jsf.util.Services;
 
 public final class ReportValidatorFactory implements ValidatorFactory {
 
