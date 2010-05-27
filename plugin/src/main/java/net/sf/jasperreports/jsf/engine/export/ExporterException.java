@@ -18,33 +18,45 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
-import javax.faces.context.FacesContext;
-
-import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.engine.export.JRRtfExporter;
-import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.JRFacesException;
 
 /**
- * The Class RtfExporter.
+ * The Class ExporterException.
  */
-public final class RtfExporter extends Exporter {
+public class ExporterException extends JRFacesException {
 
-    public static final String CONTENT_TYPE = "application/rtf";
+    /** The Constant serialVersionUID. */
+    private static final long serialVersionUID = 3447264929238791580L;
 
-    public String getContentType() {
-        return CONTENT_TYPE;
+    /**
+     * Instantiates a new exporter exception.
+     *
+     * @param msg
+     *            the msg
+     * @param t
+     *            the t
+     */
+    public ExporterException(final String msg, final Throwable t) {
+        super(msg, t);
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Instantiates a new exporter exception.
      *
-     * @see
-     * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
-     * .context.FacesContext)
+     * @param msg
+     *            the msg
      */
-    @Override
-    protected JRExporter createJRExporter(
-            final FacesContext context, UIReport component) {
-        return new JRRtfExporter();
+    public ExporterException(final String msg) {
+        super(msg);
+    }
+
+    /**
+     * Instantiates a new exporter exception.
+     *
+     * @param t
+     *            the t
+     */
+    public ExporterException(final Throwable t) {
+        super(t);
     }
 }

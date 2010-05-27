@@ -21,19 +21,19 @@ package net.sf.jasperreports.jsf.validation;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UIDataSource;
+import net.sf.jasperreports.jsf.component.UIDataBroker;
 
 public abstract class DataSourceValidator implements Validator {
 
     public void validate(final FacesContext context, final UIComponent component)
             throws ValidationException {
-        if (!(component instanceof UIDataSource)) {
+        if (!(component instanceof UIDataBroker)) {
             throw new IllegalArgumentException(
                     "'component' must be a UIDataSource");
         }
-        doValidate(context, (UIDataSource) component);
+        doValidate(context, (UIDataBroker) component);
     }
 
     protected abstract void doValidate(FacesContext context,
-            UIDataSource dataSource) throws ValidationException;
+            UIDataBroker dataSource) throws ValidationException;
 }

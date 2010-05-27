@@ -16,35 +16,22 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.engine.export;
+package net.sf.jasperreports.jsf.validation;
 
-import javax.faces.context.FacesContext;
+import net.sf.jasperreports.jsf.spi.ServiceException;
 
-import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.engine.export.JRRtfExporter;
-import net.sf.jasperreports.jsf.component.UIReport;
+public class ValidatorFactoryNotFoundException extends ServiceException {
 
-/**
- * The Class RtfExporter.
- */
-public final class RtfExporter extends Exporter {
+    /**
+     *
+     */
+    private static final long serialVersionUID = -3770336216185029903L;
 
-    public static final String CONTENT_TYPE = "application/rtf";
-
-    public String getContentType() {
-        return CONTENT_TYPE;
+    public ValidatorFactoryNotFoundException(final String msg, final Throwable t) {
+        super(msg, t);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
-     * .context.FacesContext)
-     */
-    @Override
-    protected JRExporter createJRExporter(
-            final FacesContext context, UIReport component) {
-        return new JRRtfExporter();
+    public ValidatorFactoryNotFoundException(final String msg) {
+        super(msg);
     }
 }

@@ -18,33 +18,25 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
-import javax.faces.context.FacesContext;
-
-import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.engine.export.JRRtfExporter;
-import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.spi.ServiceException;
 
 /**
- * The Class RtfExporter.
+ * The Class ExporterNotFoundException.
  */
-public final class RtfExporter extends Exporter {
+public class ExporterNotFoundException extends ServiceException {
 
-    public static final String CONTENT_TYPE = "application/rtf";
-
-    public String getContentType() {
-        return CONTENT_TYPE;
-    }
-
-    /*
-     * (non-Javadoc)
+    /**
      *
-     * @see
-     * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
-     * .context.FacesContext)
      */
-    @Override
-    protected JRExporter createJRExporter(
-            final FacesContext context, UIReport component) {
-        return new JRRtfExporter();
+    private static final long serialVersionUID = 6514110062785484535L;
+
+    /**
+     * Instantiates a new exporter not found exception.
+     *
+     * @param msg
+     *            the msg
+     */
+    public ExporterNotFoundException(final String msg) {
+        super(msg);
     }
 }

@@ -25,7 +25,6 @@ import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporterParameter;
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.spi.Exporter;
 
 /**
  * Exports the reports contents to a MS Office 2007 (Word) document.

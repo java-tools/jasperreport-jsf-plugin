@@ -18,35 +18,36 @@
  */
 package net.sf.jasperreports.jsf.validation;
 
-import java.util.Map;
+import java.util.Set;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-
-import net.sf.jasperreports.jsf.component.UIDataBroker;
 import net.sf.jasperreports.jsf.spi.Services;
 
-public final class DataSourceValidatorFactory implements ValidatorFactory {
+import net.sf.jasperreports.jsf.validation.Validator;
 
-    private static final Map<String, DataSourceValidator> validatorCacheMap =
-            Services.map(DataSourceValidator.class);
+public final class ValidatorLoader {
 
-    public boolean acceptsComponent(final UIComponent component) {
-        return (component instanceof UIDataBroker);
+    private static final Set<ValidatorFactory> validatorFactoryCache =
+            Services.set(ValidatorFactory.class);
+
+    public static Validator getValidator(final FacesContext context,
+            final UIComponent component) {
+        ValidatorFactory validatorFactory = null;
+        for (final ValidatorFactory factory : validatorFactoryCache) {
+            if (factory.acceptsComponent(component)) {
+                validatorFactory = factory;
+                break;
+            }
+        }
+
+        if (validatorFactory == null) {
+            throw new ValidatorFactoryNotFoundException(
+                    "No factory found for component: " + component.getFamily());
+        }
+        return validatorFactory.createValidator(context, component);
     }
 
-    public DataSourceValidator createValidator(final FacesContext context,
-            final UIComponent component) throws ValidationException {
-        if (!(component instanceof UIDataBroker)) {
-            throw new IllegalArgumentException("");
-        }
-
-        final UIDataBroker dataSource = (UIDataBroker) component;
-        DataSourceValidator result = null;
-        result = validatorCacheMap.get(dataSource.getType());
-        if (result == null) {
-            result = validatorCacheMap.get(null);
-        }
-        return result;
+    private ValidatorLoader() {
     }
 }

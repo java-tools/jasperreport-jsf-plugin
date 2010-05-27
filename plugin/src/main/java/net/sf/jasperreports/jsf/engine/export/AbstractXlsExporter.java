@@ -24,8 +24,6 @@ import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRXlsAbstractExporter;
 import net.sf.jasperreports.engine.export.JRXlsAbstractExporterParameter;
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.spi.Exporter;
-import net.sf.jasperreports.jsf.spi.ExporterException;
 
 @SuppressWarnings("deprecation")
 abstract class AbstractXlsExporter extends Exporter {

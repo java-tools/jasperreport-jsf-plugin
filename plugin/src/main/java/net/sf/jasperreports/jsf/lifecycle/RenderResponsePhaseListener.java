@@ -36,8 +36,8 @@ import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.util.ExternalContextHelper;
-import net.sf.jasperreports.jsf.wrapper.ReportHttpRenderRequest;
-import net.sf.jasperreports.jsf.wrapper.ReportRenderRequest;
+import net.sf.jasperreports.jsf.engine.ReportHttpRenderRequest;
+import net.sf.jasperreports.jsf.engine.ReportRenderRequest;
 
 /**
  *

@@ -28,7 +28,7 @@ import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
-import net.sf.jasperreports.jsf.spi.ValidatorLoader;
+import net.sf.jasperreports.jsf.validation.ValidatorLoader;
 import net.sf.jasperreports.jsf.validation.ValidationException;
 import net.sf.jasperreports.jsf.validation.Validator;
 
@@ -42,7 +42,7 @@ public class UIReport extends UIComponentBase {
             Constants.PACKAGE_PREFIX + ".Report";
 
     /** The data source. */
-    private Object dataSource;
+    private Object dataBroker;
 
     private boolean immediate;
     private boolean immediateSet = false;
@@ -73,11 +73,11 @@ public class UIReport extends UIComponentBase {
      *
      * @see net.sf.jasperreports.jsf.component.UIReport#getDataSource()
      */
-    public Object getDataSource() {
-        if (dataSource != null) {
-            return dataSource;
+    public Object getDataBroker() {
+        if (dataBroker != null) {
+            return dataBroker;
         }
-        final ValueExpression ve = getValueExpression("dataSource");
+        final ValueExpression ve = getValueExpression("dataBroker");
         if (ve != null) {
             try {
                 return ve.getValue(getFacesContext().getELContext());
@@ -85,7 +85,7 @@ public class UIReport extends UIComponentBase {
                 throw new FacesException(e);
             }
         } else {
-            return dataSource;
+            return dataBroker;
         }
     }
 
@@ -96,8 +96,8 @@ public class UIReport extends UIComponentBase {
      * net.sf.jasperreports.jsf.component.UIReport#setDataSource(java.lang.String
      * )
      */
-    public void setDataSource(final Object dataSource) {
-        this.dataSource = dataSource;
+    public void setDataBroker(final Object dataSource) {
+        this.dataBroker = dataSource;
     }
 
     public String getName() {
@@ -256,7 +256,7 @@ public class UIReport extends UIComponentBase {
     public void restoreState(final FacesContext context, final Object state) {
         final Object[] values = (Object[]) state;
         super.restoreState(context, values[0]);
-        dataSource = (String) values[1];
+        dataBroker = (String) values[1];
         path = (String) values[2];
         subreportDir = (String) values[3];
         format = (String) values[4];
@@ -276,7 +276,7 @@ public class UIReport extends UIComponentBase {
     public Object saveState(final FacesContext context) {
         final Object[] values = new Object[8];
         values[0] = super.saveState(context);
-        values[1] = dataSource;
+        values[1] = dataBroker;
         values[2] = path;
         values[3] = subreportDir;
         values[4] = format;

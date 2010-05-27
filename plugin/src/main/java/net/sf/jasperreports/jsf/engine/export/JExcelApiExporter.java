@@ -23,7 +23,6 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.engine.export.JExcelApiExporterParameter;
 import net.sf.jasperreports.engine.export.JRXlsAbstractExporter;
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.spi.ExporterException;
 
 /**
  * Exports the report contents to an Excel file using the JExcel API.

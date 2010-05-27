@@ -21,18 +21,11 @@ package net.sf.jasperreports.jsf.engine.fill;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.spi.Services;
 
 /**
  * The Interface Filler.
  */
-public abstract class Filler {
-
-    private static final Filler DEFAULT_FILLER = new DefaultFiller();
-
-    public static Filler getInstance() {
-        return Services.chain(Filler.class, DEFAULT_FILLER);
-    }
+public interface Filler {
 
     /**
      * Fill.
@@ -44,7 +37,7 @@ public abstract class Filler {
      *
      * @throws FillerException the filler exception
      */
-    public abstract void fill(final FacesContext context, final UIReport report)
+    public void fill(final FacesContext context, final UIReport component)
             throws FillerException;
     
 }

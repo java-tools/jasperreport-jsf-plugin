@@ -7,6 +7,7 @@ package net.sf.jasperreports.jsf.engine.fill;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -17,23 +18,25 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.engine.datasource.DataBroker;
+import net.sf.jasperreports.jsf.engine.datasource.JRDataSourceBroker;
+import net.sf.jasperreports.jsf.engine.datasource.SqlConnectionBroker;
 import net.sf.jasperreports.jsf.resource.ReportNotFoundException;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.UnresolvedResourceException;
-import net.sf.jasperreports.jsf.spi.ResourceLoader;
+import net.sf.jasperreports.jsf.resource.ResourceLoader;
 import net.sf.jasperreports.jsf.util.Util;
 
 /**
  *
  * @author antonio.alonso
  */
-public class DefaultFiller extends Filler {
+public class DefaultFiller implements Filler {
 
     public static final String ATTR_JASPER_PRINT =
             Constants.PACKAGE_PREFIX + ".JASPER_PRINT";
@@ -50,35 +53,14 @@ public class DefaultFiller extends Filler {
             DefaultFiller.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
-    protected JRDataSource getReportDataSource(
-            FacesContext context, UIReport report) throws FillerException {
-        JRDataSource result = null;
-
-        Object dataSourceRef = report.getDataSource();
-        if (dataSourceRef == null) {
-            return new JREmptyDataSource();
-        } else if (dataSourceRef instanceof String) {
-            String dataSourceId = Util.resolveDataSourceId(context, report,
-                    (String) dataSourceRef);
-            result = (JRDataSource) context.getExternalContext()
-                    .getRequestMap().get(dataSourceId);
-        } else if (dataSourceRef instanceof JRDataSource) {
-            result = (JRDataSource) dataSourceRef;
-        } else {
-            throw new FillerException("Illegal data source value type: " +
-                    dataSourceRef.getClass().getName());
-        }
-        return result;
-    }
-
-    public void fill(FacesContext context, UIReport report)
+    public void fill(FacesContext context, UIReport component)
             throws FillerException {
-        final String reportName = report.getPath();
+        final String reportName = component.getPath();
 
         InputStream reportStream = null;
         try {
             final Resource resource = ResourceLoader.getResource(context,
-                    (UIComponent) report, reportName);
+                    (UIComponent) component, reportName);
             reportStream = resource.getInputStream();
         } catch (final IOException e) {
             throw new FillerException(reportName, e);
@@ -86,13 +68,36 @@ public class DefaultFiller extends Filler {
             throw new ReportNotFoundException(reportName, e);
         }
 
+        DataBroker dataBroker = null;
+        Object dataSourceRef = component.getDataBroker();
+        if (dataSourceRef != null) {
+            if (dataSourceRef instanceof DataBroker) {
+                dataBroker = (DataBroker) dataSourceRef;
+            } else if (dataSourceRef instanceof String) {
+                String dataSourceId = Util.resolveDataSourceId(context,
+                        component, (String) dataSourceRef);
+
+                dataBroker = (DataBroker) context.getExternalContext()
+                        .getRequestMap().get(dataSourceId);
+            } else if (dataSourceRef instanceof JRDataSource) {
+                dataBroker = new JRDataSourceBroker(
+                        (JRDataSource) dataSourceRef);
+            } else if (dataSourceRef instanceof Connection) {
+                dataBroker = new SqlConnectionBroker(
+                        (Connection) dataSourceRef);
+            } else {
+                throw new FillerException("Illegal data source value type: "
+                        + dataSourceRef.getClass().getName());
+            }
+        }
+
         logger.log(Level.FINE, "JRJSF_0003", reportName);
 
         try {
-            final JRDataSource dataSource = getReportDataSource(context, report);
-            final Map<String, Object> params = buildParamMap(context, report);
+            final Map<String, Object> params =
+                    buildParamMap(context, component);
             JasperPrint print = doFill(context, reportStream,
-                    dataSource, params);
+                    params, dataBroker);
             context.getExternalContext().getRequestMap()
                     .put(ATTR_JASPER_PRINT, print);
         } finally {
@@ -108,33 +113,35 @@ public class DefaultFiller extends Filler {
      * Builds the param map.
      *
      * @param context the context
-     * @param report the report
+     * @param component the component
      *
      * @return the map< string, object>
      */
     protected Map<String, Object> buildParamMap(final FacesContext context,
-            final UIReport report) throws FillerException {
+            final UIReport component) throws FillerException {
         // Build param map using component's child parameters
         final Map<String, Object> parameters = new HashMap<String, Object>();
-        for (final UIComponent component : report.getChildren()) {
-            if (!(component instanceof UIParameter)) {
+        for (final UIComponent kid : component.getChildren()) {
+            if (!(kid instanceof UIParameter)) {
                 continue;
             }
-            final UIParameter param = (UIParameter) component;
+            final UIParameter param = (UIParameter) kid;
             parameters.put(param.getName(), param.getValue());
         }
 
-        // Specific report parameters
-        parameters.put(PARAM_REPORT_CLASSLOADER, Util.getClassLoader(report));
-        parameters.put(PARAM_REPORT_LOCALE, context.getViewRoot().getLocale());
+        // Specific component parameters
+        parameters.put(PARAM_REPORT_CLASSLOADER,
+                Util.getClassLoader(component));
+        parameters.put(PARAM_REPORT_LOCALE,
+                context.getViewRoot().getLocale());
 
         // Subreport directory
-        final String subreportDir = report.getSubreportDir();
+        final String subreportDir = component.getSubreportDir();
         if (subreportDir != null) {
             Resource resource = null;
             try {
                 resource = ResourceLoader.getResource(context,
-                        report, subreportDir);
+                        component, subreportDir);
             } catch (final IOException e) {
                 throw new FillerException(e);
             }
@@ -144,26 +151,22 @@ public class DefaultFiller extends Filler {
         return parameters;
     }
 
-    /**
-     * Do fill.
-     *
-     * @param context the context
-     * @param reportStream the report stream
-     * @param params the params
-     *
-     * @return the jasper print
-     *
-     * @throws FillerException the filler exception
-     */
-    protected JasperPrint doFill(FacesContext context,
-            InputStream reportStream, JRDataSource dataSource,
-            Map<String, Object> params)
-            throws FillerException {
+    protected JasperPrint doFill(FacesContext context, InputStream reportStream,
+            Map<String, Object> parameters, DataBroker dataBroker)
+    throws FillerException {
+        JasperPrint print = null;
         try {
-            return JasperFillManager.fillReport(reportStream, params,
-                    dataSource);
+            if (dataBroker instanceof JRDataSourceBroker) {
+                print = JasperFillManager.fillReport(reportStream, parameters,
+                        ((JRDataSourceBroker) dataBroker).getDataSource());
+            } else if (dataBroker instanceof SqlConnectionBroker) {
+                print = JasperFillManager.fillReport(reportStream, parameters,
+                        ((SqlConnectionBroker) dataBroker).getConnection());
+            }
         } catch (final JRException e) {
             throw new FillerException(e);
         }
+        return print;
     }
+
 }

@@ -29,7 +29,7 @@ import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.config.Configuration;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
-import net.sf.jasperreports.jsf.wrapper.ReportRenderRequest;
+import net.sf.jasperreports.jsf.engine.ReportRenderRequest;
 
 final class PortletContextHelper extends ExternalContextHelper {
 

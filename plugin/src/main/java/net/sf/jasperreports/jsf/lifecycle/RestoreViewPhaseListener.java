@@ -27,7 +27,7 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 
 import net.sf.jasperreports.jsf.Constants;
-import net.sf.jasperreports.jsf.wrapper.ReportRenderRequest;
+import net.sf.jasperreports.jsf.engine.ReportRenderRequest;
 import net.sf.jasperreports.jsf.util.ExternalContextHelper;
 
 /**
