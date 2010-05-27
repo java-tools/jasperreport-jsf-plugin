@@ -3,7 +3,14 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="ResourceSuite">
-  <test name="ResourceClasses">
+  <test name="ValidResources">
+    <parameter name="locationUrl"
+      value="http://jasperreportjsf.sourceforge.net/tld/jasperreports-jsf-1_0.tld" />
+    <groups>
+      <run>
+        <include name="valid" />
+      </run>
+    </groups>
     <classes>
       <class name="net.sf.jasperreports.jsf.resource.providers.ClasspathResourceTest" />
       <class name="net.sf.jasperreports.jsf.resource.providers.ContextResourceTest" />

@@ -56,33 +56,30 @@
         </configuration>
       </plugin>
       <plugin>
-      	<groupId>org.apache.maven.plugins</groupId>
-      	<artifactId>maven-surefire-plugin</artifactId>
-      	<configuration>
-      	  <!--skip>true</skip-->
-      	  <systemProperties>
-      	    <property>
-    	      <name>java.util.logging.config.file</name>
-      	      <value>${basedir}/src/test/conf/logging.properties</value>
-      	    </property>
-      	    <property>
-      	      <name>context-dir</name>
-      	      <value>${basedir}/src/test/webapp</value>
-      	    </property>
-      	    <property>
-      	      <name>context-path</name>
-      	      <value>/jasperforge</value>
-      	    </property>
-      	  </systemProperties>
-      	</configuration>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
         <configuration>
           <downloadSources>true</downloadSources>
           <downloadJavadocs>true</downloadJavadocs>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jasperreports-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile-reports</goal>
+            </goals>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>${jasperreports.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>
@@ -123,96 +120,58 @@
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
-      <version>2.5</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>javax.servlet.jsp</groupId>
       <artifactId>jsp-api</artifactId>
-      <version>2.1</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>javax.el</groupId>
       <artifactId>el-api</artifactId>
-      <version>1.0</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>javax.faces</groupId>
       <artifactId>jsf-api</artifactId>
-      <version>1.2_12</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>javax.portlet</groupId>
       <artifactId>portlet-api</artifactId>
-      <version>2.0</version>
-      <scope>provided</scope>
-      <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>javax.faces</groupId>
       <artifactId>jsf-impl</artifactId>
-      <version>1.2_12</version>
-      <scope>test</scope>
+      <version>${jsf.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>net.sf.jsf4portlets</groupId>
+      <artifactId>jsf4portlets-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.tomcat</groupId>
-      <artifactId>jasper</artifactId>
-      <version>6.0.18</version>
-      <scope>test</scope>
+      <groupId>net.sf.jsf4portlets</groupId>
+      <artifactId>jsf4portlets-impl</artifactId>
+      <version>${jsf4portlets.version}</version>
     </dependency>
+    <dependency>
+      <groupId>net.sf.jsf4portlets</groupId>
+      <artifactId>jsf4portlets-ext</artifactId>
+      <version>${jsf4portlets.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.sun.facelets</groupId>
+      <artifactId>jsf-facelets</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>jasperreports</groupId>
       <artifactId>jasperreports</artifactId>
-      <version>3.5.3</version>
-      <scope>provided</scope>
-      <exclusions>
-      	<exclusion>
-      	  <artifactId>jfreechart</artifactId>
-      	  <groupId>jfree</groupId>
-      	</exclusion>
-      	<exclusion>
-      	  <artifactId>jcommon</artifactId>
-      	  <groupId>jfree</groupId>
-      	</exclusion>
-      </exclusions>
     </dependency>
+
     <dependency>
-      <groupId>httpunit</groupId>
-      <artifactId>httpunit</artifactId>
-      <version>1.6.2</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-    	<groupId>javax.servlet</groupId>
-    	<artifactId>jstl</artifactId>
-    	<version>1.2</version>
-    	<type>jar</type>
-    	<scope>provided</scope>
-    </dependency>
-    <dependency>
-    	<groupId>rhino</groupId>
-    	<artifactId>js</artifactId>
-    	<version>1.7R1</version>
-    	<type>jar</type>
-    	<scope>test</scope>
-    </dependency>
-    <dependency>
-    	<groupId>nekohtml</groupId>
-    	<artifactId>nekohtml</artifactId>
-    	<version>1.9.6.2</version>
-    	<type>jar</type>
-    	<scope>test</scope>
-    </dependency>
-    <dependency>
-    	<groupId>junit</groupId>
-    	<artifactId>junit</artifactId>
-    	<version>4.4</version>
-    	<type>jar</type>
-    	<scope>test</scope>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
     </dependency>
   </dependencies>
 

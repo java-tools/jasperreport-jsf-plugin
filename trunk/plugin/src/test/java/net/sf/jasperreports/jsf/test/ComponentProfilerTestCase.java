@@ -3,9 +3,8 @@
  * and open the template in the editor.
  */
 
-package net.sf.jasperreports.jsf.test.framework;
+package net.sf.jasperreports.jsf.test;
 
-import net.sf.jasperreports.jsf.test.framework.ProfilerTestCase;
 import com.meterware.httpunit.WebResponse;
 import java.util.logging.Logger;
 

@@ -16,20 +16,21 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.test.framework;
+package net.sf.jasperreports.jsf.test;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.logging.Logger;
 
-import org.junit.After;
-import org.junit.Before;
 import org.xml.sax.SAXException;
 
 import com.meterware.httpunit.WebResponse;
 import com.meterware.servletunit.ServletRunner;
 import com.meterware.servletunit.ServletUnitClient;
+
+import org.junit.After;
+import org.junit.Before;
 
 /**
  * The Class JasperReportTest.
