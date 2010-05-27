@@ -31,16 +31,16 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>Inline Report Test</title>
+        <title>HTML Report Frame Test</title>
     </head>
 
     <body>
         <f:view>
             <h:form>
-                <jr:reportPanel format="pdf"
+                <jr:reportFrame format="pdf"
                            path="/WEB-INF/report/Factura.jasper"
                            subreportDir="/WEB-INF/report/">
-                </jr:reportPanel>
+                </jr:reportFrame>
             </h:form>
         </f:view>
     </body>

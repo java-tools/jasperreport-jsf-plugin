@@ -24,7 +24,7 @@ import org.junit.Test;
 import com.meterware.httpunit.WebResponse;
 import net.sf.jasperreports.jsf.test.ComponentProfilerTestCase;
 
-public class HtmlReportPanelTest extends ComponentProfilerTestCase {
+public class HtmlReportFrameTest extends ComponentProfilerTestCase {
 
     @Test
     public final void renderPanel() throws Exception {
