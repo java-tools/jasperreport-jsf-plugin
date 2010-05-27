@@ -16,16 +16,27 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.spi;
+package net.sf.jasperreports.jsf.engine.fill.providers;
 
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.JRFacesException;
-import net.sf.jasperreports.jsf.component.UIDataSource;
-import net.sf.jasperreports.jsf.engine.fill.Filler;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.jsf.engine.fill.AbstractJRDataSourceFiller;
+import net.sf.jasperreports.jsf.engine.fill.FillerException;
 
-public interface FillerFactory {
+/**
+ * The Class EmptyFiller.
+ */
+public final class EmptyFiller extends AbstractJRDataSourceFiller {
 
-    public Filler createFiller(FacesContext context, UIDataSource dataSource)
-            throws JRFacesException;
+    protected EmptyFiller() {
+        super(null);
+    }
+
+    @Override
+    protected JRDataSource getJRDataSource(final FacesContext context)
+            throws FillerException {
+        return new JREmptyDataSource();
+    }
 }

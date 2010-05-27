@@ -16,16 +16,15 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.spi;
+package net.sf.jasperreports.jsf.engine;
 
-import javax.faces.context.FacesContext;
+import net.sf.jasperreports.engine.JRPrintHyperlink;
+import net.sf.jasperreports.engine.export.JRHyperlinkTargetProducer;
 
-import net.sf.jasperreports.jsf.JRFacesException;
-import net.sf.jasperreports.jsf.component.UIDataSource;
-import net.sf.jasperreports.jsf.engine.fill.Filler;
+public class FacesHyperlinkTargetProducer implements JRHyperlinkTargetProducer {
 
-public interface FillerFactory {
-
-    public Filler createFiller(FacesContext context, UIDataSource dataSource)
-            throws JRFacesException;
+    public String getHyperlinkTarget(JRPrintHyperlink hyperlink) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

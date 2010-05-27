@@ -16,16 +16,36 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.spi;
+package net.sf.jasperreports.jsf.engine.export;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.JRFacesException;
-import net.sf.jasperreports.jsf.component.UIDataSource;
-import net.sf.jasperreports.jsf.engine.fill.Filler;
+import net.sf.jasperreports.engine.export.JRXlsAbstractExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
+import net.sf.jasperreports.jsf.component.UIReport;
 
-public interface FillerFactory {
+/**
+ * The Class XlsExporter.
+ */
+public final class XlsExporter extends AbstractXlsExporter {
 
-    public Filler createFiller(FacesContext context, UIDataSource dataSource)
-            throws JRFacesException;
+    public static final String CONTENT_TYPE = "application/vnd.ms-excel";
+
+    public String getContentType() {
+        return CONTENT_TYPE;
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
+     * .context.FacesContext)
+     */
+    @Override
+    protected JRXlsAbstractExporter createJRXlsExporter(
+            final FacesContext context, UIReport component) {
+        return new JRXlsExporter();
+    }
 }

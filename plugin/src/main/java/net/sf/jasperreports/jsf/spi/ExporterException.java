@@ -18,14 +18,45 @@
  */
 package net.sf.jasperreports.jsf.spi;
 
-import javax.faces.context.FacesContext;
-
 import net.sf.jasperreports.jsf.JRFacesException;
-import net.sf.jasperreports.jsf.component.UIDataSource;
-import net.sf.jasperreports.jsf.engine.fill.Filler;
 
-public interface FillerFactory {
+/**
+ * The Class ExporterException.
+ */
+public class ExporterException extends JRFacesException {
 
-    public Filler createFiller(FacesContext context, UIDataSource dataSource)
-            throws JRFacesException;
+    /** The Constant serialVersionUID. */
+    private static final long serialVersionUID = 3447264929238791580L;
+
+    /**
+     * Instantiates a new exporter exception.
+     *
+     * @param msg
+     *            the msg
+     * @param t
+     *            the t
+     */
+    public ExporterException(final String msg, final Throwable t) {
+        super(msg, t);
+    }
+
+    /**
+     * Instantiates a new exporter exception.
+     *
+     * @param msg
+     *            the msg
+     */
+    public ExporterException(final String msg) {
+        super(msg);
+    }
+
+    /**
+     * Instantiates a new exporter exception.
+     *
+     * @param t
+     *            the t
+     */
+    public ExporterException(final Throwable t) {
+        super(t);
+    }
 }

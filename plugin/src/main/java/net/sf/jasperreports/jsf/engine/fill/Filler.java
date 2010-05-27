@@ -16,16 +16,35 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.spi;
+package net.sf.jasperreports.jsf.engine.fill;
 
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.JRFacesException;
-import net.sf.jasperreports.jsf.component.UIDataSource;
-import net.sf.jasperreports.jsf.engine.fill.Filler;
+import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.spi.Services;
 
-public interface FillerFactory {
+/**
+ * The Interface Filler.
+ */
+public abstract class Filler {
 
-    public Filler createFiller(FacesContext context, UIDataSource dataSource)
-            throws JRFacesException;
+    private static final Filler DEFAULT_FILLER = new DefaultFiller();
+
+    public static Filler getInstance() {
+        return Services.chain(Filler.class, DEFAULT_FILLER);
+    }
+
+    /**
+     * Fill.
+     *
+     * @param context the context
+     * @param report the report
+     *
+     * @return the jasper print
+     *
+     * @throws FillerException the filler exception
+     */
+    public abstract void fill(final FacesContext context, final UIReport report)
+            throws FillerException;
+    
 }

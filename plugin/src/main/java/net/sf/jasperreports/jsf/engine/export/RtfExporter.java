@@ -16,16 +16,36 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.spi;
+package net.sf.jasperreports.jsf.engine.export;
 
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.JRFacesException;
-import net.sf.jasperreports.jsf.component.UIDataSource;
-import net.sf.jasperreports.jsf.engine.fill.Filler;
+import net.sf.jasperreports.engine.JRExporter;
+import net.sf.jasperreports.engine.export.JRRtfExporter;
+import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.spi.Exporter;
 
-public interface FillerFactory {
+/**
+ * The Class RtfExporter.
+ */
+public final class RtfExporter extends Exporter {
 
-    public Filler createFiller(FacesContext context, UIDataSource dataSource)
-            throws JRFacesException;
+    public static final String CONTENT_TYPE = "application/rtf";
+
+    public String getContentType() {
+        return CONTENT_TYPE;
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
+     * .context.FacesContext)
+     */
+    @Override
+    protected JRExporter createJRExporter(
+            final FacesContext context, UIReport component) {
+        return new JRRtfExporter();
+    }
 }
