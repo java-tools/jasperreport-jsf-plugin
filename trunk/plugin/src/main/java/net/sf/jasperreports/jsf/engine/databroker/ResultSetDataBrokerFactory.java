@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package net.sf.jasperreports.jsf.engine.datasource;
+package net.sf.jasperreports.jsf.engine.databroker;
 
 import java.sql.ResultSet;
 import java.util.logging.Level;

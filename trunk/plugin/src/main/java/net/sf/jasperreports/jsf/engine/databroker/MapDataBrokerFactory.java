@@ -3,9 +3,10 @@
  * and open the template in the editor.
  */
 
-package net.sf.jasperreports.jsf.engine.datasource;
+package net.sf.jasperreports.jsf.engine.databroker;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,21 +14,21 @@ import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.engine.data.JRBeanArrayDataSource;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.data.JRMapArrayDataSource;
+import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 import net.sf.jasperreports.jsf.component.UIDataBroker;
 
 /**
  *
  * @author antonio.alonso
  */
-public class BeanDataSourceFactory extends AbstractDataBrokerFactory {
+public class MapDataBrokerFactory extends AbstractDataBrokerFactory {
 
     private static final Logger logger = Logger.getLogger(
-            BeanDataSourceFactory.class.getPackage().getName(),
+            MapDataBrokerFactory.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
-    public JRDataSourceBroker createDataBroker(FacesContext context,
+    public DataBroker createDataBroker(FacesContext context,
             UIDataBroker component) {
         JRDataSource dataSource;
 
@@ -39,15 +40,15 @@ public class BeanDataSourceFactory extends AbstractDataBrokerFactory {
             }
             dataSource = new JREmptyDataSource();
         } else if (value instanceof Collection<?>) {
-            dataSource = new JRBeanCollectionDataSource((Collection<?>) value);
+            dataSource = new JRMapCollectionDataSource((Collection<?>) value);
         } else {
-            Object[] beanArray;
+            Map<?, ?>[] mapArray;
             if (!value.getClass().isArray()) {
-                beanArray = new Object[]{ value };
+                mapArray = new Map[]{(Map<?, ?>) value};
             } else {
-                beanArray = (Object[]) value;
+                mapArray = (Map[]) value;
             }
-            dataSource = new JRBeanArrayDataSource(beanArray);
+            dataSource = new JRMapArrayDataSource(mapArray);
         }
         return new JRDataSourceBroker(dataSource);
     }

@@ -25,8 +25,8 @@ import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.Constants;
-import net.sf.jasperreports.jsf.engine.datasource.DataBroker;
-import net.sf.jasperreports.jsf.engine.datasource.DataBrokerLoader;
+import net.sf.jasperreports.jsf.engine.databroker.DataBroker;
+import net.sf.jasperreports.jsf.engine.databroker.DataBrokerLoader;
 import net.sf.jasperreports.jsf.validation.ValidatorLoader;
 import net.sf.jasperreports.jsf.validation.ValidationException;
 import net.sf.jasperreports.jsf.validation.Validator;
