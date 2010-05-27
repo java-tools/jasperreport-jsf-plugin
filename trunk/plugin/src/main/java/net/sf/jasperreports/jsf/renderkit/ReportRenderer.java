@@ -23,7 +23,6 @@ import net.sf.jasperreports.jsf.config.Configuration;
 import net.sf.jasperreports.jsf.export.Exporter;
 import net.sf.jasperreports.jsf.fill.Filler;
 import net.sf.jasperreports.jsf.spi.ExporterLoader;
-import net.sf.jasperreports.jsf.spi.FillerLoader;
 import net.sf.jasperreports.jsf.util.ExternalContextHelper;
 import net.sf.jasperreports.jsf.util.Util;
 
@@ -50,7 +49,7 @@ public abstract class ReportRenderer extends Renderer {
 
         final String clientId = component.getClientId(context);
 
-        final Filler filler = FillerLoader.getFiller(context, component);
+        final Filler filler = Filler.getInstance();
         logger.log(Level.FINE, "JRJSF_0006", clientId);
         final JasperPrint filledReport = filler.fill(context, component);
 

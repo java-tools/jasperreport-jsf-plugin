@@ -25,7 +25,6 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.ResourceException;
 import net.sf.jasperreports.jsf.resource.UnresolvedResourceException;
-import net.sf.jasperreports.jsf.resource.providers.DefaultResourceResolver;
 
 /**
  * The Class ResourceLoader.
@@ -38,10 +37,8 @@ public final class ResourceLoader {
     /**
      * Gets the resource loader.
      *
-     * @param context
-     *            the context
-     * @param name
-     *            the name
+     * @param context the context
+     * @param name the name
      *
      * @return the resource loader
      */

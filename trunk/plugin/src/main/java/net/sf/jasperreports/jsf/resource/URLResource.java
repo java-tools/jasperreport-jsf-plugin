@@ -16,37 +16,34 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.fill;
+package net.sf.jasperreports.jsf.resource;
 
-import javax.faces.context.FacesContext;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.spi.Services;
+public final class URLResource extends AbstractResource implements Resource {
 
-/**
- * The Interface Filler.
- */
-public abstract class Filler {
+    private final URL location;
 
-    private static final Filler DEFAULT_FILLER = new DefaultFiller();
-
-    public static Filler getInstance() {
-        return Services.chain(Filler.class, DEFAULT_FILLER);
+    public URLResource(final URL location) {
+        super(location.toString());
+        this.location = location;
     }
 
-    /**
-     * Fill.
-     *
-     * @param context the context
-     * @param report the report
-     *
-     * @return the jasper print
-     *
-     * @throws FillerException the filler exception
-     */
-    public abstract JasperPrint fill(final FacesContext context,
-            final UIReport report)
-            throws FillerException;
-    
+    public InputStream getInputStream() throws IOException {
+        return location.openStream();
+    }
+
+    public URL getLocation() throws IOException {
+        return location;
+    }
+
+    public String getPath() {
+        return location.getPath();
+    }
+
+    public boolean isRemote() {
+        return !"file".equals(location.getProtocol());
+    }
 }

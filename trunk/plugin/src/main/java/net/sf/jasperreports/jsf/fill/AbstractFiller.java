@@ -40,7 +40,7 @@ import net.sf.jasperreports.jsf.util.Util;
 /**
  * The Class Filler.
  */
-public abstract class AbstractFiller implements Filler {
+public abstract class AbstractFiller extends Filler {
 
     // Report Parameters
 
@@ -136,10 +136,8 @@ public abstract class AbstractFiller implements Filler {
     /**
      * Builds the param map.
      *
-     * @param context
-     *            the context
-     * @param report
-     *            the report
+     * @param context the context
+     * @param report the report
      *
      * @return the map< string, object>
      */

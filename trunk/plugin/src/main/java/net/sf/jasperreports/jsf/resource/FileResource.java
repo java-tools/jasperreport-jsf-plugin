@@ -16,16 +16,41 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.test;
+package net.sf.jasperreports.jsf.resource;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
 
 /**
  *
- * @author antonio.alonso
+ * @author aalonsodominguez
  */
-public final class TestConstants {
+public class FileResource implements Resource {
 
-    public static final Object UNDEFINED_VALUE = "UNDEFINED";
+    private File file;
 
-    private TestConstants() { }
+    public FileResource(File file) {
+        this.file = file;
+    }
+
+    public InputStream getInputStream() throws IOException {
+        return new FileInputStream(file);
+    }
+
+    public URL getLocation() throws IOException {
+        return new URL("file://" + file.getAbsolutePath());
+    }
+
+    public String getName() {
+        return file.getName();
+    }
+
+    public String getPath() {
+        return file.getAbsolutePath();
+    }
 
 }

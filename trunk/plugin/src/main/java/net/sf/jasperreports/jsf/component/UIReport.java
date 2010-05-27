@@ -42,7 +42,7 @@ public class UIReport extends UIComponentBase {
             Constants.PACKAGE_PREFIX + ".Report";
 
     /** The data source. */
-    private String dataSource;
+    private Object dataSource;
 
     private boolean immediate;
     private boolean immediateSet = false;
@@ -73,14 +73,14 @@ public class UIReport extends UIComponentBase {
      *
      * @see net.sf.jasperreports.jsf.component.UIReport#getDataSource()
      */
-    public String getDataSource() {
+    public Object getDataSource() {
         if (dataSource != null) {
             return dataSource;
         }
         final ValueExpression ve = getValueExpression("dataSource");
         if (ve != null) {
             try {
-                return (String) ve.getValue(getFacesContext().getELContext());
+                return ve.getValue(getFacesContext().getELContext());
             } catch (final ELException e) {
                 throw new FacesException(e);
             }
@@ -96,7 +96,7 @@ public class UIReport extends UIComponentBase {
      * net.sf.jasperreports.jsf.component.UIReport#setDataSource(java.lang.String
      * )
      */
-    public void setDataSource(final String dataSource) {
+    public void setDataSource(final Object dataSource) {
         this.dataSource = dataSource;
     }
 

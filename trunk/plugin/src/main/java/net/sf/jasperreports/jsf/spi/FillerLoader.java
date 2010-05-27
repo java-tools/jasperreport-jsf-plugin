@@ -36,6 +36,7 @@ import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIDataSource;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.fill.AbstractFiller;
+import net.sf.jasperreports.jsf.fill.DefaultFiller;
 import net.sf.jasperreports.jsf.fill.Filler;
 import net.sf.jasperreports.jsf.fill.FillerException;
 
@@ -51,8 +52,9 @@ public final class FillerLoader {
     /** The exporter cache map. */
     private static final Map<String, FillerFactory> fillerCacheMap =
             Services.map(FillerFactory.class);
+
     /** The Constant DEFAULT_FILLER_INSTANCE. */
-    private static final Filler DEFAULT_FILLER_INSTANCE = new NoopFiller();
+    private static final Filler DEFAULT_FILLER_INSTANCE = new DefaultFiller();
 
     public static Set<String> getAvailableDataSourceTypes() {
         return Collections.unmodifiableSet(fillerCacheMap.keySet());
@@ -121,7 +123,7 @@ public final class FillerLoader {
             }
         }
         if ((dataSource == null) && (report.getDataSource() != null)) {
-            final String dataSourceId = report.getDataSource();
+            final String dataSourceId = (String) report.getDataSource();
             dataSource = (UIDataSource) ((UIComponent) report).findComponent(dataSourceId);
             if (dataSource == null) {
                 UIComponent container = (UIComponent) report;

@@ -16,8 +16,9 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.resource.providers;
+package net.sf.jasperreports.jsf.resource;
 
+import net.sf.jasperreports.jsf.resource.URLResource;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
