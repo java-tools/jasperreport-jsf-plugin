@@ -16,10 +16,9 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.resource.providers;
+package net.sf.jasperreports.jsf.resource;
 
-import java.net.URL;
-
+import net.sf.jasperreports.jsf.resource.ContextResource;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,19 +28,15 @@ import static org.junit.Assert.*;
  *
  * @author aalonsodominguez
  */
-public class ClasspathResourceTest {
+public class ContextResourceTest {
 
-    private static final String RES_NAME =
-            ClasspathResourceTest.class.getPackage().getName().replaceAll("\\.", "/") +
-            "/" + ClasspathResourceTest.class.getSimpleName() + ".txt";
+    public static final String RES_NAME = "";
 
-    private ClassLoader classLoader;
-    private ClasspathResource resource;
+    private ContextResource resource;
 
     @Before
     public void createResource() {
-        classLoader = Thread.currentThread().getContextClassLoader();
-        resource = new ClasspathResource(RES_NAME, classLoader);
+        resource = new ContextResource(RES_NAME);
     }
 
     @Test
@@ -49,14 +44,6 @@ public class ClasspathResourceTest {
         String name = resource.getName();
         assertNotNull(name);
         assertEquals(RES_NAME, name);
-    }
-
-    @Test
-    public void getLocation() throws Exception {
-        URL expected = classLoader.getResource(RES_NAME);
-        URL loc = resource.getLocation();
-        assertNotNull(loc);
-        assertEquals(expected, loc);
     }
 
 }

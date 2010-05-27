@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import net.sf.jasperreports.jsf.component.UIReport;
 
 /**
  * The Class Util.
@@ -137,6 +138,11 @@ public final class Util {
         return mapping.charAt(0) == '/';
     }
 
+    public static String resolveDataSourceId(FacesContext context, UIReport component,
+            String dataSourceId) {
+        return null;
+    }
+
     /**
      * <p>
      * Return the appropriate {@link javax.faces.webapp.FacesServlet} mapping
@@ -178,17 +184,6 @@ public final class Util {
         } else {
             // Servlet invoked using extension mapping
             return servletPath.substring(servletPath.lastIndexOf('.'));
-        }
-    }
-
-    private static String lastPathElement(String path) {
-        int lastSlash = path.lastIndexOf("/");
-        if (lastSlash <= 0) {
-            return null;
-        } else if (lastSlash == path.length() - 1) {
-            return lastPathElement(path.substring(0, path.length() - 1));
-        } else {
-            return path.substring(lastSlash, path.length());
         }
     }
 

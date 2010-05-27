@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package net.sf.jasperreports.jsf.spi;
 
 import java.util.Map;
@@ -40,5 +39,4 @@ public class DefaultJRDataSourceLoader extends JRDataSourceLoader {
         }
         return result;
     }
-
 }

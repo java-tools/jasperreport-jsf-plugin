@@ -28,7 +28,7 @@ import net.sf.jasperreports.jsf.resource.Resource;
  */
 public interface ResourceResolver {
 
-    public Resource resolveResource(FacesContext context, UIComponent component,
-            String name);
+    public Resource resolveResource(FacesContext context, 
+            UIComponent component, String name);
     
 }

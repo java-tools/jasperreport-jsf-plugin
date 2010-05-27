@@ -16,8 +16,11 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.resource.providers;
+package net.sf.jasperreports.jsf.spi;
 
+import net.sf.jasperreports.jsf.resource.URLResource;
+import net.sf.jasperreports.jsf.resource.ClasspathResource;
+import net.sf.jasperreports.jsf.spi.DefaultResourceResolver;
 import net.sf.jasperreports.jsf.component.html.HtmlReportFrame;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.test.MockFacesEnvironment;
