@@ -16,13 +16,13 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
 
-import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.config.Configuration;
-import net.sf.jasperreports.jsf.spi.Exporter;
+import net.sf.jasperreports.jsf.engine.export.Exporter;
 import net.sf.jasperreports.jsf.engine.fill.Filler;
-import net.sf.jasperreports.jsf.spi.ExporterLoader;
+import net.sf.jasperreports.jsf.engine.export.ExporterLoader;
+import net.sf.jasperreports.jsf.engine.fill.FillerLoader;
 import net.sf.jasperreports.jsf.util.ExternalContextHelper;
 import net.sf.jasperreports.jsf.util.Util;
 
@@ -50,13 +50,14 @@ public abstract class ReportRenderer extends Renderer {
 
         final String clientId = component.getClientId(context);
 
-        final Filler filler = Filler.getInstance();
+        final Filler filler = FillerLoader.getFiller();
         logger.log(Level.FINE, "JRJSF_0006", clientId);
         filler.fill(context, component);
 
         final ExternalContextHelper helper = ExternalContextHelper.getInstance(
                 context.getExternalContext());
-        final Exporter exporter = ExporterLoader.getExporter(context, component);
+        final Exporter exporter = ExporterLoader
+                .getExporter(context, component);
         final ByteArrayOutputStream reportData = new ByteArrayOutputStream();
         try {
             if (logger.isLoggable(Level.FINE)) {

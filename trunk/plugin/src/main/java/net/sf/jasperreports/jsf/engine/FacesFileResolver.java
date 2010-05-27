@@ -31,7 +31,7 @@ import net.sf.jasperreports.engine.util.FileResolver;
 import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.resource.Resource;
-import net.sf.jasperreports.jsf.spi.ResourceLoader;
+import net.sf.jasperreports.jsf.resource.ResourceLoader;
 import net.sf.jasperreports.jsf.util.ExternalContextHelper;
 
 public class FacesFileResolver implements FileResolver {

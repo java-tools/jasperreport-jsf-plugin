@@ -22,7 +22,7 @@ import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.webapp.UIComponentELTag;
 
-import net.sf.jasperreports.jsf.component.UIDataSource;
+import net.sf.jasperreports.jsf.component.UIDataBroker;
 
 /**
  * The Class DataSourceTag.
@@ -96,7 +96,7 @@ public class DataSourceTag extends UIComponentELTag {
      */
     @Override
     public String getComponentType() {
-        return UIDataSource.COMPONENT_TYPE;
+        return UIDataBroker.COMPONENT_TYPE;
     }
 
     /*
@@ -119,7 +119,7 @@ public class DataSourceTag extends UIComponentELTag {
     @Override
     protected void setProperties(final UIComponent component) {
         super.setProperties(component);
-        final UIDataSource dataSource = (UIDataSource) component;
+        final UIDataBroker dataSource = (UIDataBroker) component;
 
         if (data != null) {
             if (data.isLiteralText()) {

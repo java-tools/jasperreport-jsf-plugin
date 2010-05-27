@@ -30,7 +30,7 @@ import net.sf.jasperreports.jsf.InvalidEnvironmentException;
 
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
-import net.sf.jasperreports.jsf.wrapper.ReportRenderRequest;
+import net.sf.jasperreports.jsf.engine.ReportRenderRequest;
 
 /**
  * Helper class that will provide with utility methods related with the

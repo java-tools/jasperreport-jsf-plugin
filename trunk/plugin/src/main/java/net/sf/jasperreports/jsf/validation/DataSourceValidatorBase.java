@@ -20,17 +20,17 @@ package net.sf.jasperreports.jsf.validation;
 
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UIDataSource;
-import net.sf.jasperreports.jsf.spi.FillerLoader;
+import net.sf.jasperreports.jsf.component.UIDataBroker;
+import net.sf.jasperreports.jsf.engine.datasource.DataBrokerLoader;
 
 public class DataSourceValidatorBase extends DataSourceValidator {
 
     @Override
     protected void doValidate(final FacesContext context,
-            final UIDataSource dataSource) throws ValidationException {
-        if (!FillerLoader.getAvailableDataSourceTypes().contains(
-                dataSource.getType())) {
-            throw new IllegalDataSourceTypeException(dataSource.getType());
+            final UIDataBroker component) throws ValidationException {
+        if (!DataBrokerLoader.getAvailableDataBrokerTypes().contains(
+                component.getType())) {
+            throw new IllegalDataSourceTypeException(component.getType());
         }
     }
 }

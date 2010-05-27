@@ -115,7 +115,7 @@ public abstract class AbstractReportTag extends UIComponentELTag {
         final UIReport jreport = (UIReport) component;
         if (dataSource != null) {
             if (dataSource.isLiteralText()) {
-                jreport.setDataSource(dataSource.getExpressionString());
+                jreport.setDataBroker(dataSource.getExpressionString());
             } else {
                 component.setValueExpression("dataSource", dataSource);
             }
