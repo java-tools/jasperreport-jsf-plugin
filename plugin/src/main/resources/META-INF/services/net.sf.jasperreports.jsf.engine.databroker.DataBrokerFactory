@@ -19,3 +19,10 @@
 # alonsoft@users.sf.net
 #
 bean:net.sf.jasperreports.jsf.engine.databroker.BeanDataBrokerFactory
+csv:net.sf.jasperreports.jsf.engine.databroker.CsvDataBrokerFactory
+jdbc:net.sf.jasperreports.jsf.engine.databroker.JdbcDataBrokerFactory
+jndi:net.sf.jasperreports.jsf.engine.databroker.JndiDataBrokerFactory
+map:net.sf.jasperreports.jsf.engine.databroker.MapDataBrokerFactory
+resultSet:net.sf.jasperreports.jsf.engine.databroker.ResultSetDataBrokerFactory
+xls:net.sf.jasperreports.jsf.engine.databroker.XlsDataBrokerFactory
+xml:net.sf.jasperreports.jsf.engine.databroker.XmlDataBrokerFactory

@@ -20,13 +20,11 @@ package net.sf.jasperreports.jsf.engine.databroker;
 
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.engine.databroker.DataBroker;
-
 /**
  *
  * @author aalonsodominguez
  */
-public abstract class AbstractDataBrokerFactory implements DataBrokerFactory {
+abstract class AbstractDataBrokerFactory implements DataBrokerFactory {
 
     public void dispose(FacesContext context, DataBroker broker) {
 //        if (!(dataSource instanceof DisposableDataSource)) {
