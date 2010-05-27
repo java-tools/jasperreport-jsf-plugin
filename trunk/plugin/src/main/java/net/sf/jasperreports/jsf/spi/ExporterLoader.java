@@ -25,10 +25,7 @@ import java.util.Set;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.export.Exporter;
-import net.sf.jasperreports.jsf.export.ExporterException;
 
 /**
  * A factory for creating Exporter objects.
@@ -36,8 +33,8 @@ import net.sf.jasperreports.jsf.export.ExporterException;
 public final class ExporterLoader {
 
     /** The exporter cache map. */
-    private static final Map<String, ExporterFactory> exporterCacheMap =
-            Services.map(ExporterFactory.class);
+    private static final Map<String, Exporter> exporterCacheMap =
+            Services.map(Exporter.class);
 
     public static Set<String> getAvailableExportFormats() {
         return Collections.unmodifiableSet(exporterCacheMap.keySet());
@@ -46,15 +43,12 @@ public final class ExporterLoader {
     /**
      * Gets the single instance of Exporter.
      *
-     * @param report
-     *            the report
-     * @param context
-     *            the context
+     * @param report the report
+     * @param context the context
      *
      * @return single instance of Exporter
      *
-     * @throws ExporterException
-     *             the exporter exception
+     * @throws ExporterException the exporter exception
      */
     public static Exporter getExporter(final FacesContext context,
             final UIReport report) throws ExporterException {
@@ -62,23 +56,15 @@ public final class ExporterLoader {
             throw new IllegalArgumentException();
         }
 
-        final ExporterFactory factory = getExporterFactory(context, report);
-        return factory.createExporter(context, report);
-    }
-
-    private static ExporterFactory getExporterFactory(
-            final FacesContext context, final UIReport report)
-            throws JRFacesException {
-        final ExporterFactory exporterFactory = exporterCacheMap.get(report.getFormat());
-        if (exporterFactory == null) {
-            throw new ExporterFactoryNotFoundException(report.getFormat());
+        final Exporter exporter = exporterCacheMap.get(report.getFormat());
+        if (exporter == null) {
+            throw new ExporterNotFoundException(report.getFormat());
         }
-        return exporterFactory;
+        return exporter;
     }
 
     /**
      * Instantiates a new exporter factory.
      */
-    private ExporterLoader() {
-    }
+    private ExporterLoader() { }
 }

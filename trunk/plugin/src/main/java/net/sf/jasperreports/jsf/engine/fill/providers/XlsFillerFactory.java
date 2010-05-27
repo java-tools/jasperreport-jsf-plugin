@@ -16,21 +16,26 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.spi;
+package net.sf.jasperreports.jsf.engine.fill.providers;
 
 import javax.faces.context.FacesContext;
-import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIDataSource;
+import net.sf.jasperreports.jsf.engine.fill.AbstractFillerFactory;
+import net.sf.jasperreports.jsf.engine.fill.Filler;
 
 /**
+ * Provides with <code>XlsFiller</code> instances to plugin's
+ * internal render mechanism.
  *
- * @author antonio.alonso
+ * @author A. Alonso Dominguez
  */
-public interface JRDataSourceFactory {
+public class XlsFillerFactory extends AbstractFillerFactory {
 
-    public JRDataSource createDataSource(FacesContext context,
-            UIDataSource component);
-
-    public void dispose(FacesContext context, JRDataSource dataSource);
+    @Override
+    protected Filler doCreateFiller(FacesContext context,
+            UIDataSource dataSource) throws JRFacesException {
+        return new XlsFiller(dataSource);
+    }
 
 }

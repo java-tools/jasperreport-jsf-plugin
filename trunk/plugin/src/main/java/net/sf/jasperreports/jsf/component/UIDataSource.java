@@ -23,6 +23,7 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.spi.JRDataSourceLoader;
@@ -110,7 +111,8 @@ public class UIDataSource extends UIComponentBase {
         final ValueExpression ve = getValueExpression("type");
         if (ve != null) {
             try {
-                return (String) ve.getValue(getFacesContext().getELContext());
+                return (String) ve.getValue(
+                        getFacesContext().getELContext());
             } catch (final ELException e) {
                 throw new FacesException(e);
             }
@@ -141,7 +143,8 @@ public class UIDataSource extends UIComponentBase {
         final ValueExpression ve = getValueExpression("data");
         if (ve != null) {
             try {
-                return ve.getValue(getFacesContext().getELContext());
+                return ve.getValue(
+                        getFacesContext().getELContext());
             } catch (final ELException e) {
                 throw new FacesException(e);
             }

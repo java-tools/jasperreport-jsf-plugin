@@ -20,8 +20,8 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.config.Configuration;
-import net.sf.jasperreports.jsf.export.Exporter;
-import net.sf.jasperreports.jsf.fill.Filler;
+import net.sf.jasperreports.jsf.spi.Exporter;
+import net.sf.jasperreports.jsf.engine.fill.Filler;
 import net.sf.jasperreports.jsf.spi.ExporterLoader;
 import net.sf.jasperreports.jsf.util.ExternalContextHelper;
 import net.sf.jasperreports.jsf.util.Util;
@@ -38,7 +38,8 @@ public abstract class ReportRenderer extends Renderer {
 
     public abstract String getContentDisposition();
 
-    public void encodeContent(final FacesContext context, final UIReport component)
+    public void encodeContent(final FacesContext context,
+            final UIReport component)
             throws IOException {
         if (context == null) {
             throw new IllegalArgumentException("Faces' context is null");
@@ -51,7 +52,7 @@ public abstract class ReportRenderer extends Renderer {
 
         final Filler filler = Filler.getInstance();
         logger.log(Level.FINE, "JRJSF_0006", clientId);
-        final JasperPrint filledReport = filler.fill(context, component);
+        filler.fill(context, component);
 
         final ExternalContextHelper helper = ExternalContextHelper.getInstance(
                 context.getExternalContext());
@@ -62,7 +63,7 @@ public abstract class ReportRenderer extends Renderer {
                 logger.log(Level.FINE, "JRJSF_0010", new Object[]{clientId,
                             exporter.getContentType()});
             }
-            exporter.export(context, filledReport, reportData);
+            exporter.export(context, component, reportData);
             helper.writeResponse(context.getExternalContext(),
                     exporter.getContentType(), reportData.toByteArray());
         } finally {

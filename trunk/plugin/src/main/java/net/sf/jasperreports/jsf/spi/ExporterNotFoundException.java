@@ -18,14 +18,23 @@
  */
 package net.sf.jasperreports.jsf.spi;
 
-import javax.faces.context.FacesContext;
+/**
+ * The Class ExporterNotFoundException.
+ */
+public class ExporterNotFoundException extends ServiceException {
 
-import net.sf.jasperreports.jsf.JRFacesException;
-import net.sf.jasperreports.jsf.component.UIDataSource;
-import net.sf.jasperreports.jsf.engine.fill.Filler;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 6514110062785484535L;
 
-public interface FillerFactory {
-
-    public Filler createFiller(FacesContext context, UIDataSource dataSource)
-            throws JRFacesException;
+    /**
+     * Instantiates a new exporter not found exception.
+     *
+     * @param msg
+     *            the msg
+     */
+    public ExporterNotFoundException(final String msg) {
+        super(msg);
+    }
 }

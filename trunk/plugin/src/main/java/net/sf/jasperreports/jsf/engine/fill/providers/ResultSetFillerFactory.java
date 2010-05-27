@@ -16,16 +16,20 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.spi;
+package net.sf.jasperreports.jsf.engine.fill.providers;
 
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIDataSource;
+import net.sf.jasperreports.jsf.engine.fill.AbstractFillerFactory;
 import net.sf.jasperreports.jsf.engine.fill.Filler;
 
-public interface FillerFactory {
+public class ResultSetFillerFactory extends AbstractFillerFactory {
 
-    public Filler createFiller(FacesContext context, UIDataSource dataSource)
-            throws JRFacesException;
+    @Override
+    protected Filler doCreateFiller(final FacesContext context,
+            final UIDataSource dataSource) throws JRFacesException {
+        return new ResultSetFiller(dataSource);
+    }
 }

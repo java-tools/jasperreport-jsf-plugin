@@ -55,6 +55,9 @@ public final class Constants {
     /** Base string URI used to recognize Report render requests. */
     public static final String BASE_URI = "/" + PACKAGE_PREFIX + "/render";
 
+    public static final String JASPER_PRINT_ATTR_NAME =
+            PACKAGE_PREFIX + ".JASPER_PRINT_ATTR_NAME";
+
     /** Parameter identifying the component which sended the request. */
     public static final String PARAM_CLIENTID =
             PACKAGE_PREFIX + ".clientId";

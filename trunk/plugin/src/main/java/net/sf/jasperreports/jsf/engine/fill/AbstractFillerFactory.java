@@ -16,31 +16,36 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.validation.providers;
+package net.sf.jasperreports.jsf.engine.fill;
 
 import javax.faces.context.FacesContext;
 
+import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIDataSource;
-import net.sf.jasperreports.jsf.engine.fill.providers.JdbcFiller;
-import net.sf.jasperreports.jsf.validation.DataSourceValidatorBase;
-import net.sf.jasperreports.jsf.validation.MissedAttributeException;
+import net.sf.jasperreports.jsf.spi.FillerFactory;
+import net.sf.jasperreports.jsf.spi.ValidatorLoader;
 import net.sf.jasperreports.jsf.validation.ValidationException;
+import net.sf.jasperreports.jsf.validation.Validator;
 
-public class JdbcDataSourceValidator extends DataSourceValidatorBase {
+public abstract class AbstractFillerFactory implements FillerFactory {
 
-    /** The Constant REQUIRED_DATASOURCE_ATTRS. */
-    public static final String[] REQUIRED_DATASOURCE_ATTRS = {
-        JdbcFiller.ATTR_DRIVER_CLASS_NAME};
+    public Filler createFiller(final FacesContext context,
+            final UIDataSource dataSource) throws JRFacesException {
+        if (dataSource != null) {
+            processValidators(context, dataSource);
+        }
+        return doCreateFiller(context, dataSource);
+    }
 
-    @Override
-    protected void doValidate(final FacesContext context,
+    protected abstract Filler doCreateFiller(FacesContext context,
+            UIDataSource dataSource) throws JRFacesException;
+
+    protected void processValidators(final FacesContext context,
             final UIDataSource dataSource) throws ValidationException {
-        super.doValidate(context, dataSource);
-        for (final String attr : REQUIRED_DATASOURCE_ATTRS) {
-            if (null == dataSource.getAttributes().get(attr)) {
-                throw new MissedAttributeException(
-                        dataSource.getType() + " : " + attr);
-            }
+        final Validator validator = ValidatorLoader.getValidator(context,
+                dataSource);
+        if (validator != null) {
+            validator.validate(context, dataSource);
         }
     }
 }

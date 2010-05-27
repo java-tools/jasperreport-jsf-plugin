@@ -35,10 +35,10 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIDataSource;
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.fill.AbstractFiller;
-import net.sf.jasperreports.jsf.fill.DefaultFiller;
-import net.sf.jasperreports.jsf.fill.Filler;
-import net.sf.jasperreports.jsf.fill.FillerException;
+import net.sf.jasperreports.jsf.engine.fill.AbstractFiller;
+import net.sf.jasperreports.jsf.engine.fill.DefaultFiller;
+import net.sf.jasperreports.jsf.engine.fill.Filler;
+import net.sf.jasperreports.jsf.engine.fill.FillerException;
 
 /**
  * A factory for creating Filler objects.
@@ -63,15 +63,12 @@ public final class FillerLoader {
     /**
      * Gets the filler.
      *
-     * @param context
-     *            the context
-     * @param report
-     *            the report
+     * @param context the context
+     * @param report the report
      *
      * @return the filler
      *
-     * @throws FillerException
-     *             the filler exception
+     * @throws FillerException the filler exception
      */
     public static Filler getFiller(final FacesContext context,
             final UIReport report) throws FillerException {
@@ -106,10 +103,8 @@ public final class FillerLoader {
     /**
      * Gets the data source component.
      *
-     * @param context
-     *            the context
-     * @param report
-     *            the report
+     * @param context the context
+     * @param report the report
      *
      * @return the data source component
      */
@@ -138,34 +133,6 @@ public final class FillerLoader {
             logger.log(Level.FINE, "JRJSF_0009", dsClientId);
         }
         return dataSource;
-    }
-
-    /**
-     * The Class StaticFiller.
-     */
-    private static final class NoopFiller extends AbstractFiller {
-
-        public NoopFiller() {
-            super(null);
-        }
-
-        /*
-         * (non-Javadoc)
-         *
-         * @seenet.sf.jasperreports.jsf.fill.Filler#doFill(javax.faces.context.
-         * FacesContext , java.io.InputStream, java.util.Map)
-         */
-        @Override
-        protected JasperPrint doFill(final FacesContext context,
-                final InputStream reportStream,
-                final Map<String, Object> params)
-                throws FillerException {
-            try {
-                return JasperFillManager.fillReport(reportStream, params);
-            } catch (final JRException e) {
-                throw new FillerException(e);
-            }
-        }
     }
 
     /** Private constructor to prevent instantiation */
