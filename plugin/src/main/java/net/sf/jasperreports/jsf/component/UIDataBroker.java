@@ -26,10 +26,12 @@ import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.engine.databroker.DataBroker;
+import net.sf.jasperreports.jsf.engine.databroker.DataBrokerFactory;
 import net.sf.jasperreports.jsf.engine.databroker.DataBrokerLoader;
-import net.sf.jasperreports.jsf.validation.ValidatorLoader;
+import net.sf.jasperreports.jsf.validation.DataBrokerValidator;
+import net.sf.jasperreports.jsf.validation.DataBrokerValidatorFactory;
+import net.sf.jasperreports.jsf.validation.MissingAttributeException;
 import net.sf.jasperreports.jsf.validation.ValidationException;
-import net.sf.jasperreports.jsf.validation.Validator;
 
 /**
  * The Class UIDataSource.
@@ -47,17 +49,20 @@ public class UIDataBroker extends UIComponentBase {
     // Fields
 
     /** The query. */
-    private String query;
+    private String query = null;
     /** The type. */
-    private String type;
+    private String type = null;
     /** The type set. */
-    private boolean typeSet;
+    private boolean typeSet = false;
     /** The data. */
-    private Object data;
-    private boolean valid;
+    private Object data = null;
+    private boolean valid = true;
     /** The value */
     private Object value;
     private boolean valueSet = false;
+
+    private DataBrokerFactory dataBrokerFactory;
+    private DataBrokerValidator dataBrokerValidator;
 
     /**
      * Instantiates a new uI data source.
@@ -176,7 +181,7 @@ public class UIDataBroker extends UIComponentBase {
      * @return the value
      */
     public final Object getValue() {
-        if (value != null) {
+        if (valueSet) {
             return value;
         }
         final ValueExpression ve = getValueExpression("value");
@@ -201,6 +206,48 @@ public class UIDataBroker extends UIComponentBase {
         valueSet = true;
     }
 
+    public DataBrokerFactory getDataBrokerFactory() {
+        if (dataBrokerFactory != null) {
+            return dataBrokerFactory;
+        }
+        ValueExpression ve = getValueExpression("dataBrokerFactory");
+        if (ve != null) {
+            try {
+                return (DataBrokerFactory) ve.getValue(
+                        getFacesContext().getELContext());
+            } catch (ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return dataBrokerFactory;
+        }
+    }
+
+    public void setDataBrokerFactory(DataBrokerFactory factory) {
+        this.dataBrokerFactory = factory;
+    }
+
+    public DataBrokerValidator getValidator() {
+        if (dataBrokerValidator != null) {
+            return dataBrokerValidator;
+        }
+        ValueExpression ve = getValueExpression("validator");
+        if (ve != null) {
+            try {
+                return (DataBrokerValidator) ve.getValue(
+                        getFacesContext().getELContext());
+            } catch(ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return dataBrokerValidator;
+        }
+    }
+
+    public void setValidator(DataBrokerValidator validator) {
+        this.dataBrokerValidator = validator;
+    }
+
     // UIComponent
 
     /*
@@ -216,6 +263,7 @@ public class UIDataBroker extends UIComponentBase {
     public void resetValue() {
         setValue(null);
         setValid(true);
+        valueSet = false;
     }
 
     /*
@@ -287,28 +335,36 @@ public class UIDataBroker extends UIComponentBase {
             throw new NullPointerException();
         }
 
-        if (!isValid() || !valueSet) {
+        if (!isValid() || valueSet) {
             return ;
         }
 
-        Object providedValue = getValue();
-        if (providedValue == null) {
-            DataBroker dataBroker = DataBrokerLoader
-                    .loadDataBroker(context, this);
-            ValueExpression ve = getValueExpression("value");
-            if (ve != null) {
-                try {
-                    ve.setValue(context.getELContext(), dataBroker);
-                } catch(ELException e) {
-                    setValid(false);
-                    throw e;
-                }
-            } else {
-                String clientId = getClientId(context);
-                context.getExternalContext().getRequestMap()
-                        .put(clientId, dataBroker);
-            }
+        // Obtain a DataBroker instance
+        DataBroker dataBroker;
+        DataBrokerFactory factory = this.getDataBrokerFactory();
+        if (factory != null) {
+            dataBroker = factory.createDataBroker(context, this);
+        } else {
+            dataBroker = DataBrokerLoader.loadDataBroker(context, this);
         }
+        assert dataBroker != null;
+
+        // Now assign the data broker to the model bean (if applicable)
+        ValueExpression ve = getValueExpression("value");
+        if (ve != null) {
+            resetValue();
+            try {
+                ve.setValue(context.getELContext(), dataBroker);
+            } catch (ELException e) {
+                setValid(false);
+                throw e;
+            }
+        } else {
+            String clientId = getClientId(context);
+            context.getExternalContext().getRequestMap()
+                    .put(clientId, dataBroker);
+        }
+
     }
 
     public void validate(FacesContext context) throws ValidationException {
@@ -316,7 +372,24 @@ public class UIDataBroker extends UIComponentBase {
             throw new NullPointerException();
         }
 
-        final Validator validator = ValidatorLoader.getValidator(context, this);
+        Object providedValue = getValue();
+        if (providedValue == null) {
+            String providedType = getType();
+            if (providedType == null || providedType.length() == 0) {
+                throw new MissingAttributeException("type");
+            }
+            Object providedData = getData();
+            if (providedData == null) {
+                throw new MissingAttributeException("data");
+            }
+        }
+
+        DataBrokerValidator validator = getValidator();
+        if (validator == null) {
+            validator = DataBrokerValidatorFactory
+                    .createValidator(context, this);
+        }
+
         if (validator != null) {
             try {
                 validator.validate(context, this);

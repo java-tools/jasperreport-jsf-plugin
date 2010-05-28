@@ -19,9 +19,7 @@
 package net.sf.jasperreports.jsf.engine.databroker;
 
 import javax.faces.context.FacesContext;
-import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.jsf.component.UIDataBroker;
-import net.sf.jasperreports.jsf.engine.databroker.DataBroker;
 
 /**
  *

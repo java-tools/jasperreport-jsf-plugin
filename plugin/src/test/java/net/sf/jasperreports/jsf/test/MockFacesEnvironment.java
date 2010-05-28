@@ -8,11 +8,13 @@ package net.sf.jasperreports.jsf.test;
 import javax.faces.FactoryFinder;
 import javax.faces.component.UIViewRoot;
 import javax.faces.lifecycle.LifecycleFactory;
+import javax.faces.render.RenderKitFactory;
+import org.apache.shale.test.el.MockELContext;
+import org.apache.shale.test.mock.MockApplication;
 
-import org.apache.shale.test.mock.MockApplication12;
 import org.apache.shale.test.mock.MockApplicationFactory;
 import org.apache.shale.test.mock.MockExternalContext12;
-import org.apache.shale.test.mock.MockFacesContext12;
+import org.apache.shale.test.mock.MockFacesContext;
 import org.apache.shale.test.mock.MockFacesContextFactory;
 import org.apache.shale.test.mock.MockLifecycle;
 import org.apache.shale.test.mock.MockLifecycleFactory;
@@ -37,9 +39,8 @@ public abstract class MockFacesEnvironment {
         return instance;
     }
 
-    private MockApplication12 application;
-    
-    private MockFacesContext12 facesContext;
+    private MockApplication application;
+    private MockFacesContext facesContext;
     private MockLifecycle lifecycle;
     private MockRenderKit renderKit;
 
@@ -68,29 +69,29 @@ public abstract class MockFacesEnvironment {
 
         facesContextFactory = (MockFacesContextFactory) FactoryFinder
                 .getFactory(FactoryFinder.FACES_CONTEXT_FACTORY);
-        facesContext = (MockFacesContext12) facesContextFactory.getFacesContext(
+        facesContext = (MockFacesContext) facesContextFactory.getFacesContext(
                 getExternalContext().getContext(),
                 getExternalContext().getRequest(),
                 getExternalContext().getResponse(), lifecycle);
 
         UIViewRoot viewRoot = new UIViewRoot();
         viewRoot.setViewId("/viewId");
-        viewRoot.setRenderKitId(renderKitFactory.HTML_BASIC_RENDER_KIT);
+        viewRoot.setRenderKitId(RenderKitFactory.HTML_BASIC_RENDER_KIT);
         facesContext.setViewRoot(viewRoot);
 
         applicationFactory = (MockApplicationFactory) FactoryFinder.getFactory(
                 FactoryFinder.APPLICATION_FACTORY);
-        application = (MockApplication12) applicationFactory.getApplication();
+        application = (MockApplication) applicationFactory.getApplication();
         facesContext.setApplication(application);
 
         renderKitFactory = (MockRenderKitFactory) FactoryFinder.getFactory(
                 FactoryFinder.RENDER_KIT_FACTORY);
         renderKit = new MockRenderKit();
-        renderKitFactory.addRenderKit(renderKitFactory.HTML_BASIC_RENDER_KIT,
+        renderKitFactory.addRenderKit(RenderKitFactory.HTML_BASIC_RENDER_KIT,
                 renderKit);
     }
 
-    public MockApplication12 getApplication() {
+    public MockApplication getApplication() {
         return application;
     }
 
@@ -100,7 +101,7 @@ public abstract class MockFacesEnvironment {
 
     public abstract MockExternalContext12 getExternalContext();
 
-    public MockFacesContext12 getFacesContext() {
+    public MockFacesContext getFacesContext() {
         return facesContext;
     }
 

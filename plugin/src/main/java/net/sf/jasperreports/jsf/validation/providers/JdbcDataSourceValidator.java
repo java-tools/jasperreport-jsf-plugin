@@ -22,24 +22,24 @@ import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIDataBroker;
 import net.sf.jasperreports.jsf.engine.databroker.JdbcDataBrokerFactory;
-import net.sf.jasperreports.jsf.validation.DataSourceValidatorBase;
-import net.sf.jasperreports.jsf.validation.MissedAttributeException;
+import net.sf.jasperreports.jsf.validation.DataBrokerValidatorBase;
+import net.sf.jasperreports.jsf.validation.MissingAttributeException;
 import net.sf.jasperreports.jsf.validation.ValidationException;
 
-public class JdbcDataSourceValidator extends DataSourceValidatorBase {
+public class JdbcDataSourceValidator extends DataBrokerValidatorBase {
 
     /** The Constant REQUIRED_DATASOURCE_ATTRS. */
     public static final String[] REQUIRED_DATASOURCE_ATTRS = {
         JdbcDataBrokerFactory.ATTR_DRIVER_CLASS_NAME};
 
     @Override
-    protected void doValidate(final FacesContext context,
-            final UIDataBroker dataSource) throws ValidationException {
-        super.doValidate(context, dataSource);
+    public void validate(final FacesContext context,
+            final UIDataBroker component) throws ValidationException {
+        super.validate(context, component);
         for (final String attr : REQUIRED_DATASOURCE_ATTRS) {
-            if (null == dataSource.getAttributes().get(attr)) {
-                throw new MissedAttributeException(
-                        dataSource.getType() + " : " + attr);
+            if (null == component.getAttributes().get(attr)) {
+                throw new MissingAttributeException(
+                        component.getType() + " : " + attr);
             }
         }
     }

@@ -18,22 +18,21 @@
  */
 package net.sf.jasperreports.jsf.validation;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
+/**
+ * The Class MissedDataSourceAttributeException.
+ */
+public class MissingAttributeException extends ValidationException {
 
-import net.sf.jasperreports.jsf.component.UIDataBroker;
+    /** The Constant serialVersionUID. */
+    private static final long serialVersionUID = 6313893570302881706L;
 
-public abstract class DataSourceValidator implements Validator {
-
-    public void validate(final FacesContext context, final UIComponent component)
-            throws ValidationException {
-        if (!(component instanceof UIDataBroker)) {
-            throw new IllegalArgumentException(
-                    "'component' must be a UIDataSource");
-        }
-        doValidate(context, (UIDataBroker) component);
+    /**
+     * Instantiates a new missed data source attribute exception.
+     *
+     * @param msg
+     *            the msg
+     */
+    public MissingAttributeException(final String msg) {
+        super(msg);
     }
-
-    protected abstract void doValidate(FacesContext context,
-            UIDataBroker dataSource) throws ValidationException;
 }
