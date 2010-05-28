@@ -18,66 +18,54 @@
  */
 package net.sf.jasperreports.jsf.resource;
 
-import net.sf.jasperreports.jsf.resource.URLResource;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 
 import static org.junit.Assert.*;
+import static org.junit.Assume.*;
 import static org.hamcrest.Matchers.*;
 
 /**
  *
  * @author aalonsodominguez
  */
-@RunWith(Parameterized.class)
+@RunWith(Theories.class)
 public class URLResourceTest {
 
-    @Parameters
-    public static Collection<?> createData() throws Exception {
-        Object[][] array = new Object[][] {
-            { new URL("http://jasperreportjsf.sourceforge.net/tld/jasperreports-jsf-1_0.tld") }
+    @DataPoints
+    public static Collection<URL> createData() throws Exception {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        String baseName = URLResourceTest.class
+                .getName().replaceAll("\\.", "/");
+        URL[] array = new URL[] {
+            new URL("http", "jasperreportjsf.sourceforge.net",
+                    "/tld/jasperreports-jsf-1_0.tld"),
+            classLoader.getResource(baseName + ".java")
         };
         return Arrays.asList(array);
     }
 
-    private URL location;
-    private URLResource resource;
+    @Theory
+    public void checkWithRemoteResource(URL location) throws Exception {
+        assumeThat(location.getProtocol(), equalTo("http"));
 
-    public URLResourceTest(URL location) {
-        this.location = location;
+        URLResource resource = new URLResource(location);
+        assertThat(resource.getLocation(), sameInstance(location));
+        assertThat(resource.getName(), equalTo(location.toString()));
+        assertThat(resource.getPath(), equalTo(location.getPath()));
     }
 
-    @Before
-    public void createResource() throws Exception {
-        resource = new URLResource(location);
-    }
+    @Theory
+    public void checkWithLocalResource(URL location) throws Exception {
+        assumeThat(location.getPath(), endsWith(".java"));
 
-    @Test
-    public void getName(String locationUrl) {
-        String resName = resource.getName();
-        assertNotNull(resName);
-        assertThat(location.toString(), equalTo(resName));
-    }
-
-    @Test
-    public void getLocation() throws Exception {
-        URL loc = resource.getLocation();
-        assertNotNull(loc);
-        assertThat(location, equalTo(loc));
-    }
-
-    @Test
-    public void getPath() {
-        String path = resource.getPath();
-        assertNotNull(path);
-        assertThat(location.getPath(), equalTo(path));
+        URLResource resource = new URLResource(location);
     }
 
 }

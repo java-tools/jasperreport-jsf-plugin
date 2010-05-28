@@ -34,7 +34,11 @@ public final class ClasspathResource extends AbstractResource
     }
 
     public InputStream getInputStream() throws IOException {
-        return classLoader.getResourceAsStream(getName());
+        final URL location = classLoader.getResource(getName());
+        if (location == null) {
+            throwLocationNotFoundException();
+        }
+        return location.openStream();
     }
 
     public URL getLocation() throws IOException {
@@ -53,12 +57,8 @@ public final class ClasspathResource extends AbstractResource
         return location.getPath();
     }
 
-    public boolean isRemote() {
-        return false;
-    }
-
     private void throwLocationNotFoundException() {
-        throw new IllegalStateException(
+        throw new LocationNotFoundException(
                 "Resource location for classpath resource '" + getName()
                 + "' couldn't be identified.");
     }

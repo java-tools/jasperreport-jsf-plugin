@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-public final class URLResource extends AbstractResource implements Resource {
+public final class URLResource extends AbstractResource {
 
     private final URL location;
 
@@ -43,7 +43,4 @@ public final class URLResource extends AbstractResource implements Resource {
         return location.getPath();
     }
 
-    public boolean isRemote() {
-        return !"file".equals(location.getProtocol());
-    }
 }
