@@ -33,8 +33,6 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.data.JRCsvDataSource;
 import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIDataBroker;
-import net.sf.jasperreports.jsf.engine.databroker.DataBroker;
-import net.sf.jasperreports.jsf.engine.databroker.JRDataSourceBroker;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.ResourceException;
 import net.sf.jasperreports.jsf.resource.ResourceLoader;
@@ -99,7 +97,8 @@ public class CsvDataBrokerFactory extends AbstractDataBrokerFactory {
             }
         }
 
-        JRDataSourceBroker broker = new CsvDataSourceBroker(clientId, dataSource,
+        JRDataSourceBroker broker = new CsvDataSourceBroker(
+                clientId, dataSource,
                 (closeStream ? dataSourceStream : null));
         return broker;
     }

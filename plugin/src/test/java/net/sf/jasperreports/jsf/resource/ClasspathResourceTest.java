@@ -18,46 +18,106 @@
  */
 package net.sf.jasperreports.jsf.resource;
 
-import net.sf.jasperreports.jsf.resource.ClasspathResource;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.theories.DataPoint;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
+import static org.junit.Assume.*;
+import static org.hamcrest.Matchers.*;
 
 /**
  *
  * @author aalonsodominguez
  */
+@RunWith(Theories.class)
 public class ClasspathResourceTest {
 
-    private static final String RES_NAME =
-            ClasspathResourceTest.class.getPackage().getName().replaceAll("\\.", "/") +
+    private static final String RESOURCE_PATH = ClasspathResourceTest.class
+            .getPackage().getName().replaceAll("\\.", "/");
+
+    @DataPoint
+    public static final String RESOURCE_01 = RESOURCE_PATH +
             "/" + ClasspathResourceTest.class.getSimpleName() + ".txt";
+    @DataPoint
+    public static final String RESOURCE_02 = RESOURCE_PATH +
+            "/" + ClasspathResourceTest.class.getSimpleName() + ".java";
+    @DataPoint
+    public static final String RESOURCE_03 = RESOURCE_PATH +
+            "/" + ClasspathResourceTest.class.getSimpleName();
 
     private ClassLoader classLoader;
-    private ClasspathResource resource;
 
     @Before
-    public void createResource() {
+    public void init() {
         classLoader = Thread.currentThread().getContextClassLoader();
-        resource = new ClasspathResource(RES_NAME, classLoader);
     }
 
-    @Test
-    public void getName() {
-        String name = resource.getName();
-        assertNotNull(name);
-        assertEquals(RES_NAME, name);
+    @Theory
+    public void checkWithValidResource(String name) throws Exception {
+        InputStream expectedStream = null;
+        assumeTrue(null != (expectedStream = classLoader
+                .getResourceAsStream(name)));
+        URL expectedLocation = classLoader.getResource(name);
+
+        ClasspathResource resource = new ClasspathResource(name, classLoader);
+        assertThat(resource.getName(), sameInstance(name));
+
+        InputStream stream = null;
+        try {
+            stream = resource.getInputStream();
+        } catch(Exception e) {
+            assumeNoException(e);
+        }
+        assertThat(stream, is(not(nullValue())));
+
+        
+        URL location = null;
+        try {
+            location = resource.getLocation();
+        } catch(Exception e) {
+            assumeNoException(e);
+        }
+        assertThat(location, is(not(nullValue())));
+        assertThat(location, equalTo(expectedLocation));
+        assertThat(resource.getPath(), equalTo(expectedLocation.getPath()));
+
+        try {
+            expectedStream.close();
+            stream.close();
+        } catch(IOException e) { }
     }
 
-    @Test
-    public void getLocation() throws Exception {
-        URL expected = classLoader.getResource(RES_NAME);
-        URL loc = resource.getLocation();
-        assertNotNull(loc);
-        assertEquals(expected, loc);
+    @Theory
+    public void checkWithInvalidResource(String name) throws Exception {
+        InputStream expectedStream;
+        assumeTrue(null == (expectedStream = classLoader
+                .getResourceAsStream(name)));
+
+        ClasspathResource resource = new ClasspathResource(name, classLoader);
+        assertThat(resource.getName(), sameInstance(name));
+
+        try {
+            resource.getLocation();
+            fail("'getLocation' must throw 'LocationNotFoundException'.");
+        } catch(LocationNotFoundException e) { }
+
+        try {
+            resource.getPath();
+            fail("'getPath' must throw 'LocationNotFoundException'.");
+        } catch(LocationNotFoundException e) { }
+
+        try {
+            resource.getInputStream();
+            fail("'getInputStream' must throw 'LocationNotFoundException'.");
+        } catch(LocationNotFoundException e) { }
     }
 
 }

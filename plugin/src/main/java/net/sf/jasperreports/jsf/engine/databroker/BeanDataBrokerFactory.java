@@ -21,10 +21,10 @@ import net.sf.jasperreports.jsf.component.UIDataBroker;
  *
  * @author antonio.alonso
  */
-public class BeanDataSourceFactory extends AbstractDataBrokerFactory {
+public class BeanDataBrokerFactory extends AbstractDataBrokerFactory {
 
     private static final Logger logger = Logger.getLogger(
-            BeanDataSourceFactory.class.getPackage().getName(),
+            BeanDataBrokerFactory.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
     public JRDataSourceBroker createDataBroker(FacesContext context,

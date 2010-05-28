@@ -18,12 +18,14 @@
  */
 package net.sf.jasperreports.jsf.component.html;
 
+import javax.faces.context.FacesContext;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 import net.sf.jasperreports.jsf.renderkit.html.FrameRenderer;
 import net.sf.jasperreports.jsf.test.MockFacesEnvironment;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
+import org.jmock.integration.junit4.JUnit4Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,9 +35,9 @@ import org.junit.Test;
  *
  * @author aalonsodominguez
  */
-public class HtmlReportPanelTest {
+public class HtmlReportFrameTest {
 
-    private Mockery context = new Mockery() {{
+    private Mockery context = new JUnit4Mockery() {{
         setImposteriser(ClassImposteriser.INSTANCE);
     }};
 
@@ -56,22 +58,26 @@ public class HtmlReportPanelTest {
 
     @Test
     public void encodeContent() throws Exception {
+        final FacesContext facesContext = facesEnv.getFacesContext();
+
         context.checking(new Expectations() {{
-            oneOf(renderer).encodeContent(facesEnv.getFacesContext(), reportPanel);
+            oneOf(renderer).encodeContent(facesContext, reportPanel);
         }});
 
-        reportPanel.encodeContent(facesEnv.getFacesContext());
+        reportPanel.encodeContent(facesContext);
 
         context.assertIsSatisfied();
     }
 
     @Test
     public void encodeHeaders() throws Exception {
+        final FacesContext facesContext = facesEnv.getFacesContext();
+
         context.checking(new Expectations() {{
-            oneOf(renderer).encodeHeaders(facesEnv.getFacesContext(), reportPanel);
+            oneOf(renderer).encodeHeaders(facesContext, reportPanel);
         }});
 
-        reportPanel.encodeHeaders(facesEnv.getFacesContext());
+        reportPanel.encodeHeaders(facesContext);
 
         context.assertIsSatisfied();
     }
