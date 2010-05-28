@@ -18,7 +18,9 @@ import net.sf.jasperreports.jsf.test.TestConstants;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
+import org.jmock.integration.junit4.JUnit4Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
+
 import org.junit.Before;
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theories;
@@ -52,15 +54,11 @@ public class BeanDataBrokerFactoryTest {
     @DataPoint
     public static final Collection<?> COLL_DATA = Arrays.asList(ARR_DATA);
 
-    private Mockery mockery = new Mockery() {{
-        setImposteriser(ClassImposteriser.INSTANCE);
-    }};
-
     @Before
     public void init() {
         facesEnv = MockFacesEnvironment.getServletInstance();
         component = new UIDataBroker();
-        factory = mockery.mock(BeanDataBrokerFactory.class);
+        factory = new BeanDataBrokerFactory();
     }
     
     @Theory
@@ -70,16 +68,10 @@ public class BeanDataBrokerFactoryTest {
 
         final FacesContext facesContext = facesEnv.getFacesContext();
 
-        mockery.checking(new Expectations(){{
-            oneOf(factory).createDataBroker(facesContext, component);
-
-        }});
-
         component.setData(data);
         DataBroker broker = factory.createDataBroker(
                 facesEnv.getFacesContext(), component);
         assertNotNull(broker);
-        mockery.assertIsSatisfied();
 
         if (!(broker instanceof JRDataSourceBroker)) {
             fail("'Returned broker is not JasperReport's data source wrapper");
@@ -97,18 +89,9 @@ public class BeanDataBrokerFactoryTest {
     public void nullDataReturnsEmptyDataSource(Object data) {
         assumeThat(data, equalTo(TestConstants.UNDEFINED_VALUE));
 
-        final FacesContext facesContext = facesEnv.getFacesContext();
-
-        mockery.checking(new Expectations() {{
-            one(component).getData();
-            one(component).getValueExpression("data");
-            one(component).getClientId(facesContext);
-        }});
-
         DataBroker broker = factory.createDataBroker(
                 facesEnv.getFacesContext(), component);
         assertNotNull(broker);
-        mockery.assertIsSatisfied();
         
         if (!(broker instanceof JRDataSourceBroker)) {
             fail("'Returned broker is not JasperReport's data source wrapper");

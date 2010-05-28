@@ -23,11 +23,11 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.jsf.component.UIDataBroker;
 import net.sf.jasperreports.jsf.engine.databroker.DataBrokerLoader;
 
-public class DataSourceValidatorBase extends DataSourceValidator {
+public class DataBrokerValidatorBase implements DataBrokerValidator {
 
-    @Override
-    protected void doValidate(final FacesContext context,
+    public void validate(final FacesContext context,
             final UIDataBroker component) throws ValidationException {
+        
         if (!DataBrokerLoader.getAvailableDataBrokerTypes().contains(
                 component.getType())) {
             throw new IllegalDataSourceTypeException(component.getType());

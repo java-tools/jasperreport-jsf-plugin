@@ -11,7 +11,6 @@ import java.util.Set;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIDataBroker;
-import net.sf.jasperreports.jsf.engine.databroker.DataBroker;
 import net.sf.jasperreports.jsf.util.Services;
 
 /**

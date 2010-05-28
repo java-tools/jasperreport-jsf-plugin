@@ -26,6 +26,7 @@ import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.test.MockFacesEnvironment;
 
 import org.jmock.Mockery;
+import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,7 +44,7 @@ public class DefaultResourceResolverTest {
     private HtmlReportFrame component;
     private DefaultResourceResolver resolver;
 
-    private Mockery context = new Mockery();
+    private Mockery mockery = new JUnit4Mockery();
 
     @Before
     public void init() {

@@ -18,35 +18,15 @@
  */
 package net.sf.jasperreports.jsf.validation;
 
-import java.util.Map;
-
-import javax.faces.component.UIComponent;
+import java.io.Serializable;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIDataBroker;
-import net.sf.jasperreports.jsf.util.Services;
 
-public final class DataSourceValidatorFactory implements ValidatorFactory {
+public interface DataBrokerValidator extends Serializable {
 
-    private static final Map<String, DataSourceValidator> validatorCacheMap =
-            Services.map(DataSourceValidator.class);
-
-    public boolean acceptsComponent(final UIComponent component) {
-        return (component instanceof UIDataBroker);
-    }
-
-    public DataSourceValidator createValidator(final FacesContext context,
-            final UIComponent component) throws ValidationException {
-        if (!(component instanceof UIDataBroker)) {
-            throw new IllegalArgumentException("");
-        }
-
-        final UIDataBroker dataSource = (UIDataBroker) component;
-        DataSourceValidator result = null;
-        result = validatorCacheMap.get(dataSource.getType());
-        if (result == null) {
-            result = validatorCacheMap.get(null);
-        }
-        return result;
-    }
+    public void validate(final FacesContext context, 
+            final UIDataBroker component)
+            throws ValidationException;
+    
 }

@@ -18,21 +18,26 @@
  */
 package net.sf.jasperreports.jsf.validation;
 
-/**
- * The Class MissedDataSourceAttributeException.
- */
-public class MissedAttributeException extends ValidationException {
+import java.util.Map;
 
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = 6313893570302881706L;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
-    /**
-     * Instantiates a new missed data source attribute exception.
-     *
-     * @param msg
-     *            the msg
-     */
-    public MissedAttributeException(final String msg) {
-        super(msg);
+import net.sf.jasperreports.jsf.component.UIDataBroker;
+import net.sf.jasperreports.jsf.util.Services;
+
+public final class DataBrokerValidatorFactory {
+
+    private static final Map<String, DataBrokerValidator> validatorCacheMap =
+            Services.map(DataBrokerValidator.class);
+
+    public static DataBrokerValidator createValidator(final FacesContext context,
+            final UIDataBroker component) throws ValidationException {
+        DataBrokerValidator result = null;
+        result = validatorCacheMap.get(component.getType());
+        if (result == null) {
+            result = validatorCacheMap.get(null);
+        }
+        return result;
     }
 }
