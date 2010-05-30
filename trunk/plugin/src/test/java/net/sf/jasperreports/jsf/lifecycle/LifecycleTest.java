@@ -8,7 +8,9 @@ package net.sf.jasperreports.jsf.lifecycle;
 import net.sf.jasperreports.jsf.test.MockFacesEnvironment;
 
 import org.jmock.Mockery;
+import org.jmock.integration.junit4.JUnit4Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +20,7 @@ import org.junit.Test;
  */
 public class LifecycleTest {
 
-    private Mockery mockery = new Mockery() {{
+    private Mockery mockery = new JUnit4Mockery() {{
         setImposteriser(ClassImposteriser.INSTANCE);
     }};
 
@@ -36,6 +38,18 @@ public class LifecycleTest {
 
         facesEnv.getLifecycle().addPhaseListener(restoreView);
         facesEnv.getLifecycle().addPhaseListener(renderResponse);
+    }
+
+    @After
+    public void dispose() {
+        facesEnv.getLifecycle().removePhaseListener(restoreView);
+        facesEnv.getLifecycle().removePhaseListener(renderResponse);
+
+        restoreView = null;
+        renderResponse = null;
+
+        facesEnv.release();
+        facesEnv = null;
     }
 
     @Test

@@ -33,9 +33,9 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.data.JRCsvDataSource;
 import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIDataBroker;
+import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.ResourceException;
-import net.sf.jasperreports.jsf.resource.ResourceLoader;
 
 /**
  *
@@ -47,8 +47,9 @@ public class CsvDataBrokerFactory extends AbstractDataBrokerFactory {
             CsvDataBrokerFactory.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
-    public DataBroker createDataBroker(FacesContext context,
+    public DataSourceHolder createDataSource(FacesContext context,
             UIDataBroker component) {
+        final JRFacesContext jrContext = JRFacesContext.getInstance(context);
         JRDataSource dataSource = null;
         InputStream dataSourceStream = null;
         boolean closeStream = true;
@@ -72,7 +73,7 @@ public class CsvDataBrokerFactory extends AbstractDataBrokerFactory {
             closeStream = false;
         } else if (value instanceof String) {
             try {
-                final Resource resource = ResourceLoader.getResource(context,
+                final Resource resource = jrContext.getResource(context,
                         component, (String) value);
                 dataSourceStream = resource.getInputStream();
             } catch (final ResourceException e) {
@@ -97,13 +98,13 @@ public class CsvDataBrokerFactory extends AbstractDataBrokerFactory {
             }
         }
 
-        JRDataSourceBroker broker = new CsvDataSourceBroker(
+        JRDataSourceHolder broker = new CsvDataSourceBroker(
                 clientId, dataSource,
                 (closeStream ? dataSourceStream : null));
         return broker;
     }
 
-    private class CsvDataSourceBroker extends JRDataSourceBroker {
+    private class CsvDataSourceBroker extends JRDataSourceHolder {
 
         private String clientId;
         private InputStream stream;
@@ -115,14 +116,12 @@ public class CsvDataBrokerFactory extends AbstractDataBrokerFactory {
             this.stream = stream;
         }
 
-        public void dispose() {
-            if (stream == null) return;
-
-            try {
+        public void dispose() throws Exception {
+            if (stream != null) {
                 stream.close();
-            } catch(IOException e) {
-                // TODO log the exception
+                stream = null;
             }
+            super.dispose();
         }
 
     }

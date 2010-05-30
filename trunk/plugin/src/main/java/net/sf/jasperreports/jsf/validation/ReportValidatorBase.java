@@ -21,14 +21,15 @@ package net.sf.jasperreports.jsf.validation;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.engine.export.ExporterLoader;
+import net.sf.jasperreports.jsf.context.JRFacesContext;
 
 public class ReportValidatorBase extends ReportValidator {
 
     @Override
     protected void doValidate(final FacesContext context, final UIReport report)
             throws ValidationException {
-        if (!ExporterLoader.getAvailableExportFormats().contains(
+        final JRFacesContext jrContext = JRFacesContext.getInstance(context);
+        if (!jrContext.getAvailableExportFormats().contains(
                 report.getFormat())) {
             throw new IllegalOutputFormatException(report.getFormat());
         }

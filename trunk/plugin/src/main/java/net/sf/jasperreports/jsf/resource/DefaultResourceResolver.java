@@ -30,7 +30,8 @@ import net.sf.jasperreports.jsf.resource.ClasspathResource;
 import net.sf.jasperreports.jsf.resource.ContextResource;
 import net.sf.jasperreports.jsf.resource.FileResource;
 import net.sf.jasperreports.jsf.resource.URLResource;
-import net.sf.jasperreports.jsf.util.ExternalContextHelper;
+import net.sf.jasperreports.jsf.context.ExternalContextHelper;
+import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.util.Util;
 
 import org.apache.commons.io.FilenameUtils;
@@ -63,8 +64,8 @@ public class DefaultResourceResolver implements ResourceResolver {
             } else if (loader.getResource(name) != null) {
                 resource = new ClasspathResource(name, loader);
             } else {
-                ExternalContextHelper helper = ExternalContextHelper.getInstance(
-                        context.getExternalContext());
+                JRFacesContext jrContext = JRFacesContext.getInstance(context);
+                ExternalContextHelper helper = jrContext.getExternalContextHelper(context);
                 String rootPath;
                 
                 if ((component != null) && (component instanceof UIReport)) {

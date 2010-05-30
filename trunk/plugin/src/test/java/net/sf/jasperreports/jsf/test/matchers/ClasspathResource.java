@@ -16,21 +16,40 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.engine.databroker;
+package net.sf.jasperreports.jsf.test.matchers;
 
-import javax.faces.context.FacesContext;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Factory;
+import org.hamcrest.Matcher;
 
 /**
  *
  * @author aalonsodominguez
  */
-abstract class AbstractDataBrokerFactory implements DataSourceFactory {
+public class ClasspathResource extends BaseMatcher<String> {
 
-    public void dispose(FacesContext context, DataSourceHolder broker) {
-//        if (!(dataSource instanceof DisposableDataSource)) {
-//            return;
-//        }
-//        ((DisposableDataSource) dataSource).dispose();
+    @Factory
+    public static Matcher<String> classpathResource() {
+        return new ClasspathResource();
+    }
+
+    public boolean matches(Object item) {
+        if (item == null) return false;
+
+               String resourceName;
+        if (item instanceof String) {
+            resourceName = (String) item;
+        } else {
+            resourceName = item.toString();
+        }
+
+        return resourceName.startsWith(
+                net.sf.jasperreports.jsf.resource.ClasspathResource.PREFIX);
+    }
+
+    public void describeTo(Description description) {
+        description.appendText("classpathResource");
     }
 
 }

@@ -35,7 +35,8 @@ import javax.faces.event.PhaseId;
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.util.ExternalContextHelper;
+import net.sf.jasperreports.jsf.context.ExternalContextHelper;
+import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.engine.ReportHttpRenderRequest;
 import net.sf.jasperreports.jsf.engine.ReportRenderRequest;
 
@@ -59,8 +60,10 @@ public class RenderResponsePhaseListener extends AbstractReportPhaseListener
                 .getExternalContext().getRequestMap();
         if (!isReportRequest(context) && Boolean.TRUE.equals(
                 requestMap.get(Constants.ATTR_REPORT_VIEW))) {
-            ExternalContextHelper helper = ExternalContextHelper.getInstance(
-                    context.getExternalContext());
+            final JRFacesContext jrContext =
+                    JRFacesContext.getInstance(context);
+            ExternalContextHelper helper =
+                    jrContext.getExternalContextHelper(context);
             Map<String, String> viewCacheMap = helper.getViewCacheMap(
                     context.getExternalContext());
 

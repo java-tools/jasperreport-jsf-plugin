@@ -31,8 +31,8 @@ import net.sf.jasperreports.engine.util.FileResolver;
 import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.resource.Resource;
-import net.sf.jasperreports.jsf.resource.ResourceLoader;
-import net.sf.jasperreports.jsf.util.ExternalContextHelper;
+import net.sf.jasperreports.jsf.context.ExternalContextHelper;
+import net.sf.jasperreports.jsf.context.JRFacesContext;
 
 public class FacesFileResolver implements FileResolver {
 
@@ -67,7 +67,7 @@ public class FacesFileResolver implements FileResolver {
     }
 
     protected Resource resolveResource(String name) throws IOException {
-        return ResourceLoader.getResource(getFacesContext(), report, name);
+        return getJRFacesContext().getResource(getFacesContext(), report, name);
     }
 
     protected File downloadResource(Resource resource) throws IOException {
@@ -89,11 +89,15 @@ public class FacesFileResolver implements FileResolver {
         return FacesContext.getCurrentInstance();
     }
 
+    protected JRFacesContext getJRFacesContext() {
+        return JRFacesContext.getInstance(getFacesContext());
+    }
+
     protected boolean isRemote(Resource resource) throws IOException {
         URL resourceURL = resource.getLocation();
         if (!"file".equals(resourceURL.getProtocol())) {
-            ExternalContextHelper helper = ExternalContextHelper.getInstance(
-                    getFacesContext().getExternalContext());
+            ExternalContextHelper helper = getJRFacesContext()
+                    .getExternalContextHelper(getFacesContext());
             return !(resourceURL.getHost().equals(helper.getRequestServerName(
                     getFacesContext().getExternalContext())));
         }

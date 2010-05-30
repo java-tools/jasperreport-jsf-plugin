@@ -27,7 +27,9 @@ import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.engine.export.Exporter;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
+import net.sf.jasperreports.jsf.validation.ReportValidator;
 import net.sf.jasperreports.jsf.validation.ValidatorLoader;
 import net.sf.jasperreports.jsf.validation.ValidationException;
 import net.sf.jasperreports.jsf.validation.Validator;
@@ -54,6 +56,9 @@ public class UIReport extends UIComponentBase {
     private String subreportDir;
     /** The format. */
     private String format;
+
+    private Exporter exporter;
+    private ReportValidator validator;
 
     /**
      * Instantiates a new uI report implementor.
@@ -235,6 +240,47 @@ public class UIReport extends UIComponentBase {
         this.immediateSet = true;
     }
 
+    public Exporter getExporter() {
+        if (exporter != null) {
+            return exporter;
+        }
+        ValueExpression ve = getValueExpression("exporter");
+        if (ve != null) {
+            try {
+                return (Exporter) ve.getValue(getFacesContext().getELContext());
+            } catch (ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return exporter;
+        }
+    }
+
+    public void setExporter(Exporter exporter) {
+        this.exporter = exporter;
+    }
+
+    public ReportValidator getValidator() {
+        if (validator != null) {
+            return validator;
+        }
+        ValueExpression ve = getValueExpression("validator");
+        if (ve != null) {
+            try {
+                return (ReportValidator) ve.getValue(
+                        getFacesContext().getELContext());
+            } catch (ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return validator;
+        }
+    }
+
+    public void setValidator(ReportValidator validator) {
+        this.validator = validator;
+    }
+
     // UIReport encode methods
     public void encodeContent(final FacesContext context) throws IOException {
         final ReportRenderer renderer = (ReportRenderer) getRenderer(context);
@@ -263,6 +309,8 @@ public class UIReport extends UIComponentBase {
         name = (String) values[5];
         immediate = ((Boolean) values[6]).booleanValue();
         immediateSet = ((Boolean) values[7]).booleanValue();
+        exporter = (Exporter) values[8];
+        validator = (ReportValidator) values[9];
     }
 
     /*
@@ -274,7 +322,7 @@ public class UIReport extends UIComponentBase {
      */
     @Override
     public Object saveState(final FacesContext context) {
-        final Object[] values = new Object[8];
+        final Object[] values = new Object[10];
         values[0] = super.saveState(context);
         values[1] = dataBroker;
         values[2] = path;
@@ -283,6 +331,8 @@ public class UIReport extends UIComponentBase {
         values[5] = name;
         values[6] = immediate;
         values[7] = immediateSet;
+        values[8] = exporter;
+        values[9] = validator;
         return values;
     }
 

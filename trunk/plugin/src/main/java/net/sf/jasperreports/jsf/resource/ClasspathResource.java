@@ -26,6 +26,7 @@ public final class ClasspathResource extends AbstractResource
         implements Resource {
 
     public static final String PREFIX = "classpath:";
+
     private final ClassLoader classLoader;
 
     public ClasspathResource(final String name, final ClassLoader classLoader) {

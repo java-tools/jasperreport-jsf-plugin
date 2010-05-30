@@ -18,12 +18,11 @@
  */
 package net.sf.jasperreports.jsf.resource;
 
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Collection;
-
-import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theories;
+
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
@@ -38,22 +37,28 @@ import static org.hamcrest.Matchers.*;
 @RunWith(Theories.class)
 public class URLResourceTest {
 
-    @DataPoints
-    public static Collection<URL> createData() throws Exception {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        String baseName = URLResourceTest.class
-                .getName().replaceAll("\\.", "/");
-        URL[] array = new URL[] {
-            new URL("http", "jasperreportjsf.sourceforge.net",
-                    "/tld/jasperreports-jsf-1_0.tld"),
-            classLoader.getResource(baseName + ".java")
-        };
-        return Arrays.asList(array);
+    @DataPoint
+    public static final URL remoteUrl() {
+        try {
+            return new URL("http", "jasperreportjsf.sourceforge.net",
+                        "/tld/jasperreports-jsf-1_0.tld");
+        } catch (MalformedURLException e) {
+            return null;
+        }
+    }
+
+    @DataPoint
+    public static URL localUrl() {
+        ClassLoader classLoader = Thread.currentThread()
+                .getContextClassLoader();
+        String baseName = URLResourceTest.class.getName()
+                .replaceAll("\\.", "/");
+        return classLoader.getResource(baseName);
     }
 
     @Theory
     public void checkWithRemoteResource(URL location) throws Exception {
-        assumeThat(location.getProtocol(), equalTo("http"));
+        assumeThat(location.toString(), startsWith("http"));
 
         URLResource resource = new URLResource(location);
         assertThat(resource.getLocation(), sameInstance(location));
@@ -63,7 +68,7 @@ public class URLResourceTest {
 
     @Theory
     public void checkWithLocalResource(URL location) throws Exception {
-        assumeThat(location.getPath(), endsWith(".java"));
+        assumeThat(location.toString(), startsWith("file"));
 
         URLResource resource = new URLResource(location);
     }

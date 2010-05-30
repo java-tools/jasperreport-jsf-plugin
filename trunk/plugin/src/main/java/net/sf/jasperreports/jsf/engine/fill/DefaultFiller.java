@@ -36,13 +36,13 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.engine.databroker.DataBroker;
-import net.sf.jasperreports.jsf.engine.databroker.JRDataSourceBroker;
-import net.sf.jasperreports.jsf.engine.databroker.SqlConnectionBroker;
+import net.sf.jasperreports.jsf.context.JRFacesContext;
+import net.sf.jasperreports.jsf.engine.databroker.DataSourceHolder;
+import net.sf.jasperreports.jsf.engine.databroker.JRDataSourceHolder;
+import net.sf.jasperreports.jsf.engine.databroker.SqlConnectionHolder;
 import net.sf.jasperreports.jsf.resource.ReportNotFoundException;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.UnresolvedResourceException;
-import net.sf.jasperreports.jsf.resource.ResourceLoader;
 import net.sf.jasperreports.jsf.util.Util;
 
 /**
@@ -69,10 +69,11 @@ public class DefaultFiller implements Filler {
     public final void fill(FacesContext context, UIReport component)
             throws FillerException {
         final String reportName = component.getPath();
+        JRFacesContext jrContext = JRFacesContext.getInstance(context);
 
         InputStream reportStream = null;
         try {
-            final Resource resource = ResourceLoader.getResource(context,
+            final Resource resource = jrContext.getResource(context,
                     (UIComponent) component, reportName);
             reportStream = resource.getInputStream();
         } catch (final IOException e) {
@@ -81,22 +82,22 @@ public class DefaultFiller implements Filler {
             throw new ReportNotFoundException(reportName, e);
         }
 
-        DataBroker dataBroker = null;
+        DataSourceHolder dataBroker = null;
         Object dataSourceRef = component.getDataBroker();
         if (dataSourceRef != null) {
-            if (dataSourceRef instanceof DataBroker) {
-                dataBroker = (DataBroker) dataSourceRef;
+            if (dataSourceRef instanceof DataSourceHolder) {
+                dataBroker = (DataSourceHolder) dataSourceRef;
             } else if (dataSourceRef instanceof String) {
                 String dataSourceId = Util.resolveDataSourceId(context,
                         component, (String) dataSourceRef);
 
-                dataBroker = (DataBroker) context.getExternalContext()
+                dataBroker = (DataSourceHolder) context.getExternalContext()
                         .getRequestMap().get(dataSourceId);
             } else if (dataSourceRef instanceof JRDataSource) {
-                dataBroker = new JRDataSourceBroker(
+                dataBroker = new JRDataSourceHolder(
                         (JRDataSource) dataSourceRef);
             } else if (dataSourceRef instanceof Connection) {
-                dataBroker = new SqlConnectionBroker(
+                dataBroker = new SqlConnectionHolder(
                         (Connection) dataSourceRef);
             } else {
                 throw new FillerException("Illegal data source value type: "
@@ -132,6 +133,8 @@ public class DefaultFiller implements Filler {
      */
     protected Map<String, Object> buildParamMap(final FacesContext context,
             final UIReport component) throws FillerException {
+        JRFacesContext jrContext = JRFacesContext.getInstance(context);
+
         // Build param map using component's child parameters
         final Map<String, Object> parameters = new HashMap<String, Object>();
         for (final UIComponent kid : component.getChildren()) {
@@ -151,13 +154,8 @@ public class DefaultFiller implements Filler {
         // Subreport directory
         final String subreportDir = component.getSubreportDir();
         if (subreportDir != null) {
-            Resource resource = null;
-            try {
-                resource = ResourceLoader.getResource(context,
+            Resource resource = jrContext.getResource(context,
                         component, subreportDir);
-            } catch (final IOException e) {
-                throw new FillerException(e);
-            }
             parameters.put("SUBREPORT_DIR", resource.getPath());
         }
 
@@ -165,16 +163,16 @@ public class DefaultFiller implements Filler {
     }
 
     protected JasperPrint doFill(FacesContext context, InputStream reportStream,
-            Map<String, Object> parameters, DataBroker dataBroker)
+            Map<String, Object> parameters, DataSourceHolder dataBroker)
     throws FillerException {
         JasperPrint print = null;
         try {
-            if (dataBroker instanceof JRDataSourceBroker) {
+            if (dataBroker instanceof JRDataSourceHolder) {
                 print = JasperFillManager.fillReport(reportStream, parameters,
-                        ((JRDataSourceBroker) dataBroker).getDataSource());
-            } else if (dataBroker instanceof SqlConnectionBroker) {
+                        ((JRDataSourceHolder) dataBroker).get());
+            } else if (dataBroker instanceof SqlConnectionHolder) {
                 print = JasperFillManager.fillReport(reportStream, parameters,
-                        ((SqlConnectionBroker) dataBroker).getConnection());
+                        ((SqlConnectionHolder) dataBroker).get());
             }
         } catch (final JRException e) {
             throw new FillerException(e);

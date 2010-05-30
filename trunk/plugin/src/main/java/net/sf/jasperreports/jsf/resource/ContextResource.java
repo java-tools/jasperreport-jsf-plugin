@@ -24,7 +24,8 @@ import java.net.URL;
 
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.util.ExternalContextHelper;
+import net.sf.jasperreports.jsf.context.ExternalContextHelper;
+import net.sf.jasperreports.jsf.context.JRFacesContext;
 
 /**
  * The Class ContextResourceLoader.
@@ -65,8 +66,8 @@ public class ContextResource extends AbstractResource
     }
 
     public String getPath() {
-        ExternalContextHelper helper = ExternalContextHelper.getInstance(
-                getFacesContext().getExternalContext());
+        ExternalContextHelper helper = getJRFacesContext()
+                .getExternalContextHelper(getFacesContext());
         return helper.getResourceRealPath(
                 getFacesContext().getExternalContext(), getName());
     }
@@ -78,6 +79,10 @@ public class ContextResource extends AbstractResource
                     "inside a Faces' request.");
         }
         return context;
+    }
+
+    protected JRFacesContext getJRFacesContext() {
+        return JRFacesContext.getInstance(getFacesContext());
     }
 
 }

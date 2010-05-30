@@ -9,9 +9,8 @@ import javax.faces.FactoryFinder;
 import javax.faces.component.UIViewRoot;
 import javax.faces.lifecycle.LifecycleFactory;
 import javax.faces.render.RenderKitFactory;
-import org.apache.shale.test.el.MockELContext;
-import org.apache.shale.test.mock.MockApplication;
 
+import org.apache.shale.test.mock.MockApplication;
 import org.apache.shale.test.mock.MockApplicationFactory;
 import org.apache.shale.test.mock.MockExternalContext12;
 import org.apache.shale.test.mock.MockFacesContext;
@@ -138,6 +137,8 @@ public abstract class MockFacesEnvironment {
         facesContextFactory = null;
         lifecycleFactory = null;
         renderKitFactory = null;
+
+        currentInstance.set(null);
     }
 
     protected abstract void initializeExternalContext();
