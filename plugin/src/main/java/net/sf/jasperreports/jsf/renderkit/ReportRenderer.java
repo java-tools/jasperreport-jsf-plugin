@@ -1,8 +1,21 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ *
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1 of the License, or (at
+ * your option) any later version. This library is distributed in the hope
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place, Suite 330, Boston, MA 02111-1307 USA A.
+ *
+ * Alonso Dominguez
+ * alonsoft@users.sf.net
  */
-
 package net.sf.jasperreports.jsf.renderkit;
 
 import java.io.ByteArrayOutputStream;
@@ -21,9 +34,8 @@ import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.config.Configuration;
 import net.sf.jasperreports.jsf.engine.export.Exporter;
 import net.sf.jasperreports.jsf.engine.fill.Filler;
-import net.sf.jasperreports.jsf.engine.export.ExporterLoader;
-import net.sf.jasperreports.jsf.engine.fill.FillerLoader;
-import net.sf.jasperreports.jsf.util.ExternalContextHelper;
+import net.sf.jasperreports.jsf.context.ExternalContextHelper;
+import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.util.Util;
 
 /**
@@ -48,15 +60,16 @@ public abstract class ReportRenderer extends Renderer {
             throw new IllegalArgumentException("Report component is null");
         }
 
+        JRFacesContext jrContext = JRFacesContext.getInstance(context);
         final String clientId = component.getClientId(context);
 
-        final Filler filler = FillerLoader.getFiller();
+        final Filler filler = jrContext.getFiller(context, component);
         logger.log(Level.FINE, "JRJSF_0006", clientId);
         filler.fill(context, component);
 
-        final ExternalContextHelper helper = ExternalContextHelper.getInstance(
-                context.getExternalContext());
-        final Exporter exporter = ExporterLoader
+        final ExternalContextHelper helper = jrContext
+                .getExternalContextHelper(context);
+        final Exporter exporter = jrContext
                 .getExporter(context, component);
         final ByteArrayOutputStream reportData = new ByteArrayOutputStream();
         try {
@@ -95,8 +108,9 @@ public abstract class ReportRenderer extends Renderer {
             throw new IllegalArgumentException("Report component is null");
         }
 
-        final ExternalContextHelper helper = ExternalContextHelper.getInstance(
-                context.getExternalContext());
+        final JRFacesContext jrContext = JRFacesContext.getInstance(context);
+        final ExternalContextHelper helper = jrContext
+                .getExternalContextHelper(context);
         helper.writeHeaders(context.getExternalContext(), this, component);
     }
 
@@ -119,13 +133,13 @@ public abstract class ReportRenderer extends Renderer {
             throw new IllegalArgumentException();
         }
 
-        final StringBuffer reportURI = new StringBuffer(Constants.BASE_URI);
-
+        JRFacesContext jrContext = JRFacesContext.getInstance(context);
         final Configuration config = Configuration.getInstance(
                 context.getExternalContext());
-        final ExternalContextHelper helper = ExternalContextHelper.getInstance(
-                context.getExternalContext());
+        final ExternalContextHelper helper = jrContext
+                .getExternalContextHelper(context);
 
+        final StringBuffer reportURI = new StringBuffer(Constants.BASE_URI);
         String mapping = Util.getInvocationPath(context);
         if (!config.getFacesMappings().contains(mapping)) {
             if (logger.isLoggable(Level.WARNING)) {
@@ -163,8 +177,9 @@ public abstract class ReportRenderer extends Renderer {
             return;
         }
 
-        final ExternalContextHelper helper = ExternalContextHelper.getInstance(
-                context.getExternalContext());
+        JRFacesContext jrContext = JRFacesContext.getInstance(context);
+        final ExternalContextHelper helper = jrContext
+                .getExternalContextHelper(context);
         final String viewId = helper.getViewId(context.getExternalContext());
 
         context.getExternalContext().getRequestMap().put(

@@ -16,21 +16,24 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.engine.databroker;
+package net.sf.jasperreports.jsf.test;
 
-import javax.faces.context.FacesContext;
+import net.sf.jasperreports.jsf.test.matchers.ClasspathResource;
+import net.sf.jasperreports.jsf.test.matchers.IsURL;
+import org.hamcrest.Matcher;
 
 /**
  *
  * @author aalonsodominguez
  */
-abstract class AbstractDataBrokerFactory implements DataSourceFactory {
+public final class Matchers {
 
-    public void dispose(FacesContext context, DataSourceHolder broker) {
-//        if (!(dataSource instanceof DisposableDataSource)) {
-//            return;
-//        }
-//        ((DisposableDataSource) dataSource).dispose();
+    public static Matcher<String> classpathResource() {
+        return ClasspathResource.classpathResource();
+    }
+
+    public static Matcher<String> url() {
+        return IsURL.url();
     }
 
 }

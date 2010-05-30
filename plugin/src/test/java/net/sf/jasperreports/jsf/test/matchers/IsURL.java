@@ -16,21 +16,47 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.engine.databroker;
+package net.sf.jasperreports.jsf.test.matchers;
 
-import javax.faces.context.FacesContext;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Factory;
+import org.hamcrest.Matcher;
 
 /**
  *
  * @author aalonsodominguez
  */
-abstract class AbstractDataBrokerFactory implements DataSourceFactory {
+public class IsURL extends BaseMatcher<String> {
 
-    public void dispose(FacesContext context, DataSourceHolder broker) {
-//        if (!(dataSource instanceof DisposableDataSource)) {
-//            return;
-//        }
-//        ((DisposableDataSource) dataSource).dispose();
+    @Factory
+    public static Matcher<String> url() {
+        return new IsURL();
+    }
+
+    public boolean matches(Object item) {
+        if (item == null) return false;
+
+        String url;
+        if (item instanceof String) {
+            url = (String) item;
+        } else {
+            url = item.toString();
+        }
+
+        try {
+            new URL(url);
+            return true;
+        } catch (MalformedURLException e) {
+            return false;
+        }
+    }
+
+    public void describeTo(Description description) {
+        description.appendText("url");
     }
 
 }

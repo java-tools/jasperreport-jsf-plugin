@@ -88,8 +88,14 @@ public abstract class Exporter {
         exporter.setParameter(JRExporterParameter.CLASS_LOADER,
                 Util.getClassLoader(component));
 
-        setParameterUsingAttribute(component, exporter,
-                JRExporterParameter.CHARACTER_ENCODING, ATTR_CHARACTER_ENCODING);
+        Object encoding = component.getAttributes()
+                .get(ATTR_CHARACTER_ENCODING);
+        if (encoding == null) {
+            encoding = context.getExternalContext()
+                    .getResponseCharacterEncoding();
+        }
+        exporter.setParameter(JRExporterParameter.CHARACTER_ENCODING, encoding);
+
         setParameterUsingAttribute(component, exporter,
                 JRExporterParameter.IGNORE_PAGE_MARGINS, ATTR_IGNORE_PAGE_MARGINS);
         setParameterUsingAttribute(component, exporter,
@@ -125,8 +131,7 @@ public abstract class Exporter {
     /**
      * Creates the jr exporter.
      *
-     * @param context
-     *            the context
+     * @param context the context
      *
      * @return the jR exporter
      */

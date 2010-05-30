@@ -23,12 +23,12 @@ import java.io.InputStream;
 import java.net.URL;
 
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
+import static net.sf.jasperreports.jsf.test.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
 import static org.hamcrest.Matchers.*;
@@ -40,18 +40,17 @@ import static org.hamcrest.Matchers.*;
 @RunWith(Theories.class)
 public class ClasspathResourceTest {
 
-    private static final String RESOURCE_PATH = ClasspathResourceTest.class
-            .getPackage().getName().replaceAll("\\.", "/");
+    public static final String RESOURCE_PATH = ClasspathResourceTest.class
+            .getName().replaceAll("\\.", "/");
 
     @DataPoint
-    public static final String RESOURCE_01 = RESOURCE_PATH +
-            "/" + ClasspathResourceTest.class.getSimpleName() + ".txt";
+    public static final String TXT_RESOURCE = RESOURCE_PATH + ".txt";
+
     @DataPoint
-    public static final String RESOURCE_02 = RESOURCE_PATH +
-            "/" + ClasspathResourceTest.class.getSimpleName() + ".java";
+    public static final String JAVA_RESOURCE = RESOURCE_PATH + ".java";
+
     @DataPoint
-    public static final String RESOURCE_03 = RESOURCE_PATH +
-            "/" + ClasspathResourceTest.class.getSimpleName();
+    public static final String NOEXT_RESOURCE = RESOURCE_PATH;
 
     private ClassLoader classLoader;
 
@@ -65,8 +64,8 @@ public class ClasspathResourceTest {
         InputStream expectedStream = null;
         assumeTrue(null != (expectedStream = classLoader
                 .getResourceAsStream(name)));
-        URL expectedLocation = classLoader.getResource(name);
 
+        URL expectedLocation = classLoader.getResource(name);
         ClasspathResource resource = new ClasspathResource(name, classLoader);
         assertThat(resource.getName(), sameInstance(name));
 
@@ -105,19 +104,25 @@ public class ClasspathResourceTest {
         assertThat(resource.getName(), sameInstance(name));
 
         try {
+            resource.getInputStream();
+            fail("'getInputStream' must throw 'LocationNotFoundException'.");
+        } catch (Exception e) {
+            assertThat(e, is(LocationNotFoundException.class));
+        }
+
+        try {
             resource.getLocation();
             fail("'getLocation' must throw 'LocationNotFoundException'.");
-        } catch(LocationNotFoundException e) { }
+        } catch (Exception e) {
+            assertThat(e, is(LocationNotFoundException.class));
+        }
 
         try {
             resource.getPath();
             fail("'getPath' must throw 'LocationNotFoundException'.");
-        } catch(LocationNotFoundException e) { }
-
-        try {
-            resource.getInputStream();
-            fail("'getInputStream' must throw 'LocationNotFoundException'.");
-        } catch(LocationNotFoundException e) { }
+        } catch (Exception e) {
+            assertThat(e, is(LocationNotFoundException.class));
+        }
     }
 
 }

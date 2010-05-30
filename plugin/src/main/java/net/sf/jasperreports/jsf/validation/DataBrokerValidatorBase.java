@@ -21,16 +21,16 @@ package net.sf.jasperreports.jsf.validation;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIDataBroker;
-import net.sf.jasperreports.jsf.engine.databroker.DataBrokerLoader;
+import net.sf.jasperreports.jsf.context.JRFacesContext;
 
 public class DataBrokerValidatorBase implements DataBrokerValidator {
 
     public void validate(final FacesContext context,
             final UIDataBroker component) throws ValidationException {
-        
-        if (!DataBrokerLoader.getAvailableDataBrokerTypes().contains(
+        final JRFacesContext jrContext = JRFacesContext.getInstance(context);
+        if (!jrContext.getAvailableDataSourceTypes().contains(
                 component.getType())) {
-            throw new IllegalDataSourceTypeException(component.getType());
+            throw new IllegalDataBrokerTypeException(component.getType());
         }
     }
 }

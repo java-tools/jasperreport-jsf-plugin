@@ -18,14 +18,20 @@
  */
 package net.sf.jasperreports.jsf.component;
 
-import javax.el.ValueExpression;
+import java.sql.Connection;
+
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.engine.databroker.DataBroker;
-import net.sf.jasperreports.jsf.engine.databroker.DataBrokerFactory;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.jsf.engine.databroker.DataSourceHolder;
+import net.sf.jasperreports.jsf.engine.databroker.DataSourceFactory;
+import net.sf.jasperreports.jsf.engine.databroker.JRDataSourceHolder;
+import net.sf.jasperreports.jsf.engine.databroker.SqlConnectionHolder;
 import net.sf.jasperreports.jsf.test.JMockTheories;
 import net.sf.jasperreports.jsf.test.MockFacesEnvironment;
+import net.sf.jasperreports.jsf.test.MockJRFacesContext;
 import net.sf.jasperreports.jsf.validation.DataBrokerValidator;
+import net.sf.jasperreports.jsf.validation.IllegalDataBrokerTypeException;
 import net.sf.jasperreports.jsf.validation.MissingAttributeException;
 import net.sf.jasperreports.jsf.validation.ValidationException;
 
@@ -51,99 +57,153 @@ import static org.hamcrest.Matchers.*;
  * @author aalonsodominguez
  */
 @RunWith(JMockTheories.class)
-public class UIDataBrokerTest {
+public final class UIDataBrokerTest {
 
-    private static final String DATA_RECEIVER_NAME = "dataReceiver";
+    // Data set tested in different theories
 
-    private static final String DATA_PROVIDER_NAME = "dataProvider";
-
-    private static final String DATA_RECEIVER_EXPR =
-            "#{" + DATA_RECEIVER_NAME + ".dataBroker}";
-
-    private static final String DATA_PROVIDER_EXPR =
-            "#{" + DATA_PROVIDER_NAME + ".dataBroker}";
+    public static final String COMPONENT_ID = "dataBrokerId";
 
     @DataPoint
-    public static final UIDataBroker EMPTY_BROKER = new UIDataBroker();
+    public static final String VALID_TYPE = "bean";
 
     @DataPoint
-    public static final UIDataBroker getBrokerWithBuiltinProviderVE() {
-        UIDataBroker component = new UIDataBroker();
-        MockValueExpression ve = new MockValueExpression(
-                DATA_PROVIDER_EXPR, null);
-        component.setValueExpression("value", ve);
-        return component;
-    }
+    public static final Object EMPTY_DATA = new Object[]{ };
 
     @DataPoint
-    public static final UIDataBroker getBrokerWithBuiltinReceiverVE() {
-        UIDataBroker component = new UIDataBroker();
-        MockValueExpression ve = new MockValueExpression(
-                DATA_RECEIVER_EXPR, null);
-        component.setValueExpression("value", ve);
-        return component;
-    }
+    public static final Object VALID_DATA = new Object[]{
+        "0001", "0002", "0003", "0004", "0005" };
 
     @DataPoint
-    public static final UIDataBroker getBrokerWithType() {
-        UIDataBroker component = new UIDataBroker();
-        component.setType("bean");
-        return component;
-    }
+    public static final String DATA_BEAN_NAME = "dataBrokerBean";
 
     @DataPoint
-    public static final UIDataBroker getBrokerWithoutVE() {
-        UIDataBroker component = new UIDataBroker();
-        component.setType("bean");
-        component.setData(new Object[]{ });
-        return component;
-    }
+    public static final MockValueExpression MYBROKER_EXPR =
+            new MockValueExpression("#{" + DATA_BEAN_NAME + ".myBroker}",
+            null);
+    
+    @DataPoint
+    public static final MockValueExpression DATA_BROKER_EXPR =
+            new MockValueExpression("#{" + DATA_BEAN_NAME + ".dataBroker}",
+            null);
+
+    @DataPoint
+    public static final String NULL_STRING = null;
+
+    @DataPoint
+    public static final Object NULL_OBJECT = null;
+
+    @DataPoint
+    public static final MockValueExpression NULL_VALUE_EXPRESSION = null;
+
+    // Private fields
 
     private MockFacesEnvironment facesEnv;
+    private MockJRFacesContext jrContext;
 
-    private DataBrokerFactory dataBrokerFactory;
+    private Connection connection;
+    private DataSourceHolder dataBroker;
+    private DataSourceFactory dataBrokerFactory;
     private DataBrokerValidator dataBrokerValidator;
+    private DataBrokerTestBean dataBrokerBean;
+    private JRDataSource dataSource;
 
     private Mockery mockery = new JUnit4Mockery();
+
+    // Test lifecycle methods
 
     @Before
     public void init() {
         facesEnv = MockFacesEnvironment.getServletInstance();
-        
-        dataBrokerFactory = mockery.mock(DataBrokerFactory.class);
+
+        connection = mockery.mock(Connection.class);
+        dataBroker = mockery.mock(DataSourceHolder.class);
+        dataBrokerBean = mockery.mock(DataBrokerTestBean.class);
+        dataBrokerFactory = mockery.mock(DataSourceFactory.class);
         dataBrokerValidator = mockery.mock(DataBrokerValidator.class);
+        dataSource = mockery.mock(JRDataSource.class);
 
         MockExternalContext context = facesEnv.getExternalContext();
-        
-        DataBrokerBean dataReceiver = new DataBrokerBean();
-        context.getRequestMap().put(DATA_RECEIVER_NAME, dataReceiver);
+        context.getRequestMap().put(DATA_BEAN_NAME, dataBrokerBean);
 
-        DataBrokerBean dataProvider = new DataBrokerBean();
-        context.getRequestMap().put(DATA_PROVIDER_NAME, dataProvider);
+        jrContext = new MockJRFacesContext();
+        jrContext.getAvailableDataSourceTypes().add(VALID_TYPE);
     }
 
     @After
     public void dispose() {
-        //facesEnv.release();
+        jrContext = null;
+
+        connection = null;
+        dataBroker = null;
+        dataBrokerBean = null;
+        dataBrokerFactory = null;
+        dataBrokerValidator = null;
+        dataSource = null;
+
+        facesEnv.release();
         facesEnv = null;
     }
 
-    @Theory
-    public void updateModelUsingRequest(final UIDataBroker component) {
-        assumeThat(component.getValueExpression("value"), is(nullValue()));
-        assumeThat(component.getValue(), is(nullValue()));
-        component.setDataBrokerFactory(dataBrokerFactory);
+    // Theories
 
+    @Theory
+    public void invalidTypeShouldThrowEx(String type, Object data,
+            MockValueExpression value) {
+        assumeThat(type, is(not(nullValue())));
+        assumeThat(type, instanceOf(String.class));
+        assumeThat(data, is(not(nullValue())));
+        assumeTrue(!jrContext.getAvailableDataSourceTypes().contains(type));
+
+        final UIDataBroker component = createComponent(type, data, value);
         final FacesContext facesContext = facesEnv.getFacesContext();
-        final DataBroker expectedBroker = new DataBroker() {};
+
+        mockery.checking(new Expectations() {{
+            ignoring(dataBrokerBean).getMyBroker(); will(returnValue(null));
+            ignoring(dataBrokerBean).getDataBroker(); will(returnValue(null));
+
+            oneOf(dataBrokerValidator).validate(facesContext, component);
+            will(throwException(new IllegalDataBrokerTypeException(
+                    component.getType())));
+        }});
+
+        try {
+            component.processDecodes(facesContext);
+            component.processValidators(facesContext);
+            fail("A ValidationException should be thrown.");
+        } catch(ValidationException e) {
+            assertThat(e, instanceOf(IllegalDataBrokerTypeException.class));
+            assertThat(e.getMessage(), equalTo(type));
+            assertTrue("Context should have 'RenderResponse' state enabled.",
+                    facesContext.getRenderResponse());
+            assertTrue("Component remains valid after validation exception,",
+                    !component.isValid());
+        }
+        
+        mockery.assertIsSatisfied();
+    }
+
+    @Theory
+    public void withNullValueExprSendBrokerUsingRequest(String type, Object data,
+            MockValueExpression value) {
+        assumeThat(type, is(not(nullValue())));
+        assumeTrue(jrContext.getAvailableDataSourceTypes().contains(type));
+        assumeThat(data, is(not(nullValue())));
+        assumeThat(value, is(nullValue()));
+        
+        final UIDataBroker component = createComponent(type, data, value);
+        final FacesContext facesContext = facesEnv.getFacesContext();
         final String clientId = component.getClientId(facesContext);
 
         mockery.checking(new Expectations(){{
-            one(dataBrokerFactory).createDataBroker(facesContext, component);
-            will(returnValue(expectedBroker));
+            oneOf(dataBrokerValidator).validate(facesContext, component);
+            oneOf(dataBrokerFactory).createDataSource(facesContext, component);
+            will(returnValue(dataBroker));
         }});
 
-        component.updateModel(facesContext);
+        component.processDecodes(facesContext);
+        component.processValidators(facesContext);
+        component.processUpdates(facesContext);
+
         mockery.assertIsSatisfied();
 
         assertTrue(facesContext.getExternalContext()
@@ -151,102 +211,215 @@ public class UIDataBrokerTest {
         Object broker = facesContext.getExternalContext()
                 .getRequestMap().get(clientId);
         assertThat(broker, is(not(nullValue())));
-        assertThat(broker, instanceOf(DataBroker.class));
-        assertSame(expectedBroker, broker);
+        assertThat(broker, instanceOf(DataSourceHolder.class));
+        assertSame(dataBroker, broker);
     }
 
     @Theory
-    public void updateModelUsingValueExpression(final UIDataBroker component) {
-        ValueExpression ve = component.getValueExpression("value");
-        assumeThat(ve, is(not(nullValue())));
-        assumeThat(component.getValue(), is(nullValue()));
-        component.setDataBrokerFactory(dataBrokerFactory);
+    public void updateModelUsingValueExpr(String type, Object data,
+            MockValueExpression value) {
+        assumeTrue(jrContext.getAvailableDataSourceTypes().contains(type));
+        assumeThat(data, is(not(nullValue())));
+        assumeThat(value, is(not(nullValue())));
         
         final FacesContext facesContext = facesEnv.getFacesContext();
-        final DataBroker expectedBroker = new DataBroker() {};
+        assumeTrue(!value.isReadOnly(facesContext.getELContext()));
+        
+        final UIDataBroker component = createComponent(type, data, value);        
         final String clientId = component.getClientId(facesContext);
         
         mockery.checking(new Expectations(){{
-            one(dataBrokerFactory).createDataBroker(facesContext, component);
-            will(returnValue(expectedBroker));
+            atMost(3).of(dataBrokerBean).getDataBroker();
+            will(returnValue(null));
+
+            oneOf(dataBrokerValidator).validate(facesContext, component);
+            oneOf(dataBrokerFactory).createDataSource(facesContext, component);
+            will(returnValue(dataBroker));
+
+            oneOf(dataBrokerBean).setDataBroker(dataBroker);
+
+            // Assertions performed at end of the test
+            atLeast(2).of(dataBrokerBean).getDataBroker();
+            will(returnValue(dataBroker));
         }});
 
-        component.updateModel(facesContext);
-        mockery.assertIsSatisfied();
+        component.processDecodes(facesContext);
+        component.processValidators(facesContext);
+        component.processUpdates(facesContext);
         
         assertTrue(!facesContext.getExternalContext()
                 .getRequestMap().containsKey(clientId));
         
-        DataBroker value = (DataBroker) ve.getValue(
+        DataSourceHolder actualValue = (DataSourceHolder) value.getValue(
                 facesContext.getELContext());
-        assertThat(value, is(not(nullValue())));
-        assertThat(value, sameInstance(expectedBroker));
+        assertThat(actualValue, is(not(nullValue())));
+        assertThat(actualValue, sameInstance(dataBroker));
 
-        DataBroker broker = (DataBroker) component.getValue();
+        DataSourceHolder broker = (DataSourceHolder) component.getValue();
         assertThat(broker, is(not(nullValue())));
-        assertThat(broker, sameInstance(expectedBroker));
+        assertThat(broker, sameInstance(dataBroker));
+
+        mockery.assertIsSatisfied();
     }
 
     @Theory
-    public void withNonNullAttrsUseValidator(final UIDataBroker component) {
-        assumeThat(component.getData(), is(not(nullValue())));
-        assumeThat(component.getType(), is(not(nullValue())));
-        component.setValidator(dataBrokerValidator);
+    public void whenDataSourceProvidedSendDataSourceBrokerInRequest(String type,
+            Object data, MockValueExpression value) {
+        assumeThat(value, is(not(nullValue())));
+        assumeThat(value.getExpressionString(), containsString("myBroker"));
 
+        final UIDataBroker component = createComponent(type, data, value);
+        final FacesContext facesContext = facesEnv.getFacesContext();
+        final String clientId = component.getClientId(facesContext);
+
+        mockery.checking(new Expectations(){{
+            atLeast(1).of(dataBrokerBean).getMyBroker(); will(returnValue(dataSource));
+
+            never(dataBrokerValidator).validate(facesContext, component);
+            never(dataBrokerFactory).createDataSource(facesContext, component);
+        }});
+
+        component.processDecodes(facesContext);
+        component.processValidators(facesContext);
+        component.processUpdates(facesContext);
+
+        Object broker = facesContext.getExternalContext()
+                .getRequestMap().get(clientId);
+        assertThat(broker, is(not(nullValue())));
+        assertThat(broker, is(JRDataSourceHolder.class));
+
+        mockery.assertIsSatisfied();
+    }
+
+    @Theory
+    public void whenConnectionProvidedSendSqlBrokerInRequest(String type,
+            Object data, MockValueExpression value) {
+        assumeThat(value, is(not(nullValue())));
+        assumeThat(value.getExpressionString(), containsString("myBroker"));
+
+        final UIDataBroker component = createComponent(type, data, value);
+        final FacesContext facesContext = facesEnv.getFacesContext();
+        final String clientId = component.getClientId(facesContext);
+
+        mockery.checking(new Expectations(){{
+            atLeast(1).of(dataBrokerBean).getMyBroker(); will(returnValue(connection));
+
+            never(dataBrokerValidator).validate(facesContext, component);
+            never(dataBrokerFactory).createDataSource(facesContext, component);
+        }});
+
+        component.processDecodes(facesContext);
+        component.processValidators(facesContext);
+        component.processUpdates(facesContext);
+
+        Object broker = facesContext.getExternalContext()
+                .getRequestMap().get(clientId);
+        assertThat(broker, is(not(nullValue())));
+        assertThat(broker, is(SqlConnectionHolder.class));
+
+        mockery.assertIsSatisfied();
+    }
+
+    @Theory
+    public void withNonNullAttrsUseValidator(String type, Object data,
+            MockValueExpression value) {
+        assumeThat(type, is(not(nullValue())));
+        assumeThat(data, is(not(nullValue())));
+        assumeThat(value, is(nullValue()));
+
+        final UIDataBroker component = createComponent(type, data, value);
         final FacesContext facesContext = facesEnv.getFacesContext();
 
         mockery.checking(new Expectations(){{
-            one(dataBrokerValidator).validate(facesContext, component);
+            oneOf(dataBrokerValidator).validate(facesContext, component);
         }});
 
-        component.validate(facesContext);
+        component.processDecodes(facesContext);
+        component.processValidators(facesContext);
+        
         mockery.assertIsSatisfied();
     }
 
     @Theory
     public void withoutAttrsThrowValidationEx(
-            final UIDataBroker component) {
-        assumeThat(component.getData(), is(nullValue()));
-        assumeThat(component.getType(), is(nullValue()));
-        assumeThat(component.getValue(), is(nullValue()));
+            String type, Object data, MockValueExpression value) {
+        assumeThat(data, is(nullValue()));
+        assumeThat(type, is(nullValue()));
+        assumeThat(value, is(nullValue()));
+
+        final UIDataBroker component = createComponent(type, data, value);
+        final FacesContext facesContext = facesEnv.getFacesContext();
+
+        mockery.checking(new Expectations(){{
+            never(dataBrokerValidator).validate(facesContext, component);
+        }});
 
         try {
-            component.validate(facesEnv.getFacesContext());
+            component.processDecodes(facesContext);
+            component.processValidators(facesContext);
             fail("Expected a validation exception for the 'type' attribute.");
         } catch (ValidationException e) {
             assertThat(e, instanceOf(MissingAttributeException.class));
             assertThat(e.getMessage(), equalTo("type"));
+            assertTrue("Context should have 'RenderResponse' state enabled.",
+                    facesEnv.getFacesContext().getRenderResponse());
+            assertTrue("Component remains valid after validation exception,",
+                    !component.isValid());
         }
+
+        mockery.assertIsSatisfied();
     }
 
     @Theory
     public void withoutDataAndValueThrowValidationEx(
-            final UIDataBroker component) {
-        assumeThat(component.getData(), is(nullValue()));
-        assumeThat(component.getType(), is(not(nullValue())));
-        assumeThat(component.getValue(), is(nullValue()));
+            String type, Object data, MockValueExpression value) {
+        assumeThat(type, is(not(nullValue())));
+        assumeThat(data, is(nullValue()));
+        assumeThat(value, is(nullValue()));
+
+        final UIDataBroker component = createComponent(type, data, value);
+        final FacesContext facesContext = facesEnv.getFacesContext();
+
+        mockery.checking(new Expectations(){{
+            never(dataBrokerValidator).validate(facesContext, component);
+        }});
 
         try {
-            component.validate(facesEnv.getFacesContext());
+            component.processDecodes(facesContext);
+            component.processValidators(facesContext);
             fail("Expected a validation exception for the 'data' attribute.");
         } catch (ValidationException e) {
             assertThat(e, instanceOf(MissingAttributeException.class));
             assertThat(e.getMessage(), equalTo("data"));
+            assertTrue("Context should have 'RenderResponse' state enabled.",
+                    facesEnv.getFacesContext().getRenderResponse());
+            assertTrue("Component remains valid after validation exception,",
+                    !component.isValid());
         }
+
+        mockery.assertIsSatisfied();
     }
 
-    public static class DataBrokerBean {
+    // Support methods
 
-        private DataBroker dataBroker;
+    private UIDataBroker createComponent(String type, Object data,
+            MockValueExpression value) {
+        UIDataBroker component = new UIDataBroker();
 
-        public DataBroker getDataBroker() {
-            return dataBroker;
+        component.setId(COMPONENT_ID);
+        component.setBrokerFactory(dataBrokerFactory);
+        component.setValidator(dataBrokerValidator);
+
+        if (type != null) {
+            component.setType(type);
         }
-
-        public void setDataBroker(DataBroker dataBroker) {
-            this.dataBroker = dataBroker;
+        if (data != null) {
+            component.setData(data);
         }
-
+        if (value != null) {
+            component.setValueExpression("value", value);
+        }
+        return component;
     }
 
 }

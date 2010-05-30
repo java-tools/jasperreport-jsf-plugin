@@ -18,19 +18,26 @@
  */
 package net.sf.jasperreports.jsf.engine.databroker;
 
-import javax.faces.context.FacesContext;
+import net.sf.jasperreports.engine.JRDataSource;
 
 /**
  *
  * @author aalonsodominguez
  */
-abstract class AbstractDataBrokerFactory implements DataSourceFactory {
+public class JRDataSourceHolder implements DataSourceHolder<JRDataSource> {
 
-    public void dispose(FacesContext context, DataSourceHolder broker) {
-//        if (!(dataSource instanceof DisposableDataSource)) {
-//            return;
-//        }
-//        ((DisposableDataSource) dataSource).dispose();
+    private JRDataSource dataSource;
+
+    public JRDataSourceHolder(JRDataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public JRDataSource get() {
+        return dataSource;
+    }
+
+    public void dispose() throws Exception {
+        dataSource = null;
     }
 
 }

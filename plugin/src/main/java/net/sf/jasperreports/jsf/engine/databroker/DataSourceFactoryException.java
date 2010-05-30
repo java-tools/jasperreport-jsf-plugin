@@ -18,18 +18,24 @@
  */
 package net.sf.jasperreports.jsf.engine.databroker;
 
-import javax.faces.context.FacesContext;
-import net.sf.jasperreports.jsf.component.UIDataBroker;
+import net.sf.jasperreports.jsf.JRFacesException;
 
 /**
  *
- * @author antonio.alonso
+ * @author aalonsodominguez
  */
-public interface DataBrokerFactory {
+public class DataSourceFactoryException extends JRFacesException {
 
-    public DataBroker createDataBroker(FacesContext context,
-            UIDataBroker component);
+    public DataSourceFactoryException(Throwable t) {
+        super(t);
+    }
 
-    public void dispose(FacesContext context, DataBroker broker);
+    public DataSourceFactoryException(String msg) {
+        super(msg);
+    }
+
+    public DataSourceFactoryException(String msg, Throwable t) {
+        super(msg, t);
+    }
 
 }

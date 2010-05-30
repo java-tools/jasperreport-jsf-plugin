@@ -18,14 +18,12 @@
  */
 package net.sf.jasperreports.jsf.lifecycle;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseListener;
 
 import net.sf.jasperreports.jsf.Constants;
-import net.sf.jasperreports.jsf.util.ExternalContextHelper;
+import net.sf.jasperreports.jsf.context.ExternalContextHelper;
+import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.engine.ReportRenderRequest;
 
 /**
@@ -41,12 +39,14 @@ import net.sf.jasperreports.jsf.engine.ReportRenderRequest;
 abstract class AbstractReportPhaseListener implements PhaseListener {
 
     protected boolean isReportRequest(final FacesContext context) {
+        final JRFacesContext jrContext = JRFacesContext.getInstance(context);
+
         Object request = context.getExternalContext().getRequest();
         if (request instanceof ReportRenderRequest) {
             return true;
         } else {
-            final ExternalContextHelper helper = ExternalContextHelper
-                    .getInstance(context.getExternalContext());
+            final ExternalContextHelper helper = jrContext
+                    .getExternalContextHelper(context);
 
             final String uri = helper.getRequestURI(
                     context.getExternalContext());

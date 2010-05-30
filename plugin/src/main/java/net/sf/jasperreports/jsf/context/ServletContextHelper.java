@@ -16,24 +16,25 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.util;
+package net.sf.jasperreports.jsf.context;
 
 import java.io.IOException;
 import javax.faces.context.ExternalContext;
-import javax.portlet.PortletContext;
-import javax.portlet.PortletRequest;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.jsf.Constants;
 
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.config.Configuration;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
+import net.sf.jasperreports.jsf.engine.ReportHttpRenderRequest;
 import net.sf.jasperreports.jsf.engine.ReportRenderRequest;
 
-final class PortletContextHelper extends ExternalContextHelper {
+final class ServletContextHelper extends ExternalContextHelper {
 
-    protected PortletContextHelper() { }
+    protected ServletContextHelper() { }
 
     @Override
     public ReportRenderRequest restoreReportRequest(ExternalContext context) {
@@ -42,29 +43,30 @@ final class PortletContextHelper extends ExternalContextHelper {
                 .get(Constants.PARAM_VIEWID);
         final String viewState = getViewCacheMap(context).get(viewId);
 
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public String getRequestURI(final ExternalContext context) {
-        if ("2.0".equals(getPortletVersion())) {
-            final ResourceRequest request = (ResourceRequest)
-                    context.getRequest();
-            return request.getResourceID();
-        } else {
-            return null;
-        }
+        HttpServletRequest request = (HttpServletRequest) context.getRequest();
+        request = new ReportHttpRenderRequest(request, viewId,
+                config.getDefaultMapping(), viewState);
+        context.setRequest(request);
+        return (ReportRenderRequest) request;
     }
 
     @Override
     public String getRequestServerName(final ExternalContext context) {
-        final PortletRequest request = (PortletRequest) context.getRequest();
+        final HttpServletRequest request = (HttpServletRequest)
+                context.getRequest();
         return request.getServerName();
     }
 
     @Override
+    public String getRequestURI(final ExternalContext context) {
+        final HttpServletRequest request = (HttpServletRequest)
+                context.getRequest();
+        return request.getRequestURI();
+    }
+
+    @Override
     public String getResourceRealPath(final ExternalContext context, String name) {
-        PortletContext ctx = (PortletContext) context.getContext();
+        final ServletContext ctx = (ServletContext) context.getContext();
         return ctx.getRealPath(name);
     }
 
@@ -72,35 +74,25 @@ final class PortletContextHelper extends ExternalContextHelper {
     public void writeHeaders(final ExternalContext context,
             final ReportRenderer renderer, final UIReport report)
             throws IOException {
-        if ("2.0".equals(getPortletVersion())) {
-            final ResourceResponse response = (ResourceResponse)
-                    context.getResponse();
-            response.setProperty("Cache-Type", "no-cache");
-            response.setProperty("Expires", "0");
+        final HttpServletResponse response = (HttpServletResponse)
+                context.getResponse();
+        response.setHeader("Cache-Type", "no-cache");
+        response.setHeader("Expires", "0");
 
-            if (report.getName() != null) {
-                response.setProperty("Content-Disposition",
-                        renderer.encodeContentDisposition(report,
-                        response.getCharacterEncoding()));
-            }
-        } else {
-            throw new IllegalStateException(
-                    "Only Resource Request/Response state is allowed");
+        if (report.getName() != null) {
+            response.setHeader("Content-Disposition", 
+                    renderer.encodeContentDisposition(report,
+                    response.getCharacterEncoding()));
         }
     }
 
     @Override
     public void writeResponse(final ExternalContext context,
             final String contentType, final byte[] data) throws IOException {
-        if ("2.0".equals(getPortletVersion())) {
-            final ResourceResponse response = (ResourceResponse)
-                    context.getResponse();
-            response.setContentType(contentType);
-            response.setContentLength(data.length);
-            response.getPortletOutputStream().write(data);
-        } else {
-            throw new IllegalStateException(
-                    "Only Resource Request/Response state is allowed");
-        }
+        final HttpServletResponse response = (HttpServletResponse)
+                context.getResponse();
+        response.setContentType(contentType);
+        response.setContentLength(data.length);
+        response.getOutputStream().write(data);
     }
 }

@@ -16,21 +16,18 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.engine.databroker;
+package net.sf.jasperreports.jsf.component;
 
-import javax.faces.context.FacesContext;
+import net.sf.jasperreports.jsf.engine.databroker.DataSourceHolder;
 
 /**
  *
  * @author aalonsodominguez
  */
-abstract class AbstractDataBrokerFactory implements DataSourceFactory {
+public interface DataBrokerTestBean {
+    public Object getMyBroker();
 
-    public void dispose(FacesContext context, DataSourceHolder broker) {
-//        if (!(dataSource instanceof DisposableDataSource)) {
-//            return;
-//        }
-//        ((DisposableDataSource) dataSource).dispose();
-    }
+    public DataSourceHolder getDataBroker();
 
+    public void setDataBroker(DataSourceHolder dataBroker);
 }

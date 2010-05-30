@@ -28,7 +28,8 @@ import javax.faces.event.PhaseId;
 
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.engine.ReportRenderRequest;
-import net.sf.jasperreports.jsf.util.ExternalContextHelper;
+import net.sf.jasperreports.jsf.context.ExternalContextHelper;
+import net.sf.jasperreports.jsf.context.JRFacesContext;
 
 /**
  *
@@ -54,13 +55,14 @@ public class RestoreViewPhaseListener extends AbstractReportPhaseListener {
 
     public void beforePhase(PhaseEvent event) throws FacesException {
         FacesContext context = event.getFacesContext();
+        JRFacesContext jrContext = JRFacesContext.getInstance(context);
         if (isReportRequest(context)) {
             // Mark request as a postback to force view restoring
             context.getExternalContext().getRequestMap().put(
                     Constants.ATTR_POSTBACK, Boolean.TRUE);
 
-            final ExternalContextHelper helper = ExternalContextHelper
-                    .getInstance(context.getExternalContext());
+            final ExternalContextHelper helper =
+                    jrContext.getExternalContextHelper(context);
             final ReportRenderRequest renderRequest = helper
                     .restoreReportRequest(context.getExternalContext());
 

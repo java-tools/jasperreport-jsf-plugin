@@ -18,19 +18,27 @@
  */
 package net.sf.jasperreports.jsf.engine.databroker;
 
-import javax.faces.context.FacesContext;
+import java.sql.Connection;
 
 /**
  *
  * @author aalonsodominguez
  */
-abstract class AbstractDataBrokerFactory implements DataSourceFactory {
+public class SqlConnectionHolder implements DataSourceHolder<Connection> {
 
-    public void dispose(FacesContext context, DataSourceHolder broker) {
-//        if (!(dataSource instanceof DisposableDataSource)) {
-//            return;
-//        }
-//        ((DisposableDataSource) dataSource).dispose();
+    private Connection connection;
+
+    public SqlConnectionHolder(Connection connection) {
+        this.connection = connection;
+    }
+
+    public Connection get() {
+        return connection;
+    }
+
+    public void dispose() throws Exception {
+        connection.close();
+        connection = null;
     }
 
 }

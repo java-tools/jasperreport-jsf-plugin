@@ -18,7 +18,6 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRExporter;

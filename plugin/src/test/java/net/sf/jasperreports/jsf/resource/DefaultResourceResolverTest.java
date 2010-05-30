@@ -18,18 +18,19 @@
  */
 package net.sf.jasperreports.jsf.resource;
 
-import net.sf.jasperreports.jsf.resource.URLResource;
-import net.sf.jasperreports.jsf.resource.ClasspathResource;
-import net.sf.jasperreports.jsf.resource.DefaultResourceResolver;
 import net.sf.jasperreports.jsf.component.html.HtmlReportFrame;
-import net.sf.jasperreports.jsf.resource.Resource;
+import net.sf.jasperreports.jsf.test.JMockTheories;
 import net.sf.jasperreports.jsf.test.MockFacesEnvironment;
 
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.experimental.theories.DataPoint;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
 
+import static net.sf.jasperreports.jsf.test.Matchers.*;
+import static org.junit.Assume.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -37,7 +38,17 @@ import static org.hamcrest.Matchers.*;
  *
  * @author antonio.alonso
  */
+@RunWith(JMockTheories.class)
 public class DefaultResourceResolverTest {
+
+    @DataPoint
+    public static final String URL_RESOURCE =
+            "http://jasperreportjsf.sourceforge.net/tld/" +
+            "jasperreports-jsf-1_0.tld";
+
+    @DataPoint
+    public static final String CLASSPATH_RESOURCE = ClasspathResource.PREFIX +
+            ClasspathResourceTest.JAVA_RESOURCE;
 
     private MockFacesEnvironment facesEnv;
 
@@ -54,22 +65,29 @@ public class DefaultResourceResolverTest {
         resolver = new DefaultResourceResolver();
     }
 
-    @Test
-    public void urlResource() {
-        String resourceName = "http://jasperreportjsf.sourceforge.net/tld/jasperreports-jsf-1_0.tld";
+    @Theory
+    public void urlResource(String resourceName) {
+        assumeThat(resourceName, is(url()));
+
         Resource res = resolver.resolveResource(facesEnv.getFacesContext(),
                 component, resourceName);
-        assertNotNull(res);
-        assertEquals(URLResource.class, res.getClass());
+        
+        assertThat(res, is(not(nullValue())));
+        assertThat(res, is(URLResource.class));
+        assertThat(res.getName(), equalTo(resourceName));
     }
 
-    @Test
-    public void classpathResource() {
-        String resourceName = "net/sf/jasperreports/jsf/resource/providers/ClasspathResourceTest.txt";
+    @Theory
+    public void whenClasspathResource(String resourceName) {
+        assumeThat(resourceName, is(classpathResource()));
+
         Resource res = resolver.resolveResource(facesEnv.getFacesContext(),
                 component, resourceName);
-        assertNotNull(res);
-        assertEquals(ClasspathResource.class, res.getClass());
-    }
 
+        assertThat(res, is(not(nullValue())));
+        assertThat(res, is(ClasspathResource.class));
+        assertThat(res.getName(), equalTo(resourceName.substring(
+                ClasspathResource.PREFIX.length())));
+    }
+    
 }

@@ -16,7 +16,7 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.util;
+package net.sf.jasperreports.jsf.context;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -63,34 +63,30 @@ public abstract class ExternalContextHelper {
      * @param context the current ExternalContext
      * @return an instance of the ExternalContextHelper
      */
-    public static ExternalContextHelper getInstance(
+    protected static ExternalContextHelper newInstance (
             final ExternalContext context) {
-        ExternalContextHelper instance = (ExternalContextHelper)
-                context.getApplicationMap().get(INSTANCE_KEY);
-        if (instance == null) {
-            if (isServletContext(context)) {
-                instance = new ServletContextHelper();
-            } else if (isPortletAvailable()) {
-                String portletVersion = getPortletVersion();
+        ExternalContextHelper instance = null;
+        if (isServletContext(context)) {
+            instance = new ServletContextHelper();
+        } else if (isPortletAvailable()) {
+            String portletVersion = getPortletVersion();
 
-                if (!"2.0".equals(portletVersion)) {
-                    throw new InvalidEnvironmentException("Incorrect portlet"
-                            + " version: " + portletVersion);
-                }
-
-                if (!isFacesBridgeAvailable()) {
-                    throw new InvalidEnvironmentException("Portlet 2.0"
-                            + " environment detected but not Faces' bridge has"
-                            + " found. Please use a portlet faces bridge"
-                            + " compliant with JSR-329.");
-                }
-
-                instance = new PortletContextHelper();
-            } else {
-                throw new IllegalArgumentException(
-                        "Unrecognized application context");
+            if (!"2.0".equals(portletVersion)) {
+                throw new InvalidEnvironmentException("Incorrect portlet"
+                        + " version: " + portletVersion);
             }
-            context.getApplicationMap().put(INSTANCE_KEY, instance);
+
+            if (!isFacesBridgeAvailable()) {
+                throw new InvalidEnvironmentException("Portlet 2.0"
+                        + " environment detected but not Faces' bridge has"
+                        + " found. Please use a portlet faces bridge"
+                        + " compliant with JSR-329.");
+            }
+
+            instance = new PortletContextHelper();
+        } else {
+            throw new IllegalArgumentException(
+                    "Unrecognized application context");
         }
         return instance;
     }

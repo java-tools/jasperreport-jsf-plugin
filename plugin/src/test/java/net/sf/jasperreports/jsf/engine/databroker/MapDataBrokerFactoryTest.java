@@ -20,12 +20,14 @@ package net.sf.jasperreports.jsf.engine.databroker;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
+
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.engine.data.JRBeanArrayDataSource;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.data.JRMapArrayDataSource;
+import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 import net.sf.jasperreports.jsf.component.UIDataBroker;
 import net.sf.jasperreports.jsf.test.MockFacesEnvironment;
 
@@ -45,29 +47,24 @@ import static org.hamcrest.Matchers.*;
  * @author aalonsodominguez
  */
 @RunWith(Theories.class)
-public class BeanDataBrokerFactoryTest {
+public class MapDataBrokerFactoryTest {
 
     @DataPoint
     public static final Object NULL_DATA = null;
-
     @DataPoint
-    public static final Object[] ARR_DATA = new Object[] {
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-    };
-
+    public static final Map[] ARR_DATA = new Map[]{};
     @DataPoint
     public static final Collection<?> COLL_DATA = Arrays.asList(ARR_DATA);
 
     private MockFacesEnvironment facesEnv;
-
     private UIDataBroker component;
-    private BeanDataBrokerFactory factory;
+    private MapDataBrokerFactory factory;
 
     @Before
     public void init() {
         facesEnv = MockFacesEnvironment.getServletInstance();
         component = new UIDataBroker();
-        factory = new BeanDataBrokerFactory();
+        factory = new MapDataBrokerFactory();
     }
 
     @After
@@ -78,7 +75,7 @@ public class BeanDataBrokerFactoryTest {
         facesEnv.release();
         facesEnv = null;
     }
-    
+
     @Theory
     public void arrayDataReturnsArrayDataSource(final Object data) {
         assumeThat(data, is(not(nullValue())));
@@ -96,9 +93,9 @@ public class BeanDataBrokerFactoryTest {
 
         JRDataSource dataSource = ((JRDataSourceHolder) broker).get();
         assertThat(dataSource, is(not(nullValue())));
-        assertThat(dataSource, is(JRBeanArrayDataSource.class));
+        assertThat(dataSource, is(JRMapArrayDataSource.class));
 
-        JRBeanArrayDataSource bads = (JRBeanArrayDataSource) dataSource;
+        JRMapArrayDataSource bads = (JRMapArrayDataSource) dataSource;
         assertThat(bads.getData(), equalTo((Object[]) data));
     }
 
@@ -119,10 +116,10 @@ public class BeanDataBrokerFactoryTest {
 
         JRDataSource dataSource = ((JRDataSourceHolder) broker).get();
         assertThat(dataSource, is(not(nullValue())));
-        assertThat(dataSource, is(JRBeanCollectionDataSource.class));
+        assertThat(dataSource, is(JRMapCollectionDataSource.class));
 
-        JRBeanCollectionDataSource bacs =
-                (JRBeanCollectionDataSource) dataSource;
+        JRMapCollectionDataSource bacs =
+                (JRMapCollectionDataSource) dataSource;
         assertThat(bacs.getData(), equalTo((Collection) data));
     }
 
@@ -133,14 +130,13 @@ public class BeanDataBrokerFactoryTest {
         DataSourceHolder broker = factory.createDataSource(
                 facesEnv.getFacesContext(), component);
         assertThat(broker, is(not(nullValue())));
-        
+
         if (!(broker instanceof JRDataSourceHolder)) {
             fail("'Returned broker is not JasperReport's data source wrapper");
         }
-        
+
         JRDataSource dataSource = ((JRDataSourceHolder) broker).get();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JREmptyDataSource.class));
     }
-
 }

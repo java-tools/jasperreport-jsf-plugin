@@ -34,10 +34,8 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRXlsDataSource;
 import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIDataBroker;
-import net.sf.jasperreports.jsf.engine.databroker.DataBroker;
-import net.sf.jasperreports.jsf.engine.databroker.JRDataSourceBroker;
+import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.resource.Resource;
-import net.sf.jasperreports.jsf.resource.ResourceLoader;
 
 /**
  *
@@ -50,8 +48,9 @@ public class XlsDataBrokerFactory extends AbstractDataBrokerFactory {
             XlsDataBrokerFactory.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
-    public DataBroker createDataBroker(FacesContext context,
+    public DataSourceHolder createDataSource(FacesContext context,
             UIDataBroker component) {
+        final JRFacesContext jrContext = JRFacesContext.getInstance(context);
         JRDataSource dataSource;
         final Object value = component.getData();
         if (value == null) {
@@ -69,7 +68,7 @@ public class XlsDataBrokerFactory extends AbstractDataBrokerFactory {
                 } else if (value instanceof Workbook) {
                     dataSource = new JRXlsDataSource((Workbook) value);
                 } else if (value instanceof String) {
-                    Resource resource = ResourceLoader.getResource(context,
+                    Resource resource = jrContext.getResource(context,
                             component, (String) value);
                     dataSource = new JRXlsDataSource(resource.getInputStream());
                 } else {
@@ -82,7 +81,7 @@ public class XlsDataBrokerFactory extends AbstractDataBrokerFactory {
                 throw new JRFacesException(e);
             }
         }
-        return new JRDataSourceBroker(dataSource);
+        return new JRDataSourceHolder(dataSource);
     }
 
 }
