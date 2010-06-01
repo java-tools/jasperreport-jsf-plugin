@@ -18,6 +18,7 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
+import net.sf.jasperreports.jsf.engine.ExporterException;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRExporter;
@@ -26,7 +27,7 @@ import net.sf.jasperreports.engine.export.JRXlsAbstractExporterParameter;
 import net.sf.jasperreports.jsf.component.UIReport;
 
 @SuppressWarnings("deprecation")
-abstract class AbstractXlsExporter extends Exporter {
+abstract class AbstractXlsExporter extends DefaultExporter {
 
     @Deprecated
     public static final String ATTR_IS_AUTO_DETECT_CELL_TYPE =

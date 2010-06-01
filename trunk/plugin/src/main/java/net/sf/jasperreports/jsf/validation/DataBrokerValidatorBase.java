@@ -20,13 +20,13 @@ package net.sf.jasperreports.jsf.validation;
 
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UIDataBroker;
+import net.sf.jasperreports.jsf.component.UIReportSource;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 
 public class DataBrokerValidatorBase implements DataBrokerValidator {
 
     public void validate(final FacesContext context,
-            final UIDataBroker component) throws ValidationException {
+            final UIReportSource component) throws ValidationException {
         final JRFacesContext jrContext = JRFacesContext.getInstance(context);
         if (!jrContext.getAvailableDataSourceTypes().contains(
                 component.getType())) {

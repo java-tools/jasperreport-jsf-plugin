@@ -5,7 +5,7 @@
 
 package net.sf.jasperreports.jsf.lifecycle;
 
-import net.sf.jasperreports.jsf.test.MockFacesEnvironment;
+import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;

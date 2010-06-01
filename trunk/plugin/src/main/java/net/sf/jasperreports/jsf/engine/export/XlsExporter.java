@@ -40,7 +40,7 @@ public final class XlsExporter extends AbstractXlsExporter {
      * (non-Javadoc)
      *
      * @see
-     * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
+     * net.sf.jasperreports.jsf.export.DefaultExporter#createJRExporter(javax.faces
      * .context.FacesContext)
      */
     @Override

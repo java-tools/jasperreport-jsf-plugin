@@ -37,9 +37,11 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
-import net.sf.jasperreports.jsf.engine.databroker.DataSourceHolder;
+import net.sf.jasperreports.jsf.engine.ReportSource;
+import net.sf.jasperreports.jsf.engine.FillerException;
+import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.engine.databroker.JRDataSourceHolder;
-import net.sf.jasperreports.jsf.engine.databroker.SqlConnectionHolder;
+import net.sf.jasperreports.jsf.engine.databroker.ConnectionHolder;
 import net.sf.jasperreports.jsf.resource.ReportNotFoundException;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.UnresolvedResourceException;
@@ -82,22 +84,22 @@ public class DefaultFiller implements Filler {
             throw new ReportNotFoundException(reportName, e);
         }
 
-        DataSourceHolder dataBroker = null;
-        Object dataSourceRef = component.getDataBroker();
+        ReportSource dataBroker = null;
+        Object dataSourceRef = component.getReportSource();
         if (dataSourceRef != null) {
-            if (dataSourceRef instanceof DataSourceHolder) {
-                dataBroker = (DataSourceHolder) dataSourceRef;
+            if (dataSourceRef instanceof ReportSource) {
+                dataBroker = (ReportSource) dataSourceRef;
             } else if (dataSourceRef instanceof String) {
                 String dataSourceId = Util.resolveDataSourceId(context,
                         component, (String) dataSourceRef);
 
-                dataBroker = (DataSourceHolder) context.getExternalContext()
+                dataBroker = (ReportSource) context.getExternalContext()
                         .getRequestMap().get(dataSourceId);
             } else if (dataSourceRef instanceof JRDataSource) {
                 dataBroker = new JRDataSourceHolder(
                         (JRDataSource) dataSourceRef);
             } else if (dataSourceRef instanceof Connection) {
-                dataBroker = new SqlConnectionHolder(
+                dataBroker = new ConnectionHolder(
                         (Connection) dataSourceRef);
             } else {
                 throw new FillerException("Illegal data source value type: "
@@ -163,16 +165,16 @@ public class DefaultFiller implements Filler {
     }
 
     protected JasperPrint doFill(FacesContext context, InputStream reportStream,
-            Map<String, Object> parameters, DataSourceHolder dataBroker)
+            Map<String, Object> parameters, ReportSource dataBroker)
     throws FillerException {
         JasperPrint print = null;
         try {
             if (dataBroker instanceof JRDataSourceHolder) {
                 print = JasperFillManager.fillReport(reportStream, parameters,
                         ((JRDataSourceHolder) dataBroker).get());
-            } else if (dataBroker instanceof SqlConnectionHolder) {
+            } else if (dataBroker instanceof ConnectionHolder) {
                 print = JasperFillManager.fillReport(reportStream, parameters,
-                        ((SqlConnectionHolder) dataBroker).get());
+                        ((ConnectionHolder) dataBroker).get());
             }
         } catch (final JRException e) {
             throw new FillerException(e);

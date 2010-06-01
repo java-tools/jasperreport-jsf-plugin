@@ -27,7 +27,7 @@ import net.sf.jasperreports.jsf.component.UIReport;
 /**
  * The Class RtfExporter.
  */
-public final class RtfExporter extends Exporter {
+public final class RtfExporter extends DefaultExporter {
 
     public static final String CONTENT_TYPE = "application/rtf";
 
@@ -39,7 +39,7 @@ public final class RtfExporter extends Exporter {
      * (non-Javadoc)
      *
      * @see
-     * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
+     * net.sf.jasperreports.jsf.export.DefaultExporter#createJRExporter(javax.faces
      * .context.FacesContext)
      */
     @Override

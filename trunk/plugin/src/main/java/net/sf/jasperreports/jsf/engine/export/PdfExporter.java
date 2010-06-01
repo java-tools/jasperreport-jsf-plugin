@@ -28,7 +28,7 @@ import net.sf.jasperreports.jsf.component.UIReport;
 /**
  * The Class PdfExporter.
  */
-public final class PdfExporter extends Exporter {
+public final class PdfExporter extends DefaultExporter {
 
     public static final String CONTENT_TYPE = "application/pdf";
     /** The Constant ATTR_IS_COMPRESSED. */
@@ -45,7 +45,7 @@ public final class PdfExporter extends Exporter {
      * (non-Javadoc)
      *
      * @see
-     * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
+     * net.sf.jasperreports.jsf.export.DefaultExporter#createJRExporter(javax.faces
      * .context.FacesContext)
      */
     @Override

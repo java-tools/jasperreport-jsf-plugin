@@ -28,7 +28,7 @@ import net.sf.jasperreports.jsf.component.UIReport;
 /**
  * The Class XmlExporter.
  */
-public final class XmlExporter extends Exporter {
+public final class XmlExporter extends DefaultExporter {
 
     public static final String CONTENT_TYPE = "text/xml";
     /** The Constant ATTR_DTD_LOCATION. */
@@ -44,7 +44,7 @@ public final class XmlExporter extends Exporter {
      * (non-Javadoc)
      *
      * @see
-     * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
+     * net.sf.jasperreports.jsf.export.DefaultExporter#createJRExporter(javax.faces
      * .context.FacesContext)
      */
     @Override

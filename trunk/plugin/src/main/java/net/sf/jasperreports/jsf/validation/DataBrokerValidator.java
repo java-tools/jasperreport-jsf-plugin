@@ -21,12 +21,12 @@ package net.sf.jasperreports.jsf.validation;
 import java.io.Serializable;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UIDataBroker;
+import net.sf.jasperreports.jsf.component.UIReportSource;
 
 public interface DataBrokerValidator extends Serializable {
 
     public void validate(final FacesContext context, 
-            final UIDataBroker component)
+            final UIReportSource component)
             throws ValidationException;
     
 }

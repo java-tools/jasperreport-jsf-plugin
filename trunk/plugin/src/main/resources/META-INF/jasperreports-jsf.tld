@@ -46,10 +46,10 @@ the data needed for rendering. Consult library documentation
 about how to use this tag and its possible locations within
 the Faces tree.
         ]]></description>
-        <display-name>Data Broker Tag</display-name>
+        <display-name>ReportSource Tag</display-name>
         <name>dataSource</name>
         <tag-class>
-            net.sf.jasperreports.jsf.taglib.DataBrokerTag
+            net.sf.jasperreports.jsf.taglib.ReportSourceTag
         </tag-class>
         <body-content>JSP</body-content>
         <attribute>
@@ -151,7 +151,7 @@ rendered inside the page.
 Data source ID reference used to obtain the data
 needed to render the report.
             ]]></description>
-            <name>dataBroker</name>
+            <name>reportSource</name>
             <required>false</required>
             <deferred-value>
                 <type>java.lang.Object</type>
@@ -314,10 +314,10 @@ report contents.
         </attribute>
         <attribute>
             <description><![CDATA[
-Data source ID reference used to obtain the data
+Report source ID reference used to obtain the data
 needed to render the report.
             ]]></description>
-            <name>dataBroker</name>
+            <name>reportSource</name>
             <required>false</required>
             <deferred-value>
                 <type>java.lang.Object</type>

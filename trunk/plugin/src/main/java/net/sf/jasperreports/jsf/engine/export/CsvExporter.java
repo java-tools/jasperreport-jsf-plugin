@@ -28,7 +28,7 @@ import net.sf.jasperreports.jsf.component.UIReport;
 /**
  * The Class CsvExporter.
  */
-public final class CsvExporter extends Exporter {
+public final class CsvExporter extends DefaultExporter {
 
     public static final String CONTENT_TYPE = "text/plain";
     /** The Constant ATTR_FIELD_DELIMITER. */
@@ -44,7 +44,7 @@ public final class CsvExporter extends Exporter {
      * (non-Javadoc)
      *
      * @see
-     * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
+     * net.sf.jasperreports.jsf.export.DefaultExporter#createJRExporter(javax.faces
      * .context.FacesContext)
      */
     @Override
