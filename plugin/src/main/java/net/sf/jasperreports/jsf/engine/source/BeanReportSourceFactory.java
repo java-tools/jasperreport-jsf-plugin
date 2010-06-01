@@ -16,7 +16,7 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.engine.databroker;
+package net.sf.jasperreports.jsf.engine.source;
 
 import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
 import java.util.Collection;
@@ -41,7 +41,7 @@ public class BeanReportSourceFactory implements ReportSourceFactory {
             BeanReportSourceFactory.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
-    public JRDataSourceHolder createDataSource(FacesContext context,
+    public JRDataSourceHolder createSource(FacesContext context,
             UIReportSource component) {
         JRDataSource dataSource;
 

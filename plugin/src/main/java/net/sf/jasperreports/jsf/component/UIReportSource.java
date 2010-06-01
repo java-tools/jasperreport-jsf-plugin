@@ -31,8 +31,8 @@ import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.engine.ReportSource;
 import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
-import net.sf.jasperreports.jsf.engine.databroker.JRDataSourceHolder;
-import net.sf.jasperreports.jsf.engine.databroker.ConnectionHolder;
+import net.sf.jasperreports.jsf.engine.source.JRDataSourceHolder;
+import net.sf.jasperreports.jsf.engine.source.ConnectionHolder;
 import net.sf.jasperreports.jsf.validation.DataBrokerValidator;
 import net.sf.jasperreports.jsf.validation.DataBrokerValidatorFactory;
 import net.sf.jasperreports.jsf.validation.MissingAttributeException;
@@ -352,7 +352,7 @@ public class UIReportSource extends UIComponentBase {
         if (providedValue == null) {
             ReportSourceFactory factory = this.getBrokerFactory();
             if (factory != null) {
-                dataBroker = factory.createDataSource(context, this);
+                dataBroker = factory.createSource(context, this);
             } else {
                 dataBroker = getJRFacesContext().getDataSource(context, this);
             }

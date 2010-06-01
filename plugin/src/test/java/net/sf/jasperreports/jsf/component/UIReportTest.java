@@ -24,6 +24,7 @@ import org.apache.shale.test.mock.MockExternalContext;
 
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theory;
@@ -40,26 +41,27 @@ import static org.hamcrest.Matchers.*;
 @RunWith(JMockTheories.class)
 public class UIReportTest {
 
-    public static final String DATA_BEAN_NAME = "dataBrokerBean";
+    public static final String DATA_BEAN_NAME = "reportSourceBean";
 
     private MockFacesEnvironment facesEnv;
 
     private Mockery mockery = new JUnit4Mockery();
 
-    private ReportSourceTestBean dataBrokerBean;
 
     @Before
     public void init() {
         facesEnv = MockFacesEnvironment.getServletInstance();
 
-        dataBrokerBean = mockery.mock(ReportSourceTestBean.class);
+    }
 
-        MockExternalContext context = facesEnv.getExternalContext();
-        context.getRequestMap().put(DATA_BEAN_NAME, dataBrokerBean);
+    @After
+    public void dispose() {
+        facesEnv.release();
+        facesEnv = null;
     }
 
     @Theory
-    public void attrDataBrokerIsStringLookupRequest() {
+    public void withStringSourceLookupRequest() {
 
     }
 

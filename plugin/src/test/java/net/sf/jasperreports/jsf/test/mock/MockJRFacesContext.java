@@ -112,7 +112,7 @@ public class MockJRFacesContext extends JRFacesContext {
     public ReportSource<?> getDataSource(
             FacesContext context, UIReportSource component) {
         if (dataSourceFactory != null) {
-            return dataSourceFactory.createDataSource(context, component);
+            return dataSourceFactory.createSource(context, component);
         }
         return defaultContext.getDataSource(context, component);
     }

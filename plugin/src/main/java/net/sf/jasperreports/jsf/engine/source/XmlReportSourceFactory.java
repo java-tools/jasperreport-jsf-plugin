@@ -16,7 +16,7 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.engine.databroker;
+package net.sf.jasperreports.jsf.engine.source;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -64,7 +64,7 @@ public class XmlReportSourceFactory implements ReportSourceFactory {
             XmlReportSourceFactory.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
-    public ReportSource createDataSource(FacesContext context,
+    public ReportSource createSource(FacesContext context,
             UIReportSource component) {
         JRDataSource dataSource;
 

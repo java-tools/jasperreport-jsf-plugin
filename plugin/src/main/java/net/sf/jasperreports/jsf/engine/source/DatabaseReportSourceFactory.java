@@ -16,7 +16,7 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.engine.databroker;
+package net.sf.jasperreports.jsf.engine.source;
 
 import net.sf.jasperreports.jsf.engine.ReportSource;
 import net.sf.jasperreports.jsf.engine.ReportSourceException;
@@ -48,7 +48,7 @@ public abstract class DatabaseReportSourceFactory
             DatabaseReportSourceFactory.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
-    public ReportSource createDataSource(FacesContext context,
+    public ReportSource createSource(FacesContext context,
             UIReportSource component)
     throws ReportSourceException {
         throw new UnsupportedOperationException("Not supported yet.");

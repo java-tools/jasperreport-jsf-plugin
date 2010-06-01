@@ -21,7 +21,7 @@ package net.sf.jasperreports.jsf.validation.providers;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIReportSource;
-import net.sf.jasperreports.jsf.engine.databroker.JdbcReportSourceFactory;
+import net.sf.jasperreports.jsf.engine.source.JdbcReportSourceFactory;
 import net.sf.jasperreports.jsf.validation.DataBrokerValidatorBase;
 import net.sf.jasperreports.jsf.validation.MissingAttributeException;
 import net.sf.jasperreports.jsf.validation.ValidationException;

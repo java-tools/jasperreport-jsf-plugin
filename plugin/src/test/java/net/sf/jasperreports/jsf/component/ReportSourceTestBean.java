@@ -19,6 +19,7 @@
 package net.sf.jasperreports.jsf.component;
 
 import java.io.Serializable;
+
 import net.sf.jasperreports.jsf.engine.ReportSource;
 
 /**
