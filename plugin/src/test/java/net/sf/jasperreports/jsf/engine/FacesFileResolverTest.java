@@ -18,9 +18,10 @@
  */
 package net.sf.jasperreports.jsf.engine;
 
+import net.sf.jasperreports.jsf.engine.interop.FacesFileResolver;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.resource.URLResourceTest;
-import net.sf.jasperreports.jsf.test.MockFacesEnvironment;
+import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import org.apache.shale.test.mock.MockFacesContext;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;

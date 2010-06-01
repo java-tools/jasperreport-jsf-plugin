@@ -22,14 +22,12 @@ import java.util.Set;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UIDataBroker;
+import net.sf.jasperreports.jsf.component.UIReportSource;
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.engine.databroker.DataSourceFactory;
-import net.sf.jasperreports.jsf.engine.databroker.DataSourceHolder;
-import net.sf.jasperreports.jsf.engine.export.Exporter;
-import net.sf.jasperreports.jsf.engine.fill.Filler;
+import net.sf.jasperreports.jsf.engine.ReportSource;
+import net.sf.jasperreports.jsf.engine.Exporter;
+import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.resource.Resource;
-import net.sf.jasperreports.jsf.resource.ResourceResolver;
 import net.sf.jasperreports.jsf.util.Services;
 
 /**
@@ -38,7 +36,7 @@ import net.sf.jasperreports.jsf.util.Services;
  */
 public abstract class JRFacesContext {
 
-    private static final String INSTANCE_KEY =
+    protected static final String INSTANCE_KEY =
             JRFacesContext.class.getName();
 
     private static final JRFacesContext DEFAULT_JRFACES_CONTEXT =
@@ -63,8 +61,8 @@ public abstract class JRFacesContext {
     public abstract ExternalContextHelper getExternalContextHelper(
             FacesContext context);
 
-    public abstract DataSourceHolder<?> getDataSource(
-            FacesContext context, UIDataBroker component);
+    public abstract ReportSource<?> getDataSource(
+            FacesContext context, UIReportSource component);
 
     public abstract Filler getFiller(
             FacesContext context, UIReport component);

@@ -24,14 +24,14 @@ import javax.faces.component.UIComponent;
 
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UIDataBroker;
+import net.sf.jasperreports.jsf.component.UIReportSource;
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.engine.databroker.DataSourceFactory;
-import net.sf.jasperreports.jsf.engine.databroker.DataSourceHolder;
-import net.sf.jasperreports.jsf.engine.export.Exporter;
+import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
+import net.sf.jasperreports.jsf.engine.ReportSource;
+import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.export.ExporterNotFoundException;
 import net.sf.jasperreports.jsf.engine.fill.DefaultFiller;
-import net.sf.jasperreports.jsf.engine.fill.Filler;
+import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.resource.DefaultResourceResolver;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.ResourceException;
@@ -52,13 +52,13 @@ public class DefaultJRFacesContext extends JRFacesContext {
 
     private ExternalContextHelper externalContext = null;
 
-    private final Map<String, DataSourceFactory> dataSourceFactoryMap;
+    private final Map<String, ReportSourceFactory> dataSourceFactoryMap;
     private final Map<String, Exporter> exporterMap;
     private final Filler filler;
     private final ResourceResolver resourceResolver;
 
     protected DefaultJRFacesContext() {
-        dataSourceFactoryMap = Services.map(DataSourceFactory.class);
+        dataSourceFactoryMap = Services.map(ReportSourceFactory.class);
         exporterMap = Services.map(Exporter.class);
         filler = Services.chain(Filler.class, DEFAULT_FILLER);
         resourceResolver = Services.chain(
@@ -83,9 +83,9 @@ public class DefaultJRFacesContext extends JRFacesContext {
     }
 
     @Override
-    public DataSourceHolder<?> getDataSource(
-            FacesContext context, UIDataBroker component) {
-        DataSourceFactory factory = dataSourceFactoryMap.get(component.getType());
+    public ReportSource<?> getDataSource(
+            FacesContext context, UIReportSource component) {
+        ReportSourceFactory factory = dataSourceFactoryMap.get(component.getType());
         if (factory == null) {
             throw new IllegalStateException();
         }

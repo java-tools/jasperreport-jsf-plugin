@@ -18,13 +18,14 @@
  */
 package net.sf.jasperreports.jsf.engine.databroker;
 
+import net.sf.jasperreports.jsf.engine.ReportSource;
 import net.sf.jasperreports.engine.JRDataSource;
 
 /**
  *
  * @author aalonsodominguez
  */
-public class JRDataSourceHolder implements DataSourceHolder<JRDataSource> {
+public class JRDataSourceHolder implements ReportSource<JRDataSource> {
 
     private JRDataSource dataSource;
 

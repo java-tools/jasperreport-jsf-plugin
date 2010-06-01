@@ -27,7 +27,7 @@ import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.Constants;
-import net.sf.jasperreports.jsf.engine.export.Exporter;
+import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 import net.sf.jasperreports.jsf.validation.ReportValidator;
 import net.sf.jasperreports.jsf.validation.ValidatorLoader;
@@ -44,7 +44,7 @@ public class UIReport extends UIComponentBase {
             Constants.PACKAGE_PREFIX + ".Report";
 
     /** The data source. */
-    private Object dataBroker;
+    private Object reportSource;
 
     private boolean immediate;
     private boolean immediateSet = false;
@@ -78,11 +78,11 @@ public class UIReport extends UIComponentBase {
      *
      * @see net.sf.jasperreports.jsf.component.UIReport#getDataSource()
      */
-    public Object getDataBroker() {
-        if (dataBroker != null) {
-            return dataBroker;
+    public Object getReportSource() {
+        if (reportSource != null) {
+            return reportSource;
         }
-        final ValueExpression ve = getValueExpression("dataBroker");
+        final ValueExpression ve = getValueExpression("reportSource");
         if (ve != null) {
             try {
                 return ve.getValue(getFacesContext().getELContext());
@@ -90,7 +90,7 @@ public class UIReport extends UIComponentBase {
                 throw new FacesException(e);
             }
         } else {
-            return dataBroker;
+            return reportSource;
         }
     }
 
@@ -101,8 +101,8 @@ public class UIReport extends UIComponentBase {
      * net.sf.jasperreports.jsf.component.UIReport#setDataSource(java.lang.String
      * )
      */
-    public void setDataBroker(final Object dataSource) {
-        this.dataBroker = dataSource;
+    public void setReportSource(final Object dataSource) {
+        this.reportSource = dataSource;
     }
 
     public String getName() {
@@ -302,7 +302,7 @@ public class UIReport extends UIComponentBase {
     public void restoreState(final FacesContext context, final Object state) {
         final Object[] values = (Object[]) state;
         super.restoreState(context, values[0]);
-        dataBroker = (String) values[1];
+        reportSource = (String) values[1];
         path = (String) values[2];
         subreportDir = (String) values[3];
         format = (String) values[4];
@@ -324,7 +324,7 @@ public class UIReport extends UIComponentBase {
     public Object saveState(final FacesContext context) {
         final Object[] values = new Object[10];
         values[0] = super.saveState(context);
-        values[1] = dataBroker;
+        values[1] = reportSource;
         values[2] = path;
         values[3] = subreportDir;
         values[4] = format;

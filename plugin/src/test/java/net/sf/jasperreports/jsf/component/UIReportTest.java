@@ -19,7 +19,7 @@
 package net.sf.jasperreports.jsf.component;
 
 import net.sf.jasperreports.jsf.test.JMockTheories;
-import net.sf.jasperreports.jsf.test.MockFacesEnvironment;
+import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import org.apache.shale.test.mock.MockExternalContext;
 
 import org.jmock.Mockery;
@@ -46,13 +46,13 @@ public class UIReportTest {
 
     private Mockery mockery = new JUnit4Mockery();
 
-    private DataBrokerTestBean dataBrokerBean;
+    private ReportSourceTestBean dataBrokerBean;
 
     @Before
     public void init() {
         facesEnv = MockFacesEnvironment.getServletInstance();
 
-        dataBrokerBean = mockery.mock(DataBrokerTestBean.class);
+        dataBrokerBean = mockery.mock(ReportSourceTestBean.class);
 
         MockExternalContext context = facesEnv.getExternalContext();
         context.getRequestMap().put(DATA_BEAN_NAME, dataBrokerBean);

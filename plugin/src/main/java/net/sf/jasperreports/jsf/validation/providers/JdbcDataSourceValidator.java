@@ -20,8 +20,8 @@ package net.sf.jasperreports.jsf.validation.providers;
 
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UIDataBroker;
-import net.sf.jasperreports.jsf.engine.databroker.JdbcDataBrokerFactory;
+import net.sf.jasperreports.jsf.component.UIReportSource;
+import net.sf.jasperreports.jsf.engine.databroker.JdbcReportSourceFactory;
 import net.sf.jasperreports.jsf.validation.DataBrokerValidatorBase;
 import net.sf.jasperreports.jsf.validation.MissingAttributeException;
 import net.sf.jasperreports.jsf.validation.ValidationException;
@@ -30,11 +30,11 @@ public class JdbcDataSourceValidator extends DataBrokerValidatorBase {
 
     /** The Constant REQUIRED_DATASOURCE_ATTRS. */
     public static final String[] REQUIRED_DATASOURCE_ATTRS = {
-        JdbcDataBrokerFactory.ATTR_DRIVER_CLASS_NAME};
+        JdbcReportSourceFactory.ATTR_DRIVER_CLASS_NAME};
 
     @Override
     public void validate(final FacesContext context,
-            final UIDataBroker component) throws ValidationException {
+            final UIReportSource component) throws ValidationException {
         super.validate(context, component);
         for (final String attr : REQUIRED_DATASOURCE_ATTRS) {
             if (null == component.getAttributes().get(attr)) {

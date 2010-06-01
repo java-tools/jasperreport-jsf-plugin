@@ -23,7 +23,7 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UIDataBroker;
+import net.sf.jasperreports.jsf.component.UIReportSource;
 import net.sf.jasperreports.jsf.util.Services;
 
 public final class DataBrokerValidatorFactory {
@@ -32,7 +32,7 @@ public final class DataBrokerValidatorFactory {
             Services.map(DataBrokerValidator.class);
 
     public static DataBrokerValidator createValidator(final FacesContext context,
-            final UIDataBroker component) throws ValidationException {
+            final UIReportSource component) throws ValidationException {
         DataBrokerValidator result = null;
         result = validatorCacheMap.get(component.getType());
         if (result == null) {

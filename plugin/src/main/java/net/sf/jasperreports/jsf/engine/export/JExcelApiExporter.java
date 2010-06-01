@@ -18,6 +18,7 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
+import net.sf.jasperreports.jsf.engine.ExporterException;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.export.JExcelApiExporterParameter;

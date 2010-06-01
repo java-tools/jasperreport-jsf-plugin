@@ -21,7 +21,7 @@ package net.sf.jasperreports.jsf.component.html;
 import javax.faces.context.FacesContext;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 import net.sf.jasperreports.jsf.renderkit.html.FrameRenderer;
-import net.sf.jasperreports.jsf.test.MockFacesEnvironment;
+import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;

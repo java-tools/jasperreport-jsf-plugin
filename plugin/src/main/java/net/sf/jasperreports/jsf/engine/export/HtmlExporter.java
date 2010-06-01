@@ -28,7 +28,7 @@ import net.sf.jasperreports.jsf.component.UIReport;
 /**
  * The Class HtmlExporter.
  */
-public final class HtmlExporter extends Exporter {
+public final class HtmlExporter extends DefaultExporter {
 
     public static final String CONTENT_TYPE = "text/html";
     /** The Constant ATTR_HTML_HEADER. */
@@ -50,7 +50,7 @@ public final class HtmlExporter extends Exporter {
      * (non-Javadoc)
      *
      * @see
-     * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
+     * net.sf.jasperreports.jsf.export.DefaultExporter#createJRExporter(javax.faces
      * .context.FacesContext)
      */
     @Override

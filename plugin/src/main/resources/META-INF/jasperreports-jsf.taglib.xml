@@ -32,10 +32,10 @@
     </namespace>
 
     <tag>
-        <tag-name>dataBroker</tag-name>
+        <tag-name>reportSource</tag-name>
         <component>
             <component-type>
-                net.sf.jasperreports.jsf.DataBroker
+                net.sf.jasperreports.jsf.ReportSource
             </component-type>
         </component>
     </tag>

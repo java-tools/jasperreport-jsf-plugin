@@ -18,6 +18,7 @@
  */
 package net.sf.jasperreports.jsf.engine.databroker;
 
+import net.sf.jasperreports.jsf.engine.ReportSource;
 import java.util.Arrays;
 import java.util.Collection;
 import javax.faces.context.FacesContext;
@@ -26,8 +27,8 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.data.JRBeanArrayDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.jsf.component.UIDataBroker;
-import net.sf.jasperreports.jsf.test.MockFacesEnvironment;
+import net.sf.jasperreports.jsf.component.UIReportSource;
+import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 
 import org.junit.After;
 import org.junit.Before;
@@ -60,14 +61,14 @@ public class BeanDataBrokerFactoryTest {
 
     private MockFacesEnvironment facesEnv;
 
-    private UIDataBroker component;
-    private BeanDataBrokerFactory factory;
+    private UIReportSource component;
+    private BeanReportSourceFactory factory;
 
     @Before
     public void init() {
         facesEnv = MockFacesEnvironment.getServletInstance();
-        component = new UIDataBroker();
-        factory = new BeanDataBrokerFactory();
+        component = new UIReportSource();
+        factory = new BeanReportSourceFactory();
     }
 
     @After
@@ -87,7 +88,7 @@ public class BeanDataBrokerFactoryTest {
         final FacesContext facesContext = facesEnv.getFacesContext();
 
         component.setData(data);
-        DataSourceHolder broker = factory.createDataSource(facesContext, component);
+        ReportSource broker = factory.createDataSource(facesContext, component);
         assertThat(broker, is(not(nullValue())));
 
         if (!(broker instanceof JRDataSourceHolder)) {
@@ -110,7 +111,7 @@ public class BeanDataBrokerFactoryTest {
         final FacesContext facesContext = facesEnv.getFacesContext();
 
         component.setData(data);
-        DataSourceHolder broker = factory.createDataSource(facesContext, component);
+        ReportSource broker = factory.createDataSource(facesContext, component);
         assertThat(broker, is(not(nullValue())));
 
         if (!(broker instanceof JRDataSourceHolder)) {
@@ -130,7 +131,7 @@ public class BeanDataBrokerFactoryTest {
     public void nullDataReturnsEmptyDataSource(Object data) {
         assumeThat(data, is(nullValue()));
 
-        DataSourceHolder broker = factory.createDataSource(
+        ReportSource broker = factory.createDataSource(
                 facesEnv.getFacesContext(), component);
         assertThat(broker, is(not(nullValue())));
         

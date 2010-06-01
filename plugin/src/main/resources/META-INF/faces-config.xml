@@ -43,9 +43,9 @@
     </lifecycle>
 
     <component>
-        <display-name>Data Broker Component</display-name>
+        <display-name>Report Source Component</display-name>
         <component-type>
-            net.sf.jasperreports.jsf.DataBroker
+            net.sf.jasperreports.jsf.ReportSource
         </component-type>
         <component-class>
             net.sf.jasperreports.jsf.component.UIDataBroker

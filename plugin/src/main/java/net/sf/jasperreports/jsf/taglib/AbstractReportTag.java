@@ -30,7 +30,7 @@ import net.sf.jasperreports.jsf.component.UIReport;
 public abstract class AbstractReportTag extends UIComponentELTag {
 
     /** The data source. */
-    private ValueExpression dataSource;
+    private ValueExpression reportSource;
 
     private ValueExpression name;
     /** The path. */
@@ -46,8 +46,8 @@ public abstract class AbstractReportTag extends UIComponentELTag {
      * @param dataSource
      *            the new data source
      */
-    public void setDataSource(final ValueExpression dataSource) {
-        this.dataSource = dataSource;
+    public void setReportSource(final ValueExpression dataSource) {
+        this.reportSource = dataSource;
     }
 
     public void setName(final ValueExpression name) {
@@ -94,7 +94,7 @@ public abstract class AbstractReportTag extends UIComponentELTag {
     @Override
     public void release() {
         super.release();
-        dataSource = null;
+        reportSource = null;
         path = null;
         subreportDir = null;
         format = null;
@@ -113,11 +113,11 @@ public abstract class AbstractReportTag extends UIComponentELTag {
         super.setProperties(component);
 
         final UIReport jreport = (UIReport) component;
-        if (dataSource != null) {
-            if (dataSource.isLiteralText()) {
-                jreport.setDataBroker(dataSource.getExpressionString());
+        if (reportSource != null) {
+            if (reportSource.isLiteralText()) {
+                jreport.setReportSource(reportSource.getExpressionString());
             } else {
-                component.setValueExpression("dataSource", dataSource);
+                component.setValueExpression("reportSource", reportSource);
             }
         }
 

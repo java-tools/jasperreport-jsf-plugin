@@ -18,7 +18,6 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRExporter;
@@ -33,7 +32,7 @@ import net.sf.jasperreports.jsf.component.UIReport;
  * 
  * @author A. Alonso Dominguez
  */
-public final class DocxExporter extends Exporter {
+public final class DocxExporter extends DefaultExporter {
 
     public static final String CONTENT_TYPE =
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document";

@@ -28,7 +28,7 @@ import net.sf.jasperreports.jsf.component.UIReport;
 /**
  * The Class TextExporter.
  */
-public final class TextExporter extends Exporter {
+public final class TextExporter extends DefaultExporter {
 
     public static final String CONTENT_TYPE = "text/plain";
     /** The Constant ATTR_BETWEEN_PAGES_TEXT. */
@@ -52,7 +52,7 @@ public final class TextExporter extends Exporter {
      * (non-Javadoc)
      *
      * @see
-     * net.sf.jasperreports.jsf.export.Exporter#createJRExporter(javax.faces
+     * net.sf.jasperreports.jsf.export.DefaultExporter#createJRExporter(javax.faces
      * .context.FacesContext)
      */
     @Override
