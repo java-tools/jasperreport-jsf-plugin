@@ -19,6 +19,7 @@
 package net.sf.jasperreports.jsf.engine;
 
 import javax.faces.context.FacesContext;
+
 import net.sf.jasperreports.jsf.component.UIReportSource;
 
 /**
@@ -27,7 +28,7 @@ import net.sf.jasperreports.jsf.component.UIReportSource;
  */
 public interface ReportSourceFactory {
 
-    public ReportSource<?> createDataSource(FacesContext context,
+    public ReportSource<?> createSource(FacesContext context,
             UIReportSource component);
 
 }

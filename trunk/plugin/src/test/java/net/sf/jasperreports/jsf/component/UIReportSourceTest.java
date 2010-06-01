@@ -25,8 +25,8 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.jsf.engine.ReportSource;
 import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
-import net.sf.jasperreports.jsf.engine.databroker.JRDataSourceHolder;
-import net.sf.jasperreports.jsf.engine.databroker.ConnectionHolder;
+import net.sf.jasperreports.jsf.engine.source.JRDataSourceHolder;
+import net.sf.jasperreports.jsf.engine.source.ConnectionHolder;
 import net.sf.jasperreports.jsf.test.JMockTheories;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockJRFacesContext;
@@ -42,7 +42,6 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.After;
-
 import org.junit.Before;
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theory;
@@ -187,7 +186,7 @@ public final class UIReportSourceTest {
 
         mockery.checking(new Expectations(){{
             oneOf(reportSourceValidator).validate(facesContext, component);
-            oneOf(reportSourceFactory).createDataSource(facesContext, component);
+            oneOf(reportSourceFactory).createSource(facesContext, component);
             will(returnValue(reportSource));
         }});
 
@@ -199,11 +198,11 @@ public final class UIReportSourceTest {
 
         assertTrue(facesContext.getExternalContext()
                 .getRequestMap().containsKey(clientId));
-        Object broker = facesContext.getExternalContext()
+        Object source = facesContext.getExternalContext()
                 .getRequestMap().get(clientId);
-        assertThat(broker, is(not(nullValue())));
-        assertThat(broker, instanceOf(ReportSource.class));
-        assertSame(reportSource, broker);
+        assertThat(source, is(not(nullValue())));
+        assertThat(source, instanceOf(ReportSource.class));
+        assertSame(reportSource, source);
     }
 
     @Theory
@@ -214,18 +213,18 @@ public final class UIReportSourceTest {
         assumeThat(value, is(not(nullValue())));
         
         final FacesContext facesContext = facesEnv.getFacesContext();
-        assumeTrue(!value.isReadOnly(facesContext.getELContext()));
-
         final ReportSourceTestBean reportSourceBean = new ReportSourceTestBean();
-        MockExternalContext context = facesEnv.getExternalContext();
+        final MockExternalContext context = facesEnv.getExternalContext();
         context.getRequestMap().put(DATA_BEAN_NAME, reportSourceBean);
 
         final UIReportSource component = createComponent(type, data, value);
         final String clientId = component.getClientId(facesContext);
-        
+
+        assumeTrue(!value.isReadOnly(facesContext.getELContext()));
+
         mockery.checking(new Expectations(){{
             oneOf(reportSourceValidator).validate(facesContext, component);
-            oneOf(reportSourceFactory).createDataSource(facesContext, component);
+            oneOf(reportSourceFactory).createSource(facesContext, component);
             will(returnValue(reportSource));
 
             oneOf(reportSourceBean).setReportSource(reportSource);
@@ -267,7 +266,7 @@ public final class UIReportSourceTest {
 
         mockery.checking(new Expectations(){{
             never(reportSourceValidator).validate(facesContext, component);
-            never(reportSourceFactory).createDataSource(facesContext, component);
+            never(reportSourceFactory).createSource(facesContext, component);
         }});
 
         component.processDecodes(facesContext);
@@ -299,7 +298,7 @@ public final class UIReportSourceTest {
 
         mockery.checking(new Expectations(){{
             never(reportSourceValidator).validate(facesContext, component);
-            never(reportSourceFactory).createDataSource(facesContext, component);
+            never(reportSourceFactory).createSource(facesContext, component);
         }});
 
         component.processDecodes(facesContext);

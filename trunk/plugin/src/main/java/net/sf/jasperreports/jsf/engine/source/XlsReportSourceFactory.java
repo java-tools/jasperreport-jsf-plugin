@@ -16,37 +16,44 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.engine.databroker;
+package net.sf.jasperreports.jsf.engine.source;
 
 import net.sf.jasperreports.jsf.engine.ReportSource;
-import java.util.Collection;
-import java.util.Map;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.faces.context.FacesContext;
 
+import jxl.Workbook;
+
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.engine.data.JRMapArrayDataSource;
-import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.data.JRXlsDataSource;
+import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIReportSource;
+import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
+import net.sf.jasperreports.jsf.resource.Resource;
 
 /**
  *
- * @author antonio.alonso
+ * @author aalonsodominguez
  */
-public class MapReportSourceFactory implements ReportSourceFactory {
+public class XlsReportSourceFactory implements ReportSourceFactory {
 
+    /** The logger instance. */
     private static final Logger logger = Logger.getLogger(
-            MapReportSourceFactory.class.getPackage().getName(),
+            XlsReportSourceFactory.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
-    public ReportSource createDataSource(FacesContext context,
+    public ReportSource createSource(FacesContext context,
             UIReportSource component) {
+        final JRFacesContext jrContext = JRFacesContext.getInstance(context);
         JRDataSource dataSource;
-
         final Object value = component.getData();
         if (value == null) {
             if (logger.isLoggable(Level.WARNING)) {
@@ -54,16 +61,27 @@ public class MapReportSourceFactory implements ReportSourceFactory {
                         component.getClientId(context));
             }
             dataSource = new JREmptyDataSource();
-        } else if (value instanceof Collection<?>) {
-            dataSource = new JRMapCollectionDataSource((Collection<?>) value);
         } else {
-            Map<?, ?>[] mapArray;
-            if (!value.getClass().isArray()) {
-                mapArray = new Map[]{(Map<?, ?>) value};
-            } else {
-                mapArray = (Map[]) value;
+            try {
+                if (value instanceof File) {
+                    dataSource = new JRXlsDataSource((File) value);
+                } else if (value instanceof InputStream) {
+                    dataSource = new JRXlsDataSource((InputStream) value);
+                } else if (value instanceof Workbook) {
+                    dataSource = new JRXlsDataSource((Workbook) value);
+                } else if (value instanceof String) {
+                    Resource resource = jrContext.getResource(context,
+                            component, (String) value);
+                    dataSource = new JRXlsDataSource(resource.getInputStream());
+                } else {
+                    throw new JRFacesException("Unrecognized value type: " +
+                            value.getClass().getName());
+                }
+            } catch (JRException e) {
+                throw new JRFacesException(e);
+            } catch (IOException e) {
+                throw new JRFacesException(e);
             }
-            dataSource = new JRMapArrayDataSource(mapArray);
         }
         return new JRDataSourceHolder(dataSource);
     }

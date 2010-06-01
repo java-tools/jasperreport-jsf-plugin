@@ -89,7 +89,7 @@ public class DefaultJRFacesContext extends JRFacesContext {
         if (factory == null) {
             throw new IllegalStateException();
         }
-        return factory.createDataSource(context, component);
+        return factory.createSource(context, component);
     }
 
     @Override

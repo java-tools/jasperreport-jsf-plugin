@@ -16,7 +16,7 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.engine.databroker;
+package net.sf.jasperreports.jsf.engine.source;
 
 import net.sf.jasperreports.jsf.engine.ReportSource;
 import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
@@ -36,6 +36,7 @@ import net.sf.jasperreports.engine.data.JRCsvDataSource;
 import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIReportSource;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
+import net.sf.jasperreports.jsf.engine.ReportSourceException;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.ResourceException;
 
@@ -49,9 +50,10 @@ public class CsvReportSourceFactory implements ReportSourceFactory {
             CsvReportSourceFactory.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
-    public ReportSource createDataSource(FacesContext context,
+    public ReportSource createSource(FacesContext context,
             UIReportSource component) {
         final JRFacesContext jrContext = JRFacesContext.getInstance(context);
+        
         JRDataSource dataSource = null;
         InputStream dataSourceStream = null;
         boolean closeStream = true;
@@ -68,7 +70,7 @@ public class CsvReportSourceFactory implements ReportSourceFactory {
             try {
                 dataSourceStream = ((URL) value).openStream();
             } catch (final IOException e) {
-                throw new JRFacesException(e);
+                throw new ReportSourceException(e);
             }
         } else if (value instanceof InputStream) {
             dataSourceStream = (InputStream) value;
@@ -81,13 +83,13 @@ public class CsvReportSourceFactory implements ReportSourceFactory {
             } catch (final ResourceException e) {
                 throw e;
             } catch (final IOException e) {
-                throw new JRFacesException(e);
+                throw new ReportSourceException(e);
             }
         } else if (value instanceof File) {
             try {
                 dataSource = new JRCsvDataSource((File) value);
             } catch (final FileNotFoundException e) {
-                throw new JRFacesException(e);
+                throw new ReportSourceException(e);
             }
         }
 
@@ -100,10 +102,8 @@ public class CsvReportSourceFactory implements ReportSourceFactory {
             }
         }
 
-        JRDataSourceHolder broker = new CsvReportSource(
-                clientId, dataSource,
+        return new CsvReportSource(clientId, dataSource,
                 (closeStream ? dataSourceStream : null));
-        return broker;
     }
 
     private class CsvReportSource extends JRDataSourceHolder {
