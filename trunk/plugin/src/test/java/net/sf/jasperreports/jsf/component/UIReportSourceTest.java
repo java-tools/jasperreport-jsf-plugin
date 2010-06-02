@@ -30,10 +30,10 @@ import net.sf.jasperreports.jsf.engine.source.ConnectionHolder;
 import net.sf.jasperreports.jsf.test.JMockTheories;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockJRFacesContext;
-import net.sf.jasperreports.jsf.validation.ReportSourceValidator;
 import net.sf.jasperreports.jsf.validation.IllegalReportSourceTypeException;
 import net.sf.jasperreports.jsf.validation.MissingAttributeException;
 import net.sf.jasperreports.jsf.validation.ValidationException;
+import net.sf.jasperreports.jsf.validation.Validator;
 
 import org.apache.shale.test.el.MockValueExpression;
 import org.apache.shale.test.mock.MockExternalContext;
@@ -96,16 +96,16 @@ public final class UIReportSourceTest {
 
     // Private fields
 
+    private Mockery mockery = new JUnit4Mockery();
+
     private MockFacesEnvironment facesEnv;
     private MockJRFacesContext jrContext;
 
     private Connection connection;
     private ReportSource reportSource;
     private ReportSourceFactory reportSourceFactory;
-    private ReportSourceValidator reportSourceValidator;
+    private Validator reportSourceValidator;
     private JRDataSource dataSource;
-
-    private Mockery mockery = new JUnit4Mockery();
 
     // Test lifecycle methods
 
@@ -116,7 +116,7 @@ public final class UIReportSourceTest {
         connection = mockery.mock(Connection.class);
         reportSource = mockery.mock(ReportSource.class);
         reportSourceFactory = mockery.mock(ReportSourceFactory.class);
-        reportSourceValidator = mockery.mock(ReportSourceValidator.class);
+        reportSourceValidator = mockery.mock(Validator.class);
         dataSource = mockery.mock(JRDataSource.class);
 
         jrContext = new MockJRFacesContext(facesEnv.getFacesContext());

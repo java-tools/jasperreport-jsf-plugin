@@ -16,12 +16,14 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.resource;
+package net.sf.jasperreports.jsf.engine.fill;
+
+import net.sf.jasperreports.jsf.engine.FillerException;
 
 /**
  * The Class ReportNotFoundException.
  */
-public class ReportNotFoundException extends ResourceException {
+public class ReportNotFoundException extends FillerException {
 
     /**
      *

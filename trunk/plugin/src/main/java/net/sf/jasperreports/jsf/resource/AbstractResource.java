@@ -18,7 +18,7 @@
  */
 package net.sf.jasperreports.jsf.resource;
 
-public abstract class AbstractResource implements Resource {
+abstract class AbstractResource implements Resource {
 
     private final String name;
 

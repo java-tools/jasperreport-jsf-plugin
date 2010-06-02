@@ -29,7 +29,8 @@ public final class ClasspathResource extends AbstractResource
 
     private final ClassLoader classLoader;
 
-    public ClasspathResource(final String name, final ClassLoader classLoader) {
+    protected ClasspathResource(final String name,
+            final ClassLoader classLoader) {
         super(name);
         this.classLoader = classLoader;
     }

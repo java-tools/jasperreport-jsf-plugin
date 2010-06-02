@@ -36,6 +36,10 @@ public class HtmlReportFrame extends UIReport {
     public static final String COMPONENT_TYPE = 
             Constants.PACKAGE_PREFIX + ".HtmlReportFrame";
 
+    // attributes
+
+    private String layout;
+
     // iframe attributes
 
     /** The frameborder. */
@@ -57,6 +61,27 @@ public class HtmlReportFrame extends UIReport {
     public HtmlReportFrame() {
         super();
         setRendererType(FrameRenderer.RENDERER_TYPE);
+    }
+
+    public String getLayout() {
+        if (layout != null) {
+            return layout;
+        }
+        ValueExpression ve = getValueExpression("layout");
+        if (ve != null) {
+            try {
+                return (String) ve.getValue(
+                        getFacesContext().getELContext());
+            } catch (ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return layout;
+        }
+    }
+
+    public void setLayout(String layout) {
+        this.layout = layout;
     }
 
     /**
@@ -235,6 +260,7 @@ public class HtmlReportFrame extends UIReport {
         marginwidth = (String) values[4];
         height = (String) values[5];
         width = (String) values[6];
+        layout = (String) values[7];
     }
 
     /*
@@ -254,6 +280,7 @@ public class HtmlReportFrame extends UIReport {
         values[4] = marginwidth;
         values[5] = height;
         values[6] = width;
+        values[7] = layout;
         return values;
     }
 

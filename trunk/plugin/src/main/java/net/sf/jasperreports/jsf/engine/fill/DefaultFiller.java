@@ -47,7 +47,6 @@ import net.sf.jasperreports.jsf.engine.FillerException;
 import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.engine.source.JRDataSourceHolder;
 import net.sf.jasperreports.jsf.engine.source.ConnectionHolder;
-import net.sf.jasperreports.jsf.resource.ReportNotFoundException;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.UnresolvedResourceException;
 import net.sf.jasperreports.jsf.util.Util;
@@ -84,9 +83,6 @@ public class DefaultFiller implements Filler {
         try {
             resource = jrContext.createResource(context,
                     (UIComponent) component, reportName);
-            reportStream = resource.getInputStream();
-        } catch (final IOException e) {
-            throw new FillerException(reportName, e);
         } catch (final UnresolvedResourceException e) {
             throw new ReportNotFoundException(reportName, e);
         }
@@ -114,7 +110,7 @@ public class DefaultFiller implements Filler {
             }
         }
         try {
-            jasperReport = loadReportObject(reportStream);
+            jasperReport = loadReportObject(resource);
         } catch (IOException ex) {
             if (logger.isLoggable(Level.SEVERE)) {
                 LogRecord record = new LogRecord(Level.SEVERE, "JRJSF_0033");
@@ -228,9 +224,10 @@ public class DefaultFiller implements Filler {
         return print;
     }
 
-    protected JasperReport loadReportObject(InputStream stream)
+    protected JasperReport loadReportObject(Resource resource)
             throws IOException, ClassNotFoundException {
-        ObjectInputStream ois = new ContextClassLoaderObjectInputStream(stream);
+        ObjectInputStream ois = new ContextClassLoaderObjectInputStream(
+                resource.getInputStream());
         return (JasperReport) ois.readObject();
     }
 

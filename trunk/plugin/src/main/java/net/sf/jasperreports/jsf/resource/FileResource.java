@@ -29,11 +29,11 @@ import java.net.URL;
  *
  * @author aalonsodominguez
  */
-public class FileResource implements Resource {
+public final class FileResource implements Resource {
 
     private File file;
 
-    public FileResource(File file) {
+    protected FileResource(File file) {
         this.file = file;
     }
 

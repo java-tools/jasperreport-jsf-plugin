@@ -39,7 +39,7 @@ public class ContextResource extends AbstractResource
      * @param servletContext
      *            the servlet context
      */
-    public ContextResource(final String name) {
+    protected ContextResource(final String name) {
         super(name);
     }
 

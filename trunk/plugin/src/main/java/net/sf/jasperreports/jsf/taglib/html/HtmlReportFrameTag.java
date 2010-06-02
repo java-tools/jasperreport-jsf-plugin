@@ -30,6 +30,7 @@ import net.sf.jasperreports.jsf.taglib.AbstractReportTag;
  */
 public class HtmlReportFrameTag extends AbstractReportTag {
 
+    private ValueExpression layout;
     /** The frameborder. */
     private ValueExpression frameborder;
     /** The marginheight. */
@@ -41,11 +42,14 @@ public class HtmlReportFrameTag extends AbstractReportTag {
     /** The width. */
     private ValueExpression width;
 
+    public void setLayout(ValueExpression layout) {
+        this.layout = layout;
+    }
+
     /**
      * Sets the frameborder.
      *
-     * @param frameborder
-     *            el frameborder a establecer
+     * @param frameborder el frameborder a establecer
      */
     public void setFrameborder(final ValueExpression frameborder) {
         this.frameborder = frameborder;
@@ -54,8 +58,7 @@ public class HtmlReportFrameTag extends AbstractReportTag {
     /**
      * Sets the height.
      *
-     * @param height
-     *            el height a establecer
+     * @param height el height a establecer
      */
     public void setHeight(final ValueExpression height) {
         this.height = height;
@@ -64,8 +67,7 @@ public class HtmlReportFrameTag extends AbstractReportTag {
     /**
      * Sets the marginheight.
      *
-     * @param marginheight
-     *            el marginheight a establecer
+     * @param marginheight el marginheight a establecer
      */
     public void setMarginheight(final ValueExpression marginheight) {
         this.marginheight = marginheight;
@@ -74,8 +76,7 @@ public class HtmlReportFrameTag extends AbstractReportTag {
     /**
      * Sets the marginwidth.
      *
-     * @param marginwidth
-     *            el marginwidth a establecer
+     * @param marginwidth el marginwidth a establecer
      */
     public void setMarginwidth(final ValueExpression marginwidth) {
         this.marginwidth = marginwidth;
@@ -84,8 +85,7 @@ public class HtmlReportFrameTag extends AbstractReportTag {
     /**
      * Sets the width.
      *
-     * @param width
-     *            el width a establecer
+     * @param width el width a establecer
      */
     public void setWidth(final ValueExpression width) {
         this.width = width;
@@ -101,6 +101,7 @@ public class HtmlReportFrameTag extends AbstractReportTag {
     @Override
     public void release() {
         super.release();
+        layout = null;
         frameborder = null;
         marginheight = null;
         marginwidth = null;
@@ -142,9 +143,18 @@ public class HtmlReportFrameTag extends AbstractReportTag {
         super.setProperties(component);
         final HtmlReportFrame report = (HtmlReportFrame) component;
 
+        if (layout != null) {
+            if (layout.isLiteralText()) {
+                report.setLayout(layout.getExpressionString());
+            } else {
+                report.setValueExpression("layout", layout);
+            }
+        }
+        
         if (frameborder != null) {
             if (frameborder.isLiteralText()) {
-                report.setFrameborder(Boolean.parseBoolean(frameborder.getExpressionString()));
+                report.setFrameborder(Boolean.parseBoolean(
+                        frameborder.getExpressionString()));
             } else {
                 report.setValueExpression("frameborder", frameborder);
             }
