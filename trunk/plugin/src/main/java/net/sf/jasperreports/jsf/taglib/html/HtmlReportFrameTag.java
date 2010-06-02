@@ -25,6 +25,8 @@ import net.sf.jasperreports.jsf.component.html.HtmlReportFrame;
 import net.sf.jasperreports.jsf.renderkit.html.FrameRenderer;
 import net.sf.jasperreports.jsf.taglib.AbstractReportTag;
 
+import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
+
 /**
  * The Class ReportTag.
  */
@@ -41,6 +43,9 @@ public class HtmlReportFrameTag extends AbstractReportTag {
     private ValueExpression height;
     /** The width. */
     private ValueExpression width;
+
+    private ValueExpression style;
+    private ValueExpression styleClass;
 
     public void setLayout(ValueExpression layout) {
         this.layout = layout;
@@ -91,6 +96,14 @@ public class HtmlReportFrameTag extends AbstractReportTag {
         this.width = width;
     }
 
+    public void setStyle(ValueExpression style) {
+        this.style = style;
+    }
+
+    public void setStyleClass(ValueExpression styleClass) {
+        this.styleClass = styleClass;
+    }
+
     // TagSupport
 
     /*
@@ -102,6 +115,8 @@ public class HtmlReportFrameTag extends AbstractReportTag {
     public void release() {
         super.release();
         layout = null;
+        style = null;
+        styleClass = null;
         frameborder = null;
         marginheight = null;
         marginwidth = null;
@@ -141,55 +156,14 @@ public class HtmlReportFrameTag extends AbstractReportTag {
     @Override
     protected void setProperties(final UIComponent component) {
         super.setProperties(component);
-        final HtmlReportFrame report = (HtmlReportFrame) component;
 
-        if (layout != null) {
-            if (layout.isLiteralText()) {
-                report.setLayout(layout.getExpressionString());
-            } else {
-                report.setValueExpression("layout", layout);
-            }
-        }
-        
-        if (frameborder != null) {
-            if (frameborder.isLiteralText()) {
-                report.setFrameborder(Boolean.parseBoolean(
-                        frameborder.getExpressionString()));
-            } else {
-                report.setValueExpression("frameborder", frameborder);
-            }
-        }
-
-        if (marginheight != null) {
-            if (marginheight.isLiteralText()) {
-                report.setMarginheight(marginheight.getExpressionString());
-            } else {
-                report.setValueExpression("marginheight", marginheight);
-            }
-        }
-
-        if (marginwidth != null) {
-            if (marginwidth.isLiteralText()) {
-                report.setMarginwidth(marginwidth.getExpressionString());
-            } else {
-                report.setValueExpression("marginwidth", marginwidth);
-            }
-        }
-
-        if (height != null) {
-            if (height.isLiteralText()) {
-                report.setHeight(height.getExpressionString());
-            } else {
-                report.setValueExpression("height", height);
-            }
-        }
-
-        if (width != null) {
-            if (width.isLiteralText()) {
-                report.setWidth(width.getExpressionString());
-            } else {
-                report.setValueExpression("width", width);
-            }
-        }
+        setBooleanAttribute(component, "frameborder", frameborder);
+        setStringAttribute(component, "height", height);
+        setStringAttribute(component, "layout", layout);
+        setStringAttribute(component, "marginheight", marginheight);
+        setStringAttribute(component, "marginwidth", marginwidth);
+        setStringAttribute(component, "style", style);
+        setStringAttribute(component, "styleClass", styleClass);
+        setStringAttribute(component, "width", width);
     }
 }

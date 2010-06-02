@@ -36,9 +36,10 @@ public class HtmlReportFrame extends UIReport {
     public static final String COMPONENT_TYPE = 
             Constants.PACKAGE_PREFIX + ".HtmlReportFrame";
 
-    // attributes
+    // common attributes
 
-    private String layout;
+    private String style;
+    private String styleClass;
 
     // iframe attributes
 
@@ -54,6 +55,10 @@ public class HtmlReportFrame extends UIReport {
     private String height;
     /** The width. */
     private String width;
+
+    // additional attributes
+
+    private String layout;
 
     /**
      * Instantiates a new html report.
@@ -109,8 +114,7 @@ public class HtmlReportFrame extends UIReport {
     /**
      * Sets the frameborder.
      *
-     * @param frameborder
-     *            the new frameborder
+     * @param frameborder the new frameborder
      */
     public void setFrameborder(final boolean frameborder) {
         this.frameborder = frameborder;
@@ -141,8 +145,7 @@ public class HtmlReportFrame extends UIReport {
     /**
      * Sets the marginheight.
      *
-     * @param marginheight
-     *            the new marginheight
+     * @param marginheight the new marginheight
      */
     public void setMarginheight(final String marginheight) {
         this.marginheight = marginheight;
@@ -172,8 +175,7 @@ public class HtmlReportFrame extends UIReport {
     /**
      * Sets the marginwidth.
      *
-     * @param marginwidth
-     *            the new marginwidth
+     * @param marginwidth the new marginwidth
      */
     public void setMarginwidth(final String marginwidth) {
         this.marginwidth = marginwidth;
@@ -203,8 +205,7 @@ public class HtmlReportFrame extends UIReport {
     /**
      * Sets the height.
      *
-     * @param height
-     *            the new height
+     * @param height the new height
      */
     public void setHeight(final String height) {
         this.height = height;
@@ -234,11 +235,50 @@ public class HtmlReportFrame extends UIReport {
     /**
      * Sets the width.
      *
-     * @param width
-     *            the new width
+     * @param width the new width
      */
     public void setWidth(final String width) {
         this.width = width;
+    }
+
+    public String getStyle() {
+        if (style != null) {
+            return style;
+        }
+        ValueExpression ve = getValueExpression("style");
+        if (ve != null) {
+            try {
+                return (String) ve.getValue(getFacesContext().getELContext());
+            } catch (ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return style;
+        }
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public String getStyleClass() {
+        if (styleClass != null) {
+            return styleClass;
+        }
+        ValueExpression ve = getValueExpression("styleClass");
+        if (ve != null) {
+            try {
+                return (String) ve.getValue(getFacesContext().getELContext());
+            } catch (ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return styleClass;
+        }
+    }
+
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
     }
 
     // State saving/restoring methods
@@ -261,6 +301,8 @@ public class HtmlReportFrame extends UIReport {
         height = (String) values[5];
         width = (String) values[6];
         layout = (String) values[7];
+        style = (String) values[8];
+        styleClass = (String) values[9];
     }
 
     /*
@@ -272,7 +314,7 @@ public class HtmlReportFrame extends UIReport {
      */
     @Override
     public Object saveState(final FacesContext context) {
-        final Object[] values = new Object[8];
+        final Object[] values = new Object[10];
         values[0] = super.saveState(context);
         values[1] = Boolean.valueOf(frameborder);
         values[2] = Boolean.valueOf(frameborderSet);
@@ -281,6 +323,8 @@ public class HtmlReportFrame extends UIReport {
         values[5] = height;
         values[6] = width;
         values[7] = layout;
+        values[8] = style;
+        values[9] = styleClass;
         return values;
     }
 

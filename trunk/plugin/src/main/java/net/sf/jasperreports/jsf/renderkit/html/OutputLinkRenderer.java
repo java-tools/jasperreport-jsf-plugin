@@ -66,9 +66,6 @@ public class OutputLinkRenderer extends HtmlReportRenderer {
 
         logger.log(Level.FINE, "JRJSF_0001", component.getClientId(context));
 
-        final ViewHandler viewHandler = context
-                .getApplication().getViewHandler();
-        final UIReport report = (UIReport) component;
         final String reportURI = encodeReportURL(context, component);
         final ResponseWriter writer = context.getResponseWriter();
 

@@ -22,14 +22,13 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import net.sf.jasperreports.jsf.Constants;
 
-import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.component.html.HtmlReportFrame;
+import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
  * The Class EmbedRenderer.
@@ -73,7 +72,10 @@ public class FrameRenderer extends HtmlReportRenderer {
         final String reportURI = encodeReportURL(context, component);
 
         final ResponseWriter writer = context.getResponseWriter();
-        if ("block".equals(component.getAttributes().get("layout"))) {
+
+        String layout = getStringAttribute(component, "layout", "inline");
+
+        if ("block".equals(layout)) {
             writer.startElement("br", component);
         }
 
@@ -109,7 +111,9 @@ public class FrameRenderer extends HtmlReportRenderer {
         final ResponseWriter writer = context.getResponseWriter();
         writer.endElement("iframe");
 
-        if ("block".equals(component.getAttributes().get("layout"))) {
+        String layout = getStringAttribute(component, "layout", "inline");
+
+        if ("block".equals(layout)) {
             writer.startElement("br", component);
         }
 
@@ -128,8 +132,9 @@ public class FrameRenderer extends HtmlReportRenderer {
             final UIComponent report) throws IOException {
         super.renderAttributes(writer, report);
 
-        final HtmlReportFrame htmlReport = (HtmlReportFrame) report;
-        if (htmlReport.getFrameborder()) {
+        boolean frameborder = getBooleanAttribute(report, "frameborder", false);
+        
+        if (frameborder) {
             writer.writeAttribute("frameborder", "1", null);
         } else {
             writer.writeAttribute("frameborder", "0", null);

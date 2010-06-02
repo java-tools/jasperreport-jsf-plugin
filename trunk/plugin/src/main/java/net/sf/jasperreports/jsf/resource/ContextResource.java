@@ -36,8 +36,7 @@ public class ContextResource extends AbstractResource
     /**
      * Instantiates a new context resource loader.
      *
-     * @param servletContext
-     *            the servlet context
+     * @param name the resource name
      */
     protected ContextResource(final String name) {
         super(name);

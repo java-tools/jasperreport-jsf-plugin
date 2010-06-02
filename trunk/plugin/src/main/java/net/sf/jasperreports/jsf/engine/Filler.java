@@ -33,8 +33,6 @@ public interface Filler {
      * @param context the context
      * @param report the report
      *
-     * @return the jasper print
-     *
      * @throws FillerException the filler exception
      */
     public void fill(final FacesContext context, final UIReport component)

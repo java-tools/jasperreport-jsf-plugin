@@ -29,7 +29,8 @@ public abstract class ReportSourceValidator implements Validator {
             final UIComponent component)
             throws ValidationException {
         if (!(component instanceof UIReportSource)) {
-            throw new IllegalArgumentException("");
+            throw new IllegalArgumentException(
+                    "'component' must be an UIReportSource instance.");
         }
         doValidate(context, (UIReportSource) component);
     }

@@ -24,6 +24,8 @@ import javax.faces.webapp.UIComponentELTag;
 
 import net.sf.jasperreports.jsf.component.UIReportSource;
 
+import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
+
 /**
  * The Class DataSourceTag.
  */
@@ -44,8 +46,7 @@ public class ReportSourceTag extends UIComponentELTag {
     /**
      * Sets the query.
      *
-     * @param query
-     *            el query a establecer
+     * @param query el query a establecer
      */
     public void setQuery(final ValueExpression query) {
         this.query = query;
@@ -54,8 +55,7 @@ public class ReportSourceTag extends UIComponentELTag {
     /**
      * Sets the type.
      *
-     * @param type
-     *            el type a establecer
+     * @param type el type a establecer
      */
     public void setType(final ValueExpression type) {
         this.type = type;
@@ -64,8 +64,7 @@ public class ReportSourceTag extends UIComponentELTag {
     /**
      * Sets the value.
      *
-     * @param value
-     *            el value a establecer
+     * @param value el value a establecer
      */
     public void setValue(final ValueExpression value) {
         this.value = value;
@@ -119,38 +118,10 @@ public class ReportSourceTag extends UIComponentELTag {
     @Override
     protected void setProperties(final UIComponent component) {
         super.setProperties(component);
-        final UIReportSource dataSource = (UIReportSource) component;
 
-        if (data != null) {
-            if (data.isLiteralText()) {
-                dataSource.setData(query.getExpressionString());
-            } else {
-                dataSource.setValueExpression("data", data);
-            }
-        }
-
-        if (query != null) {
-            if (query.isLiteralText()) {
-                dataSource.setQuery(query.getExpressionString());
-            } else {
-                dataSource.setValueExpression("query", query);
-            }
-        }
-
-        if (type != null) {
-            if (type.isLiteralText()) {
-                dataSource.setType(type.getExpressionString());
-            } else {
-                dataSource.setValueExpression("type", type);
-            }
-        }
-
-        if (value != null) {
-            if (value.isLiteralText()) {
-                dataSource.setData(value.getExpressionString());
-            } else {
-                dataSource.setValueExpression("value", value);
-            }
-        }
+        setStringAttribute(component, "data", data);
+        setStringAttribute(component, "query", query);
+        setStringAttribute(component, "type", type);
+        setStringAttribute(component, "value", value);
     }
 }
