@@ -18,10 +18,17 @@
  */
 package net.sf.jasperreports.jsf.engine.source;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.jsf.component.UIReportSource;
 import net.sf.jasperreports.jsf.engine.ReportSource;
+import net.sf.jasperreports.jsf.engine.ReportSourceException;
 import net.sf.jasperreports.jsf.resource.ClasspathResource;
 import net.sf.jasperreports.jsf.resource.ResourceResolver;
 import net.sf.jasperreports.jsf.test.JMockTheories;
@@ -39,6 +46,7 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
 import static org.hamcrest.Matchers.*;
+import static net.sf.jasperreports.jsf.test.Matchers.*;
 
 /**
  *
@@ -52,8 +60,36 @@ public class CsvReportSourceFactoryTest {
 
     @DataPoint
     public static final String VALID_RESOURCE = ClasspathResource.PREFIX +
-            CsvReportSourceFactoryTest.class.getName().replaceAll("\\.", "/") +
-            ".csv";
+            CsvReportSourceFactoryTest.class.getName()
+            .replaceAll("\\.", "/") + ".csv";
+
+    @DataPoint
+    public static final String INVALID_RESOURCE = ClasspathResource.PREFIX +
+            CsvReportSourceFactoryTest.class.getName()
+            .replaceAll("\\.", "/");
+
+    @DataPoint
+    public static final String INVALID_URL_STR =
+            "ftp://jasperreportjsf.sourceforge.net/invalid/location";
+
+    @DataPoint
+    public static final URL validUrl() {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        return classLoader.getResource(VALID_RESOURCE);
+    }
+
+    @DataPoint
+    public static final URL invalidUrl() {
+        try {
+            return new URL(INVALID_URL_STR);
+        } catch (MalformedURLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    private static final Logger logger = Logger.getLogger(
+            CsvReportSourceFactoryTest.class.getPackage().getName());
 
     private Mockery mockery = new JUnit4Mockery();
 
@@ -95,6 +131,8 @@ public class CsvReportSourceFactoryTest {
     public void nullDataReturnsEmptyDataSource(Object data) {
         assumeThat(data, is(nullValue()));
 
+        logger.log(Level.INFO, "Testing null support...");
+
         component.setData(data);
 
         ReportSource<JRDataSource> source = factory.createSource(
@@ -107,8 +145,24 @@ public class CsvReportSourceFactoryTest {
     }
 
     @Theory
-    public void invalidUrlThrowsSourceEx(Object data) {
+    public void invalidUrlThrowsSourceEx(URL data) {
+        assumeThat(data, is(not(nullValue())));
+        assumeThat(data, not(existsURL()));
 
+        logger.log(Level.INFO,
+                "Testing invalid url support (using a java.net.URL object)...");
+
+        component.setData(data);
+
+        try {
+            ReportSource<JRDataSource> source = factory.createSource(
+                    facesEnv.getFacesContext(), component);
+            fail("A report source exception should be thrown");
+        } catch (ReportSourceException e) {
+            Throwable cause = e.getCause();
+            assertThat(cause, is(not(nullValue())));
+            assertThat(cause, is(IOException.class));
+        }
     }
 
     @Theory

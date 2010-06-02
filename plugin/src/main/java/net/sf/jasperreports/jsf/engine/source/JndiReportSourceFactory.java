@@ -18,18 +18,19 @@
  */
 package net.sf.jasperreports.jsf.engine.source;
 
-import net.sf.jasperreports.jsf.engine.ReportSourceException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import net.sf.jasperreports.jsf.JRFacesException;
+
 import net.sf.jasperreports.jsf.component.UIReportSource;
+import net.sf.jasperreports.jsf.engine.ReportSourceException;
 
 /**
  *
@@ -46,16 +47,16 @@ public class JndiReportSourceFactory extends DatabaseReportSourceFactory {
     protected Connection getConnection(FacesContext context,
             UIReportSource component)
     throws ReportSourceException {
-        final String dataSourceName = (String) component.getData();
-        if (dataSourceName == null || dataSourceName.length() == 0) {
-            throw new JRFacesException("JNDI Filler requires a JNDI name"
-                    + " from a dataSource component");
+        final String jndiName = (String) component.getData();
+        if (jndiName == null || jndiName.length() == 0) {
+            throw new ReportSourceException("JNDI report source requires a " +
+                    "JNDI name for a jdbc data source.");
         }
-        logger.log(Level.FINE, "JRJSF_0005", dataSourceName);
+        logger.log(Level.FINE, "JRJSF_0005", jndiName);
 
         try {
             final Context jndi = new InitialContext();
-            final DataSource ds = (DataSource) jndi.lookup(dataSourceName);
+            final DataSource ds = (DataSource) jndi.lookup(jndiName);
             return ds.getConnection();
         } catch(NamingException e) {
             throw new ReportSourceException(e);

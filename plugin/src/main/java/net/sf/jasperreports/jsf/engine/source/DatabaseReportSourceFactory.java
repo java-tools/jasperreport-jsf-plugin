@@ -18,9 +18,6 @@
  */
 package net.sf.jasperreports.jsf.engine.source;
 
-import net.sf.jasperreports.jsf.engine.ReportSource;
-import net.sf.jasperreports.jsf.engine.ReportSourceException;
-import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,9 +30,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.JRFacesException;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.jsf.component.UIReportSource;
-import net.sf.jasperreports.jsf.engine.FillerException;
+import net.sf.jasperreports.jsf.engine.ReportSource;
+import net.sf.jasperreports.jsf.engine.ReportSourceException;
+import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
 
 /**
  *
@@ -51,7 +51,17 @@ public abstract class DatabaseReportSourceFactory
     public ReportSource createSource(FacesContext context,
             UIReportSource component)
     throws ReportSourceException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        ReportSource<?> reportSource;
+        Connection connection = getConnection(context, component);
+        final String query = component.getQuery();
+        if (query != null && query.length() > 0) {
+            ResultSet rs = executeQuery(context, component, connection, query);
+            JRDataSource dataSource = new JRResultSetDataSource(rs);
+            reportSource = new JRDataSourceHolder(dataSource);
+        } else {
+            reportSource = new ConnectionHolder(connection);
+        }
+        return reportSource;
     }
 
     protected abstract Connection getConnection(FacesContext context,
@@ -65,14 +75,19 @@ public abstract class DatabaseReportSourceFactory
      *
      * @return the result set
      *
-     * @throws JRFacesException the JR faces exception
-     * @throws FillerException the filler exception
+     * @throws ReportSourceException if some error happens when executing
+     *         the sql statement
      */
     protected ResultSet executeQuery(final FacesContext context,
             final UIReportSource component, final Connection conn,
             final String query)
-            throws SQLException {
-        final PreparedStatement st = conn.prepareStatement(query);
+            throws ReportSourceException {
+        PreparedStatement st;
+        try {
+            st = conn.prepareStatement(query);
+        } catch (SQLException ex) {
+            throw new ReportSourceException(ex);
+        }
 
         int paramIdx = 1;
         for (final UIComponent kid : component.getChildren()) {
@@ -99,6 +114,8 @@ public abstract class DatabaseReportSourceFactory
 
         try {
             return st.executeQuery();
+        } catch (SQLException e) {
+            throw new ReportSourceException(e);
         } finally {
             if (st != null) {
                 try {

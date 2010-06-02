@@ -55,7 +55,7 @@ public abstract class JRFacesContext {
         return instance;
     }
 
-    public abstract Set<String> getAvailableDataSourceTypes();
+    public abstract Set<String> getAvailableSourceTypes();
 
     public abstract Set<String> getAvailableExportFormats();
 

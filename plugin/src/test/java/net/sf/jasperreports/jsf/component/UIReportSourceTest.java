@@ -63,7 +63,7 @@ public final class UIReportSourceTest {
     public static final String COMPONENT_ID = "reportSourceId";
 
     @DataPoint
-    public static final String VALID_TYPE = "bean";
+    public static final String VALID_TYPE = "validType";
 
     @DataPoint
     public static final Object EMPTY_DATA = new Object[]{ };
@@ -120,7 +120,7 @@ public final class UIReportSourceTest {
         dataSource = mockery.mock(JRDataSource.class);
 
         jrContext = new MockJRFacesContext(facesEnv.getFacesContext());
-        jrContext.getAvailableDataSourceTypes().add(VALID_TYPE);
+        jrContext.getAvailableSourceTypes().add(VALID_TYPE);
     }
 
     @After
@@ -145,7 +145,7 @@ public final class UIReportSourceTest {
         assumeThat(type, is(not(nullValue())));
         assumeThat(type, instanceOf(String.class));
         assumeThat(data, is(not(nullValue())));
-        assumeTrue(!jrContext.getAvailableDataSourceTypes().contains(type));
+        assumeTrue(!jrContext.getAvailableSourceTypes().contains(type));
 
         final UIReportSource component = createComponent(type, data, value);
         final FacesContext facesContext = facesEnv.getFacesContext();
@@ -161,7 +161,7 @@ public final class UIReportSourceTest {
             component.processValidators(facesContext);
             fail("A ValidationException should be thrown.");
         } catch(ValidationException e) {
-            assertThat(e, instanceOf(IllegalReportSourceTypeException.class));
+            assertThat(e, is(IllegalReportSourceTypeException.class));
             assertThat(e.getMessage(), equalTo(type));
             assertTrue("Context should have 'RenderResponse' state enabled.",
                     facesContext.getRenderResponse());
@@ -176,7 +176,7 @@ public final class UIReportSourceTest {
     public void withNullValueExprSendReportSourceUsingRequest(String type, Object data,
             MockValueExpression value) {
         assumeThat(type, is(not(nullValue())));
-        assumeTrue(jrContext.getAvailableDataSourceTypes().contains(type));
+        assumeTrue(jrContext.getAvailableSourceTypes().contains(type));
         assumeThat(data, is(not(nullValue())));
         assumeThat(value, is(nullValue()));
         
@@ -202,13 +202,13 @@ public final class UIReportSourceTest {
                 .getRequestMap().get(clientId);
         assertThat(source, is(not(nullValue())));
         assertThat(source, instanceOf(ReportSource.class));
-        assertSame(reportSource, source);
+        assertThat((ReportSource) source, sameInstance(reportSource));
     }
 
     @Theory
     public void updateModelUsingValueExpr(String type, Object data,
             MockValueExpression value) {
-        assumeTrue(jrContext.getAvailableDataSourceTypes().contains(type));
+        assumeTrue(jrContext.getAvailableSourceTypes().contains(type));
         assumeThat(data, is(not(nullValue())));
         assumeThat(value, is(not(nullValue())));
         

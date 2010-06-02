@@ -18,7 +18,6 @@
  */
 package net.sf.jasperreports.jsf.engine.source;
 
-import net.sf.jasperreports.jsf.engine.ReportSource;
 import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +28,7 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.jsf.component.UIReportSource;
+import net.sf.jasperreports.jsf.engine.ReportSource;
 import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
 
 /**

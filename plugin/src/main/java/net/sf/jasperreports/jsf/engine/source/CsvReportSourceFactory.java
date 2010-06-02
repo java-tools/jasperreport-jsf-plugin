@@ -95,7 +95,7 @@ public class CsvReportSourceFactory implements ReportSourceFactory {
 
         if (dataSource == null) {
             if (dataSourceStream == null) {
-                throw new JRFacesException("CSV datasource needs a valid File, "
+                throw new ReportSourceException("CSV datasource needs a valid File, "
                         + "URL, InputStream or string");
             } else {
                 dataSource = new JRCsvDataSource(dataSourceStream);
@@ -106,7 +106,7 @@ public class CsvReportSourceFactory implements ReportSourceFactory {
                 (closeStream ? dataSourceStream : null));
     }
 
-    private class CsvReportSource extends JRDataSourceHolder {
+    public static class CsvReportSource extends JRDataSourceHolder {
 
         private String clientId;
         private InputStream stream;
@@ -118,11 +118,17 @@ public class CsvReportSourceFactory implements ReportSourceFactory {
             this.stream = stream;
         }
 
+        public String getClientId() {
+            return clientId;
+        }
+        
+        @Override
         public void dispose() throws Exception {
             if (stream != null) {
                 stream.close();
                 stream = null;
             }
+            clientId = null;
             super.dispose();
         }
 

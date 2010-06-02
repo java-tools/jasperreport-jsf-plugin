@@ -26,8 +26,8 @@ import java.util.logging.Logger;
 
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIReportSource;
+import net.sf.jasperreports.jsf.engine.ReportSourceException;
 
 /**
  *
@@ -46,18 +46,19 @@ public class JdbcReportSourceFactory extends DatabaseReportSourceFactory {
 
     @Override
     protected Connection getConnection(
-            FacesContext context, UIReportSource component) {
+            FacesContext context, UIReportSource component)
+    throws ReportSourceException {
         final String driverClass = (String) component
                 .getAttributes().get(ATTR_DRIVER_CLASS_NAME);
         if ((driverClass == null) || (driverClass.length() == 0)) {
-            throw new JRFacesException(
-                    "DEFAULT dataSource type requires a driverClassName value!");
+            throw new ReportSourceException(
+                    "jdbc report source type requires a driverClassName value!");
         }
 
         try {
             Class.forName(driverClass);
         } catch (final ClassNotFoundException e) {
-            throw new JRFacesException("Driver class not found: " + 
+            throw new ReportSourceException("Driver class not found: " +
                     driverClass, e);
         }
         logger.log(Level.FINE, "JRJSF_0004", driverClass);
@@ -69,7 +70,7 @@ public class JdbcReportSourceFactory extends DatabaseReportSourceFactory {
                 .getAttributes().get(ATTR_PASSWORD);
 
         if (connectionURL == null || connectionURL.length() == 0) {
-            throw new JRFacesException(
+            throw new ReportSourceException(
                     "JDBC Filler requires a connection string"
                     + " from a dataSource component");
         }
@@ -88,7 +89,7 @@ public class JdbcReportSourceFactory extends DatabaseReportSourceFactory {
                         password);
             }
         } catch (final SQLException e) {
-            throw new JRFacesException(e);
+            throw new ReportSourceException(e);
         }
         return conn;
     }
