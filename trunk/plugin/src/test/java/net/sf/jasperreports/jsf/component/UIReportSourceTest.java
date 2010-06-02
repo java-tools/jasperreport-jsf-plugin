@@ -226,8 +226,6 @@ public final class UIReportSourceTest {
             oneOf(reportSourceValidator).validate(facesContext, component);
             oneOf(reportSourceFactory).createSource(facesContext, component);
             will(returnValue(reportSource));
-
-            oneOf(reportSourceBean).setReportSource(reportSource);
         }});
 
         component.processDecodes(facesContext);
@@ -253,7 +251,7 @@ public final class UIReportSourceTest {
     public void whenDataSourceProvidedSendDataSourceHolderInRequest(String type,
             Object data, MockValueExpression value) {
         assumeThat(value, is(not(nullValue())));
-        assumeThat(value.getExpressionString(), containsString("myBroker"));
+        assumeThat(value.getExpressionString(), containsString("myReportSource"));
 
         final UIReportSource component = createComponent(type, data, value);
         final FacesContext facesContext = facesEnv.getFacesContext();
@@ -285,7 +283,7 @@ public final class UIReportSourceTest {
     public void whenConnectionProvidedSendConnectionHolderInRequest(String type,
             Object data, MockValueExpression value) {
         assumeThat(value, is(not(nullValue())));
-        assumeThat(value.getExpressionString(), containsString("myBroker"));
+        assumeThat(value.getExpressionString(), containsString("myReportSource"));
 
         final UIReportSource component = createComponent(type, data, value);
         final FacesContext facesContext = facesEnv.getFacesContext();
