@@ -29,7 +29,7 @@ public class ReportSourceValidatorBase extends ReportSourceValidator {
     protected void doValidate(final FacesContext context,
             final UIReportSource component) throws ValidationException {
         final JRFacesContext jrContext = JRFacesContext.getInstance(context);
-        if (!jrContext.getAvailableDataSourceTypes().contains(
+        if (!jrContext.getAvailableSourceTypes().contains(
                 component.getType())) {
             throw new IllegalReportSourceTypeException(component.getType());
         }

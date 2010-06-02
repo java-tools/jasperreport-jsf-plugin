@@ -16,32 +16,47 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.test;
+package net.sf.jasperreports.jsf.test.matchers;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
-import net.sf.jasperreports.jsf.test.matchers.ClasspathResource;
-import net.sf.jasperreports.jsf.test.matchers.ExistsURL;
-import net.sf.jasperreports.jsf.test.matchers.IsValidURL;
-
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 
 /**
  *
  * @author aalonsodominguez
  */
-public final class Matchers {
+public class IsValidURL extends BaseMatcher<String> {
 
-    public static Matcher<String> classpathResource() {
-        return ClasspathResource.classpathResource();
-    }
-
-    public static Matcher<URL> existsURL() {
-        return ExistsURL.existsURL();
-    }
-
+    @Factory
     public static Matcher<String> validURL() {
-        return IsValidURL.validURL();
+        return new IsValidURL();
+    }
+
+    public boolean matches(Object item) {
+        if (item == null) return false;
+
+        String url;
+        if (item instanceof String) {
+            url = (String) item;
+        } else {
+            url = item.toString();
+        }
+
+        try {
+            new URL(url);
+            return true;
+        } catch (MalformedURLException e) {
+            return false;
+        }
+    }
+
+    public void describeTo(Description description) {
+        description.appendText("valid url");
     }
 
 }

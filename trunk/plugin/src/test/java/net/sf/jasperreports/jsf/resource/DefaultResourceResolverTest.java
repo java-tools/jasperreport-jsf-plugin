@@ -67,7 +67,7 @@ public class DefaultResourceResolverTest {
 
     @Theory
     public void urlResource(String resourceName) {
-        assumeThat(resourceName, is(url()));
+        assumeThat(resourceName, is(validURL()));
 
         Resource res = resolver.resolveResource(facesEnv.getFacesContext(),
                 component, resourceName);

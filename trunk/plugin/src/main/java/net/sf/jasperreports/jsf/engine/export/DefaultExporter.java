@@ -20,7 +20,9 @@ package net.sf.jasperreports.jsf.engine.export;
 
 import java.io.IOException;
 import java.io.OutputStream;
+
 import javax.faces.context.FacesContext;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;

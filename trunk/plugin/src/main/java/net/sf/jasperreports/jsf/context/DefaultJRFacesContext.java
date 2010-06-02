@@ -73,7 +73,7 @@ public class DefaultJRFacesContext extends JRFacesContext {
         reportValidatorMap = Services.map(ReportValidator.class);
     }
 
-    public Set<String> getAvailableDataSourceTypes() {
+    public Set<String> getAvailableSourceTypes() {
         return dataSourceFactoryMap.keySet();
     }
 

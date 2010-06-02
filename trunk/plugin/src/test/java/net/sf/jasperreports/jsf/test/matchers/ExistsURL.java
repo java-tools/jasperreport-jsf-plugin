@@ -18,8 +18,10 @@
  */
 package net.sf.jasperreports.jsf.test.matchers;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
@@ -30,33 +32,42 @@ import org.hamcrest.Matcher;
  *
  * @author aalonsodominguez
  */
-public class IsURL extends BaseMatcher<String> {
+public class ExistsURL extends BaseMatcher<URL> {
 
     @Factory
-    public static Matcher<String> url() {
-        return new IsURL();
+    public static Matcher<URL> existsURL() {
+        return new ExistsURL();
     }
 
     public boolean matches(Object item) {
         if (item == null) return false;
 
-        String url;
-        if (item instanceof String) {
-            url = (String) item;
+        URL url;
+        if (item instanceof URL) {
+            url = (URL) item;
+        } else if (item instanceof String) {
+            String urlAsText = (String) item;
+            try {
+                url = new URL(urlAsText);
+            } catch (MalformedURLException e) {
+                throw new IllegalArgumentException(urlAsText, e);
+            }
         } else {
-            url = item.toString();
+            throw new IllegalArgumentException("illegal item type: " +
+                    item.getClass().getName());
         }
 
         try {
-            new URL(url);
+            URLConnection conn = url.openConnection();
+            conn.getInputStream();
             return true;
-        } catch (MalformedURLException e) {
+        } catch (IOException ex) {
             return false;
         }
     }
 
     public void describeTo(Description description) {
-        description.appendText("url");
+        description.appendText("exists url");
     }
 
 }

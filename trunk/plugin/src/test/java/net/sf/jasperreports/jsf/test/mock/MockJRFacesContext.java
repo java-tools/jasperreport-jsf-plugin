@@ -147,7 +147,7 @@ public class MockJRFacesContext extends JRFacesContext {
         this.availableExportFormats = availableExportFormats;
     }
 
-    public Set<String> getAvailableDataSourceTypes() {
+    public Set<String> getAvailableSourceTypes() {
         return availableDataSourceTypes;
     }
 

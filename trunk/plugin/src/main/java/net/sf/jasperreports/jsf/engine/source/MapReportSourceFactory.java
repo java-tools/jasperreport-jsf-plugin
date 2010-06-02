@@ -18,7 +18,6 @@
  */
 package net.sf.jasperreports.jsf.engine.source;
 
-import net.sf.jasperreports.jsf.engine.ReportSource;
 import java.util.Collection;
 import java.util.Map;
 import java.util.logging.Level;
@@ -31,6 +30,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.data.JRMapArrayDataSource;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 import net.sf.jasperreports.jsf.component.UIReportSource;
+import net.sf.jasperreports.jsf.engine.ReportSource;
 import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
 
 /**

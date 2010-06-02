@@ -18,7 +18,6 @@
  */
 package net.sf.jasperreports.jsf.engine.source;
 
-import net.sf.jasperreports.jsf.engine.ReportSource;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,6 +35,8 @@ import net.sf.jasperreports.engine.data.JRXlsDataSource;
 import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIReportSource;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
+import net.sf.jasperreports.jsf.engine.ReportSource;
+import net.sf.jasperreports.jsf.engine.ReportSourceException;
 import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
 import net.sf.jasperreports.jsf.resource.Resource;
 
@@ -51,7 +52,8 @@ public class XlsReportSourceFactory implements ReportSourceFactory {
             "net.sf.jasperreports.jsf.LogMessages");
 
     public ReportSource createSource(FacesContext context,
-            UIReportSource component) {
+            UIReportSource component)
+    throws ReportSourceException {
         final JRFacesContext jrContext = JRFacesContext.getInstance(context);
         JRDataSource dataSource;
         final Object value = component.getData();
@@ -78,9 +80,9 @@ public class XlsReportSourceFactory implements ReportSourceFactory {
                             value.getClass().getName());
                 }
             } catch (JRException e) {
-                throw new JRFacesException(e);
+                throw new ReportSourceException(e);
             } catch (IOException e) {
-                throw new JRFacesException(e);
+                throw new ReportSourceException(e);
             }
         }
         return new JRDataSourceHolder(dataSource);

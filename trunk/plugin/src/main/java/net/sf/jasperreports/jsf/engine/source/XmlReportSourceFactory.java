@@ -43,10 +43,10 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
-import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIReportSource;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.engine.ReportSource;
+import net.sf.jasperreports.jsf.engine.ReportSourceException;
 import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
 import net.sf.jasperreports.jsf.resource.Resource;
 
@@ -65,18 +65,19 @@ public class XmlReportSourceFactory implements ReportSourceFactory {
             "net.sf.jasperreports.jsf.LogMessages");
 
     public ReportSource createSource(FacesContext context,
-            UIReportSource component) {
+            UIReportSource component)
+    throws ReportSourceException {
         JRDataSource dataSource;
 
         final Document xmlDocument;
         try {
             xmlDocument = getXmlDocument(context, component);
         } catch (final ParserConfigurationException ex) {
-            throw new JRFacesException(ex);
+            throw new ReportSourceException(ex);
         } catch (final SAXException ex) {
-            throw new JRFacesException(ex);
+            throw new ReportSourceException(ex);
         } catch (final IOException ex) {
-            throw new JRFacesException(ex);
+            throw new ReportSourceException(ex);
         }
 
         if (xmlDocument == null) {
@@ -95,7 +96,7 @@ public class XmlReportSourceFactory implements ReportSourceFactory {
                     dataSource = new JRXmlDataSource(xmlDocument);
                 }
             } catch (final JRException e) {
-                throw new JRFacesException(e);
+                throw new ReportSourceException(e);
             }
         }
 
@@ -152,7 +153,7 @@ public class XmlReportSourceFactory implements ReportSourceFactory {
             }
 
             if (stream == null) {
-                throw new JRFacesException("Unrecognized XML "
+                throw new ReportSourceException("Unrecognized XML "
                         + "data source type: " + data.getClass());
             }
 

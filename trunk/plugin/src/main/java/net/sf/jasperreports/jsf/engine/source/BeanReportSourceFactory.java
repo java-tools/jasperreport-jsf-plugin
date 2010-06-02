@@ -57,7 +57,7 @@ public class BeanReportSourceFactory implements ReportSourceFactory {
         } else {
             Object[] beanArray;
             if (!value.getClass().isArray()) {
-                beanArray = new Object[]{ value };
+                beanArray = new Object[] { value };
             } else {
                 beanArray = (Object[]) value;
             }
