@@ -122,6 +122,8 @@
 
     <junit.version>4.8.1</junit.version>
     <jmock.version>2.5.1</jmock.version>
+
+    <slf4j.version>1.6.0</slf4j.version>
   </properties>
 
   <build>
@@ -288,6 +290,19 @@
             <artifactId>jmock-cglib</artifactId>
           </exclusion>
         </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-jdk14</artifactId>
+        <version>${slf4j.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>jcl-over-slf4j</artifactId>
+        <version>${slf4j.version}</version>
+        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
