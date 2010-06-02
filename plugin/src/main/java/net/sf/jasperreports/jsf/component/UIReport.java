@@ -30,7 +30,6 @@ import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
-import net.sf.jasperreports.jsf.validation.ReportValidator;
 import net.sf.jasperreports.jsf.validation.ValidationException;
 import net.sf.jasperreports.jsf.validation.Validator;
 
@@ -58,7 +57,7 @@ public class UIReport extends UIComponentBase {
     private String format;
 
     private Exporter exporter;
-    private ReportValidator validator;
+    private Validator validator;
 
     /**
      * Instantiates a new uI report implementor.
@@ -260,14 +259,14 @@ public class UIReport extends UIComponentBase {
         this.exporter = exporter;
     }
 
-    public ReportValidator getValidator() {
+    public Validator getValidator() {
         if (validator != null) {
             return validator;
         }
         ValueExpression ve = getValueExpression("validator");
         if (ve != null) {
             try {
-                return (ReportValidator) ve.getValue(
+                return (Validator) ve.getValue(
                         getFacesContext().getELContext());
             } catch (ELException e) {
                 throw new FacesException(e);
@@ -277,7 +276,7 @@ public class UIReport extends UIComponentBase {
         }
     }
 
-    public void setValidator(ReportValidator validator) {
+    public void setValidator(Validator validator) {
         this.validator = validator;
     }
 
@@ -310,7 +309,7 @@ public class UIReport extends UIComponentBase {
         immediate = ((Boolean) values[6]).booleanValue();
         immediateSet = ((Boolean) values[7]).booleanValue();
         exporter = (Exporter) values[8];
-        validator = (ReportValidator) values[9];
+        validator = (Validator) values[9];
     }
 
     /*
@@ -341,8 +340,12 @@ public class UIReport extends UIComponentBase {
             throw new NullPointerException();
         }
 
-        final Validator validator = getJRFacesContext()
+        Validator validator = getValidator();
+        if (validator == null) {
+            validator = getJRFacesContext()
                 .createValidator(context, this);
+        }
+
         if (validator != null) {
             validator.validate(context, this);
         }

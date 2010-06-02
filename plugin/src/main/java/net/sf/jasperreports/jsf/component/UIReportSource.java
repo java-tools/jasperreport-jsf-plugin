@@ -33,7 +33,6 @@ import net.sf.jasperreports.jsf.engine.ReportSource;
 import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
 import net.sf.jasperreports.jsf.engine.source.JRDataSourceHolder;
 import net.sf.jasperreports.jsf.engine.source.ConnectionHolder;
-import net.sf.jasperreports.jsf.validation.ReportSourceValidator;
 import net.sf.jasperreports.jsf.validation.MissingAttributeException;
 import net.sf.jasperreports.jsf.validation.ValidationException;
 import net.sf.jasperreports.jsf.validation.Validator;
@@ -67,7 +66,7 @@ public class UIReportSource extends UIComponentBase {
     private boolean valueSet = false;
 
     private ReportSourceFactory factory;
-    private ReportSourceValidator validator;
+    private Validator validator;
 
     /**
      * Instantiates a new uI data source.
@@ -232,14 +231,14 @@ public class UIReportSource extends UIComponentBase {
         this.factory = factory;
     }
 
-    public ReportSourceValidator getValidator() {
+    public Validator getValidator() {
         if (validator != null) {
             return validator;
         }
         ValueExpression ve = getValueExpression("validator");
         if (ve != null) {
             try {
-                return (ReportSourceValidator) ve.getValue(
+                return (Validator) ve.getValue(
                         getFacesContext().getELContext());
             } catch(ELException e) {
                 throw new FacesException(e);
@@ -249,7 +248,7 @@ public class UIReportSource extends UIComponentBase {
         }
     }
 
-    public void setValidator(ReportSourceValidator validator) {
+    public void setValidator(Validator validator) {
         this.validator = validator;
     }
 
@@ -286,6 +285,9 @@ public class UIReportSource extends UIComponentBase {
         type = (String) values[2];
         typeSet = ((Boolean) values[3]).booleanValue();
         data = values[4];
+        factory = (ReportSourceFactory) values[5];
+        validator = (Validator) values[6];
+        valid = ((Boolean) values[7]).booleanValue();
     }
 
     /*
@@ -296,12 +298,15 @@ public class UIReportSource extends UIComponentBase {
      */
     @Override
     public Object saveState(final FacesContext context) {
-        final Object[] values = new Object[5];
+        final Object[] values = new Object[8];
         values[0] = super.saveState(context);
         values[1] = query;
         values[2] = type;
         values[3] = Boolean.valueOf(typeSet);
         values[4] = data;
+        values[5] = factory;
+        values[6] = validator;
+        values[7] = valid;
         return values;
     }
 

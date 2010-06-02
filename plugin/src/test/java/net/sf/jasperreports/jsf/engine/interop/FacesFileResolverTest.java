@@ -16,7 +16,7 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.engine;
+package net.sf.jasperreports.jsf.engine.interop;
 
 import net.sf.jasperreports.jsf.engine.interop.FacesFileResolver;
 import net.sf.jasperreports.jsf.component.UIReport;
