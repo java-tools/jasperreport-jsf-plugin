@@ -70,7 +70,7 @@ public class XlsReportSourceFactory implements ReportSourceFactory {
                 } else if (value instanceof Workbook) {
                     dataSource = new JRXlsDataSource((Workbook) value);
                 } else if (value instanceof String) {
-                    Resource resource = jrContext.getResource(context,
+                    Resource resource = jrContext.createResource(context,
                             component, (String) value);
                     dataSource = new JRXlsDataSource(resource.getInputStream());
                 } else {

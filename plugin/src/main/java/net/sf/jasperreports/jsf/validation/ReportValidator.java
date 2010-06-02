@@ -33,6 +33,6 @@ public abstract class ReportValidator implements Validator {
         doValidate(context, (UIReport) component);
     }
 
-    protected abstract void doValidate(FacesContext context, UIReport report)
+    protected abstract void doValidate(FacesContext context, UIReport component)
             throws ValidationException;
 }

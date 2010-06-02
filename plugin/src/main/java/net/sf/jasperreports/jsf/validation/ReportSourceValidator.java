@@ -18,35 +18,24 @@
  */
 package net.sf.jasperreports.jsf.validation;
 
-import java.util.Map;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.util.Services;
+import net.sf.jasperreports.jsf.component.UIReportSource;
 
-public final class ReportValidatorFactory implements ValidatorFactory {
+public abstract class ReportSourceValidator implements Validator {
 
-    private static final Map<String, ReportValidator> validatorCacheMap =
-            Services.map(ReportValidator.class);
-
-    public boolean acceptsComponent(final UIComponent component) {
-        return (component instanceof UIReport);
-    }
-
-    public ReportValidator createValidator(final FacesContext context,
-            final UIComponent component) throws ValidationException {
-        if (!(component instanceof UIReport)) {
+    public void validate(final FacesContext context,
+            final UIComponent component)
+            throws ValidationException {
+        if (!(component instanceof UIReportSource)) {
             throw new IllegalArgumentException("");
         }
-
-        final UIReport report = (UIReport) component;
-        ReportValidator result = null;
-        result = validatorCacheMap.get(report.getFormat());
-        if (result == null) {
-            result = validatorCacheMap.get(null);
-        }
-        return result;
+        doValidate(context, (UIReportSource) component);
     }
+
+    protected abstract void doValidate(FacesContext context,
+            UIReportSource component)
+            throws ValidationException;
+    
 }

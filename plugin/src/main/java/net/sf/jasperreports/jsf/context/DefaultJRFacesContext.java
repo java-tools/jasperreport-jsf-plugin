@@ -38,6 +38,9 @@ import net.sf.jasperreports.jsf.resource.ResourceException;
 import net.sf.jasperreports.jsf.resource.ResourceResolver;
 import net.sf.jasperreports.jsf.resource.UnresolvedResourceException;
 import net.sf.jasperreports.jsf.util.Services;
+import net.sf.jasperreports.jsf.validation.ReportSourceValidator;
+import net.sf.jasperreports.jsf.validation.ReportValidator;
+import net.sf.jasperreports.jsf.validation.Validator;
 
 /**
  *
@@ -57,12 +60,17 @@ public class DefaultJRFacesContext extends JRFacesContext {
     private final Filler filler;
     private final ResourceResolver resourceResolver;
 
+    private final Map<String, ReportSourceValidator> reportSourceValidatorMap;
+    private final Map<String, ReportValidator> reportValidatorMap;
+
     protected DefaultJRFacesContext() {
         dataSourceFactoryMap = Services.map(ReportSourceFactory.class);
         exporterMap = Services.map(Exporter.class);
         filler = Services.chain(Filler.class, DEFAULT_FILLER);
         resourceResolver = Services.chain(
                 ResourceResolver.class, DEFAULT_RESOURCE_RESOLVER);
+        reportSourceValidatorMap = Services.map(ReportSourceValidator.class);
+        reportValidatorMap = Services.map(ReportValidator.class);
     }
 
     public Set<String> getAvailableDataSourceTypes() {
@@ -83,13 +91,44 @@ public class DefaultJRFacesContext extends JRFacesContext {
     }
 
     @Override
-    public ReportSource<?> getDataSource(
+    public ReportSource<?> createDataSource(
             FacesContext context, UIReportSource component) {
         ReportSourceFactory factory = dataSourceFactoryMap.get(component.getType());
         if (factory == null) {
             throw new IllegalStateException();
         }
         return factory.createSource(context, component);
+    }
+
+    @Override
+    public Resource createResource(FacesContext context,
+            UIComponent component, String name) {
+        Resource resource = resourceResolver.resolveResource(
+                context, component, name);
+        if (resource == null) {
+            throw new UnresolvedResourceException(name);
+        }
+        return resource;
+    }
+
+    public Validator createValidator(FacesContext context,
+            UIReportSource component) {
+        ReportSourceValidator validator = reportSourceValidatorMap.get(
+                component.getType());
+        if (validator == null) {
+            validator = reportSourceValidatorMap.get(null);
+        }
+        return validator;
+    }
+    
+    public Validator createValidator(FacesContext context,
+            UIReport component) {
+        ReportValidator validator = reportValidatorMap.get(
+                component.getFormat());
+        if (validator == null) {
+            validator = reportValidatorMap.get(null);
+        }
+        return validator;
     }
 
     @Override
@@ -104,16 +143,6 @@ public class DefaultJRFacesContext extends JRFacesContext {
             throw new ExporterNotFoundException(component.getFormat());
         }
         return exporter;
-    }
-
-    @Override
-    public Resource getResource(FacesContext context,
-            UIComponent component, String name) {
-        Resource resource = resourceResolver.resolveResource(context, component, name);
-        if (resource == null) {
-            throw new UnresolvedResourceException(name);
-        }
-        return resource;
     }
 
 }

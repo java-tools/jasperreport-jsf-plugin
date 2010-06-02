@@ -20,8 +20,10 @@ package net.sf.jasperreports.jsf.test.mock;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+
 import net.sf.jasperreports.jsf.component.UIReportSource;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.context.DefaultJRFacesContext;
@@ -33,6 +35,7 @@ import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.ResourceResolver;
+import net.sf.jasperreports.jsf.validation.Validator;
 
 /**
  *
@@ -42,14 +45,17 @@ public class MockJRFacesContext extends JRFacesContext {
 
     private DefaultJRFacesContext defaultContext;
 
+    private Set<String> availableExportFormats = new HashSet<String>();
+    private Set<String> availableDataSourceTypes = new HashSet<String>();
+
     private ReportSourceFactory dataSourceFactory;
     private ResourceResolver resourceResolver;
 
     private Filler filler;
     private Exporter exporter;
 
-    private Set<String> availableExportFormats = new HashSet<String>();
-    private Set<String> availableDataSourceTypes = new HashSet<String>();
+    private Validator reportSourceValidator;
+    private Validator reportValidator;
 
     public MockJRFacesContext(FacesContext context) {
         context.getExternalContext().getApplicationMap()
@@ -71,13 +77,29 @@ public class MockJRFacesContext extends JRFacesContext {
     public void setResourceResolver(ResourceResolver resourceResolver) {
         this.resourceResolver = resourceResolver;
     }
+
+    public Validator getReportSourceValidator() {
+        return reportSourceValidator;
+    }
+
+    public void setReportSourceValidator(Validator reportSourceValidator) {
+        this.reportSourceValidator = reportSourceValidator;
+    }
+
+    public Validator getReportValidator() {
+        return reportValidator;
+    }
+
+    public void setReportValidator(Validator reportValidator) {
+        this.reportValidator = reportValidator;
+    }
     
-    public Resource getResource(
+    public Resource createResource(
             FacesContext context, UIComponent component, String name) {
         if (resourceResolver != null) {
             return resourceResolver.resolveResource(context, component, name);
         }
-        return defaultContext.getResource(context, component, name);
+        return defaultContext.createResource(context, component, name);
     }
 
     public Filler getFiller(
@@ -109,12 +131,12 @@ public class MockJRFacesContext extends JRFacesContext {
         this.exporter = exporter;
     }
 
-    public ReportSource<?> getDataSource(
+    public ReportSource<?> createDataSource(
             FacesContext context, UIReportSource component) {
         if (dataSourceFactory != null) {
             return dataSourceFactory.createSource(context, component);
         }
-        return defaultContext.getDataSource(context, component);
+        return defaultContext.createDataSource(context, component);
     }
 
     public Set<String> getAvailableExportFormats() {
@@ -131,6 +153,23 @@ public class MockJRFacesContext extends JRFacesContext {
 
     public void setAvailableDataSourceTypes(Set<String> availableDataSourceTypes) {
         this.availableDataSourceTypes = availableDataSourceTypes;
+    }
+
+    @Override
+    public Validator createValidator(FacesContext context,
+            UIReportSource component) {
+        if (reportSourceValidator != null) {
+            return reportSourceValidator;
+        }
+        return defaultContext.createValidator(context, component);
+    }
+
+    @Override
+    public Validator createValidator(FacesContext context, UIReport component) {
+        if (reportValidator == null) {
+            return reportValidator;
+        }
+        return defaultContext.createValidator(context, component);
     }
     
 }
