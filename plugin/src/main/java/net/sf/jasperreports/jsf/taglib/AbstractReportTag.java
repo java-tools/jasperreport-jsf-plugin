@@ -22,7 +22,7 @@ import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.webapp.UIComponentELTag;
 
-import net.sf.jasperreports.jsf.component.UIReport;
+import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
  * The Class AbstractReportTag.
@@ -112,45 +112,10 @@ public abstract class AbstractReportTag extends UIComponentELTag {
     protected void setProperties(final UIComponent component) {
         super.setProperties(component);
 
-        final UIReport jreport = (UIReport) component;
-        if (reportSource != null) {
-            if (reportSource.isLiteralText()) {
-                jreport.setReportSource(reportSource.getExpressionString());
-            } else {
-                component.setValueExpression("reportSource", reportSource);
-            }
-        }
-
-        if (name != null) {
-            if (name.isLiteralText()) {
-                jreport.setName(name.getExpressionString());
-            } else {
-                component.setValueExpression("name", name);
-            }
-        }
-
-        if (path != null) {
-            if (path.isLiteralText()) {
-                jreport.setPath(path.getExpressionString());
-            } else {
-                component.setValueExpression("report", path);
-            }
-        }
-
-        if (subreportDir != null) {
-            if (subreportDir.isLiteralText()) {
-                jreport.setSubreportDir(subreportDir.getExpressionString());
-            } else {
-                component.setValueExpression("subreportDir", subreportDir);
-            }
-        }
-
-        if (format != null) {
-            if (format.isLiteralText()) {
-                jreport.setFormat(format.getExpressionString());
-            } else {
-                component.setValueExpression("format", format);
-            }
-        }
+        setStringAttribute(component, "name", name);
+        setStringAttribute(component, "format", format);
+        setStringAttribute(component, "path", path);
+        setStringAttribute(component, "reportSource", reportSource);
+        setStringAttribute(component, "subreportDir", subreportDir);
     }
 }

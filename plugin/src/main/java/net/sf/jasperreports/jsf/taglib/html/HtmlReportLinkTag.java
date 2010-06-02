@@ -25,6 +25,8 @@ import net.sf.jasperreports.jsf.component.html.HtmlReportLink;
 import net.sf.jasperreports.jsf.renderkit.html.OutputLinkRenderer;
 import net.sf.jasperreports.jsf.taglib.AbstractReportTag;
 
+import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
+
 /**
  * The Class ReportLinkTag.
  */
@@ -32,6 +34,8 @@ public class HtmlReportLinkTag extends AbstractReportTag {
 
     /** The target. */
     private ValueExpression target;
+    private ValueExpression style;
+    private ValueExpression styleClass;
 
     /**
      * Sets the target.
@@ -41,6 +45,14 @@ public class HtmlReportLinkTag extends AbstractReportTag {
      */
     public void setTarget(final ValueExpression target) {
         this.target = target;
+    }
+
+    public void setStyle(ValueExpression style) {
+        this.style = style;
+    }
+
+    public void setStyleClass(ValueExpression styleClass) {
+        this.styleClass = styleClass;
     }
 
     // TagSupport
@@ -54,6 +66,8 @@ public class HtmlReportLinkTag extends AbstractReportTag {
     public void release() {
         super.release();
         target = null;
+        style = null;
+        styleClass = null;
     }
 
     // UIComponentELTag
@@ -88,14 +102,9 @@ public class HtmlReportLinkTag extends AbstractReportTag {
     @Override
     protected void setProperties(final UIComponent component) {
         super.setProperties(component);
-        final HtmlReportLink report = (HtmlReportLink) component;
 
-        if (target != null) {
-            if (target.isLiteralText()) {
-                report.setTarget(target.getExpressionString());
-            } else {
-                report.setValueExpression("target", target);
-            }
-        }
+        setStringAttribute(component, "target", target);
+        setStringAttribute(component, "style", style);
+        setStringAttribute(component, "styleClass", styleClass);
     }
 }

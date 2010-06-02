@@ -292,7 +292,7 @@
                 </goals>
                 <configuration>
                   <includes>
-                    <include>**/webapp/*ServletTest.java</include>
+                    <include>**/webapp/*Test.java</include>
                   </includes>
                   <systemProperties>
                     <property>
@@ -312,9 +312,6 @@
                       <value>${test.web.xml}</value>
                     </property>
                   </systemProperties>
-                  <suiteXmlFiles>
-                    <suiteXmlFile>src/test/conf/suites/profile/tomcat6x.xml</suiteXmlFile>
-                  </suiteXmlFiles>
                 </configuration>
               </execution>
             </executions>

@@ -37,6 +37,8 @@ public class HtmlReportLink extends UIReport {
             Constants.PACKAGE_PREFIX + ".HtmlReportLink";
 
     private String target;
+    private String style;
+    private String styleClass;
 
     /**
      * Instantiates a new html report link.
@@ -66,18 +68,62 @@ public class HtmlReportLink extends UIReport {
         this.target = target;
     }
 
+    public String getStyle() {
+        if (style != null) {
+            return style;
+        }
+        ValueExpression ve = getValueExpression("style");
+        if (ve != null) {
+            try {
+                return (String) ve.getValue(getFacesContext().getELContext());
+            } catch (ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return style;
+        }
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public String getStyleClass() {
+        if (styleClass != null) {
+            return styleClass;
+        }
+        ValueExpression ve = getValueExpression("styleClass");
+        if (ve != null) {
+            try {
+                return (String) ve.getValue(getFacesContext().getELContext());
+            } catch (ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return styleClass;
+        }
+    }
+
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
+    }
+
     @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] values = (Object[]) state;
         super.restoreState(context, values[0]);
         target = (String) values[1];
+        style = (String) values[2];
+        styleClass = (String) values[3];
     }
 
     @Override
     public Object saveState(FacesContext context) {
-        Object[] values = new Object[2];
+        Object[] values = new Object[4];
         values[0] = super.saveState(context);
         values[1] = target;
+        values[2] = style;
+        values[3] = styleClass;
         return values;
     }
 

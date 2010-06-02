@@ -18,14 +18,23 @@
  */
 package net.sf.jasperreports.jsf.component;
 
+import javax.faces.context.ExternalContext;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.jsf.engine.Exporter;
+import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.test.JMockTheories;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
+import net.sf.jasperreports.jsf.test.mock.MockJRFacesContext;
+import net.sf.jasperreports.jsf.validation.Validator;
+import org.apache.shale.test.el.MockValueExpression;
 import org.apache.shale.test.mock.MockExternalContext;
+import org.apache.shale.test.mock.MockFacesContext;
 
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -41,21 +50,57 @@ import static org.hamcrest.Matchers.*;
 @RunWith(JMockTheories.class)
 public class UIReportTest {
 
-    public static final String DATA_BEAN_NAME = "reportSourceBean";
+    public static final String REPORT_BEAN_NAME = "reportBean";
 
-    private MockFacesEnvironment facesEnv;
+    public static JasperReport REPORT_OBJECT;
+
+    public static final String VALID_FORMAT = "aformat";
+
+    @BeforeClass
+    public static void initDataPoints() {
+
+    }
 
     private Mockery mockery = new JUnit4Mockery();
 
+    private MockFacesEnvironment facesEnv;
+    private MockJRFacesContext jrContext;
+
+    private UIReport component;
+    private Filler filler;
+    private Exporter exporter;
+    private Validator validator;
 
     @Before
     public void init() {
         facesEnv = MockFacesEnvironment.getServletInstance();
+        jrContext = new MockJRFacesContext(facesEnv.getFacesContext());
+        jrContext.getAvailableExportFormats().add(VALID_FORMAT);
 
+        filler = mockery.mock(Filler.class);
+        exporter = mockery.mock(Exporter.class);
+        validator = mockery.mock(Validator.class);
+
+        jrContext.setExporter(exporter);
+        jrContext.setFiller(filler);
+        jrContext.setReportValidator(validator);
+
+        component = new UIReport();
+        component.setId("reportId");
+
+        MockValueExpression ve = new MockValueExpression(
+                "#{" + REPORT_BEAN_NAME + ".reportOrPrint}", null);
+        component.setValueExpression("value", ve);
     }
 
     @After
     public void dispose() {
+        component = null;
+        filler = null;
+        exporter = null;
+        validator = null;
+
+        jrContext = null;
         facesEnv.release();
         facesEnv = null;
     }
@@ -68,6 +113,12 @@ public class UIReportTest {
     @Theory
     public void attrDataBrokerIsValueExprObtainFromBean() {
 
+    }
+
+    private void registerBean(Object reportOrPrint) {
+        final ExternalContext context = facesEnv.getExternalContext();
+        ReportTestBean reportBean = new ReportTestBean(reportOrPrint);
+        context.getRequestMap().put(REPORT_BEAN_NAME, reportBean);
     }
 
 }

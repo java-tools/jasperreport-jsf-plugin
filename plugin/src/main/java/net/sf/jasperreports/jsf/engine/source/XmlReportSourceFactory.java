@@ -178,7 +178,7 @@ public class XmlReportSourceFactory implements ReportSourceFactory {
         final List<Object> params = new ArrayList<Object>();
 
         for (final UIComponent kid : component.getChildren()) {
-                 if (!(kid instanceof UIParameter)) {
+            if (!(kid instanceof UIParameter)) {
                 continue;
             }
 

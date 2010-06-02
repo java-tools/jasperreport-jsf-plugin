@@ -28,7 +28,8 @@ public abstract class ReportValidator implements Validator {
     public void validate(final FacesContext context, final UIComponent component)
             throws ValidationException {
         if (!(component instanceof UIReport)) {
-            throw new IllegalArgumentException("");
+            throw new IllegalArgumentException(
+                    "'component' must an UIReport instance.");
         }
         doValidate(context, (UIReport) component);
     }

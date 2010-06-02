@@ -57,7 +57,7 @@ public interface Resource {
     /**
      * The path part of the resource
      *
-     * @return
+     * @return the absolute path to the resource
      */
     public String getPath();
 }

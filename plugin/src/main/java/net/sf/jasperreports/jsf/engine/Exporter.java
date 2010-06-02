@@ -37,11 +37,10 @@ public interface Exporter {
      * Export.
      *
      * @param context the context
-     * @param print the print
+     * @param component the report component
      * @param stream the stream
      *
      * @throws IOException Signals that an I/O exception has occurred.
-     * @throws JRException the JR exception
      * @throws ExporterException the exporter exception
      */
     public void export(final FacesContext context,

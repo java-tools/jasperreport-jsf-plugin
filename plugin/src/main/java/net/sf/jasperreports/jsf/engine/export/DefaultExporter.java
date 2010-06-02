@@ -58,11 +58,10 @@ public abstract class DefaultExporter implements Exporter {
      * Export.
      *
      * @param context the context
-     * @param print the print
+     * @param component the report component
      * @param stream the stream
      *
      * @throws IOException Signals that an I/O exception has occurred.
-     * @throws JRException the JR exception
      * @throws ExporterException the exporter exception
      */
     public void export(final FacesContext context,
@@ -132,7 +131,8 @@ public abstract class DefaultExporter implements Exporter {
     /**
      * Creates the jr exporter.
      *
-     * @param context the context
+     * @param context the faces' context
+     * @param component the report component
      *
      * @return the jR exporter
      */

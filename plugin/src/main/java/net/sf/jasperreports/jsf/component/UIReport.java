@@ -55,14 +55,16 @@ public class UIReport extends UIComponentBase {
     private String subreportDir;
     /** The format. */
     private String format;
+    private Object value;
+    private boolean valueSet = false;
+
+    private boolean valid = true;
 
     private Exporter exporter;
     private Validator validator;
 
     /**
      * Instantiates a new uI report implementor.
-     *
-     * @param facade the facade
      */
     public UIReport() {
         super();
@@ -239,6 +241,27 @@ public class UIReport extends UIComponentBase {
         this.immediateSet = true;
     }
 
+    public Object getValue() {
+        if (valueSet) {
+            return value;
+        }
+        ValueExpression ve = getValueExpression("value");
+        if (ve != null) {
+            try {
+                return ve.getValue(getFacesContext().getELContext());
+            } catch (ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return value;
+        }
+    }
+
+    public void setValue(Object value) {
+        this.value = value;
+        this.valueSet = true;
+    }
+
     public Exporter getExporter() {
         if (exporter != null) {
             return exporter;
@@ -278,6 +301,14 @@ public class UIReport extends UIComponentBase {
 
     public void setValidator(Validator validator) {
         this.validator = validator;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 
     // UIReport encode methods
@@ -335,6 +366,31 @@ public class UIReport extends UIComponentBase {
         return values;
     }
 
+    public void resetValue() {
+        this.value = null;
+        this.valueSet = false;
+        this.valid = true;
+    }
+
+    public void updateModel(FacesContext context) {
+        if (context == null) {
+            throw new NullPointerException();
+        }
+
+        if (valueSet || !isValid()) {
+            return;
+        }
+
+        Object providedValue = getValue();
+        if (providedValue == null) {
+            JRFacesContext jrContext = JRFacesContext.getInstance(context);
+            ValueExpression ve = getValueExpression("value");
+            if (ve != null) {
+                
+            }
+        }
+    }
+
     public void validate(FacesContext context) throws ValidationException {
         if (context == null) {
             throw new NullPointerException();
@@ -347,7 +403,12 @@ public class UIReport extends UIComponentBase {
         }
 
         if (validator != null) {
-            validator.validate(context, this);
+            try {
+                validator.validate(context, this);
+            } catch (ValidationException e) {
+                setValid(false);
+                throw e;
+            }
         }
     }
 

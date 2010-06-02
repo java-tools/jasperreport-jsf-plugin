@@ -165,7 +165,7 @@ public class UIReportSource extends UIComponentBase {
     /**
      * Sets the data.
      *
-     * @param value the new value
+     * @param data the new value
      */
     public final void setData(final Object data) {
         this.data = data;
