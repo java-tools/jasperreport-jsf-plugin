@@ -77,7 +77,7 @@ public class CsvReportSourceFactory implements ReportSourceFactory {
             closeStream = false;
         } else if (value instanceof String) {
             try {
-                final Resource resource = jrContext.getResource(context,
+                final Resource resource = jrContext.createResource(context,
                         component, (String) value);
                 dataSourceStream = resource.getInputStream();
             } catch (final ResourceException e) {

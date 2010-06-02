@@ -30,8 +30,8 @@ import net.sf.jasperreports.jsf.engine.source.ConnectionHolder;
 import net.sf.jasperreports.jsf.test.JMockTheories;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockJRFacesContext;
-import net.sf.jasperreports.jsf.validation.DataBrokerValidator;
-import net.sf.jasperreports.jsf.validation.IllegalDataBrokerTypeException;
+import net.sf.jasperreports.jsf.validation.ReportSourceValidator;
+import net.sf.jasperreports.jsf.validation.IllegalReportSourceTypeException;
 import net.sf.jasperreports.jsf.validation.MissingAttributeException;
 import net.sf.jasperreports.jsf.validation.ValidationException;
 
@@ -102,7 +102,7 @@ public final class UIReportSourceTest {
     private Connection connection;
     private ReportSource reportSource;
     private ReportSourceFactory reportSourceFactory;
-    private DataBrokerValidator reportSourceValidator;
+    private ReportSourceValidator reportSourceValidator;
     private JRDataSource dataSource;
 
     private Mockery mockery = new JUnit4Mockery();
@@ -116,7 +116,7 @@ public final class UIReportSourceTest {
         connection = mockery.mock(Connection.class);
         reportSource = mockery.mock(ReportSource.class);
         reportSourceFactory = mockery.mock(ReportSourceFactory.class);
-        reportSourceValidator = mockery.mock(DataBrokerValidator.class);
+        reportSourceValidator = mockery.mock(ReportSourceValidator.class);
         dataSource = mockery.mock(JRDataSource.class);
 
         jrContext = new MockJRFacesContext(facesEnv.getFacesContext());
@@ -152,7 +152,7 @@ public final class UIReportSourceTest {
 
         mockery.checking(new Expectations() {{
             oneOf(reportSourceValidator).validate(facesContext, component);
-            will(throwException(new IllegalDataBrokerTypeException(
+            will(throwException(new IllegalReportSourceTypeException(
                     component.getType())));
         }});
 
@@ -161,7 +161,7 @@ public final class UIReportSourceTest {
             component.processValidators(facesContext);
             fail("A ValidationException should be thrown.");
         } catch(ValidationException e) {
-            assertThat(e, instanceOf(IllegalDataBrokerTypeException.class));
+            assertThat(e, instanceOf(IllegalReportSourceTypeException.class));
             assertThat(e.getMessage(), equalTo(type));
             assertTrue("Context should have 'RenderResponse' state enabled.",
                     facesContext.getRenderResponse());
@@ -398,7 +398,7 @@ public final class UIReportSourceTest {
         UIReportSource component = new UIReportSource();
 
         component.setId(COMPONENT_ID);
-        component.setBrokerFactory(reportSourceFactory);
+        component.setFactory(reportSourceFactory);
         component.setValidator(reportSourceValidator);
 
         if (type != null) {

@@ -18,10 +18,12 @@
  */
 package net.sf.jasperreports.jsf.validation;
 
+import java.io.Serializable;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public interface Validator {
+public interface Validator extends Serializable {
 
     public void validate(FacesContext context, UIComponent component)
             throws ValidationException;

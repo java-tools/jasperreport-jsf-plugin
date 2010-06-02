@@ -82,7 +82,7 @@ public class DefaultFiller implements Filler {
         InputStream reportStream = null;
         Resource resource;
         try {
-            resource = jrContext.getResource(context,
+            resource = jrContext.createResource(context,
                     (UIComponent) component, reportName);
             reportStream = resource.getInputStream();
         } catch (final IOException e) {
@@ -189,7 +189,7 @@ public class DefaultFiller implements Filler {
         final String subreportDir = component.getSubreportDir();
         if (subreportDir != null) {
             try {
-                Resource resource = jrContext.getResource(context,
+                Resource resource = jrContext.createResource(context,
                             component, subreportDir);
                 parameters.put("SUBREPORT_DIR", resource.getPath());
             } catch (UnresolvedResourceException e) {

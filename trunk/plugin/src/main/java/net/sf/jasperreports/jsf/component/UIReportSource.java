@@ -33,10 +33,10 @@ import net.sf.jasperreports.jsf.engine.ReportSource;
 import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
 import net.sf.jasperreports.jsf.engine.source.JRDataSourceHolder;
 import net.sf.jasperreports.jsf.engine.source.ConnectionHolder;
-import net.sf.jasperreports.jsf.validation.DataBrokerValidator;
-import net.sf.jasperreports.jsf.validation.DataBrokerValidatorFactory;
+import net.sf.jasperreports.jsf.validation.ReportSourceValidator;
 import net.sf.jasperreports.jsf.validation.MissingAttributeException;
 import net.sf.jasperreports.jsf.validation.ValidationException;
+import net.sf.jasperreports.jsf.validation.Validator;
 
 /**
  * The Class UIDataSource.
@@ -66,8 +66,8 @@ public class UIReportSource extends UIComponentBase {
     private Object value;
     private boolean valueSet = false;
 
-    private ReportSourceFactory brokerFactory;
-    private DataBrokerValidator validator;
+    private ReportSourceFactory factory;
+    private ReportSourceValidator validator;
 
     /**
      * Instantiates a new uI data source.
@@ -211,11 +211,11 @@ public class UIReportSource extends UIComponentBase {
         valueSet = true;
     }
 
-    public ReportSourceFactory getBrokerFactory() {
-        if (brokerFactory != null) {
-            return brokerFactory;
+    public ReportSourceFactory getFactory() {
+        if (factory != null) {
+            return factory;
         }
-        ValueExpression ve = getValueExpression("brokerFactory");
+        ValueExpression ve = getValueExpression("factory");
         if (ve != null) {
             try {
                 return (ReportSourceFactory) ve.getValue(
@@ -224,22 +224,22 @@ public class UIReportSource extends UIComponentBase {
                 throw new FacesException(e);
             }
         } else {
-            return brokerFactory;
+            return factory;
         }
     }
 
-    public void setBrokerFactory(ReportSourceFactory factory) {
-        this.brokerFactory = factory;
+    public void setFactory(ReportSourceFactory factory) {
+        this.factory = factory;
     }
 
-    public DataBrokerValidator getValidator() {
+    public ReportSourceValidator getValidator() {
         if (validator != null) {
             return validator;
         }
         ValueExpression ve = getValueExpression("validator");
         if (ve != null) {
             try {
-                return (DataBrokerValidator) ve.getValue(
+                return (ReportSourceValidator) ve.getValue(
                         getFacesContext().getELContext());
             } catch(ELException e) {
                 throw new FacesException(e);
@@ -249,7 +249,7 @@ public class UIReportSource extends UIComponentBase {
         }
     }
 
-    public void setValidator(DataBrokerValidator validator) {
+    public void setValidator(ReportSourceValidator validator) {
         this.validator = validator;
     }
 
@@ -350,11 +350,11 @@ public class UIReportSource extends UIComponentBase {
         boolean sendInRequest = true;
         Object providedValue = getValue();
         if (providedValue == null) {
-            ReportSourceFactory factory = this.getBrokerFactory();
+            ReportSourceFactory factory = this.getFactory();
             if (factory != null) {
                 dataBroker = factory.createSource(context, this);
             } else {
-                dataBroker = getJRFacesContext().getDataSource(context, this);
+                dataBroker = getJRFacesContext().createDataSource(context, this);
             }
             assert dataBroker != null;
 
@@ -405,9 +405,9 @@ public class UIReportSource extends UIComponentBase {
                 throw new MissingAttributeException("data");
             }
 
-            DataBrokerValidator validator = getValidator();
+            Validator validator = getValidator();
             if (validator == null) {
-                validator = DataBrokerValidatorFactory
+                validator = getJRFacesContext()
                         .createValidator(context, this);
             }
 

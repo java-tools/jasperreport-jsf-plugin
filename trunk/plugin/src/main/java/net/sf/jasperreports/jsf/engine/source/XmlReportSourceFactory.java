@@ -143,7 +143,7 @@ public class XmlReportSourceFactory implements ReportSourceFactory {
             } else if (data instanceof String) {
                 final JRFacesContext jrContext =
                         JRFacesContext.getInstance(context);
-                final Resource resource = jrContext.getResource(context,
+                final Resource resource = jrContext.createResource(context,
                         component, (String) data);
                 stream = resource.getInputStream();
             } else if (data instanceof InputStream) {

@@ -21,7 +21,7 @@ package net.sf.jasperreports.jsf.validation;
 /**
  * The Class IllegalDataSourceTypeException.
  */
-public class IllegalDataBrokerTypeException extends IllegalAttributeValueException {
+public class IllegalReportSourceTypeException extends IllegalAttributeValueException {
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1358551817454303121L;
@@ -32,7 +32,7 @@ public class IllegalDataBrokerTypeException extends IllegalAttributeValueExcepti
      * @param msg
      *            the msg
      */
-    public IllegalDataBrokerTypeException(final String msg) {
+    public IllegalReportSourceTypeException(final String msg) {
         super(msg);
     }
 }

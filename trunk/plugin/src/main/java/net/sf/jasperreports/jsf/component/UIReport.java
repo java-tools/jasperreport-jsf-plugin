@@ -27,10 +27,10 @@ import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 import net.sf.jasperreports.jsf.validation.ReportValidator;
-import net.sf.jasperreports.jsf.validation.ValidatorLoader;
 import net.sf.jasperreports.jsf.validation.ValidationException;
 import net.sf.jasperreports.jsf.validation.Validator;
 
@@ -341,7 +341,8 @@ public class UIReport extends UIComponentBase {
             throw new NullPointerException();
         }
 
-        final Validator validator = ValidatorLoader.getValidator(context, this);
+        final Validator validator = getJRFacesContext()
+                .createValidator(context, this);
         if (validator != null) {
             validator.validate(context, this);
         }
@@ -389,5 +390,9 @@ public class UIReport extends UIComponentBase {
             throw e;
         }
     }
-    
+
+    protected JRFacesContext getJRFacesContext() {
+        return JRFacesContext.getInstance(getFacesContext());
+    }
+
 }

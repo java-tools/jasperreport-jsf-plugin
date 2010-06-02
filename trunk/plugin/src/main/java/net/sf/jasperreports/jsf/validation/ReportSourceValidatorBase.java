@@ -18,26 +18,20 @@
  */
 package net.sf.jasperreports.jsf.validation;
 
-import java.util.Map;
-
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIReportSource;
-import net.sf.jasperreports.jsf.util.Services;
+import net.sf.jasperreports.jsf.context.JRFacesContext;
 
-public final class DataBrokerValidatorFactory {
+public class ReportSourceValidatorBase extends ReportSourceValidator {
 
-    private static final Map<String, DataBrokerValidator> validatorCacheMap =
-            Services.map(DataBrokerValidator.class);
-
-    public static DataBrokerValidator createValidator(final FacesContext context,
+    @Override
+    protected void doValidate(final FacesContext context,
             final UIReportSource component) throws ValidationException {
-        DataBrokerValidator result = null;
-        result = validatorCacheMap.get(component.getType());
-        if (result == null) {
-            result = validatorCacheMap.get(null);
+        final JRFacesContext jrContext = JRFacesContext.getInstance(context);
+        if (!jrContext.getAvailableDataSourceTypes().contains(
+                component.getType())) {
+            throw new IllegalReportSourceTypeException(component.getType());
         }
-        return result;
     }
 }

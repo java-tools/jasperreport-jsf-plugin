@@ -67,7 +67,7 @@ public class FacesFileResolver implements FileResolver {
     }
 
     protected Resource resolveResource(String name) throws IOException {
-        return getJRFacesContext().getResource(getFacesContext(), report, name);
+        return getJRFacesContext().createResource(getFacesContext(), report, name);
     }
 
     protected File downloadResource(Resource resource) throws IOException {
