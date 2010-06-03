@@ -75,60 +75,10 @@ public class DefaultFiller implements Filler {
     public final void fill(FacesContext context, UIReport component)
             throws FillerException {
         final String reportName = component.getPath();
-        JRFacesContext jrContext = JRFacesContext.getInstance(context);
 
-        JasperReport jasperReport;
-        InputStream reportStream = null;
-        Resource resource;
-        try {
-            resource = jrContext.createResource(context,
-                    (UIComponent) component, reportName);
-        } catch (final UnresolvedResourceException e) {
-            throw new ReportNotFoundException(reportName, e);
-        }
-
-        ReportSource reportSource = null;
-        Object reportSourceRef = component.getReportSource();
-        if (reportSourceRef != null) {
-            if (reportSourceRef instanceof ReportSource) {
-                reportSource = (ReportSource) reportSourceRef;
-            } else if (reportSourceRef instanceof String) {
-                String dataSourceId = Util.resolveDataSourceId(context,
-                        component, (String) reportSourceRef);
-
-                reportSource = (ReportSource) context.getExternalContext()
-                        .getRequestMap().get(dataSourceId);
-            } else if (reportSourceRef instanceof JRDataSource) {
-                reportSource = new JRDataSourceHolder(
-                        (JRDataSource) reportSourceRef);
-            } else if (reportSourceRef instanceof Connection) {
-                reportSource = new ConnectionHolder(
-                        (Connection) reportSourceRef);
-            } else {
-                throw new FillerException("Illegal data source value type: "
-                        + reportSourceRef.getClass().getName());
-            }
-        }
-        try {
-            jasperReport = loadReportObject(resource);
-        } catch (IOException ex) {
-            if (logger.isLoggable(Level.SEVERE)) {
-                LogRecord record = new LogRecord(Level.SEVERE, "JRJSF_0033");
-                record.setParameters(new Object[]{ resource.getName() });
-                record.setThrown(ex);
-                logger.log(record);
-            }
-            throw new FillerException(ex);
-        } catch (ClassNotFoundException ex) {
-            if (logger.isLoggable(Level.SEVERE)) {
-                LogRecord record = new LogRecord(Level.SEVERE, "JRJSF_0034");
-                record.setParameters(new Object[]{ resource.getName() });
-                record.setThrown(ex);
-                logger.log(record);
-            }
-            throw new FillerException(ex);
-        }
-
+        JasperReport jasperReport = loadReport(context, component);
+        ReportSource reportSource = getReportSource(context, component);
+        
         logger.log(Level.FINE, "JRJSF_0003", reportName);
 
         try {
@@ -142,13 +92,7 @@ public class DefaultFiller implements Filler {
             try {
                 reportSource.dispose();
                 reportSource = null;
-            } catch (Exception e) { }
-            
-            try {
-                reportStream.close();
-                reportStream = null;
-            } catch (final IOException e) {
-            }
+            } catch (Exception e) { }            
         }
     }
     
@@ -158,7 +102,7 @@ public class DefaultFiller implements Filler {
      * @param context the context
      * @param component the component
      *
-     * @return the map< string, object>
+     * @return the map<string, object>
      */
     protected Map<String, Object> buildParamMap(final FacesContext context,
             final UIReport component)
@@ -224,11 +168,78 @@ public class DefaultFiller implements Filler {
         return print;
     }
 
-    protected JasperReport loadReportObject(Resource resource)
-            throws IOException, ClassNotFoundException {
-        ObjectInputStream ois = new ContextClassLoaderObjectInputStream(
-                resource.getInputStream());
-        return (JasperReport) ois.readObject();
+    protected ReportSource<?> getReportSource(FacesContext context,
+            UIReport component)
+    throws FillerException {
+        ReportSource reportSource = null;
+        Object reportSourceRef = component.getReportSource();
+        if (reportSourceRef != null) {
+            if (reportSourceRef instanceof ReportSource) {
+                reportSource = (ReportSource) reportSourceRef;
+            } else if (reportSourceRef instanceof String) {
+                String dataSourceId = Util.resolveDataSourceId(context,
+                        component, (String) reportSourceRef);
+
+                reportSource = (ReportSource) context.getExternalContext()
+                        .getRequestMap().get(dataSourceId);
+            } else if (reportSourceRef instanceof JRDataSource) {
+                reportSource = new JRDataSourceHolder(
+                        (JRDataSource) reportSourceRef);
+            } else if (reportSourceRef instanceof Connection) {
+                reportSource = new ConnectionHolder(
+                        (Connection) reportSourceRef);
+            } else {
+                throw new FillerException("Illegal data source value type: "
+                        + reportSourceRef.getClass().getName());
+            }
+        }
+        return reportSource;
+    }
+
+    protected JasperReport loadReport(FacesContext context, UIReport component)
+    throws FillerException {
+        final String reportName = component.getPath();
+        JRFacesContext jrContext = JRFacesContext.getInstance(context);
+
+        Resource resource;
+        try {
+            resource = jrContext.createResource(context,
+                    (UIComponent) component, reportName);
+        } catch (final UnresolvedResourceException e) {
+            throw new ReportNotFoundException(reportName, e);
+        }
+        assert resource != null;
+
+        ObjectInputStream ois = null;
+        try {
+            ois = new ContextClassLoaderObjectInputStream(
+                    resource.getInputStream());
+            return (JasperReport) ois.readObject();
+        } catch (IOException e) {
+            if (logger.isLoggable(Level.SEVERE)) {
+                LogRecord record = new LogRecord(Level.SEVERE, "JRJSF_0033");
+                record.setParameters(new Object[]{ resource.getName() });
+                record.setThrown(e);
+                logger.log(record);
+            }
+            throw new FillerException(e);
+        } catch (ClassNotFoundException e) {
+            if (logger.isLoggable(Level.SEVERE)) {
+                LogRecord record = new LogRecord(Level.SEVERE, "JRJSF_0034");
+                record.setParameters(new Object[]{ resource.getName() });
+                record.setThrown(e);
+                logger.log(record);
+            }
+            throw new FillerException(e);
+        } finally {
+            if (ois != null) {
+                try {
+                    ois.close();
+                } catch (IOException e) {
+                    // do nothing
+                }
+            }
+        }
     }
 
 }

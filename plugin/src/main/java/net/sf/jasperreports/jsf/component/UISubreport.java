@@ -16,45 +16,12 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.resource;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-
+package net.sf.jasperreports.jsf.component;
 
 /**
  *
- * @author aalonsodominguez
+ * @author antonio.alonso
  */
-public final class FileResource implements Resource {
-
-    private File file;
-
-    protected FileResource(File file) {
-        this.file = file;
-    }
-
-    public InputStream getInputStream() throws IOException {
-        return new FileInputStream(file);
-    }
-
-    public URL getLocation() throws IOException {
-        return new URL("file://" + file.getAbsolutePath());
-    }
-
-    public String getName() {
-        return file.getName();
-    }
-
-    public String getPath() {
-        if (file.isFile()) {
-            return file.getParentFile().getAbsolutePath();
-        } else {
-            return file.getAbsolutePath();
-        }
-    }
+public class UISubreport extends UIReport {
 
 }
