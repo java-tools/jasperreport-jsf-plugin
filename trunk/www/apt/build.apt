@@ -50,8 +50,9 @@ the following command:
 
   The best option when building from source is use the lastest version available
 at the Subversion repository at SourceForge. If you don't have already a
-subversion client; Linux and MacOS users should have already one installed;
-Windows users can use {{{http://tortoisesvn.tigris.org}Tortoise SVN}}.
+subversion client you may download from {{{http://subversion.apache.org}Apache Subversion site}}.
+Linux and MacOS users should have already one installed; Windows users can use
+{{{http://tortoisesvn.tigris.org}Tortoise SVN}}.
 
 * Main Steps
 

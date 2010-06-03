@@ -21,18 +21,18 @@
 ~~ 
 
 			---
-			JNDI DataSource
+			JNDI Source
 			---
 			A. Alonso Dominguez
 			
 
-Usage of the JNDI DataSource
+Usage of the JNDI Report Source
 
-  The usage of a JNDI data source is very similar to using JDBC data sources,
+  The usage of a JNDI report source is very similar to using JDBC sources,
 the main difference is you don't need to stablish the <<<driverClassName>>>
 attribute. 
 
-* Configuring the data source
+* Configuring the report source
 
   The attributes required to be used with this type of data soruce are
 reflected in the following table:
@@ -40,7 +40,7 @@ reflected in the following table:
 *-----------------+----------*--------------------------------------------------+
 | Attribute       | Optional | Description                                      |
 *-----------------+----------*--------------------------------------------------+
-| value           | false    | JNDI name of the dataSource                      |
+| value           | false    | JNDI name of the data source                     |
 *-----------------+----------*--------------------------------------------------+
 | query           | true     | Query to be used to offer the data to the report |
 *-----------------+----------*--------------------------------------------------+
@@ -49,13 +49,13 @@ reflected in the following table:
 
 ** Simple Usage
 
-  This usage of the dataSource will give to the report a <<<java.sql.Connection>>>
+  This usage of the report source will give to the report a <<<java.sql.Connection>>>
 instance. The report must be desgined with a default query.
 
   The most simple usage consist on stablish the two required attributes:
   
 +---
-<jr:dataSource id="jndiDataSource"
+<jr:reportSource id="jndiSource"
 	value="jdbc/databasename"
 	type="jndi"
 />
@@ -66,10 +66,10 @@ instance. The report must be desgined with a default query.
   This kind of usage will give to the report a JasperReports' <<<ResultSetDataSource>>>
 instance. The report doesn't need to be designed with a default query.
 
-  To use queries with this kind of dataSource you must include the <<<query>>> attribute:
+  To use queries with this kind of source you must include the <<<query>>> attribute:
   
 +---
-<jr:dataSource id="jndiDataSource" type="jndi"
+<jr:reportSource id="jndiSource" type="jndi"
 	value="jdbc/databasename"
 	query="select * from orders"
 />
@@ -78,10 +78,10 @@ instance. The report doesn't need to be designed with a default query.
   Also you can use parametriced queries this way:
   
 +---
-<jr:dataSource id="jndiDataSource" type="jndi"
+<jr:reportSource id="jndiSource" type="jndi"
 	value="jdbc/databasename"
 	query="select * from orders where orderId = ?"
 >
 	<f:param value="23938" />
-</jr:dataSource>
+</jr:reportSource>
 +---

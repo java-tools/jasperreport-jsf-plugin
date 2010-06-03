@@ -25,7 +25,7 @@
 			---
 			A. Alonso Dominguez
 
-Features for last beta version
+Features for last versions
 
   This page is dedicated to showing fixes and features added (or improved) in 
 each release of JasperReports JSF Plugin. When using the library pay attention
@@ -33,10 +33,21 @@ to this list when using any of the functionalities provided.
 
 * 1.0-RC1
 
-  * New lifecycle that is not longer based on storing the report components into
-the user session
+  * Plugin's lifecycle has been aligned with the standard JSF lifecycle.
 
-  * Enhanced built-in resource loading mechanism
+    ** Now a report render request is a true Faces's request invoked as a
+       postback against the view which declares the report.
+
+    ** Plugin components are validated when reached the PROCESS_VALIDATORS phase,
+       not inside the RENDER_RESPONSE phase.
+
+  * Plugin components refactored with better support for nested reports.
+
+  * Plugin components can now interact with managed beans updating the binded properties.
+
+  * Enhanced built-in resource loading/resolving mechanism.
+
+  * Eased extensibility by means of the <<<JRFacesContext>>> class
 
   * Removed support for <<<java.awt.Graphics2D>>> output formal (useless in servlet
 or portlet environments).
