@@ -52,7 +52,7 @@ to the JSF tree at any point you need:
 <f:view>
   ...
   
-  <jr:report path="..." />
+  <jr:reportFrame value="..." />
   
   ...
 </f:view>
@@ -80,7 +80,7 @@ component like other HTML content:
 ...
 <body>
   ...
-  <span jsfc="jr:reportLink" path="...">
+  <span jsfc="jr:reportLink" value="...">
     View Report
   </span>
   ...
@@ -111,7 +111,7 @@ to a HTML tag. Following is an example:
 ...
 <body>
   ...
-  <span jsfid="jr:reportLink" path="...">
+  <span jsfid="jr:reportLink" value="...">
     View Report
   </span>
   ...
