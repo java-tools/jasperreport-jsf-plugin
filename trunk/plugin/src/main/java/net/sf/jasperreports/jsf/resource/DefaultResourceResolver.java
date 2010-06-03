@@ -25,11 +25,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.resource.Resource;
-import net.sf.jasperreports.jsf.resource.ClasspathResource;
-import net.sf.jasperreports.jsf.resource.ContextResource;
-import net.sf.jasperreports.jsf.resource.FileResource;
-import net.sf.jasperreports.jsf.resource.URLResource;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.util.Util;

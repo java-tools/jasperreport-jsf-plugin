@@ -44,6 +44,10 @@ public abstract class JRFacesContext {
             new DefaultJRFacesContext();
 
     public static JRFacesContext getInstance(FacesContext context) {
+        if (context == null) {
+            throw new NullPointerException();
+        }
+
         JRFacesContext instance = (JRFacesContext) context.getExternalContext()
                 .getApplicationMap().get(INSTANCE_KEY);
         if (instance == null) {

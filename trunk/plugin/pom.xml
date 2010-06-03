@@ -201,6 +201,10 @@
                   <name>java.util.logging.config.file</name>
                   <value>${test.logging.conf}</value>
                 </property>
+                <property>
+                  <name>basedir</name>
+                  <value>${basedir}</value>
+                </property>
               </systemProperties>
             </configuration>
           </execution>

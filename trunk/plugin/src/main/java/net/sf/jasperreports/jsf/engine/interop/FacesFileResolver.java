@@ -57,7 +57,7 @@ public class FacesFileResolver implements FileResolver {
             if (isRemote(resource)) {
                 resultFile = downloadResource(resource);
             } else {
-                resultFile = new File(resource.getPath());
+                resultFile = new File(resource.getName());
             }
         } catch (final IOException e) {
             throw new JRFacesException(e);
@@ -67,7 +67,8 @@ public class FacesFileResolver implements FileResolver {
     }
 
     protected Resource resolveResource(String name) throws IOException {
-        return getJRFacesContext().createResource(getFacesContext(), report, name);
+        return getJRFacesContext().createResource(getFacesContext(),
+                report, name);
     }
 
     protected File downloadResource(Resource resource) throws IOException {

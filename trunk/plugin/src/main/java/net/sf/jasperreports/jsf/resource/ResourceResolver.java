@@ -20,7 +20,6 @@ package net.sf.jasperreports.jsf.resource;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import net.sf.jasperreports.jsf.resource.Resource;
 
 /**
  *

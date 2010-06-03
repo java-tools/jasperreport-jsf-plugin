@@ -26,6 +26,8 @@ public final class TestConstants {
 
     public static final Object UNDEFINED_VALUE = "UNDEFINED";
 
+    public static final String PROP_BASEDIR = "basedir";
+
     private TestConstants() { }
 
 }
