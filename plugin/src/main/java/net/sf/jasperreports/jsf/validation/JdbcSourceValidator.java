@@ -18,13 +18,14 @@
  */
 package net.sf.jasperreports.jsf.validation;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 
-import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.engine.source.JdbcSourceConverter;
-import net.sf.jasperreports.jsf.validation.SourceValidatorBase;
-import net.sf.jasperreports.jsf.validation.MissingAttributeException;
-import net.sf.jasperreports.jsf.validation.ValidationException;
+
+import static net.sf.jasperreports.jsf.util.MessagesFactory.*;
 
 public class JdbcSourceValidator extends SourceValidatorBase {
 
@@ -33,13 +34,15 @@ public class JdbcSourceValidator extends SourceValidatorBase {
         JdbcSourceConverter.ATTR_DRIVER_CLASS_NAME};
 
     @Override
-    protected void doValidate(final FacesContext context,
-            final UISource component) throws ValidationException {
-        super.doValidate(context, component);
+    public void validate(final FacesContext context,
+            final UIComponent component, Object value)
+    throws ValidatorException {
+        super.validate(context, component, value);
         for (final String attr : REQUIRED_DATASOURCE_ATTRS) {
             if (null == component.getAttributes().get(attr)) {
-                throw new MissingAttributeException(
-                        component.getType() + " : " + attr);
+                FacesMessage message = createMessage(context,
+                        FacesMessage.SEVERITY_FATAL, "MISSING_ATTRIBUTE", attr);
+                throw new MissingAttributeException(message);
             }
         }
     }

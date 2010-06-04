@@ -29,6 +29,8 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.Validator;
+import javax.faces.validator.ValidatorException;
 
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.ContextClassLoaderObjectInputStream;
@@ -37,8 +39,7 @@ import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.convert.SourceConverter;
 import net.sf.jasperreports.jsf.engine.Source;
 import net.sf.jasperreports.jsf.resource.Resource;
-import net.sf.jasperreports.jsf.validation.ValidationException;
-import net.sf.jasperreports.jsf.validation.Validator;
+import net.sf.jasperreports.jsf.validation.ReportValidatorBase;
 
 /**
  * The Class UIReport.
@@ -53,7 +54,7 @@ public abstract class UIReport extends UIComponentBase {
             UIReport.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
-    /** The data source. */
+    /** The source. */
     private Object source;
 
     private String name;
@@ -68,7 +69,7 @@ public abstract class UIReport extends UIComponentBase {
     private JasperReport submittedReport;
 
     /**
-     * Instantiates a new uI report implementor.
+     * Instantiates a new UIReport.
      */
     public UIReport() {
         super();
@@ -90,7 +91,8 @@ public abstract class UIReport extends UIComponentBase {
         final ValueExpression ve = getValueExpression("source");
         if (ve != null) {
             try {
-                return ve.getValue(getFacesContext().getELContext());
+                return ve.getValue(
+                        getFacesContext().getELContext());
             } catch (final ELException e) {
                 throw new FacesException(e);
             }
@@ -239,6 +241,7 @@ public abstract class UIReport extends UIComponentBase {
         valueSet = ((Boolean) values[4]).booleanValue();
         converter = (SourceConverter) values[5];
         valid = ((Boolean) values[6]).booleanValue();
+        validator = (Validator) values[7];
     }
 
     /*
@@ -250,7 +253,7 @@ public abstract class UIReport extends UIComponentBase {
      */
     @Override
     public Object saveState(final FacesContext context) {
-        final Object[] values = new Object[7];
+        final Object[] values = new Object[8];
         values[0] = super.saveState(context);
         values[1] = source;
         values[2] = name;
@@ -258,6 +261,7 @@ public abstract class UIReport extends UIComponentBase {
         values[4] = valueSet;
         values[5] = converter;
         values[6] = valid;
+        values[7] = validator;
         return values;
     }
 
@@ -374,21 +378,21 @@ public abstract class UIReport extends UIComponentBase {
     }
 
     public void validate(FacesContext context)
-            throws ValidationException {
+            throws ValidatorException {
         if (context == null) {
             throw new NullPointerException();
         }
 
         Validator aValidator = getValidator();
         if (aValidator == null) {
-            aValidator = getJRFacesContext()
-                .createValidator(context, this);
+            aValidator = getFacesContext().getApplication()
+                .createValidator(ReportValidatorBase.VALIDATOR_TYPE);
         }
 
         if (aValidator != null) {
             try {
-                aValidator.validate(context, this);
-            } catch (ValidationException e) {
+                aValidator.validate(context, this, getValue());
+            } catch (ValidatorException e) {
                 setValid(false);
                 throw e;
             }
@@ -406,7 +410,7 @@ public abstract class UIReport extends UIComponentBase {
 
         try {
             validate(context);
-        } catch(ValidationException e) {
+        } catch(ValidatorException e) {
             context.renderResponse();
             throw e;
         }

@@ -23,13 +23,14 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.Validator;
+import javax.faces.validator.ValidatorException;
 
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.convert.SourceConverter;
 import net.sf.jasperreports.jsf.engine.Source;
-import net.sf.jasperreports.jsf.validation.ValidationException;
-import net.sf.jasperreports.jsf.validation.Validator;
+import net.sf.jasperreports.jsf.validation.SourceValidatorBase;
 
 /**
  * The Class UIDataSource.
@@ -361,21 +362,21 @@ public class UISource extends UIComponentBase {
                 .put(clientId, submittedSource);
     }
 
-    public void validate(FacesContext context) throws ValidationException {
+    public void validate(FacesContext context) throws ValidatorException {
         if (context == null) {
             throw new IllegalArgumentException();
         }
 
         Validator aValidator = getValidator();
         if (aValidator == null) {
-            aValidator = getJRFacesContext()
-                    .createValidator(context, this);
+            aValidator = getFacesContext().getApplication()
+                    .createValidator(SourceValidatorBase.VALIDATOR_TYPE);
         }
 
         if (aValidator != null) {
             try {
-                aValidator.validate(context, this);
-            } catch (ValidationException e) {
+                aValidator.validate(context, this, getValue());
+            } catch (ValidatorException e) {
                 setValid(false);
                 throw e;
             }
@@ -383,12 +384,12 @@ public class UISource extends UIComponentBase {
     }
 
     protected void executeValidate(FacesContext context)
-            throws ValidationException {
+            throws ValidatorException {
         Object providedValue = getValue();
         if (providedValue == null) {
             try {
                 validate(context);
-            } catch(ValidationException e) {
+            } catch(ValidatorException e) {
                 context.renderResponse();
                 throw e;
             }

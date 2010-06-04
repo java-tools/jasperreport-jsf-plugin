@@ -16,21 +16,24 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.validation;
+package net.sf.jasperreports.jsf.taglib;
 
-import javax.faces.application.FacesMessage;
+import net.sf.jasperreports.jsf.component.UISubreport;
 
 /**
- * The Class IllegalOutputFormatException.
+ *
+ * @author antonio.alonso
  */
-public class IllegalOutputFormatException extends IllegalAttributeValueException {
+public class SubreportTag extends ReportTag {
 
-    public IllegalOutputFormatException(FacesMessage message) {
-        super(message);
+    @Override
+    public String getComponentType() {
+        return UISubreport.COMPONENT_TYPE;
     }
 
-    public IllegalOutputFormatException(FacesMessage message, Throwable cause) {
-        super(message, cause);
+    @Override
+    public String getRendererType() {
+        return null;
     }
-    
+
 }

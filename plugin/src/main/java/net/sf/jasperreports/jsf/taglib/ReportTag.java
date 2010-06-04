@@ -21,67 +21,43 @@ package net.sf.jasperreports.jsf.taglib;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.webapp.UIComponentELTag;
+import net.sf.jasperreports.jsf.component.UIReport;
 
 import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
  * The Class AbstractReportTag.
  */
-public abstract class AbstractReportTag extends UIComponentELTag {
+public abstract class ReportTag extends UIComponentELTag {
+
+    private ValueExpression converter;
 
     /** The data source. */
-    private ValueExpression reportSource;
+    private ValueExpression source;
 
     private ValueExpression name;
-    /** The path. */
-    private ValueExpression path;
-    /** The subreport dir. */
-    private ValueExpression subreportDir;
-    /** The format. */
-    private ValueExpression format;
+
+    private ValueExpression validator;
+
+    public void setConverter(ValueExpression converter) {
+        this.converter = converter;
+    }
 
     /**
-     * Sets the data source.
+     * Sets the source object.
      *
-     * @param dataSource
-     *            the new data source
+     * @param source the new source object
      */
-    public void setReportSource(final ValueExpression dataSource) {
-        this.reportSource = dataSource;
+    public void setSource(final ValueExpression source) {
+        this.source = source;
     }
 
     public void setName(final ValueExpression name) {
         this.name = name;
     }
 
-    /**
-     * Sets the path.
-     *
-     * @param report
-     *            the new path
-     */
-    public void setPath(final ValueExpression report) {
-        path = report;
-    }
-
-    /**
-     * Sets the subreport dir.
-     *
-     * @param subreportDir
-     *            the new subreport dir
-     */
-    public void setSubreportDir(final ValueExpression subreportDir) {
-        this.subreportDir = subreportDir;
-    }
-
-    /**
-     * Sets the format.
-     *
-     * @param type
-     *            the new format
-     */
-    public void setFormat(final ValueExpression type) {
-        format = type;
+    public void setValidator(ValueExpression validator) {
+        this.validator = validator;
     }
 
     // TagSupport
@@ -94,11 +70,10 @@ public abstract class AbstractReportTag extends UIComponentELTag {
     @Override
     public void release() {
         super.release();
-        reportSource = null;
-        path = null;
-        subreportDir = null;
-        format = null;
+        converter = null;
+        source = null;
         name = null;
+        validator = null;
     }
 
     /*
@@ -113,9 +88,14 @@ public abstract class AbstractReportTag extends UIComponentELTag {
         super.setProperties(component);
 
         setStringAttribute(component, "name", name);
-        setStringAttribute(component, "format", format);
-        setStringAttribute(component, "path", path);
-        setStringAttribute(component, "reportSource", reportSource);
-        setStringAttribute(component, "subreportDir", subreportDir);
+        setStringAttribute(component, "reportSource", source);
+
+        UIReport report = (UIReport) component;
+        if (converter != null) {
+            report.setValueExpression("converter", converter);
+        }
+        if (validator != null) {
+            report.setValueExpression("validator", validator);
+        }
     }
 }

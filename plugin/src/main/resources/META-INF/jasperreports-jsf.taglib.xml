@@ -41,6 +41,15 @@
     </tag>
 
     <tag>
+        <tag-name>subreport</tag-name>
+        <component>
+            <component-type>
+                net.sf.jasperreports.jsf.Subreport
+            </component-type>
+        </component>
+    </tag>
+
+    <tag>
         <tag-name>reportFrame</tag-name>
         <component>
             <component-type>

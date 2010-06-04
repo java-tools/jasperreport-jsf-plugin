@@ -24,7 +24,6 @@ import java.util.Set;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.context.DefaultJRFacesContext;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
@@ -34,7 +33,6 @@ import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.ResourceResolver;
-import net.sf.jasperreports.jsf.validation.Validator;
 
 /**
  *
@@ -52,9 +50,6 @@ public class MockJRFacesContext extends JRFacesContext {
 
     private Filler filler;
     private Exporter exporter;
-
-    private Validator reportSourceValidator;
-    private Validator reportValidator;
 
     public MockJRFacesContext(FacesContext context) {
         context.getExternalContext().getApplicationMap()
@@ -75,22 +70,6 @@ public class MockJRFacesContext extends JRFacesContext {
 
     public void setResourceResolver(ResourceResolver resourceResolver) {
         this.resourceResolver = resourceResolver;
-    }
-
-    public Validator getReportSourceValidator() {
-        return reportSourceValidator;
-    }
-
-    public void setReportSourceValidator(Validator reportSourceValidator) {
-        this.reportSourceValidator = reportSourceValidator;
-    }
-
-    public Validator getReportValidator() {
-        return reportValidator;
-    }
-
-    public void setReportValidator(Validator reportValidator) {
-        this.reportValidator = reportValidator;
     }
     
     public Resource createResource(
@@ -152,23 +131,6 @@ public class MockJRFacesContext extends JRFacesContext {
 
     public void setAvailableDataSourceTypes(Set<String> availableDataSourceTypes) {
         this.availableDataSourceTypes = availableDataSourceTypes;
-    }
-
-    @Override
-    public Validator createValidator(FacesContext context,
-            UISource component) {
-        if (reportSourceValidator != null) {
-            return reportSourceValidator;
-        }
-        return defaultContext.createValidator(context, component);
-    }
-
-    @Override
-    public Validator createValidator(FacesContext context, UIReport component) {
-        if (reportValidator == null) {
-            return reportValidator;
-        }
-        return defaultContext.createValidator(context, component);
     }
     
 }

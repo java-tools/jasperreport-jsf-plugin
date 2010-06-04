@@ -18,23 +18,32 @@
  */
 package net.sf.jasperreports.jsf.validation;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.Validator;
+import javax.faces.validator.ValidatorException;
 
-import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 
 import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
+import static net.sf.jasperreports.jsf.util.MessagesFactory.*;
 
-public class ReportValidatorBase extends ReportValidator {
+public class ReportValidatorBase implements Validator {
 
-    @Override
-    protected void doValidate(final FacesContext context, final UIReport report)
-            throws ValidationException {
+    public static final String VALIDATOR_TYPE =
+            Constants.PACKAGE_PREFIX + ".Report";
+
+    public void validate(FacesContext context, UIComponent component, Object value)
+    throws ValidatorException {
         final JRFacesContext jrContext = JRFacesContext.getInstance(context);
-        String format = getStringAttribute(report, "format", null);
+        String format = getStringAttribute(component, "format", null);
         if (format != null && format.length() > 0) {
             if (!jrContext.getAvailableExportFormats().contains(format)) {
-                throw new IllegalOutputFormatException(format);
+                FacesMessage message = createMessage(context,
+                        FacesMessage.SEVERITY_FATAL, "ILLEGAL_OUTPUT_FORMAT", format);
+                throw new IllegalOutputFormatException(message);
             }
         }
     }

@@ -18,20 +18,37 @@
  */
 package net.sf.jasperreports.jsf.validation;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.Validator;
+import javax.faces.validator.ValidatorException;
+import net.sf.jasperreports.jsf.Constants;
 
 import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 
-public class SourceValidatorBase extends SourceValidator {
+import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
+import static net.sf.jasperreports.jsf.util.MessagesFactory.*;
 
-    @Override
-    protected void doValidate(final FacesContext context,
-            final UISource component) throws ValidationException {
+public class SourceValidatorBase implements Validator {
+
+    public static final String VALIDATOR_TYPE =
+            Constants.PACKAGE_PREFIX + ".Source";
+
+    public void validate(final FacesContext context,
+            final UIComponent component, Object value)
+    throws ValidatorException {
+        if (!(component instanceof UISource)) {
+            throw new IllegalArgumentException();
+        }
+
         final JRFacesContext jrContext = JRFacesContext.getInstance(context);
-        if (!jrContext.getAvailableSourceTypes().contains(
-                component.getType())) {
-            throw new IllegalReportSourceTypeException(component.getType());
+        String type = getStringAttribute(component, "type", null);
+        if (!jrContext.getAvailableSourceTypes().contains(type)) {
+            FacesMessage message = createMessage(context,
+                    FacesMessage.SEVERITY_FATAL, "ILLEGAL_SOURCE_TYPE", type);
+            throw new IllegalSourceTypeException(message);
         }
     }
 }

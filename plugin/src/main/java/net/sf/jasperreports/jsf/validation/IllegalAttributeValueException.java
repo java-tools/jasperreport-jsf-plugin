@@ -18,18 +18,18 @@
  */
 package net.sf.jasperreports.jsf.validation;
 
-public class IllegalAttributeValueException extends ValidationException {
+import javax.faces.application.FacesMessage;
+import javax.faces.validator.ValidatorException;
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = -306710637470588621L;
+public class IllegalAttributeValueException extends ValidatorException {
 
-    public IllegalAttributeValueException(final String msg) {
-        super(msg);
+    public IllegalAttributeValueException(
+            FacesMessage message, Throwable cause) {
+        super(message, cause);
     }
 
-    public IllegalAttributeValueException(final String msg, final Throwable t) {
-        super(msg, t);
+    public IllegalAttributeValueException(FacesMessage message) {
+        super(message);
     }
+    
 }
