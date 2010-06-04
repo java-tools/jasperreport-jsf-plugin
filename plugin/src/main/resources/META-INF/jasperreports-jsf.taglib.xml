@@ -32,10 +32,10 @@
     </namespace>
 
     <tag>
-        <tag-name>reportSource</tag-name>
+        <tag-name>source</tag-name>
         <component>
             <component-type>
-                net.sf.jasperreports.jsf.ReportSource
+                net.sf.jasperreports.jsf.Source
             </component-type>
         </component>
     </tag>

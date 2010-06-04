@@ -23,15 +23,19 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 
+import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
+
 public class ReportValidatorBase extends ReportValidator {
 
     @Override
     protected void doValidate(final FacesContext context, final UIReport report)
             throws ValidationException {
         final JRFacesContext jrContext = JRFacesContext.getInstance(context);
-        if (!jrContext.getAvailableExportFormats().contains(
-                report.getFormat())) {
-            throw new IllegalOutputFormatException(report.getFormat());
+        String format = getStringAttribute(report, "format", null);
+        if (format != null && format.length() > 0) {
+            if (!jrContext.getAvailableExportFormats().contains(format)) {
+                throw new IllegalOutputFormatException(format);
+            }
         }
     }
 }

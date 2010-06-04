@@ -18,50 +18,42 @@
  */
 package net.sf.jasperreports.jsf.engine.source;
 
-import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
-import java.util.Collection;
+import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.component.UIComponent;
 
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.engine.data.JRBeanArrayDataSource;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.jsf.component.UIReportSource;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.jsf.convert.DefaultSourceConverter;
+import net.sf.jasperreports.jsf.engine.Source;
 
 /**
  *
- * @author antonio.alonso
+ * @author aalonsodominguez
  */
-public class BeanReportSourceFactory implements ReportSourceFactory {
+public class ResultSetSourceConverter extends DefaultSourceConverter {
 
     private static final Logger logger = Logger.getLogger(
-            BeanReportSourceFactory.class.getPackage().getName(),
+            ResultSetSourceConverter.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
-    public JRDataSourceHolder createSource(FacesContext context,
-            UIReportSource component) {
+    @Override
+    protected Source createSource(FacesContext context,
+            UIComponent component, Object value) {
         JRDataSource dataSource;
-
-        final Object value = component.getData();
-        if (value == null) {
+        final ResultSet rs = (ResultSet) value;
+        if (rs == null) {
             if (logger.isLoggable(Level.WARNING)) {
                 logger.log(Level.WARNING, "JRJSF_0020",
                         component.getClientId(context));
             }
             dataSource = new JREmptyDataSource();
-        } else if (value instanceof Collection<?>) {
-            dataSource = new JRBeanCollectionDataSource((Collection<?>) value);
         } else {
-            Object[] beanArray;
-            if (!value.getClass().isArray()) {
-                beanArray = new Object[] { value };
-            } else {
-                beanArray = (Object[]) value;
-            }
-            dataSource = new JRBeanArrayDataSource(beanArray);
+            dataSource = new JRResultSetDataSource(rs);
         }
         return new JRDataSourceHolder(dataSource);
     }

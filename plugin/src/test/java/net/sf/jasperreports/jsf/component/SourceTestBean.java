@@ -18,15 +18,36 @@
  */
 package net.sf.jasperreports.jsf.component;
 
-import net.sf.jasperreports.jsf.Constants;
+import java.io.Serializable;
+
+import net.sf.jasperreports.jsf.engine.Source;
 
 /**
  *
- * @author antonio.alonso
+ * @author aalonsodominguez
  */
-public class UISubreport extends UIReport {
+public class SourceTestBean implements Serializable {
 
-    public static final String COMPONENT_TYPE =
-            Constants.PACKAGE_PREFIX + ".Subreport";
+    private Object myReportSource;
+
+    private Source reportSource;
+
+    public SourceTestBean() { }
+
+    public SourceTestBean(Object myReportSource) {
+        this.myReportSource = myReportSource;
+    }
+
+    public Object getMyReportSource() {
+        return myReportSource;
+    }
+
+    public Source getReportSource() {
+        return reportSource;
+    }
+
+    public void setReportSource(Source reportSource) {
+        this.reportSource = reportSource;
+    }
 
 }

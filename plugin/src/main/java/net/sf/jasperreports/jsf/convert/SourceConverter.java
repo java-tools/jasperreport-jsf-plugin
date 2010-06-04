@@ -16,26 +16,26 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.engine;
+package net.sf.jasperreports.jsf.convert;
 
-import net.sf.jasperreports.jsf.JRFacesException;
+import java.io.Serializable;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+
+import net.sf.jasperreports.jsf.engine.Source;
 
 /**
  *
- * @author aalonsodominguez
+ * @author antonio.alonso
  */
-public class ReportSourceException extends JRFacesException {
+public interface SourceConverter extends Serializable {
 
-    public ReportSourceException(Throwable t) {
-        super(t);
-    }
+    public Source convertFromValue(FacesContext context,
+            UIComponent component, Object value)
+    throws ConverterException;
 
-    public ReportSourceException(String msg) {
-        super(msg);
-    }
-
-    public ReportSourceException(String msg, Throwable t) {
-        super(msg, t);
-    }
+    public Object convertFromSource(FacesContext context,
+            UIComponent component, Source source)
+    throws ConverterException;
 
 }

@@ -46,10 +46,10 @@ the data needed for rendering. Consult library documentation
 about how to use this tag and its possible locations within
 the Faces tree.
         ]]></description>
-        <display-name>ReportSource Tag</display-name>
-        <name>dataSource</name>
+        <display-name>Source Tag</display-name>
+        <name>source</name>
         <tag-class>
-            net.sf.jasperreports.jsf.taglib.ReportSourceTag
+            net.sf.jasperreports.jsf.taglib.SourceTag
         </tag-class>
         <body-content>JSP</body-content>
         <attribute>

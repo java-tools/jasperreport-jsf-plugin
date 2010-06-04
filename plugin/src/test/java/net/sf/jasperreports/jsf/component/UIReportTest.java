@@ -85,8 +85,8 @@ public class UIReportTest {
         jrContext.setFiller(filler);
         jrContext.setReportValidator(validator);
 
-        component = new UIReport();
-        component.setId("reportId");
+        //component = new UIReport();
+        //component.setId("reportId");
 
         MockValueExpression ve = new MockValueExpression(
                 "#{" + REPORT_BEAN_NAME + ".reportOrPrint}", null);

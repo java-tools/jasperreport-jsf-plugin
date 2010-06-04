@@ -19,6 +19,10 @@
 package net.sf.jasperreports.jsf.component;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 import javax.el.ELException;
 import javax.el.ValueExpression;
@@ -26,42 +30,42 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.ContextClassLoaderObjectInputStream;
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
-import net.sf.jasperreports.jsf.engine.Exporter;
-import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
+import net.sf.jasperreports.jsf.convert.SourceConverter;
+import net.sf.jasperreports.jsf.engine.Source;
+import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.validation.ValidationException;
 import net.sf.jasperreports.jsf.validation.Validator;
 
 /**
- * The Class UIReportImplementor.
+ * The Class UIReport.
  */
-public class UIReport extends UIComponentBase {
+public abstract class UIReport extends UIComponentBase {
 
     /** The Constant COMPONENT_FAMILY. */
     public static final String COMPONENT_FAMILY =
             Constants.PACKAGE_PREFIX + ".Report";
 
-    /** The data source. */
-    private Object reportSource;
+    private static final Logger logger = Logger.getLogger(
+            UIReport.class.getPackage().getName(),
+            "net.sf.jasperreports.jsf.LogMessages");
 
-    private boolean immediate;
-    private boolean immediateSet = false;
+    /** The data source. */
+    private Object source;
 
     private String name;
-    /** The path. */
-    private String path;
-    /** The subreport dir. */
-    private String subreportDir;
-    /** The format. */
-    private String format;
+    private boolean valid = true;
     private Object value;
     private boolean valueSet = false;
 
-    private boolean valid = true;
-
-    private Exporter exporter;
+    private SourceConverter converter;
     private Validator validator;
+
+    private Source submittedSource;
+    private JasperReport submittedReport;
 
     /**
      * Instantiates a new uI report implementor.
@@ -79,11 +83,11 @@ public class UIReport extends UIComponentBase {
      *
      * @see net.sf.jasperreports.jsf.component.UIReport#getDataSource()
      */
-    public Object getReportSource() {
-        if (reportSource != null) {
-            return reportSource;
+    public Object getSource() {
+        if (source != null) {
+            return source;
         }
-        final ValueExpression ve = getValueExpression("reportSource");
+        final ValueExpression ve = getValueExpression("source");
         if (ve != null) {
             try {
                 return ve.getValue(getFacesContext().getELContext());
@@ -91,7 +95,7 @@ public class UIReport extends UIComponentBase {
                 throw new FacesException(e);
             }
         } else {
-            return reportSource;
+            return source;
         }
     }
 
@@ -102,8 +106,8 @@ public class UIReport extends UIComponentBase {
      * net.sf.jasperreports.jsf.component.UIReport#setDataSource(java.lang.String
      * )
      */
-    public void setReportSource(final Object dataSource) {
-        this.reportSource = dataSource;
+    public void setSource(final Object dataSource) {
+        this.source = dataSource;
     }
 
     public String getName() {
@@ -113,7 +117,8 @@ public class UIReport extends UIComponentBase {
         final ValueExpression ve = getValueExpression("name");
         if (ve != null) {
             try {
-                return (String) ve.getValue(getFacesContext().getELContext());
+                return (String) ve.getValue(
+                        getFacesContext().getELContext());
             } catch (final ELException e) {
                 throw new FacesException(e);
             }
@@ -126,121 +131,6 @@ public class UIReport extends UIComponentBase {
         this.name = name;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see net.sf.jasperreports.jsf.component.UIReport#getPath()
-     */
-    public String getPath() {
-        if (path != null) {
-            return path;
-        }
-        final ValueExpression ve = getValueExpression("path");
-        if (ve != null) {
-            try {
-                return (String) ve.getValue(getFacesContext().getELContext());
-            } catch (final ELException e) {
-                throw new FacesException(e);
-            }
-        } else {
-            return path;
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * net.sf.jasperreports.jsf.component.UIReport#setPath(java.lang.String)
-     */
-    public void setPath(final String path) {
-        this.path = path;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see net.sf.jasperreports.jsf.component.UIReport#getSubreportDir()
-     */
-    public String getSubreportDir() {
-        if (subreportDir != null) {
-            return subreportDir;
-        }
-        final ValueExpression ve = getValueExpression("subreportDir");
-        if (ve != null) {
-            try {
-                return (String) ve.getValue(getFacesContext().getELContext());
-            } catch (final ELException e) {
-                throw new FacesException(e);
-            }
-        } else {
-            return subreportDir;
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * net.sf.jasperreports.jsf.component.UIReport#setSubreportDir(java.lang
-     * .String)
-     */
-    public void setSubreportDir(final String subreportDir) {
-        this.subreportDir = subreportDir;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see net.sf.jasperreports.jsf.component.UIReport#getFormat()
-     */
-    public String getFormat() {
-        if (format != null) {
-            return format;
-        }
-        final ValueExpression ve = getValueExpression("format");
-        if (ve != null) {
-            try {
-                return (String) ve.getValue(getFacesContext().getELContext());
-            } catch (final ELException e) {
-                throw new FacesException(e);
-            }
-        } else {
-            return format;
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * net.sf.jasperreports.jsf.component.UIReport#setFormat(java.lang.String)
-     */
-    public void setFormat(final String type) {
-        format = type;
-    }
-
-    public boolean isImmediate() {
-        if (immediateSet) {
-            return immediate;
-        }
-        ValueExpression ve = getValueExpression("immediate");
-        if (ve != null) {
-            try {
-                return (Boolean) ve.getValue(getFacesContext().getELContext());
-            } catch(ELException e) {
-                throw new FacesException(e);
-            }
-        } else {
-            return immediate;
-        }
-    }
-
-    public void setImmediate(boolean immediate) {
-        this.immediate = immediate;
-        this.immediateSet = true;
-    }
-
     public Object getValue() {
         if (valueSet) {
             return value;
@@ -248,7 +138,8 @@ public class UIReport extends UIComponentBase {
         ValueExpression ve = getValueExpression("value");
         if (ve != null) {
             try {
-                return ve.getValue(getFacesContext().getELContext());
+                return ve.getValue(
+                        getFacesContext().getELContext());
             } catch (ELException e) {
                 throw new FacesException(e);
             }
@@ -262,24 +153,29 @@ public class UIReport extends UIComponentBase {
         this.valueSet = true;
     }
 
-    public Exporter getExporter() {
-        if (exporter != null) {
-            return exporter;
+    public boolean isLocalValueSet() {
+        return valueSet;
+    }
+
+    public SourceConverter getConverter() {
+        if (converter != null) {
+            return converter;
         }
-        ValueExpression ve = getValueExpression("exporter");
+        ValueExpression ve = getValueExpression("converter");
         if (ve != null) {
             try {
-                return (Exporter) ve.getValue(getFacesContext().getELContext());
+                return (SourceConverter) ve.getValue(
+                        getFacesContext().getELContext());
             } catch (ELException e) {
                 throw new FacesException(e);
             }
         } else {
-            return exporter;
+            return converter;
         }
     }
 
-    public void setExporter(Exporter exporter) {
-        this.exporter = exporter;
+    public void setConverter(SourceConverter converter) {
+        this.converter = converter;
     }
 
     public Validator getValidator() {
@@ -303,23 +199,28 @@ public class UIReport extends UIComponentBase {
         this.validator = validator;
     }
 
+    public Source getSubmittedSource() {
+        return submittedSource;
+    }
+
+    public void setSubmittedSource(Source submittedSource) {
+        this.submittedSource = submittedSource;
+    }
+
+    public JasperReport getSubmittedReport() {
+        return submittedReport;
+    }
+
+    public void setSubmittedReport(JasperReport submittedReport) {
+        this.submittedReport = submittedReport;
+    }
+
     public boolean isValid() {
         return valid;
     }
 
     public void setValid(boolean valid) {
         this.valid = valid;
-    }
-
-    // UIReport encode methods
-    public void encodeContent(final FacesContext context) throws IOException {
-        final ReportRenderer renderer = (ReportRenderer) getRenderer(context);
-        renderer.encodeContent(context, this);
-    }
-
-    public void encodeHeaders(final FacesContext context) throws IOException {
-        final ReportRenderer renderer = (ReportRenderer) getRenderer(context);
-        renderer.encodeHeaders(context, this);
     }
 
     /*
@@ -332,15 +233,12 @@ public class UIReport extends UIComponentBase {
     public void restoreState(final FacesContext context, final Object state) {
         final Object[] values = (Object[]) state;
         super.restoreState(context, values[0]);
-        reportSource = (String) values[1];
-        path = (String) values[2];
-        subreportDir = (String) values[3];
-        format = (String) values[4];
-        name = (String) values[5];
-        immediate = ((Boolean) values[6]).booleanValue();
-        immediateSet = ((Boolean) values[7]).booleanValue();
-        exporter = (Exporter) values[8];
-        validator = (Validator) values[9];
+        source = (String) values[1];
+        name = (String) values[2];
+        value = values[3];
+        valueSet = ((Boolean) values[4]).booleanValue();
+        converter = (SourceConverter) values[5];
+        valid = ((Boolean) values[6]).booleanValue();
     }
 
     /*
@@ -352,17 +250,14 @@ public class UIReport extends UIComponentBase {
      */
     @Override
     public Object saveState(final FacesContext context) {
-        final Object[] values = new Object[10];
+        final Object[] values = new Object[7];
         values[0] = super.saveState(context);
-        values[1] = reportSource;
-        values[2] = path;
-        values[3] = subreportDir;
-        values[4] = format;
-        values[5] = name;
-        values[6] = immediate;
-        values[7] = immediateSet;
-        values[8] = exporter;
-        values[9] = validator;
+        values[1] = source;
+        values[2] = name;
+        values[3] = value;
+        values[4] = valueSet;
+        values[5] = converter;
+        values[6] = valid;
         return values;
     }
 
@@ -370,60 +265,27 @@ public class UIReport extends UIComponentBase {
         this.value = null;
         this.valueSet = false;
         this.valid = true;
-    }
-
-    public void updateModel(FacesContext context) {
-        if (context == null) {
-            throw new NullPointerException();
-        }
-
-        if (valueSet || !isValid()) {
-            return;
-        }
-
-        Object providedValue = getValue();
-        if (providedValue == null) {
-            JRFacesContext jrContext = JRFacesContext.getInstance(context);
-            ValueExpression ve = getValueExpression("value");
-            if (ve != null) {
-                
-            }
-        }
-    }
-
-    public void validate(FacesContext context) throws ValidationException {
-        if (context == null) {
-            throw new NullPointerException();
-        }
-
-        Validator validator = getValidator();
-        if (validator == null) {
-            validator = getJRFacesContext()
-                .createValidator(context, this);
-        }
-
-        if (validator != null) {
-            try {
-                validator.validate(context, this);
-            } catch (ValidationException e) {
-                setValid(false);
-                throw e;
-            }
-        }
+        this.submittedSource = null;
     }
 
     @Override
     public void processDecodes(FacesContext context) {
-       if (context == null) {
-            throw new NullPointerException();
+        if (context == null) {
+            throw new IllegalArgumentException();
         }
 
         if (!isRendered()) {
             return;
         }
+
+        resetValue();
         super.processDecodes(context);
-        if (isImmediate()) {
-            executeValidate(context);
+
+        try {
+            decodeSource(context);
+        } catch (RuntimeException e) {
+            context.renderResponse();
+            throw e;
         }
     }
 
@@ -437,9 +299,104 @@ public class UIReport extends UIComponentBase {
             return;
         }
         super.processValidators(context);
-        if (!isImmediate()) {
-            executeValidate(context);
+        executeValidate(context);
+    }
+
+    protected void decodeSource(FacesContext context) {
+        if (context == null) {
+            throw new IllegalArgumentException();
         }
+
+        SourceConverter aConverter = getConverter();
+        if (aConverter == null) {
+            aConverter = getJRFacesContext()
+                    .createSourceConverter(context, this);
+        }
+
+        Source aSource = aConverter.convertFromValue(
+                context, this, getSource());
+        setSubmittedSource(aSource);
+    }
+
+    protected void decodeReport(FacesContext context) {
+        if (context == null) {
+            throw new IllegalArgumentException();
+        }
+
+        Object aValue = getValue();
+        if (aValue == null) {
+            return;
+        }
+
+        JasperReport aReport;
+        if (aValue instanceof JasperReport) {
+            aReport = (JasperReport) aValue;
+        } else {
+            String valueStr;
+            if (aValue instanceof String) {
+                valueStr = (String) aValue;
+            } else {
+                valueStr = aValue.toString();
+            }
+
+            Resource resource = getJRFacesContext().createResource(
+                    context, this, (String) valueStr);
+            
+            ObjectInputStream ois = null;
+            try {
+                ois = new ContextClassLoaderObjectInputStream(
+                        resource.getInputStream());
+                aReport = (JasperReport) ois.readObject();
+            } catch (IOException e) {
+                if (logger.isLoggable(Level.SEVERE)) {
+                    LogRecord record = new LogRecord(
+                            Level.SEVERE, "JRJSF_0033");
+                    record.setParameters(new Object[]{
+                                resource.getName()});
+                    record.setThrown(e);
+                    logger.log(record);
+                }
+                throw new FacesException(e);
+            } catch (ClassNotFoundException e) {
+                if (logger.isLoggable(Level.SEVERE)) {
+                    LogRecord record = new LogRecord(
+                            Level.SEVERE, "JRJSF_0034");
+                    record.setParameters(new Object[]{
+                                resource.getName()});
+                    record.setThrown(e);
+                    logger.log(record);
+                }
+                throw new FacesException(e);
+            }
+        }
+
+        setSubmittedReport(aReport);
+    }
+
+    public void validate(FacesContext context)
+            throws ValidationException {
+        if (context == null) {
+            throw new NullPointerException();
+        }
+
+        Validator aValidator = getValidator();
+        if (aValidator == null) {
+            aValidator = getJRFacesContext()
+                .createValidator(context, this);
+        }
+
+        if (aValidator != null) {
+            try {
+                aValidator.validate(context, this);
+            } catch (ValidationException e) {
+                setValid(false);
+                throw e;
+            }
+        }
+    }
+
+    protected JRFacesContext getJRFacesContext() {
+        return JRFacesContext.getInstance(getFacesContext());
     }
 
     protected void executeValidate(FacesContext context) {
@@ -453,10 +410,6 @@ public class UIReport extends UIComponentBase {
             context.renderResponse();
             throw e;
         }
-    }
-
-    protected JRFacesContext getJRFacesContext() {
-        return JRFacesContext.getInstance(getFacesContext());
     }
 
 }

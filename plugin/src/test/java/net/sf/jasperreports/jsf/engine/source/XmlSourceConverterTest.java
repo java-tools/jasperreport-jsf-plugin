@@ -16,17 +16,38 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.component;
+package net.sf.jasperreports.jsf.engine.source;
 
-import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
 
 /**
  *
- * @author antonio.alonso
+ * @author aalonsodominguez
  */
-public class UISubreport extends UIReport {
+@RunWith(Theories.class)
+public class XmlSourceConverterTest {
 
-    public static final String COMPONENT_TYPE =
-            Constants.PACKAGE_PREFIX + ".Subreport";
+    private MockFacesEnvironment facesEnv;
+
+    @Before
+    public void init() {
+        facesEnv = MockFacesEnvironment.getServletInstance();
+    }
+
+    @After
+    public void dispose() {
+        facesEnv.release();
+        facesEnv = null;
+    }
+
+    @Theory
+    public void validDocument() {
+
+    }
 
 }

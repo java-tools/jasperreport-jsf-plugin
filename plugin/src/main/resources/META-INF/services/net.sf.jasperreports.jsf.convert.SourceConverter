@@ -18,11 +18,11 @@
 # A. Alonso Dominguez
 # alonsoft@users.sf.net
 #
-bean:net.sf.jasperreports.jsf.engine.source.BeanReportSourceFactory
-csv:net.sf.jasperreports.jsf.engine.source.CsvReportSourceFactory
-jdbc:net.sf.jasperreports.jsf.engine.source.JdbcReportSourceFactory
-jndi:net.sf.jasperreports.jsf.engine.source.JndiReportSourceFactory
-map:net.sf.jasperreports.jsf.engine.source.MapReportSourceFactory
-resultSet:net.sf.jasperreports.jsf.engine.source.ResultSetReportSourceFactory
-xls:net.sf.jasperreports.jsf.engine.source.XlsReportSourceFactory
-xml:net.sf.jasperreports.jsf.engine.source.XmlReportSourceFactory
+bean:net.sf.jasperreports.jsf.engine.source.BeanSourceConverter
+csv:net.sf.jasperreports.jsf.engine.source.CsvSourceConverter
+jdbc:net.sf.jasperreports.jsf.engine.source.JdbcSourceConverter
+jndi:net.sf.jasperreports.jsf.engine.source.JndiSourceConverter
+map:net.sf.jasperreports.jsf.engine.source.MapSourceConverter
+resultSet:net.sf.jasperreports.jsf.engine.source.ResultSetSourceConverter
+xls:net.sf.jasperreports.jsf.engine.source.XlsSourceConverter
+xml:net.sf.jasperreports.jsf.engine.source.XmlSourceConverter

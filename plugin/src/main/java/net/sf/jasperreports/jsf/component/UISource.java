@@ -18,37 +18,31 @@
  */
 package net.sf.jasperreports.jsf.component;
 
-import java.sql.Connection;
 import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
-import net.sf.jasperreports.engine.JRDataSource;
 
 import net.sf.jasperreports.jsf.Constants;
-import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
-import net.sf.jasperreports.jsf.engine.ReportSource;
-import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
-import net.sf.jasperreports.jsf.engine.source.JRDataSourceHolder;
-import net.sf.jasperreports.jsf.engine.source.ConnectionHolder;
-import net.sf.jasperreports.jsf.validation.MissingAttributeException;
+import net.sf.jasperreports.jsf.convert.SourceConverter;
+import net.sf.jasperreports.jsf.engine.Source;
 import net.sf.jasperreports.jsf.validation.ValidationException;
 import net.sf.jasperreports.jsf.validation.Validator;
 
 /**
  * The Class UIDataSource.
  */
-public class UIReportSource extends UIComponentBase {
+public class UISource extends UIComponentBase {
 
     /** The Constant COMPONENT_FAMILY. */
     public static final String COMPONENT_FAMILY =
-            Constants.PACKAGE_PREFIX + ".DataBroker";
+            Constants.PACKAGE_PREFIX + ".Source";
     
     /** The Constant COMPONENT_TYPE. */
     public static final String COMPONENT_TYPE =
-            Constants.PACKAGE_PREFIX + ".DataBroker";
+            Constants.PACKAGE_PREFIX + ".Source";
 
     // Fields
 
@@ -58,20 +52,20 @@ public class UIReportSource extends UIComponentBase {
     private String type = null;
     /** The type set. */
     private boolean typeSet = false;
-    /** The data. */
-    private Object data = null;
     private boolean valid = true;
     /** The value */
     private Object value;
     private boolean valueSet = false;
 
-    private ReportSourceFactory factory;
+    private SourceConverter converter;
     private Validator validator;
+
+    private Source submittedSource;
 
     /**
      * Instantiates a new uI data source.
      */
-    public UIReportSource() {
+    public UISource() {
         super();
         setRendererType(null);
     }
@@ -90,7 +84,8 @@ public class UIReportSource extends UIComponentBase {
         final ValueExpression ve = getValueExpression("query");
         if (ve != null) {
             try {
-                return (String) ve.getValue(getFacesContext().getELContext());
+                return (String) ve.getValue(
+                        getFacesContext().getELContext());
             } catch (final ELException e) {
                 throw new FacesException(e);
             }
@@ -140,37 +135,6 @@ public class UIReportSource extends UIComponentBase {
         typeSet = true;
     }
 
-    /**
-     * Gets the data.
-     *
-     * @return the data
-     */
-    public final Object getData() {
-        if (data != null) {
-            return data;
-        }
-        final ValueExpression ve = getValueExpression("data");
-        if (ve != null) {
-            try {
-                return ve.getValue(
-                        getFacesContext().getELContext());
-            } catch (final ELException e) {
-                throw new FacesException(e);
-            }
-        } else {
-            return data;
-        }
-    }
-
-    /**
-     * Sets the data.
-     *
-     * @param data the new value
-     */
-    public final void setData(final Object data) {
-        this.data = data;
-    }
-
     public boolean isValid() {
         return valid;
     }
@@ -191,7 +155,8 @@ public class UIReportSource extends UIComponentBase {
         final ValueExpression ve = getValueExpression("value");
         if (ve != null) {
             try {
-                return ve.getValue(getFacesContext().getELContext());
+                return ve.getValue(
+                        getFacesContext().getELContext());
             } catch (final ELException e) {
                 throw new FacesException(e);
             }
@@ -210,25 +175,25 @@ public class UIReportSource extends UIComponentBase {
         valueSet = true;
     }
 
-    public ReportSourceFactory getFactory() {
-        if (factory != null) {
-            return factory;
+    public SourceConverter getConverter() {
+        if (converter != null) {
+            return converter;
         }
-        ValueExpression ve = getValueExpression("factory");
+        ValueExpression ve = getValueExpression("converter");
         if (ve != null) {
             try {
-                return (ReportSourceFactory) ve.getValue(
+                return (SourceConverter) ve.getValue(
                         getFacesContext().getELContext());
             } catch (ELException e) {
                 throw new FacesException(e);
             }
         } else {
-            return factory;
+            return converter;
         }
     }
 
-    public void setFactory(ReportSourceFactory factory) {
-        this.factory = factory;
+    public void setConverter(SourceConverter converter) {
+        this.converter = converter;
     }
 
     public Validator getValidator() {
@@ -252,6 +217,14 @@ public class UIReportSource extends UIComponentBase {
         this.validator = validator;
     }
 
+    public Source getSubmittedSource() {
+        return submittedSource;
+    }
+
+    public void setSubmittedSource(Source submittedSource) {
+        this.submittedSource = submittedSource;
+    }
+
     // UIComponent
 
     /*
@@ -267,6 +240,7 @@ public class UIReportSource extends UIComponentBase {
     public void resetValue() {
         setValue(null);
         setValid(true);
+        setSubmittedSource(null);
         valueSet = false;
     }
 
@@ -284,10 +258,9 @@ public class UIReportSource extends UIComponentBase {
         query = (String) values[1];
         type = (String) values[2];
         typeSet = ((Boolean) values[3]).booleanValue();
-        data = values[4];
-        factory = (ReportSourceFactory) values[5];
-        validator = (Validator) values[6];
-        valid = ((Boolean) values[7]).booleanValue();
+        converter = (SourceConverter) values[4];
+        validator = (Validator) values[5];
+        valid = ((Boolean) values[6]).booleanValue();
     }
 
     /*
@@ -303,17 +276,34 @@ public class UIReportSource extends UIComponentBase {
         values[1] = query;
         values[2] = type;
         values[3] = Boolean.valueOf(typeSet);
-        values[4] = data;
-        values[5] = factory;
-        values[6] = validator;
-        values[7] = valid;
+        values[4] = converter;
+        values[5] = validator;
+        values[6] = valid;
         return values;
+    }
+
+    @Override
+    public void processDecodes(FacesContext context) {
+        if (context == null) {
+            throw new IllegalArgumentException();
+        }
+
+        resetValue();
+        super.processDecodes(context);
+
+        try {
+            validate(context);
+            decodeValue(context);
+        } catch (RuntimeException e) {
+            context.renderResponse();
+            throw e;
+        }
     }
 
     @Override
     public void processUpdates(FacesContext context) {
         if (context == null) {
-            throw new NullPointerException();
+            throw new IllegalArgumentException();
         }
         
         super.processUpdates(context);
@@ -333,109 +323,62 @@ public class UIReportSource extends UIComponentBase {
     @Override
     public void processValidators(FacesContext context) {
         if (context == null) {
-            throw new NullPointerException();
+            throw new IllegalArgumentException();
         }
 
         super.processValidators(context);
         executeValidate(context);
     }
 
+    public void decodeValue(FacesContext context) {
+        if (context == null) {
+            throw new IllegalArgumentException();
+        }
+
+        SourceConverter aConverter = getConverter();
+        if (aConverter == null) {
+            aConverter = getJRFacesContext()
+                    .createSourceConverter(context, this);
+        }
+
+        Source source = aConverter.convertFromValue(
+                context, this, getValue());
+        setSubmittedSource(source);
+    }
+
     public void updateModel(FacesContext context) {
         if (context == null) {
-            throw new NullPointerException();
+            throw new IllegalArgumentException();
         }
 
         if (!isValid() || valueSet) {
             return;
         }
 
-        // Obtain a DataBroker instance
-        ReportSource dataBroker;
-
-        boolean sendInRequest = true;
-        Object providedValue = getValue();
-        if (providedValue == null) {
-            ReportSourceFactory factory = this.getFactory();
-            if (factory != null) {
-                dataBroker = factory.createSource(context, this);
-            } else {
-                dataBroker = getJRFacesContext().createDataSource(context, this);
-            }
-            assert dataBroker != null;
-
-            // Now assign the data broker to the model bean (if applicable)
-            ValueExpression ve = getValueExpression("value");
-            if (ve != null) {
-                sendInRequest = false;
-                resetValue();
-                try {
-                    ve.setValue(context.getELContext(), dataBroker);
-                } catch (ELException e) {
-                    setValid(false);
-                    throw new FacesException(e);
-                }
-            }
-        } else {
-            dataBroker = createDataBroker(providedValue);
-            if (dataBroker == null) {
-                setValid(false);
-                throw new JRFacesException("Unsupported data broker type: "
-                        + value.getClass());
-            }
-        }
-
-        if (sendInRequest) {
-            String clientId = getClientId(context);
-            context.getExternalContext().getRequestMap()
-                    .put(clientId, dataBroker);
-        }
-
+        // Send report source as a request attribute
+        String clientId = getClientId(context);
+        context.getExternalContext().getRequestMap()
+                .put(clientId, submittedSource);
     }
 
     public void validate(FacesContext context) throws ValidationException {
         if (context == null) {
-            throw new NullPointerException();
+            throw new IllegalArgumentException();
         }
 
-        Object providedValue = getValue();
-        if (providedValue == null) {
-            String providedType = getType();
-            if (providedType == null || providedType.length() == 0) {
-                setValid(false);
-                throw new MissingAttributeException("type");
-            }
-            Object providedData = getData();
-            if (providedData == null) {
-                setValid(false);
-                throw new MissingAttributeException("data");
-            }
-
-            Validator validator = getValidator();
-            if (validator == null) {
-                validator = getJRFacesContext()
-                        .createValidator(context, this);
-            }
-
-            if (validator != null) {
-                try {
-                    validator.validate(context, this);
-                } catch(ValidationException e) {
-                    setValid(false);
-                    throw e;
-                }
-            }
+        Validator aValidator = getValidator();
+        if (aValidator == null) {
+            aValidator = getJRFacesContext()
+                    .createValidator(context, this);
         }
-    }
 
-    protected ReportSource createDataBroker(Object value) {
-        if(value instanceof ReportSource) {
-            return (ReportSource) value;
-        } else if (value instanceof Connection) {
-            return new ConnectionHolder((Connection) value);
-        } else if (value instanceof JRDataSource) {
-            return new JRDataSourceHolder((JRDataSource) value);
-        } else {
-            return null;
+        if (aValidator != null) {
+            try {
+                aValidator.validate(context, this);
+            } catch (ValidationException e) {
+                setValid(false);
+                throw e;
+            }
         }
     }
 

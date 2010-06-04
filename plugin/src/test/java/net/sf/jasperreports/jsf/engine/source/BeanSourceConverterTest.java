@@ -26,8 +26,8 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.data.JRBeanArrayDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.jsf.component.UIReportSource;
-import net.sf.jasperreports.jsf.engine.ReportSource;
+import net.sf.jasperreports.jsf.component.UISource;
+import net.sf.jasperreports.jsf.engine.Source;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 
 import org.junit.After;
@@ -46,7 +46,7 @@ import static org.hamcrest.Matchers.*;
  * @author aalonsodominguez
  */
 @RunWith(Theories.class)
-public class BeanReportSourceFactoryTest {
+public class BeanSourceConverterTest {
 
     @DataPoint
     public static final Object NULL_DATA = null;
@@ -61,14 +61,14 @@ public class BeanReportSourceFactoryTest {
 
     private MockFacesEnvironment facesEnv;
 
-    private UIReportSource component;
-    private BeanReportSourceFactory factory;
+    private UISource component;
+    private BeanSourceConverter factory;
 
     @Before
     public void init() {
         facesEnv = MockFacesEnvironment.getServletInstance();
-        component = new UIReportSource();
-        factory = new BeanReportSourceFactory();
+        component = new UISource();
+        factory = new BeanSourceConverter();
     }
 
     @After
@@ -87,16 +87,17 @@ public class BeanReportSourceFactoryTest {
 
         final FacesContext facesContext = facesEnv.getFacesContext();
 
-        component.setData(data);
-        ReportSource reportSource = factory.createSource(
-                facesContext, component);
+        component.setValue(data);
+        Source reportSource = factory.createSource(
+                facesContext, component, data);
         assertThat(reportSource, is(not(nullValue())));
 
         if (!(reportSource instanceof JRDataSourceHolder)) {
             fail("'Returned reportSource is not JasperReport's data source wrapper");
         }
 
-        JRDataSource dataSource = ((JRDataSourceHolder) reportSource).get();
+        JRDataSource dataSource = ((JRDataSourceHolder) reportSource)
+                .getDataSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JRBeanArrayDataSource.class));
 
@@ -111,15 +112,17 @@ public class BeanReportSourceFactoryTest {
 
         final FacesContext facesContext = facesEnv.getFacesContext();
 
-        component.setData(data);
-        ReportSource reportSource = factory.createSource(facesContext, component);
+        component.setValue(data);
+        Source reportSource = factory.createSource(
+                facesContext, component, data);
         assertThat(reportSource, is(not(nullValue())));
 
         if (!(reportSource instanceof JRDataSourceHolder)) {
             fail("'Returned reportSource is not JasperReport's data source wrapper");
         }
 
-        JRDataSource dataSource = ((JRDataSourceHolder) reportSource).get();
+        JRDataSource dataSource = ((JRDataSourceHolder) reportSource)
+                .getDataSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JRBeanCollectionDataSource.class));
 
@@ -132,15 +135,16 @@ public class BeanReportSourceFactoryTest {
     public void nullDataReturnsEmptyDataSource(Object data) {
         assumeThat(data, is(nullValue()));
 
-        ReportSource reportSource = factory.createSource(
-                facesEnv.getFacesContext(), component);
+        Source reportSource = factory.createSource(
+                facesEnv.getFacesContext(), component, data);
         assertThat(reportSource, is(not(nullValue())));
         
         if (!(reportSource instanceof JRDataSourceHolder)) {
             fail("'Returned reportSource is not JasperReport's data source wrapper");
         }
         
-        JRDataSource dataSource = ((JRDataSourceHolder) reportSource).get();
+        JRDataSource dataSource = ((JRDataSourceHolder) reportSource)
+                .getDataSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JREmptyDataSource.class));
     }

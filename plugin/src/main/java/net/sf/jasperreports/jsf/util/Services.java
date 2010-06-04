@@ -33,8 +33,6 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import net.sf.jasperreports.jsf.util.Util;
-
 /**
  * Utility class to handle the different kind of pluggable services required
  * by the implementation.

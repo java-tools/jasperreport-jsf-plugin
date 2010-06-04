@@ -23,17 +23,19 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.component.UIComponent;
 
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UIReportSource;
-import net.sf.jasperreports.jsf.engine.ReportSourceException;
+import net.sf.jasperreports.jsf.engine.SourceException;
+
+import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
  *
  * @author aalonsodominguez
  */
-public class JdbcReportSourceFactory extends DatabaseReportSourceFactory {
+public class JdbcSourceConverter extends DatabaseSourceConverter {
 
     public static final String ATTR_DRIVER_CLASS_NAME = "driverClassName";
     public static final String ATTR_USERNAME = "username";
@@ -41,38 +43,39 @@ public class JdbcReportSourceFactory extends DatabaseReportSourceFactory {
 
     /** The Constant logger. */
     private static final Logger logger = Logger.getLogger(
-            JdbcReportSourceFactory.class.getPackage().getName(),
+            JdbcSourceConverter.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
     @Override
     protected Connection getConnection(
-            FacesContext context, UIReportSource component)
-    throws ReportSourceException {
+            FacesContext context, UIComponent component)
+    throws SourceException {
         final String driverClass = (String) component
                 .getAttributes().get(ATTR_DRIVER_CLASS_NAME);
         if ((driverClass == null) || (driverClass.length() == 0)) {
-            throw new ReportSourceException(
+            throw new SourceException(
                     "jdbc report source type requires a driverClassName value!");
         }
 
         try {
             Class.forName(driverClass);
         } catch (final ClassNotFoundException e) {
-            throw new ReportSourceException("Driver class not found: " +
+            throw new SourceException("Driver class not found: " +
                     driverClass, e);
         }
         logger.log(Level.FINE, "JRJSF_0004", driverClass);
 
-        final String connectionURL = (String) component.getData();
+        final String connectionURL = getStringAttribute(
+                component, "value", null);
         final String username = (String) component
                 .getAttributes().get(ATTR_USERNAME);
         final String password = (String) component
                 .getAttributes().get(ATTR_PASSWORD);
 
         if (connectionURL == null || connectionURL.length() == 0) {
-            throw new ReportSourceException(
-                    "JDBC Filler requires a connection string"
-                    + " from a dataSource component");
+            throw new SourceException(
+                    "JDBC source requires a connection string"
+                    + " as the component value/source.");
         }
 
         Connection conn = null;
@@ -89,7 +92,7 @@ public class JdbcReportSourceFactory extends DatabaseReportSourceFactory {
                         password);
             }
         } catch (final SQLException e) {
-            throw new ReportSourceException(e);
+            throw new SourceException(e);
         }
         return conn;
     }

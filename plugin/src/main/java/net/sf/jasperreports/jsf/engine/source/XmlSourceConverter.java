@@ -43,41 +43,43 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
-import net.sf.jasperreports.jsf.component.UIReportSource;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
-import net.sf.jasperreports.jsf.engine.ReportSource;
-import net.sf.jasperreports.jsf.engine.ReportSourceException;
-import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
+import net.sf.jasperreports.jsf.convert.DefaultSourceConverter;
+import net.sf.jasperreports.jsf.engine.Source;
+import net.sf.jasperreports.jsf.engine.SourceException;
 import net.sf.jasperreports.jsf.resource.Resource;
 
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
+
 /**
  *
  * @author aalonsodominguez
  */
-public class XmlReportSourceFactory implements ReportSourceFactory {
+public class XmlSourceConverter extends DefaultSourceConverter {
 
     private static final Logger logger = Logger.getLogger(
-            XmlReportSourceFactory.class.getPackage().getName(),
+            XmlSourceConverter.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
-    public ReportSource createSource(FacesContext context,
-            UIReportSource component)
-    throws ReportSourceException {
+    @Override
+    protected Source createSource(FacesContext context,
+            UIComponent component, Object value)
+    throws SourceException {
         JRDataSource dataSource;
 
         final Document xmlDocument;
         try {
-            xmlDocument = getXmlDocument(context, component);
+            xmlDocument = getXmlDocument(context, component, value);
         } catch (final ParserConfigurationException ex) {
-            throw new ReportSourceException(ex);
+            throw new SourceException(ex);
         } catch (final SAXException ex) {
-            throw new ReportSourceException(ex);
+            throw new SourceException(ex);
         } catch (final IOException ex) {
-            throw new ReportSourceException(ex);
+            throw new SourceException(ex);
         }
 
         if (xmlDocument == null) {
@@ -87,7 +89,7 @@ public class XmlReportSourceFactory implements ReportSourceFactory {
             }
             dataSource = new JREmptyDataSource();
         } else {
-            final String query = component.getQuery();
+            final String query = getStringAttribute(component, "query", null);
             try {
                 if ((query != null) && (query.length() > 0)) {
                     dataSource = new JRXmlDataSource(xmlDocument,
@@ -96,7 +98,7 @@ public class XmlReportSourceFactory implements ReportSourceFactory {
                     dataSource = new JRXmlDataSource(xmlDocument);
                 }
             } catch (final JRException e) {
-                throw new ReportSourceException(e);
+                throw new SourceException(e);
             }
         }
 
@@ -104,57 +106,56 @@ public class XmlReportSourceFactory implements ReportSourceFactory {
     }
 
     protected Document getXmlDocument(final FacesContext context,
-            UIReportSource component)
+            UIComponent component, Object value)
             throws ParserConfigurationException, SAXException, IOException {
-        final Object data = component.getData();
-        if (data == null) {
+        if (value == null) {
             return null;
         }
 
         Document document;
         // First of all detect pre-built doms
-        if (data instanceof Document) {
-            document = (Document) data;
-        } else if (data instanceof DOMSource) {
-            final DOMSource source = (DOMSource) data;
+        if (value instanceof Document) {
+            document = (Document) value;
+        } else if (value instanceof DOMSource) {
+            final DOMSource source = (DOMSource) value;
             final DocumentBuilder builder = getDocumentBuilder();
             document = builder.newDocument();
             document.appendChild(source.getNode());
-        } else if ((data instanceof InputSource)
-                || (data instanceof SAXSource)) {
+        } else if ((value instanceof InputSource)
+                || (value instanceof SAXSource)) {
             InputSource inputSource;
-            if (data instanceof SAXSource) {
-                final SAXSource source = (SAXSource) data;
+            if (value instanceof SAXSource) {
+                final SAXSource source = (SAXSource) value;
                 inputSource = source.getInputSource();
             } else {
-                inputSource = (InputSource) data;
+                inputSource = (InputSource) value;
             }
             final DocumentBuilder builder = getDocumentBuilder();
             document = builder.parse(inputSource);
         } else {
             InputStream stream = null;
             boolean closeStream = true;
-            if (data instanceof StreamSource) {
-                final StreamSource source = (StreamSource) data;
+            if (value instanceof StreamSource) {
+                final StreamSource source = (StreamSource) value;
                 stream = source.getInputStream();
-            } else if (data instanceof File) {
-                stream = new FileInputStream((File) data);
-            } else if (data instanceof URL) {
-                stream = ((URL) data).openStream();
-            } else if (data instanceof String) {
+            } else if (value instanceof File) {
+                stream = new FileInputStream((File) value);
+            } else if (value instanceof URL) {
+                stream = ((URL) value).openStream();
+            } else if (value instanceof String) {
                 final JRFacesContext jrContext =
                         JRFacesContext.getInstance(context);
                 final Resource resource = jrContext.createResource(context,
-                        component, (String) data);
+                        component, (String) value);
                 stream = resource.getInputStream();
-            } else if (data instanceof InputStream) {
-                stream = (InputStream) data;
+            } else if (value instanceof InputStream) {
+                stream = (InputStream) value;
                 closeStream = false;
             }
 
             if (stream == null) {
-                throw new ReportSourceException("Unrecognized XML "
-                        + "data source type: " + data.getClass());
+                throw new SourceException("Unrecognized XML "
+                        + "value source type: " + value.getClass());
             }
 
             try {
@@ -174,7 +175,7 @@ public class XmlReportSourceFactory implements ReportSourceFactory {
     }
 
     private String parseQuery(final FacesContext context,
-            UIReportSource component, final String query) {
+            UIComponent component, final String query) {
         final List<Object> params = new ArrayList<Object>();
 
         for (final UIComponent kid : component.getChildren()) {

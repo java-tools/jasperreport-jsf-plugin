@@ -24,11 +24,12 @@ import javax.faces.component.UIComponent;
 
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UIReportSource;
+import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
-import net.sf.jasperreports.jsf.engine.ReportSource;
+import net.sf.jasperreports.jsf.convert.DefaultSourceConverter;
+import net.sf.jasperreports.jsf.convert.SourceConverter;
 import net.sf.jasperreports.jsf.engine.Exporter;
+import net.sf.jasperreports.jsf.engine.ExporterException;
 import net.sf.jasperreports.jsf.engine.export.ExporterNotFoundException;
 import net.sf.jasperreports.jsf.engine.fill.DefaultFiller;
 import net.sf.jasperreports.jsf.engine.Filler;
@@ -37,9 +38,11 @@ import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.ResourceResolver;
 import net.sf.jasperreports.jsf.resource.UnresolvedResourceException;
 import net.sf.jasperreports.jsf.util.Services;
-import net.sf.jasperreports.jsf.validation.ReportSourceValidator;
+import net.sf.jasperreports.jsf.validation.SourceValidator;
 import net.sf.jasperreports.jsf.validation.ReportValidator;
 import net.sf.jasperreports.jsf.validation.Validator;
+
+import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
  *
@@ -54,26 +57,26 @@ public class DefaultJRFacesContext extends JRFacesContext {
 
     private ExternalContextHelper externalContext = null;
 
-    private final Map<String, ReportSourceFactory> dataSourceFactoryMap;
+    private final Map<String, SourceConverter> sourceConverterMap;
     private final Map<String, Exporter> exporterMap;
     private final Filler filler;
     private final ResourceResolver resourceResolver;
 
-    private final Map<String, ReportSourceValidator> reportSourceValidatorMap;
+    private final Map<String, SourceValidator> reportSourceValidatorMap;
     private final Map<String, ReportValidator> reportValidatorMap;
 
     protected DefaultJRFacesContext() {
-        dataSourceFactoryMap = Services.map(ReportSourceFactory.class);
+        sourceConverterMap = Services.map(SourceConverter.class);
         exporterMap = Services.map(Exporter.class);
         filler = Services.chain(Filler.class, DEFAULT_FILLER);
         resourceResolver = Services.chain(
                 ResourceResolver.class, DEFAULT_RESOURCE_RESOLVER);
-        reportSourceValidatorMap = Services.map(ReportSourceValidator.class);
+        reportSourceValidatorMap = Services.map(SourceValidator.class);
         reportValidatorMap = Services.map(ReportValidator.class);
     }
 
     public Set<String> getAvailableSourceTypes() {
-        return dataSourceFactoryMap.keySet();
+        return sourceConverterMap.keySet();
     }
 
     public Set<String> getAvailableExportFormats() {
@@ -90,13 +93,20 @@ public class DefaultJRFacesContext extends JRFacesContext {
     }
 
     @Override
-    public ReportSource<?> createDataSource(
-            FacesContext context, UIReportSource component) {
-        ReportSourceFactory factory = dataSourceFactoryMap.get(component.getType());
-        if (factory == null) {
-            throw new IllegalStateException();
+    public SourceConverter createSourceConverter(
+            FacesContext context, UIComponent component) {
+        SourceConverter converter = null;
+        if (component instanceof UISource) {
+            String type = getStringAttribute(component, "type", null);
+            if (type != null) {
+                converter = sourceConverterMap.get(type);
+            }
         }
-        return factory.createSource(context, component);
+
+        if (converter == null) {
+            converter = new DefaultSourceConverter();
+        }
+        return converter;
     }
 
     @Override
@@ -111,8 +121,8 @@ public class DefaultJRFacesContext extends JRFacesContext {
     }
 
     public Validator createValidator(FacesContext context,
-            UIReportSource component) {
-        ReportSourceValidator validator = reportSourceValidatorMap.get(
+            UISource component) {
+        SourceValidator validator = reportSourceValidatorMap.get(
                 component.getType());
         if (validator == null) {
             validator = reportSourceValidatorMap.get(null);
@@ -122,9 +132,9 @@ public class DefaultJRFacesContext extends JRFacesContext {
     
     public Validator createValidator(FacesContext context,
             UIReport component) {
-        ReportValidator validator = reportValidatorMap.get(
-                component.getFormat());
-        if (validator == null) {
+        String format = getStringAttribute(component, "format", null);
+        ReportValidator validator = reportValidatorMap.get(format);
+        if (validator == null && format != null) {
             validator = reportValidatorMap.get(null);
         }
         return validator;
@@ -137,11 +147,18 @@ public class DefaultJRFacesContext extends JRFacesContext {
 
     @Override
     public Exporter getExporter(FacesContext context, UIReport component) {
-        final Exporter exporter = exporterMap.get(component.getFormat());
-        if (exporter == null) {
-            throw new ExporterNotFoundException(component.getFormat());
+        String format = getStringAttribute(component, "format", null);
+        if (format != null) {
+            final Exporter exporter = exporterMap.get(format);
+            if (exporter == null) {
+                throw new ExporterNotFoundException(format);
+            }
+            return exporter;
+        } else {
+            throw new ExporterException(
+                    "No exporting functionality available for component: " +
+                    component.getClientId(context));
         }
-        return exporter;
     }
 
 }

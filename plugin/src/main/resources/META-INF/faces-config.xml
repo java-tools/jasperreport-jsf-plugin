@@ -45,10 +45,10 @@
     <component>
         <display-name>Report Source Component</display-name>
         <component-type>
-            net.sf.jasperreports.jsf.ReportSource
+            net.sf.jasperreports.jsf.Source
         </component-type>
         <component-class>
-            net.sf.jasperreports.jsf.component.UIDataBroker
+            net.sf.jasperreports.jsf.component.UISource
         </component-class>
     </component>
 

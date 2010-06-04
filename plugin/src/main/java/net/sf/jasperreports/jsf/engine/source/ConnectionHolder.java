@@ -20,13 +20,13 @@ package net.sf.jasperreports.jsf.engine.source;
 
 import java.sql.Connection;
 
-import net.sf.jasperreports.jsf.engine.ReportSource;
+import net.sf.jasperreports.jsf.engine.Source;
 
 /**
  *
  * @author aalonsodominguez
  */
-public class ConnectionHolder implements ReportSource<Connection> {
+public class ConnectionHolder implements Source {
 
     private Connection connection;
 
@@ -34,7 +34,7 @@ public class ConnectionHolder implements ReportSource<Connection> {
         this.connection = connection;
     }
 
-    public Connection get() {
+    public Connection getConnection() {
         return connection;
     }
 

@@ -34,6 +34,7 @@ import javax.faces.event.PhaseId;
 
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.JRFacesException;
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
@@ -123,7 +124,7 @@ public class RenderResponsePhaseListener extends AbstractReportPhaseListener
         }
 
         String clientId = target.getClientId(context);
-        UIReport report = (UIReport) target;
+        UIOutputReport report = (UIOutputReport) target;
         logger.log(Level.FINER, "JRJSF_0016", clientId);
         try {
             report.encodeContent(context);

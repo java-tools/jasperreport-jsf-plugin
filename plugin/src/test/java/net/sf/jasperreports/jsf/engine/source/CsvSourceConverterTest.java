@@ -26,9 +26,9 @@ import java.util.logging.Logger;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.jsf.component.UIReportSource;
-import net.sf.jasperreports.jsf.engine.ReportSource;
-import net.sf.jasperreports.jsf.engine.ReportSourceException;
+import net.sf.jasperreports.jsf.component.UISource;
+import net.sf.jasperreports.jsf.engine.Source;
+import net.sf.jasperreports.jsf.engine.SourceException;
 import net.sf.jasperreports.jsf.resource.ClasspathResource;
 import net.sf.jasperreports.jsf.resource.ResourceResolver;
 import net.sf.jasperreports.jsf.test.JMockTheories;
@@ -53,19 +53,19 @@ import static net.sf.jasperreports.jsf.test.Matchers.*;
  * @author aalonsodominguez
  */
 @RunWith(JMockTheories.class)
-public class CsvReportSourceFactoryTest {
+public class CsvSourceConverterTest {
 
     @DataPoint
     public static final Object NULL_DATA = null;
 
     @DataPoint
     public static final String VALID_RESOURCE = ClasspathResource.PREFIX +
-            CsvReportSourceFactoryTest.class.getName()
+            CsvSourceConverterTest.class.getName()
             .replaceAll("\\.", "/") + ".csv";
 
     @DataPoint
     public static final String INVALID_RESOURCE = ClasspathResource.PREFIX +
-            CsvReportSourceFactoryTest.class.getName()
+            CsvSourceConverterTest.class.getName()
             .replaceAll("\\.", "/");
 
     @DataPoint
@@ -89,14 +89,14 @@ public class CsvReportSourceFactoryTest {
     }
 
     private static final Logger logger = Logger.getLogger(
-            CsvReportSourceFactoryTest.class.getPackage().getName());
+            CsvSourceConverterTest.class.getPackage().getName());
 
     private Mockery mockery = new JUnit4Mockery();
 
     private MockFacesEnvironment facesEnv;
 
-    private UIReportSource component;
-    private CsvReportSourceFactory factory;
+    private UISource component;
+    private CsvSourceConverter factory;
     private ResourceResolver resourceResolver;
 
     private MockJRFacesContext jrContext;
@@ -105,8 +105,8 @@ public class CsvReportSourceFactoryTest {
     public void init() {
         facesEnv = MockFacesEnvironment.getServletInstance();
 
-        component = new UIReportSource();
-        factory = new CsvReportSourceFactory();
+        component = new UISource();
+        factory = new CsvSourceConverter();
         resourceResolver = mockery.mock(ResourceResolver.class);
 
         jrContext = new MockJRFacesContext(facesEnv.getFacesContext());
@@ -133,13 +133,13 @@ public class CsvReportSourceFactoryTest {
 
         logger.log(Level.INFO, "Testing null support...");
 
-        component.setData(data);
+        component.setValue(data);
 
-        ReportSource<JRDataSource> source = factory.createSource(
-                facesEnv.getFacesContext(), component);
+        Source source = factory.createSource(
+                facesEnv.getFacesContext(), component, data);
         assertThat(source, is(not(nullValue())));
 
-        JRDataSource dataSource = source.get();
+        JRDataSource dataSource = ((JRDataSourceHolder) source).getDataSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JREmptyDataSource.class));
     }
@@ -152,13 +152,13 @@ public class CsvReportSourceFactoryTest {
         logger.log(Level.INFO,
                 "Testing invalid url support (using a java.net.URL object)...");
 
-        component.setData(data);
+        component.setValue(data);
 
         try {
-            ReportSource<JRDataSource> source = factory.createSource(
-                    facesEnv.getFacesContext(), component);
+            Source source = factory.createSource(
+                    facesEnv.getFacesContext(), component, data);
             fail("A report source exception should be thrown");
-        } catch (ReportSourceException e) {
+        } catch (SourceException e) {
             Throwable cause = e.getCause();
             assertThat(cause, is(not(nullValue())));
             assertThat(cause, is(IOException.class));

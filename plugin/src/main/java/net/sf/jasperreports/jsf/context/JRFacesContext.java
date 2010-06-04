@@ -22,9 +22,10 @@ import java.util.Set;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UIReportSource;
+import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.engine.ReportSource;
+import net.sf.jasperreports.jsf.convert.SourceConverter;
+import net.sf.jasperreports.jsf.engine.Source;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.resource.Resource;
@@ -66,14 +67,14 @@ public abstract class JRFacesContext {
     public abstract ExternalContextHelper getExternalContextHelper(
             FacesContext context);
 
-    public abstract ReportSource<?> createDataSource(
-            FacesContext context, UIReportSource component);
+    public abstract SourceConverter createSourceConverter(
+            FacesContext context, UIComponent component);
 
     public abstract Resource createResource(FacesContext context,
             UIComponent component, String name);
 
     public abstract Validator createValidator(FacesContext context,
-            UIReportSource component);
+            UISource component);
 
     public abstract Validator createValidator(FacesContext context,
             UIReport component);

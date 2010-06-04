@@ -16,38 +16,21 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.component;
+package net.sf.jasperreports.jsf.convert;
 
-import java.io.Serializable;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.engine.ReportSource;
+import net.sf.jasperreports.engine.JasperReport;
 
 /**
  *
- * @author aalonsodominguez
+ * @author antonio.alonso
  */
-public class ReportSourceTestBean implements Serializable {
+public interface ReportConverter {
 
-    private Object myReportSource;
-
-    private ReportSource<?> reportSource;
-
-    public ReportSourceTestBean() { }
-
-    public ReportSourceTestBean(Object myReportSource) {
-        this.myReportSource = myReportSource;
-    }
-
-    public Object getMyReportSource() {
-        return myReportSource;
-    }
-
-    public ReportSource<?> getReportSource() {
-        return reportSource;
-    }
-
-    public void setReportSource(ReportSource<?> reportSource) {
-        this.reportSource = reportSource;
-    }
-
+    public JasperReport convertFromValue(FacesContext context,
+            UIComponent component, Object value)
+    throws ConverterException;
+    
 }

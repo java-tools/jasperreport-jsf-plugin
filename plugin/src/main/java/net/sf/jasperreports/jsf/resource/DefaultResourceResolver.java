@@ -21,6 +21,8 @@ package net.sf.jasperreports.jsf.resource;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -29,7 +31,8 @@ import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.util.Util;
 
-import org.apache.commons.io.FilenameUtils;
+import static org.apache.commons.io.FilenameUtils.*;
+import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
  *
@@ -61,16 +64,20 @@ public class DefaultResourceResolver implements ResourceResolver {
             } else {
                 JRFacesContext jrContext = JRFacesContext.getInstance(context);
                 ExternalContextHelper helper = jrContext.getExternalContextHelper(context);
-                String rootPath;
+                String rootPath = null;
                 
                 if ((component != null) && (component instanceof UIReport)) {
                     // If caller component is a report-based component then try to
-                    // resolve the resource relative to the report resource.
+                    // resolve the resource relative to the report resource (if given).
 
-                    UIReport report = (UIReport) component;
-                    rootPath = helper.getResourceRealPath(
-                            context.getExternalContext(),
-                            FilenameUtils.getPath(report.getPath()));
+                    ValueExpression ve = component.getValueExpression("value");
+                    if (ve != null &&
+                            String.class == ve.getType(context.getELContext())) {
+                        String path = getStringAttribute(
+                                component, "value", "./");
+                        rootPath = helper.getResourceRealPath(
+                            context.getExternalContext(), getPath(path));
+                    }
                 } else {
                     // If caller component is not a report-based component or
                     // there is not any component at all, resolve the resource
@@ -78,14 +85,14 @@ public class DefaultResourceResolver implements ResourceResolver {
 
                     String viewId = context.getViewRoot().getViewId();
                     rootPath = helper.getResourceRealPath(
-                            context.getExternalContext(),
-                            FilenameUtils.getPath(viewId));
+                            context.getExternalContext(), getPath(viewId));
                 }
 
-                File resourceFile = new File(FilenameUtils.normalize(
-                        rootPath + name));
-                if (resourceFile.exists()) {
-                    resource = new FileResource(resourceFile);
+                if (rootPath != null) {
+                    File resourceFile = new File(normalize(rootPath + name));
+                    if (resourceFile.exists()) {
+                        resource = new FileResource(resourceFile);
+                    }
                 }
             }
         }
