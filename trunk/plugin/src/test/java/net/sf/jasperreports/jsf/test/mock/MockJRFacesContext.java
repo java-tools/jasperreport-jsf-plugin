@@ -24,13 +24,12 @@ import java.util.Set;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UIReportSource;
+import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.context.DefaultJRFacesContext;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
-import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
-import net.sf.jasperreports.jsf.engine.ReportSource;
+import net.sf.jasperreports.jsf.convert.SourceConverter;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.resource.Resource;
@@ -48,7 +47,7 @@ public class MockJRFacesContext extends JRFacesContext {
     private Set<String> availableExportFormats = new HashSet<String>();
     private Set<String> availableDataSourceTypes = new HashSet<String>();
 
-    private ReportSourceFactory dataSourceFactory;
+    private SourceConverter sourceConverter;
     private ResourceResolver resourceResolver;
 
     private Filler filler;
@@ -62,12 +61,12 @@ public class MockJRFacesContext extends JRFacesContext {
                 .put(INSTANCE_KEY, this);
     }
 
-    public ReportSourceFactory getDataSourceFactory() {
-        return dataSourceFactory;
+    public SourceConverter getSourceConverter() {
+        return sourceConverter;
     }
 
-    public void setDataSourceFactory(ReportSourceFactory dataSourceFactory) {
-        this.dataSourceFactory = dataSourceFactory;
+    public void setSourceConverter(SourceConverter sourceConverter) {
+        this.sourceConverter = sourceConverter;
     }
 
     public ResourceResolver getResourceResolver() {
@@ -131,12 +130,12 @@ public class MockJRFacesContext extends JRFacesContext {
         this.exporter = exporter;
     }
 
-    public ReportSource<?> createDataSource(
-            FacesContext context, UIReportSource component) {
-        if (dataSourceFactory != null) {
-            return dataSourceFactory.createSource(context, component);
+    public SourceConverter createSourceConverter(
+            FacesContext context, UIComponent component) {
+        if (sourceConverter != null) {
+            return sourceConverter;
         }
-        return defaultContext.createDataSource(context, component);
+        return defaultContext.createSourceConverter(context, component);
     }
 
     public Set<String> getAvailableExportFormats() {
@@ -157,7 +156,7 @@ public class MockJRFacesContext extends JRFacesContext {
 
     @Override
     public Validator createValidator(FacesContext context,
-            UIReportSource component) {
+            UISource component) {
         if (reportSourceValidator != null) {
             return reportSourceValidator;
         }

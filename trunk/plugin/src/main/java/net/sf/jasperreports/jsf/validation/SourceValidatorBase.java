@@ -20,27 +20,18 @@ package net.sf.jasperreports.jsf.validation;
 
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UIReportSource;
-import net.sf.jasperreports.jsf.engine.source.JdbcReportSourceFactory;
-import net.sf.jasperreports.jsf.validation.ReportSourceValidatorBase;
-import net.sf.jasperreports.jsf.validation.MissingAttributeException;
-import net.sf.jasperreports.jsf.validation.ValidationException;
+import net.sf.jasperreports.jsf.component.UISource;
+import net.sf.jasperreports.jsf.context.JRFacesContext;
 
-public class JdbcReportSourceValidator extends ReportSourceValidatorBase {
-
-    /** The Constant REQUIRED_DATASOURCE_ATTRS. */
-    public static final String[] REQUIRED_DATASOURCE_ATTRS = {
-        JdbcReportSourceFactory.ATTR_DRIVER_CLASS_NAME};
+public class SourceValidatorBase extends SourceValidator {
 
     @Override
     protected void doValidate(final FacesContext context,
-            final UIReportSource component) throws ValidationException {
-        super.doValidate(context, component);
-        for (final String attr : REQUIRED_DATASOURCE_ATTRS) {
-            if (null == component.getAttributes().get(attr)) {
-                throw new MissingAttributeException(
-                        component.getType() + " : " + attr);
-            }
+            final UISource component) throws ValidationException {
+        final JRFacesContext jrContext = JRFacesContext.getInstance(context);
+        if (!jrContext.getAvailableSourceTypes().contains(
+                component.getType())) {
+            throw new IllegalReportSourceTypeException(component.getType());
         }
     }
 }

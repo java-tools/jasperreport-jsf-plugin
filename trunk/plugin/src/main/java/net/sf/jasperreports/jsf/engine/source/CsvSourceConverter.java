@@ -18,8 +18,6 @@
  */
 package net.sf.jasperreports.jsf.engine.source;
 
-import net.sf.jasperreports.jsf.engine.ReportSource;
-import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,15 +26,16 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.data.JRCsvDataSource;
-import net.sf.jasperreports.jsf.JRFacesException;
-import net.sf.jasperreports.jsf.component.UIReportSource;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
-import net.sf.jasperreports.jsf.engine.ReportSourceException;
+import net.sf.jasperreports.jsf.convert.DefaultSourceConverter;
+import net.sf.jasperreports.jsf.engine.Source;
+import net.sf.jasperreports.jsf.engine.SourceException;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.ResourceException;
 
@@ -44,14 +43,15 @@ import net.sf.jasperreports.jsf.resource.ResourceException;
  *
  * @author aalonsodominguez
  */
-public class CsvReportSourceFactory implements ReportSourceFactory {
+public class CsvSourceConverter extends DefaultSourceConverter {
 
     private static final Logger logger = Logger.getLogger(
-            CsvReportSourceFactory.class.getPackage().getName(),
+            CsvSourceConverter.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
-    public ReportSource createSource(FacesContext context,
-            UIReportSource component) {
+    @Override
+    protected Source createSource(FacesContext context,
+            UIComponent component, Object value) {
         final JRFacesContext jrContext = JRFacesContext.getInstance(context);
         
         JRDataSource dataSource = null;
@@ -59,8 +59,6 @@ public class CsvReportSourceFactory implements ReportSourceFactory {
         boolean closeStream = true;
 
         String clientId = component.getClientId(context);
-
-        final Object value = component.getData();
         if (value == null) {
             if (logger.isLoggable(Level.WARNING)) {
                 logger.log(Level.WARNING, "JRJSF_0020", clientId);
@@ -70,7 +68,7 @@ public class CsvReportSourceFactory implements ReportSourceFactory {
             try {
                 dataSourceStream = ((URL) value).openStream();
             } catch (final IOException e) {
-                throw new ReportSourceException(e);
+                throw new SourceException(e);
             }
         } else if (value instanceof InputStream) {
             dataSourceStream = (InputStream) value;
@@ -83,19 +81,19 @@ public class CsvReportSourceFactory implements ReportSourceFactory {
             } catch (final ResourceException e) {
                 throw e;
             } catch (final IOException e) {
-                throw new ReportSourceException(e);
+                throw new SourceException(e);
             }
         } else if (value instanceof File) {
             try {
                 dataSource = new JRCsvDataSource((File) value);
             } catch (final FileNotFoundException e) {
-                throw new ReportSourceException(e);
+                throw new SourceException(e);
             }
         }
 
         if (dataSource == null) {
             if (dataSourceStream == null) {
-                throw new ReportSourceException("CSV datasource needs a valid File, "
+                throw new SourceException("CSV datasource needs a valid File, "
                         + "URL, InputStream or string");
             } else {
                 dataSource = new JRCsvDataSource(dataSourceStream);

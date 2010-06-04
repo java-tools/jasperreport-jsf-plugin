@@ -18,14 +18,14 @@
  */
 package net.sf.jasperreports.jsf.engine.source;
 
-import net.sf.jasperreports.jsf.engine.ReportSource;
+import net.sf.jasperreports.jsf.engine.Source;
 import net.sf.jasperreports.engine.JRDataSource;
 
 /**
  *
  * @author aalonsodominguez
  */
-public class JRDataSourceHolder implements ReportSource<JRDataSource> {
+public class JRDataSourceHolder implements Source {
 
     private JRDataSource dataSource;
 
@@ -33,7 +33,7 @@ public class JRDataSourceHolder implements ReportSource<JRDataSource> {
         this.dataSource = dataSource;
     }
 
-    public JRDataSource get() {
+    public JRDataSource getDataSource() {
         return dataSource;
     }
 

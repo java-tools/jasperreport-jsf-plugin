@@ -22,14 +22,14 @@ import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.webapp.UIComponentELTag;
 
-import net.sf.jasperreports.jsf.component.UIReportSource;
+import net.sf.jasperreports.jsf.component.UISource;
 
 import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
  * The Class DataSourceTag.
  */
-public class ReportSourceTag extends UIComponentELTag {
+public class SourceTag extends UIComponentELTag {
 
     private ValueExpression data;
     /** The query. */
@@ -95,7 +95,7 @@ public class ReportSourceTag extends UIComponentELTag {
      */
     @Override
     public String getComponentType() {
-        return UIReportSource.COMPONENT_TYPE;
+        return UISource.COMPONENT_TYPE;
     }
 
     /*

@@ -19,35 +19,36 @@
 package net.sf.jasperreports.jsf.engine.source;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.component.UIComponent;
 
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.engine.data.JRMapArrayDataSource;
-import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
-import net.sf.jasperreports.jsf.component.UIReportSource;
-import net.sf.jasperreports.jsf.engine.ReportSource;
-import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
+import net.sf.jasperreports.engine.data.JRBeanArrayDataSource;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.jsf.convert.DefaultSourceConverter;
+import net.sf.jasperreports.jsf.engine.Source;
+import net.sf.jasperreports.jsf.engine.SourceException;
 
 /**
  *
  * @author antonio.alonso
  */
-public class MapReportSourceFactory implements ReportSourceFactory {
+public class BeanSourceConverter extends DefaultSourceConverter {
 
     private static final Logger logger = Logger.getLogger(
-            MapReportSourceFactory.class.getPackage().getName(),
+            BeanSourceConverter.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
-    public ReportSource createSource(FacesContext context,
-            UIReportSource component) {
+    @Override
+    public Source createSource(FacesContext context,
+            UIComponent component, Object value)
+    throws SourceException {
         JRDataSource dataSource;
 
-        final Object value = component.getData();
         if (value == null) {
             if (logger.isLoggable(Level.WARNING)) {
                 logger.log(Level.WARNING, "JRJSF_0020",
@@ -55,15 +56,16 @@ public class MapReportSourceFactory implements ReportSourceFactory {
             }
             dataSource = new JREmptyDataSource();
         } else if (value instanceof Collection<?>) {
-            dataSource = new JRMapCollectionDataSource((Collection<?>) value);
+            dataSource = new JRBeanCollectionDataSource(
+                    (Collection<?>) value);
         } else {
-            Map<?, ?>[] mapArray;
+            Object[] beanArray;
             if (!value.getClass().isArray()) {
-                mapArray = new Map[]{(Map<?, ?>) value};
+                beanArray = new Object[]{value};
             } else {
-                mapArray = (Map[]) value;
+                beanArray = (Object[]) value;
             }
-            dataSource = new JRMapArrayDataSource(mapArray);
+            dataSource = new JRBeanArrayDataSource(beanArray);
         }
         return new JRDataSourceHolder(dataSource);
     }

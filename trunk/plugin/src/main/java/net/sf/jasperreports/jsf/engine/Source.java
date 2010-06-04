@@ -18,17 +18,12 @@
  */
 package net.sf.jasperreports.jsf.engine;
 
-import javax.faces.context.FacesContext;
-
-import net.sf.jasperreports.jsf.component.UIReportSource;
-
 /**
  *
- * @author antonio.alonso
+ * @author aalonsodominguez
  */
-public interface ReportSourceFactory {
+public interface Source {
 
-    public ReportSource<?> createSource(FacesContext context,
-            UIReportSource component);
+    public void dispose() throws Exception;
 
 }

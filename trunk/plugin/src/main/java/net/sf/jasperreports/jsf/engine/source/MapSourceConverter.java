@@ -18,41 +18,52 @@
  */
 package net.sf.jasperreports.jsf.engine.source;
 
-import java.sql.ResultSet;
+import java.util.Collection;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.component.UIComponent;
 
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.engine.JRResultSetDataSource;
-import net.sf.jasperreports.jsf.component.UIReportSource;
-import net.sf.jasperreports.jsf.engine.ReportSource;
-import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
+import net.sf.jasperreports.engine.data.JRMapArrayDataSource;
+import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
+import net.sf.jasperreports.jsf.convert.DefaultSourceConverter;
+import net.sf.jasperreports.jsf.engine.Source;
 
 /**
  *
- * @author aalonsodominguez
+ * @author antonio.alonso
  */
-public class ResultSetReportSourceFactory implements ReportSourceFactory {
+public class MapSourceConverter extends DefaultSourceConverter {
 
     private static final Logger logger = Logger.getLogger(
-            ResultSetReportSourceFactory.class.getPackage().getName(),
+            MapSourceConverter.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
-    public ReportSource createSource(FacesContext context,
-            UIReportSource component) {
+    @Override
+    protected Source createSource(FacesContext context,
+            UIComponent component, Object value) {
         JRDataSource dataSource;
-        final ResultSet rs = (ResultSet) component.getData();
-        if (rs == null) {
+
+        if (value == null) {
             if (logger.isLoggable(Level.WARNING)) {
                 logger.log(Level.WARNING, "JRJSF_0020",
                         component.getClientId(context));
             }
             dataSource = new JREmptyDataSource();
+        } else if (value instanceof Collection<?>) {
+            dataSource = new JRMapCollectionDataSource((Collection<?>) value);
         } else {
-            dataSource = new JRResultSetDataSource(rs);
+            Map<?, ?>[] mapArray;
+            if (!value.getClass().isArray()) {
+                mapArray = new Map[]{(Map<?, ?>) value};
+            } else {
+                mapArray = (Map[]) value;
+            }
+            dataSource = new JRMapArrayDataSource(mapArray);
         }
         return new JRDataSourceHolder(dataSource);
     }

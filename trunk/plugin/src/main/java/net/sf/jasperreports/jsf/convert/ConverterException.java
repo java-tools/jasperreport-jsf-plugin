@@ -16,38 +16,26 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.engine.source;
+package net.sf.jasperreports.jsf.convert;
 
-import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
+import net.sf.jasperreports.jsf.JRFacesException;
 
 /**
  *
- * @author aalonsodominguez
+ * @author antonio.alonso
  */
-@RunWith(Theories.class)
-public class XmlReportSourceFactoryTest {
+public class ConverterException extends JRFacesException {
 
-    private MockFacesEnvironment facesEnv;
-
-    @Before
-    public void init() {
-        facesEnv = MockFacesEnvironment.getServletInstance();
+    public ConverterException(Throwable t) {
+        super(t);
     }
 
-    @After
-    public void dispose() {
-        facesEnv.release();
-        facesEnv = null;
+    public ConverterException(String msg) {
+        super(msg);
     }
 
-    @Theory
-    public void validDocument() {
-
+    public ConverterException(String msg, Throwable t) {
+        super(msg, t);
     }
 
 }

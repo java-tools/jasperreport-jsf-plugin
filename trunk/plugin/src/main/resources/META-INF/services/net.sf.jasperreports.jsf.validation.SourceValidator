@@ -18,5 +18,5 @@
 # A. Alonso Dominguez
 # alonsoft@users.sf.net
 #
-:net.sf.jasperreports.jsf.validation.ReportSourceValidatorBase
-jdbc:net.sf.jasperreports.jsf.validation.JdbcReportSourceValidator
+:net.sf.jasperreports.jsf.validation.SourceValidatorBase
+jdbc:net.sf.jasperreports.jsf.validation.JdbcSourceValidator

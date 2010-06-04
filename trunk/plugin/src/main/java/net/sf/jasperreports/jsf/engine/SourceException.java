@@ -18,14 +18,24 @@
  */
 package net.sf.jasperreports.jsf.engine;
 
+import net.sf.jasperreports.jsf.JRFacesException;
+
 /**
  *
  * @author aalonsodominguez
  */
-public interface ReportSource<T> {
+public class SourceException extends JRFacesException {
 
-    public T get();
+    public SourceException(Throwable t) {
+        super(t);
+    }
 
-    public void dispose() throws Exception;
+    public SourceException(String msg) {
+        super(msg);
+    }
+
+    public SourceException(String msg, Throwable t) {
+        super(msg, t);
+    }
 
 }

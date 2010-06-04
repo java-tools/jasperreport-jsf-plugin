@@ -21,22 +21,22 @@ package net.sf.jasperreports.jsf.validation;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UIReportSource;
+import net.sf.jasperreports.jsf.component.UISource;
 
-public abstract class ReportSourceValidator implements Validator {
+public abstract class SourceValidator implements Validator {
 
     public void validate(final FacesContext context,
             final UIComponent component)
             throws ValidationException {
-        if (!(component instanceof UIReportSource)) {
+        if (!(component instanceof UISource)) {
             throw new IllegalArgumentException(
                     "'component' must be an UIReportSource instance.");
         }
-        doValidate(context, (UIReportSource) component);
+        doValidate(context, (UISource) component);
     }
 
     protected abstract void doValidate(FacesContext context,
-            UIReportSource component)
+            UISource component)
             throws ValidationException;
     
 }

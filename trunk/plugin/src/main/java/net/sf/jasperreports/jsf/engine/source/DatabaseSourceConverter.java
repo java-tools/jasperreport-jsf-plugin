@@ -32,28 +32,30 @@ import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
-import net.sf.jasperreports.jsf.component.UIReportSource;
-import net.sf.jasperreports.jsf.engine.ReportSource;
-import net.sf.jasperreports.jsf.engine.ReportSourceException;
-import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
+import net.sf.jasperreports.jsf.convert.DefaultSourceConverter;
+import net.sf.jasperreports.jsf.engine.Source;
+import net.sf.jasperreports.jsf.engine.SourceException;
+
+import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
  *
  * @author aalonsodominguez
  */
-public abstract class DatabaseReportSourceFactory
-        implements ReportSourceFactory {
+public abstract class DatabaseSourceConverter
+        extends DefaultSourceConverter {
 
     private static final Logger logger = Logger.getLogger(
-            DatabaseReportSourceFactory.class.getPackage().getName(),
+            DatabaseSourceConverter.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
-    public ReportSource createSource(FacesContext context,
-            UIReportSource component)
-    throws ReportSourceException {
-        ReportSource<?> reportSource;
+    @Override
+    protected Source createSource(FacesContext context,
+            UIComponent component, Object value)
+    throws SourceException {
+        Source reportSource;
         Connection connection = getConnection(context, component);
-        final String query = component.getQuery();
+        final String query = getStringAttribute(component, "query", null);
         if (query != null && query.length() > 0) {
             ResultSet rs = executeQuery(context, component, connection, query);
             JRDataSource dataSource = new JRResultSetDataSource(rs);
@@ -64,9 +66,9 @@ public abstract class DatabaseReportSourceFactory
         return reportSource;
     }
 
-    protected abstract Connection getConnection(FacesContext context,
-            UIReportSource component)
-    throws ReportSourceException;
+    protected abstract Connection getConnection(
+            FacesContext context, UIComponent component)
+    throws SourceException;
 
     /**
      * Execute query.
@@ -79,14 +81,14 @@ public abstract class DatabaseReportSourceFactory
      *         the sql statement
      */
     protected ResultSet executeQuery(final FacesContext context,
-            final UIReportSource component, final Connection conn,
+            final UIComponent component, final Connection conn,
             final String query)
-            throws ReportSourceException {
+            throws SourceException {
         PreparedStatement st;
         try {
             st = conn.prepareStatement(query);
         } catch (SQLException ex) {
-            throw new ReportSourceException(ex);
+            throw new SourceException(ex);
         }
 
         int paramIdx = 1;
@@ -115,7 +117,7 @@ public abstract class DatabaseReportSourceFactory
         try {
             return st.executeQuery();
         } catch (SQLException e) {
-            throw new ReportSourceException(e);
+            throw new SourceException(e);
         } finally {
             if (st != null) {
                 try {

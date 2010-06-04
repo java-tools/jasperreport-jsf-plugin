@@ -23,8 +23,8 @@ import java.sql.Connection;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.jsf.engine.ReportSource;
-import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
+import net.sf.jasperreports.jsf.convert.SourceConverter;
+import net.sf.jasperreports.jsf.engine.Source;
 import net.sf.jasperreports.jsf.engine.source.JRDataSourceHolder;
 import net.sf.jasperreports.jsf.engine.source.ConnectionHolder;
 import net.sf.jasperreports.jsf.test.JMockTheories;
@@ -56,7 +56,7 @@ import static org.hamcrest.Matchers.*;
  * @author aalonsodominguez
  */
 @RunWith(JMockTheories.class)
-public final class UIReportSourceTest {
+public final class UISourceTest {
 
     // Data set tested in different theories
 
@@ -102,8 +102,8 @@ public final class UIReportSourceTest {
     private MockJRFacesContext jrContext;
 
     private Connection connection;
-    private ReportSource reportSource;
-    private ReportSourceFactory reportSourceFactory;
+    private Source reportSource;
+    private SourceConverter sourceConverter;
     private Validator reportSourceValidator;
     private JRDataSource dataSource;
 
@@ -114,8 +114,8 @@ public final class UIReportSourceTest {
         facesEnv = MockFacesEnvironment.getServletInstance();
 
         connection = mockery.mock(Connection.class);
-        reportSource = mockery.mock(ReportSource.class);
-        reportSourceFactory = mockery.mock(ReportSourceFactory.class);
+        reportSource = mockery.mock(Source.class);
+        sourceConverter = mockery.mock(SourceConverter.class);
         reportSourceValidator = mockery.mock(Validator.class);
         dataSource = mockery.mock(JRDataSource.class);
 
@@ -129,7 +129,7 @@ public final class UIReportSourceTest {
 
         connection = null;
         reportSource = null;
-        reportSourceFactory = null;
+        sourceConverter = null;
         reportSourceValidator = null;
         dataSource = null;
 
@@ -147,7 +147,7 @@ public final class UIReportSourceTest {
         assumeThat(data, is(not(nullValue())));
         assumeTrue(!jrContext.getAvailableSourceTypes().contains(type));
 
-        final UIReportSource component = createComponent(type, data, value);
+        final UISource component = createComponent(type, data, value);
         final FacesContext facesContext = facesEnv.getFacesContext();
 
         mockery.checking(new Expectations() {{
@@ -180,13 +180,13 @@ public final class UIReportSourceTest {
         assumeThat(data, is(not(nullValue())));
         assumeThat(value, is(nullValue()));
         
-        final UIReportSource component = createComponent(type, data, value);
+        final UISource component = createComponent(type, data, value);
         final FacesContext facesContext = facesEnv.getFacesContext();
         final String clientId = component.getClientId(facesContext);
 
         mockery.checking(new Expectations(){{
             oneOf(reportSourceValidator).validate(facesContext, component);
-            oneOf(reportSourceFactory).createSource(facesContext, component);
+            oneOf(sourceConverter).convertFromValue(facesContext, component, null);
             will(returnValue(reportSource));
         }});
 
@@ -201,30 +201,30 @@ public final class UIReportSourceTest {
         Object source = facesContext.getExternalContext()
                 .getRequestMap().get(clientId);
         assertThat(source, is(not(nullValue())));
-        assertThat(source, instanceOf(ReportSource.class));
-        assertThat((ReportSource) source, sameInstance(reportSource));
+        assertThat(source, instanceOf(Source.class));
+        assertThat((Source) source, sameInstance(reportSource));
     }
 
     @Theory
-    public void updateModelUsingValueExpr(String type, Object data,
+    public void updateModelUsingValueExpr(String type, final Object data,
             MockValueExpression value) {
         assumeTrue(jrContext.getAvailableSourceTypes().contains(type));
         assumeThat(data, is(not(nullValue())));
         assumeThat(value, is(not(nullValue())));
         
         final FacesContext facesContext = facesEnv.getFacesContext();
-        final ReportSourceTestBean reportSourceBean = new ReportSourceTestBean();
+        final SourceTestBean reportSourceBean = new SourceTestBean();
         final MockExternalContext context = facesEnv.getExternalContext();
         context.getRequestMap().put(DATA_BEAN_NAME, reportSourceBean);
 
-        final UIReportSource component = createComponent(type, data, value);
+        final UISource component = createComponent(type, data, value);
         final String clientId = component.getClientId(facesContext);
 
         assumeTrue(!value.isReadOnly(facesContext.getELContext()));
 
         mockery.checking(new Expectations(){{
             oneOf(reportSourceValidator).validate(facesContext, component);
-            oneOf(reportSourceFactory).createSource(facesContext, component);
+            oneOf(sourceConverter).convertFromValue(facesContext, component, data);
             will(returnValue(reportSource));
         }});
 
@@ -235,12 +235,12 @@ public final class UIReportSourceTest {
         assertTrue(!facesContext.getExternalContext()
                 .getRequestMap().containsKey(clientId));
         
-        ReportSource actualValue = (ReportSource) value.getValue(
+        Source actualValue = (Source) value.getValue(
                 facesContext.getELContext());
         assertThat(actualValue, is(not(nullValue())));
         assertThat(actualValue, sameInstance(reportSource));
 
-        ReportSource source = (ReportSource) component.getValue();
+        Source source = (Source) component.getValue();
         assertThat(source, is(not(nullValue())));
         assertThat(source, sameInstance(reportSource));
 
@@ -249,22 +249,22 @@ public final class UIReportSourceTest {
 
     @Theory
     public void whenDataSourceProvidedSendDataSourceHolderInRequest(String type,
-            Object data, MockValueExpression value) {
+            final Object data, MockValueExpression value) {
         assumeThat(value, is(not(nullValue())));
         assumeThat(value.getExpressionString(), containsString("myReportSource"));
 
-        final UIReportSource component = createComponent(type, data, value);
+        final UISource component = createComponent(type, data, value);
         final FacesContext facesContext = facesEnv.getFacesContext();
         final String clientId = component.getClientId(facesContext);
 
-        final ReportSourceTestBean reportSourceBean =
-                new ReportSourceTestBean(dataSource);
+        final SourceTestBean reportSourceBean =
+                new SourceTestBean(dataSource);
         MockExternalContext context = facesEnv.getExternalContext();
         context.getRequestMap().put(DATA_BEAN_NAME, reportSourceBean);
 
         mockery.checking(new Expectations(){{
             never(reportSourceValidator).validate(facesContext, component);
-            never(reportSourceFactory).createSource(facesContext, component);
+            never(sourceConverter).convertFromValue(facesContext, component, data);
         }});
 
         component.processDecodes(facesContext);
@@ -281,22 +281,22 @@ public final class UIReportSourceTest {
 
     @Theory
     public void whenConnectionProvidedSendConnectionHolderInRequest(String type,
-            Object data, MockValueExpression value) {
+            final Object data, MockValueExpression value) {
         assumeThat(value, is(not(nullValue())));
         assumeThat(value.getExpressionString(), containsString("myReportSource"));
 
-        final UIReportSource component = createComponent(type, data, value);
+        final UISource component = createComponent(type, data, value);
         final FacesContext facesContext = facesEnv.getFacesContext();
         final String clientId = component.getClientId(facesContext);
 
-        final ReportSourceTestBean reportSourceBean =
-                new ReportSourceTestBean(connection);
+        final SourceTestBean reportSourceBean =
+                new SourceTestBean(connection);
         MockExternalContext context = facesEnv.getExternalContext();
         context.getRequestMap().put(DATA_BEAN_NAME, reportSourceBean);
 
         mockery.checking(new Expectations(){{
             never(reportSourceValidator).validate(facesContext, component);
-            never(reportSourceFactory).createSource(facesContext, component);
+            never(sourceConverter).convertFromValue(facesContext, component, data);
         }});
 
         component.processDecodes(facesContext);
@@ -318,7 +318,7 @@ public final class UIReportSourceTest {
         assumeThat(data, is(not(nullValue())));
         assumeThat(value, is(nullValue()));
 
-        final UIReportSource component = createComponent(type, data, value);
+        final UISource component = createComponent(type, data, value);
         final FacesContext facesContext = facesEnv.getFacesContext();
 
         mockery.checking(new Expectations(){{
@@ -338,7 +338,7 @@ public final class UIReportSourceTest {
         assumeThat(type, is(nullValue()));
         assumeThat(value, is(nullValue()));
 
-        final UIReportSource component = createComponent(type, data, value);
+        final UISource component = createComponent(type, data, value);
         final FacesContext facesContext = facesEnv.getFacesContext();
 
         mockery.checking(new Expectations(){{
@@ -368,7 +368,7 @@ public final class UIReportSourceTest {
         assumeThat(data, is(nullValue()));
         assumeThat(value, is(nullValue()));
 
-        final UIReportSource component = createComponent(type, data, value);
+        final UISource component = createComponent(type, data, value);
         final FacesContext facesContext = facesEnv.getFacesContext();
 
         mockery.checking(new Expectations(){{
@@ -393,19 +393,19 @@ public final class UIReportSourceTest {
 
     // Support methods
 
-    private UIReportSource createComponent(String type, Object data,
+    private UISource createComponent(String type, Object data,
             MockValueExpression value) {
-        UIReportSource component = new UIReportSource();
+        UISource component = new UISource();
 
         component.setId(COMPONENT_ID);
-        component.setFactory(reportSourceFactory);
+        component.setConverter(sourceConverter);
         component.setValidator(reportSourceValidator);
 
         if (type != null) {
             component.setType(type);
         }
         if (data != null) {
-            component.setData(data);
+            component.setValue(data);
         }
         if (value != null) {
             component.setValueExpression("value", value);

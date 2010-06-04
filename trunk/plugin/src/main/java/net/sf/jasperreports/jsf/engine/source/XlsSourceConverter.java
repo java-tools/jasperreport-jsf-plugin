@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import jxl.Workbook;
@@ -33,30 +34,30 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRXlsDataSource;
 import net.sf.jasperreports.jsf.JRFacesException;
-import net.sf.jasperreports.jsf.component.UIReportSource;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
-import net.sf.jasperreports.jsf.engine.ReportSource;
-import net.sf.jasperreports.jsf.engine.ReportSourceException;
-import net.sf.jasperreports.jsf.engine.ReportSourceFactory;
+import net.sf.jasperreports.jsf.convert.DefaultSourceConverter;
+import net.sf.jasperreports.jsf.engine.Source;
+import net.sf.jasperreports.jsf.engine.SourceException;
 import net.sf.jasperreports.jsf.resource.Resource;
 
 /**
  *
  * @author aalonsodominguez
  */
-public class XlsReportSourceFactory implements ReportSourceFactory {
+public class XlsSourceConverter extends DefaultSourceConverter {
 
     /** The logger instance. */
     private static final Logger logger = Logger.getLogger(
-            XlsReportSourceFactory.class.getPackage().getName(),
+            XlsSourceConverter.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
-    public ReportSource createSource(FacesContext context,
-            UIReportSource component)
-    throws ReportSourceException {
+    @Override
+    protected Source createSource(FacesContext context,
+            UIComponent component, Object value)
+    throws SourceException {
         final JRFacesContext jrContext = JRFacesContext.getInstance(context);
         JRDataSource dataSource;
-        final Object value = component.getData();
+
         if (value == null) {
             if (logger.isLoggable(Level.WARNING)) {
                 logger.log(Level.WARNING, "JRJSF_0020",
@@ -80,9 +81,9 @@ public class XlsReportSourceFactory implements ReportSourceFactory {
                             value.getClass().getName());
                 }
             } catch (JRException e) {
-                throw new ReportSourceException(e);
+                throw new SourceException(e);
             } catch (IOException e) {
-                throw new ReportSourceException(e);
+                throw new SourceException(e);
             }
         }
         return new JRDataSourceHolder(dataSource);

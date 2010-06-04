@@ -23,8 +23,8 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 
-import net.sf.jasperreports.jsf.component.UIReportSource;
-import net.sf.jasperreports.jsf.engine.ReportSource;
+import net.sf.jasperreports.jsf.component.UISource;
+import net.sf.jasperreports.jsf.engine.Source;
 import net.sf.jasperreports.jsf.test.JMockTheories;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 
@@ -45,7 +45,7 @@ import static org.hamcrest.Matchers.*;
  * @author antonio.alonso
  */
 @RunWith(JMockTheories.class)
-public class ResultSetReportSourceFactoryTest {
+public class ResultSetSourceConverterTest {
 
     private static Mockery mockery = new JUnit4Mockery();
 
@@ -58,17 +58,17 @@ public class ResultSetReportSourceFactoryTest {
 
     private MockFacesEnvironment facesEnv;
 
-    private UIReportSource component;
-    private ResultSetReportSourceFactory factory;
+    private UISource component;
+    private ResultSetSourceConverter factory;
 
     @Before
     public void init() {
         facesEnv = MockFacesEnvironment.getServletInstance();
 
-        component = new UIReportSource();
+        component = new UISource();
         component.setId("reportSourceId");
 
-        factory = new ResultSetReportSourceFactory();
+        factory = new ResultSetSourceConverter();
     }
 
     @After
@@ -84,13 +84,13 @@ public class ResultSetReportSourceFactoryTest {
     public void nullResultSetReturnsEmptyDataSource(ResultSet resultSet) {
         assumeThat(resultSet, is(nullValue()));
 
-        component.setData(resultSet);
+        component.setValue(resultSet);
 
-        ReportSource<JRDataSource> source = factory.createSource(
-                facesEnv.getFacesContext(), component);
+        Source source = factory.createSource(
+                facesEnv.getFacesContext(), component, resultSet);
         assertThat(source, is(not(nullValue())));
 
-        JRDataSource dataSource = source.get();
+        JRDataSource dataSource = ((JRDataSourceHolder) source).getDataSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JREmptyDataSource.class));
     }
@@ -99,13 +99,13 @@ public class ResultSetReportSourceFactoryTest {
     public void nonNullResultSetRetunsValidDataSource(ResultSet resultSet) {
         assumeThat(resultSet, is(not(nullValue())));
 
-        component.setData(resultSet);
+        component.setValue(resultSet);
 
-        ReportSource<JRDataSource> source = factory.createSource(
-                facesEnv.getFacesContext(), component);
+        Source source = factory.createSource(
+                facesEnv.getFacesContext(), component, resultSet);
         assertThat(source, is(not(nullValue())));
 
-        JRDataSource dataSource = source.get();
+        JRDataSource dataSource = ((JRDataSourceHolder) source).getDataSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JRResultSetDataSource.class));
     }

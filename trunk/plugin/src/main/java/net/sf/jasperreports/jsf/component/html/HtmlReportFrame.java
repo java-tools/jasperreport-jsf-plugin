@@ -24,13 +24,13 @@ import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.Constants;
-import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.renderkit.html.FrameRenderer;
 
 /**
  * The Class HtmlReport.
  */
-public class HtmlReportFrame extends UIReport {
+public class HtmlReportFrame extends UIOutputReport {
 
     /** The Constant COMPONENT_TYPE. */
     public static final String COMPONENT_TYPE = 

@@ -18,38 +18,31 @@
  */
 package net.sf.jasperreports.jsf.engine.fill;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.fill.JRBaseFiller;
 import net.sf.jasperreports.engine.fill.JRFiller;
-import net.sf.jasperreports.engine.util.ContextClassLoaderObjectInputStream;
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.context.JRFacesContext;
-import net.sf.jasperreports.jsf.engine.ReportSource;
+import net.sf.jasperreports.jsf.component.UISubreport;
+import net.sf.jasperreports.jsf.engine.Source;
 import net.sf.jasperreports.jsf.engine.FillerException;
 import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.engine.source.JRDataSourceHolder;
 import net.sf.jasperreports.jsf.engine.source.ConnectionHolder;
-import net.sf.jasperreports.jsf.resource.Resource;
-import net.sf.jasperreports.jsf.resource.UnresolvedResourceException;
 import net.sf.jasperreports.jsf.util.Util;
+
+import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
  *
@@ -59,6 +52,8 @@ public class DefaultFiller implements Filler {
 
     public static final String ATTR_JASPER_PRINT =
             Constants.PACKAGE_PREFIX + ".JASPER_PRINT";
+
+    public static final String SUBREPORT_PARAMETER_SEPARATOR = "_";
 
     // Report Parameters
 
@@ -74,11 +69,12 @@ public class DefaultFiller implements Filler {
 
     public final void fill(FacesContext context, UIReport component)
             throws FillerException {
-        final String reportName = component.getPath();
+        final String reportName = getStringAttribute(component, "name",
+                component.getClientId(context));
 
-        JasperReport jasperReport = loadReport(context, component);
-        ReportSource reportSource = getReportSource(context, component);
-        
+        Source reportSource = component.getSubmittedSource();
+        JasperReport jasperReport = component.getSubmittedReport();
+
         logger.log(Level.FINE, "JRJSF_0003", reportName);
 
         try {
@@ -107,17 +103,9 @@ public class DefaultFiller implements Filler {
     protected Map<String, Object> buildParamMap(final FacesContext context,
             final UIReport component)
     throws FillerException {
-        JRFacesContext jrContext = JRFacesContext.getInstance(context);
-
-        // Build param map using component's child parameters
+        // Build param map using component's child parameters and subreports
         final Map<String, Object> parameters = new HashMap<String, Object>();
-        for (final UIComponent kid : component.getChildren()) {
-            if (!(kid instanceof UIParameter)) {
-                continue;
-            }
-            final UIParameter param = (UIParameter) kid;
-            parameters.put(param.getName(), param.getValue());
-        }
+        processParameterMap(context, component, parameters, null);
 
         // Specific component parameters
         parameters.put(PARAM_REPORT_CLASSLOADER,
@@ -125,24 +113,11 @@ public class DefaultFiller implements Filler {
         parameters.put(PARAM_REPORT_LOCALE,
                 context.getViewRoot().getLocale());
 
-        // Subreport directory
-        final String subreportDir = component.getSubreportDir();
-        if (subreportDir != null) {
-            try {
-                Resource resource = jrContext.createResource(context,
-                            component, subreportDir);
-                parameters.put("SUBREPORT_DIR", resource.getPath());
-            } catch (UnresolvedResourceException e) {
-                throw new FillerException(
-                        "'subreportDir' is not a valid resource path", e);
-            }
-        }
-
         return parameters;
     }
 
     protected JasperPrint doFill(FacesContext context, JasperReport report,
-            Map<String, Object> parameters, ReportSource reportSource)
+            Map<String, Object> parameters, Source reportSource)
     throws FillerException {
         JRBaseFiller jrFiller;
         try {
@@ -153,14 +128,14 @@ public class DefaultFiller implements Filler {
         
         JasperPrint print = null;
         try {
-            if ((reportSource == null) || (reportSource.get() == null)) {
+            if (reportSource == null) {
                 print = jrFiller.fill(parameters);
             } else if (reportSource instanceof JRDataSourceHolder) {
                 print = jrFiller.fill(parameters,
-                        (JRDataSource) reportSource.get());
+                        ((JRDataSourceHolder) reportSource).getDataSource());
             } else if (reportSource instanceof ConnectionHolder) {
                 print = jrFiller.fill(parameters,
-                        (Connection) reportSource.get());
+                        ((ConnectionHolder) reportSource).getConnection());
             }
         } catch (final JRException e) {
             throw new FillerException(e);
@@ -168,76 +143,27 @@ public class DefaultFiller implements Filler {
         return print;
     }
 
-    protected ReportSource<?> getReportSource(FacesContext context,
-            UIReport component)
+    private void processParameterMap(FacesContext context, UIReport component,
+            Map<String, Object> parameters, String prefix)
     throws FillerException {
-        ReportSource reportSource = null;
-        Object reportSourceRef = component.getReportSource();
-        if (reportSourceRef != null) {
-            if (reportSourceRef instanceof ReportSource) {
-                reportSource = (ReportSource) reportSourceRef;
-            } else if (reportSourceRef instanceof String) {
-                String dataSourceId = Util.resolveDataSourceId(context,
-                        component, (String) reportSourceRef);
-
-                reportSource = (ReportSource) context.getExternalContext()
-                        .getRequestMap().get(dataSourceId);
-            } else if (reportSourceRef instanceof JRDataSource) {
-                reportSource = new JRDataSourceHolder(
-                        (JRDataSource) reportSourceRef);
-            } else if (reportSourceRef instanceof Connection) {
-                reportSource = new ConnectionHolder(
-                        (Connection) reportSourceRef);
-            } else {
-                throw new FillerException("Illegal data source value type: "
-                        + reportSourceRef.getClass().getName());
-            }
-        }
-        return reportSource;
-    }
-
-    protected JasperReport loadReport(FacesContext context, UIReport component)
-    throws FillerException {
-        final String reportName = component.getPath();
-        JRFacesContext jrContext = JRFacesContext.getInstance(context);
-
-        Resource resource;
-        try {
-            resource = jrContext.createResource(context,
-                    (UIComponent) component, reportName);
-        } catch (final UnresolvedResourceException e) {
-            throw new ReportNotFoundException(reportName, e);
-        }
-        assert resource != null;
-
-        ObjectInputStream ois = null;
-        try {
-            ois = new ContextClassLoaderObjectInputStream(
-                    resource.getInputStream());
-            return (JasperReport) ois.readObject();
-        } catch (IOException e) {
-            if (logger.isLoggable(Level.SEVERE)) {
-                LogRecord record = new LogRecord(Level.SEVERE, "JRJSF_0033");
-                record.setParameters(new Object[]{ resource.getName() });
-                record.setThrown(e);
-                logger.log(record);
-            }
-            throw new FillerException(e);
-        } catch (ClassNotFoundException e) {
-            if (logger.isLoggable(Level.SEVERE)) {
-                LogRecord record = new LogRecord(Level.SEVERE, "JRJSF_0034");
-                record.setParameters(new Object[]{ resource.getName() });
-                record.setThrown(e);
-                logger.log(record);
-            }
-            throw new FillerException(e);
-        } finally {
-            if (ois != null) {
-                try {
-                    ois.close();
-                } catch (IOException e) {
-                    // do nothing
+        for (final UIComponent kid : component.getChildren()) {
+            if (kid instanceof UISubreport) {
+                final UISubreport subreport = (UISubreport) kid;
+                parameters.put(subreport.getName(), 
+                        subreport.getSubmittedReport());
+                processParameterMap(context, subreport, parameters, 
+                        subreport.getName());
+            } else if (kid instanceof UIParameter) {
+                final UIParameter param = (UIParameter) kid;
+                String paramName;
+                if (prefix != null && prefix.length() > 0) {
+                    paramName = prefix + SUBREPORT_PARAMETER_SEPARATOR +
+                            param.getName();
+                } else {
+                    paramName = param.getName();
                 }
+
+                parameters.put(paramName, param.getValue());
             }
         }
     }

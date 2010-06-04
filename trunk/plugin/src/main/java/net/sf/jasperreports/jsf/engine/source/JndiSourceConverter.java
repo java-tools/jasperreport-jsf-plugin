@@ -22,6 +22,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.component.UIComponent;
 
 import javax.faces.context.FacesContext;
 import javax.naming.Context;
@@ -29,27 +30,28 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import net.sf.jasperreports.jsf.component.UIReportSource;
-import net.sf.jasperreports.jsf.engine.ReportSourceException;
+import net.sf.jasperreports.jsf.engine.SourceException;
+
+import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
  *
  * @author aalonsodominguez
  */
-public class JndiReportSourceFactory extends DatabaseReportSourceFactory {
+public class JndiSourceConverter extends DatabaseSourceConverter {
 
     /** The Constant logger. */
     private static final Logger logger = Logger.getLogger(
-            JndiReportSourceFactory.class.getPackage().getName(),
+            JndiSourceConverter.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
     
     @Override
     protected Connection getConnection(FacesContext context,
-            UIReportSource component)
-    throws ReportSourceException {
-        final String jndiName = (String) component.getData();
+            UIComponent component)
+    throws SourceException {
+        final String jndiName = getStringAttribute(component, "value", null);
         if (jndiName == null || jndiName.length() == 0) {
-            throw new ReportSourceException("JNDI report source requires a " +
+            throw new SourceException("JNDI report source requires a " +
                     "JNDI name for a jdbc data source.");
         }
         logger.log(Level.FINE, "JRJSF_0005", jndiName);
@@ -59,9 +61,9 @@ public class JndiReportSourceFactory extends DatabaseReportSourceFactory {
             final DataSource ds = (DataSource) jndi.lookup(jndiName);
             return ds.getConnection();
         } catch(NamingException e) {
-            throw new ReportSourceException(e);
+            throw new SourceException(e);
         } catch(SQLException e) {
-            throw new ReportSourceException(e);
+            throw new SourceException(e);
         }
     }
 

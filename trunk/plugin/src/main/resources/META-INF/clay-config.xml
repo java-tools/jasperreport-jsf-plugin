@@ -28,11 +28,10 @@
 
 <view>
 
-    <component jsfid="jr:reportSource"
-        componentType="net.sf.jasperreports.jsf.ReportSource"
+    <component jsfid="jr:source"
+        componentType="net.sf.jasperreports.jsf.Source"
         extends="baseComponent">
         <attributes>
-            <set name="driverClass" bindingType="VB" />
             <set name="data" bindingType="VB" />
             <set name="query" bindingType="VB" />
             <set name="type" bindingType="VB" />
