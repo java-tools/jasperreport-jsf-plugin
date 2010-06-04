@@ -39,14 +39,28 @@
         </attributes>
     </component>
 
+    <component jsfid="jr:subreport"
+        componentType="net.sf.jasperreports.jsf.Subreport"
+        extends="baseComponent">
+        <attributes>
+            <set name="converter" bindingType="VB" />
+            <set name="name" bindingType="VB" />
+            <set name="source" bindingType="VB" />
+            <set name="value" bindingType="VB" />
+            <set name="validator" bindingType="VB" />
+        </attributes>
+    </component>
+
     <component jsfid="jr:reportFrame"
         componentType="net.sf.jasperreports.jsf.HtmlReportFrame"
         extends="baseHtml">
         <attributes>
-            <set name="dataSource" bindingType="VB" />
-            <set name="path" bindingType="VB" />
-            <set name="subreportDir" bindingType="VB" />
+            <set name="converter" bindingType="VB" />
+            <set name="name" bindingType="VB" />
+            <set name="source" bindingType="VB" />
             <set name="format" bindingType="VB" />
+            <set name="value" bindingType="VB" />
+            <set name="validator" bindingType="VB" />
             <!-- HTML iframe attributes -->
             <set name="layout" bindingType="VB" />
             <set name="frameborder" bindingType="VB" />
@@ -61,10 +75,12 @@
         componentType="net.sf.jasperreports.HtmlReportLink"
         extends="baseHtml">
         <attributes>
-            <set name="dataSource" bindingType="VB" />
-            <set name="path" bindingType="VB" />
-            <set name="subreportDir" bindingType="VB" />
+            <set name="converter" bindingType="VB" />
+            <set name="name" bindingType="VB" />
+            <set name="source" bindingType="VB" />
             <set name="format" bindingType="VB" />
+            <set name="value" bindingType="VB" />
+            <set name="validator" bindingType="VB" />
         </attributes>
     </component>
 

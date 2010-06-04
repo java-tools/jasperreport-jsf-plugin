@@ -22,15 +22,12 @@ import java.util.Set;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.convert.SourceConverter;
-import net.sf.jasperreports.jsf.engine.Source;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.util.Services;
-import net.sf.jasperreports.jsf.validation.Validator;
 
 /**
  *
@@ -72,12 +69,6 @@ public abstract class JRFacesContext {
 
     public abstract Resource createResource(FacesContext context,
             UIComponent component, String name);
-
-    public abstract Validator createValidator(FacesContext context,
-            UISource component);
-
-    public abstract Validator createValidator(FacesContext context,
-            UIReport component);
 
     public abstract Filler getFiller(
             FacesContext context, UIReport component);

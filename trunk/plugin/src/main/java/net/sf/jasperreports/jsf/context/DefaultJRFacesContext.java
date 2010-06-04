@@ -38,9 +38,6 @@ import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.ResourceResolver;
 import net.sf.jasperreports.jsf.resource.UnresolvedResourceException;
 import net.sf.jasperreports.jsf.util.Services;
-import net.sf.jasperreports.jsf.validation.SourceValidator;
-import net.sf.jasperreports.jsf.validation.ReportValidator;
-import net.sf.jasperreports.jsf.validation.Validator;
 
 import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
@@ -62,17 +59,12 @@ public class DefaultJRFacesContext extends JRFacesContext {
     private final Filler filler;
     private final ResourceResolver resourceResolver;
 
-    private final Map<String, SourceValidator> reportSourceValidatorMap;
-    private final Map<String, ReportValidator> reportValidatorMap;
-
     protected DefaultJRFacesContext() {
         sourceConverterMap = Services.map(SourceConverter.class);
         exporterMap = Services.map(Exporter.class);
         filler = Services.chain(Filler.class, DEFAULT_FILLER);
         resourceResolver = Services.chain(
                 ResourceResolver.class, DEFAULT_RESOURCE_RESOLVER);
-        reportSourceValidatorMap = Services.map(SourceValidator.class);
-        reportValidatorMap = Services.map(ReportValidator.class);
     }
 
     public Set<String> getAvailableSourceTypes() {
@@ -118,26 +110,6 @@ public class DefaultJRFacesContext extends JRFacesContext {
             throw new UnresolvedResourceException(name);
         }
         return resource;
-    }
-
-    public Validator createValidator(FacesContext context,
-            UISource component) {
-        SourceValidator validator = reportSourceValidatorMap.get(
-                component.getType());
-        if (validator == null) {
-            validator = reportSourceValidatorMap.get(null);
-        }
-        return validator;
-    }
-    
-    public Validator createValidator(FacesContext context,
-            UIReport component) {
-        String format = getStringAttribute(component, "format", null);
-        ReportValidator validator = reportValidatorMap.get(format);
-        if (validator == null && format != null) {
-            validator = reportValidatorMap.get(null);
-        }
-        return validator;
     }
 
     @Override

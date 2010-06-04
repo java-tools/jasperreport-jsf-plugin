@@ -28,8 +28,6 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
-import net.sf.jasperreports.jsf.validation.ValidationException;
-import net.sf.jasperreports.jsf.validation.Validator;
 
 /**
  *
@@ -39,10 +37,11 @@ public class UIOutputReport extends UIReport {
 
     private String format;
 
-    private boolean valid = true;
-
     private Exporter exporter;
-    private Validator validator;
+
+    public UIOutputReport() {
+        super();
+    }
 
     public String getFormat() {
         if (format != null) {

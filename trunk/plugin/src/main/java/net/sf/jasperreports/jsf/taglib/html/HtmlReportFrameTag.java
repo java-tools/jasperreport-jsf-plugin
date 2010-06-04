@@ -23,14 +23,14 @@ import javax.faces.component.UIComponent;
 
 import net.sf.jasperreports.jsf.component.html.HtmlReportFrame;
 import net.sf.jasperreports.jsf.renderkit.html.FrameRenderer;
-import net.sf.jasperreports.jsf.taglib.AbstractReportTag;
+import net.sf.jasperreports.jsf.taglib.OutputReportTag;
 
 import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
  * The Class ReportTag.
  */
-public class HtmlReportFrameTag extends AbstractReportTag {
+public class HtmlReportFrameTag extends OutputReportTag {
 
     private ValueExpression layout;
     /** The frameborder. */

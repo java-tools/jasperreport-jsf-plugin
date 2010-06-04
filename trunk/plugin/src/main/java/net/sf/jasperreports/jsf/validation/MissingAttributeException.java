@@ -18,21 +18,20 @@
  */
 package net.sf.jasperreports.jsf.validation;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.validator.ValidatorException;
+
 /**
  * The Class MissedDataSourceAttributeException.
  */
-public class MissingAttributeException extends ValidationException {
+public class MissingAttributeException extends ValidatorException {
 
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = 6313893570302881706L;
-
-    /**
-     * Instantiates a new missed data source attribute exception.
-     *
-     * @param msg
-     *            the msg
-     */
-    public MissingAttributeException(final String msg) {
-        super(msg);
+    public MissingAttributeException(FacesMessage message, Throwable cause) {
+        super(message, cause);
     }
+
+    public MissingAttributeException(FacesMessage message) {
+        super(message);
+    }
+
 }

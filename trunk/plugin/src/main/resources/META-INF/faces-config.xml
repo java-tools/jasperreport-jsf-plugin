@@ -53,6 +53,16 @@
     </component>
 
     <component>
+        <display-name>Subreport Component</display-name>
+        <component-type>
+            net.sf.jasperreports.jsf.Subreport
+        </component-type>
+        <component-class>
+            net.sf.jasperreports.jsf.component.UISubreport
+        </component-class>
+    </component>
+
+    <component>
         <display-name>HTML Report Frame Component</display-name>
         <component-type>
             net.sf.jasperreports.jsf.HtmlReportFrame
@@ -71,6 +81,24 @@
             net.sf.jasperreports.jsf.component.html.HtmlReportLink
         </component-class>
     </component>
+
+    <validator>
+        <validator-id>
+            net.sf.jasperreports.jsf.Report
+        </validator-id>
+        <validator-class>
+            net.sf.jasperreports.jsf.validation.ReportValidatorBase
+        </validator-class>
+    </validator>
+
+    <validator>
+        <validator-id>
+            net.sf.jasperreports.jsf.Source
+        </validator-id>
+        <validator-class>
+            net.sf.jasperreports.jsf.validation.SourceValidatorBase
+        </validator-class>
+    </validator>
 
     <render-kit>
         <renderer>

@@ -23,14 +23,14 @@ import javax.faces.component.UIComponent;
 
 import net.sf.jasperreports.jsf.component.html.HtmlReportLink;
 import net.sf.jasperreports.jsf.renderkit.html.OutputLinkRenderer;
-import net.sf.jasperreports.jsf.taglib.AbstractReportTag;
+import net.sf.jasperreports.jsf.taglib.OutputReportTag;
 
 import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
  * The Class ReportLinkTag.
  */
-public class HtmlReportLinkTag extends AbstractReportTag {
+public class HtmlReportLinkTag extends OutputReportTag {
 
     /** The target. */
     private ValueExpression target;

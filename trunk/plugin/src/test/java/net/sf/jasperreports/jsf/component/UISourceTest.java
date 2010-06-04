@@ -19,8 +19,11 @@
 package net.sf.jasperreports.jsf.component;
 
 import java.sql.Connection;
+import javax.faces.application.FacesMessage;
 
 import javax.faces.context.FacesContext;
+import javax.faces.validator.Validator;
+import javax.faces.validator.ValidatorException;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.jsf.convert.SourceConverter;
@@ -30,10 +33,8 @@ import net.sf.jasperreports.jsf.engine.source.ConnectionHolder;
 import net.sf.jasperreports.jsf.test.JMockTheories;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockJRFacesContext;
-import net.sf.jasperreports.jsf.validation.IllegalReportSourceTypeException;
+import net.sf.jasperreports.jsf.validation.IllegalSourceTypeException;
 import net.sf.jasperreports.jsf.validation.MissingAttributeException;
-import net.sf.jasperreports.jsf.validation.ValidationException;
-import net.sf.jasperreports.jsf.validation.Validator;
 
 import org.apache.shale.test.el.MockValueExpression;
 import org.apache.shale.test.mock.MockExternalContext;
@@ -50,6 +51,7 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
 import static org.hamcrest.Matchers.*;
+import static net.sf.jasperreports.jsf.util.MessagesFactory.*;
 
 /**
  *
@@ -72,7 +74,6 @@ public final class UISourceTest {
     public static final Object VALID_DATA = new Object[]{
         "0001", "0002", "0003", "0004", "0005" };
 
-    @DataPoint
     public static final String DATA_BEAN_NAME = "reportSourceBean";
 
     @DataPoint
@@ -140,7 +141,7 @@ public final class UISourceTest {
     // Theories
 
     @Theory
-    public void invalidTypeShouldThrowEx(String type, Object data,
+    public void invalidTypeShouldThrowEx(String type, final Object data,
             MockValueExpression value) {
         assumeThat(type, is(not(nullValue())));
         assumeThat(type, instanceOf(String.class));
@@ -149,20 +150,21 @@ public final class UISourceTest {
 
         final UISource component = createComponent(type, data, value);
         final FacesContext facesContext = facesEnv.getFacesContext();
+        final FacesMessage message = createMessage(facesContext,
+                    FacesMessage.SEVERITY_FATAL, "ILLEGAL_SOURCE_TYPE", type);
 
         mockery.checking(new Expectations() {{
-            oneOf(reportSourceValidator).validate(facesContext, component);
-            will(throwException(new IllegalReportSourceTypeException(
-                    component.getType())));
+            oneOf(reportSourceValidator).validate(facesContext, component, data);
+            will(throwException(new IllegalSourceTypeException(message)));
         }});
 
         try {
             component.processDecodes(facesContext);
             component.processValidators(facesContext);
             fail("A ValidationException should be thrown.");
-        } catch(ValidationException e) {
-            assertThat(e, is(IllegalReportSourceTypeException.class));
-            assertThat(e.getMessage(), equalTo(type));
+        } catch(ValidatorException e) {
+            assertThat(e, is(IllegalSourceTypeException.class));
+            assertThat(e.getFacesMessage(), equalTo(message));
             assertTrue("Context should have 'RenderResponse' state enabled.",
                     facesContext.getRenderResponse());
             assertTrue("Component remains valid after validation exception,",
@@ -173,8 +175,8 @@ public final class UISourceTest {
     }
 
     @Theory
-    public void withNullValueExprSendReportSourceUsingRequest(String type, Object data,
-            MockValueExpression value) {
+    public void withNullValueExprSendReportSourceUsingRequest(String type, 
+            final Object data, MockValueExpression value) {
         assumeThat(type, is(not(nullValue())));
         assumeTrue(jrContext.getAvailableSourceTypes().contains(type));
         assumeThat(data, is(not(nullValue())));
@@ -185,8 +187,8 @@ public final class UISourceTest {
         final String clientId = component.getClientId(facesContext);
 
         mockery.checking(new Expectations(){{
-            oneOf(reportSourceValidator).validate(facesContext, component);
-            oneOf(sourceConverter).convertFromValue(facesContext, component, null);
+            oneOf(reportSourceValidator).validate(facesContext, component, data);
+            oneOf(sourceConverter).convertFromValue(facesContext, component, data);
             will(returnValue(reportSource));
         }});
 
@@ -223,7 +225,7 @@ public final class UISourceTest {
         assumeTrue(!value.isReadOnly(facesContext.getELContext()));
 
         mockery.checking(new Expectations(){{
-            oneOf(reportSourceValidator).validate(facesContext, component);
+            oneOf(reportSourceValidator).validate(facesContext, component, data);
             oneOf(sourceConverter).convertFromValue(facesContext, component, data);
             will(returnValue(reportSource));
         }});
@@ -263,7 +265,7 @@ public final class UISourceTest {
         context.getRequestMap().put(DATA_BEAN_NAME, reportSourceBean);
 
         mockery.checking(new Expectations(){{
-            never(reportSourceValidator).validate(facesContext, component);
+            never(reportSourceValidator).validate(facesContext, component, data);
             never(sourceConverter).convertFromValue(facesContext, component, data);
         }});
 
@@ -295,7 +297,7 @@ public final class UISourceTest {
         context.getRequestMap().put(DATA_BEAN_NAME, reportSourceBean);
 
         mockery.checking(new Expectations(){{
-            never(reportSourceValidator).validate(facesContext, component);
+            never(reportSourceValidator).validate(facesContext, component, data);
             never(sourceConverter).convertFromValue(facesContext, component, data);
         }});
 
@@ -312,7 +314,7 @@ public final class UISourceTest {
     }
 
     @Theory
-    public void withNonNullAttrsUseValidator(String type, Object data,
+    public void withNonNullAttrsUseValidator(String type, final Object data,
             MockValueExpression value) {
         assumeThat(type, is(not(nullValue())));
         assumeThat(data, is(not(nullValue())));
@@ -322,7 +324,7 @@ public final class UISourceTest {
         final FacesContext facesContext = facesEnv.getFacesContext();
 
         mockery.checking(new Expectations(){{
-            oneOf(reportSourceValidator).validate(facesContext, component);
+            oneOf(reportSourceValidator).validate(facesContext, component, data);
         }});
 
         component.processDecodes(facesContext);
@@ -333,7 +335,7 @@ public final class UISourceTest {
 
     @Theory
     public void withoutAttrsThrowValidationEx(
-            String type, Object data, MockValueExpression value) {
+            String type, final Object data, MockValueExpression value) {
         assumeThat(data, is(nullValue()));
         assumeThat(type, is(nullValue()));
         assumeThat(value, is(nullValue()));
@@ -342,14 +344,14 @@ public final class UISourceTest {
         final FacesContext facesContext = facesEnv.getFacesContext();
 
         mockery.checking(new Expectations(){{
-            never(reportSourceValidator).validate(facesContext, component);
+            never(reportSourceValidator).validate(facesContext, component, data);
         }});
 
         try {
             component.processDecodes(facesContext);
             component.processValidators(facesContext);
             fail("Expected a validation exception for the 'type' attribute.");
-        } catch (ValidationException e) {
+        } catch (ValidatorException e) {
             assertThat(e, instanceOf(MissingAttributeException.class));
             assertThat(e.getMessage(), equalTo("type"));
             assertTrue("Context should have 'RenderResponse' state enabled.",
@@ -363,23 +365,25 @@ public final class UISourceTest {
 
     @Theory
     public void withoutDataAndValueThrowValidationEx(
-            String type, Object data, MockValueExpression value) {
+            String type, final Object data, MockValueExpression value) {
         assumeThat(type, is(not(nullValue())));
         assumeThat(data, is(nullValue()));
         assumeThat(value, is(nullValue()));
 
         final UISource component = createComponent(type, data, value);
         final FacesContext facesContext = facesEnv.getFacesContext();
+        final FacesMessage message = createMessage(facesContext,
+                    FacesMessage.SEVERITY_FATAL, "ILLEGAL_SOURCE_TYPE", type);
 
         mockery.checking(new Expectations(){{
-            never(reportSourceValidator).validate(facesContext, component);
+            never(reportSourceValidator).validate(facesContext, component, data);
         }});
 
         try {
             component.processDecodes(facesContext);
             component.processValidators(facesContext);
             fail("Expected a validation exception for the 'data' attribute.");
-        } catch (ValidationException e) {
+        } catch (ValidatorException e) {
             assertThat(e, instanceOf(MissingAttributeException.class));
             assertThat(e.getMessage(), equalTo("data"));
             assertTrue("Context should have 'RenderResponse' state enabled.",

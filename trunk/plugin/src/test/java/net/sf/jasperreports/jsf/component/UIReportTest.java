@@ -19,13 +19,13 @@
 package net.sf.jasperreports.jsf.component;
 
 import javax.faces.context.ExternalContext;
+import javax.faces.validator.Validator;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.test.JMockTheories;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockJRFacesContext;
-import net.sf.jasperreports.jsf.validation.Validator;
 import org.apache.shale.test.el.MockValueExpression;
 import org.apache.shale.test.mock.MockExternalContext;
 import org.apache.shale.test.mock.MockFacesContext;
@@ -83,7 +83,6 @@ public class UIReportTest {
 
         jrContext.setExporter(exporter);
         jrContext.setFiller(filler);
-        jrContext.setReportValidator(validator);
 
         //component = new UIReport();
         //component.setId("reportId");

@@ -16,23 +16,44 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.validation;
+package net.sf.jasperreports.jsf.taglib;
+
+import javax.el.ValueExpression;
+import javax.faces.component.UIComponent;
+
+import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
- * The Class IllegalDataSourceTypeException.
+ *
+ * @author antonio.alonso
  */
-public class IllegalReportSourceTypeException extends IllegalAttributeValueException {
+public abstract class OutputReportTag extends ReportTag {
 
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = 1358551817454303121L;
+    /** The format. */
+    private ValueExpression format;
 
     /**
-     * Instantiates a new illegal data source type exception.
+     * Sets the format.
      *
-     * @param msg
-     *            the msg
+     * @param type the new format
      */
-    public IllegalReportSourceTypeException(final String msg) {
-        super(msg);
+    public void setFormat(final ValueExpression type) {
+        format = type;
     }
+
+    // TagSupport
+
+    @Override
+    public void release() {
+        super.release();
+        format = null;
+    }
+
+    @Override
+    protected void setProperties(UIComponent component) {
+        super.setProperties(component);
+
+        setStringAttribute(component, "format", format);
+    }
+
 }

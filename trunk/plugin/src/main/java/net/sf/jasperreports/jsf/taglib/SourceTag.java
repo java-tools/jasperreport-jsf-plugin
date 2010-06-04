@@ -31,6 +31,8 @@ import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
  */
 public class SourceTag extends UIComponentELTag {
 
+    private ValueExpression converter;
+
     private ValueExpression data;
     /** The query. */
     private ValueExpression query;
@@ -38,6 +40,12 @@ public class SourceTag extends UIComponentELTag {
     private ValueExpression type;
     /** The value. */
     private ValueExpression value;
+
+    private ValueExpression validator;
+
+    public void setConverter(ValueExpression converter) {
+        this.converter = converter;
+    }
 
     public void setData(ValueExpression data) {
         this.data = data;
@@ -70,6 +78,10 @@ public class SourceTag extends UIComponentELTag {
         this.value = value;
     }
 
+    public void setValidator(ValueExpression validator) {
+        this.validator = validator;
+    }
+
     // TagSupport
 
     /*
@@ -80,10 +92,12 @@ public class SourceTag extends UIComponentELTag {
     @Override
     public void release() {
         super.release();
+        converter = null;
         data = null;
         query = null;
         type = null;
         value = null;
+        validator = null;
     }
 
     // UIComponentELTag
@@ -123,5 +137,13 @@ public class SourceTag extends UIComponentELTag {
         setStringAttribute(component, "query", query);
         setStringAttribute(component, "type", type);
         setStringAttribute(component, "value", value);
+
+        UISource source = (UISource) component;
+        if (converter != null) {
+            source.setValueExpression("converter", converter);
+        }
+        if (validator != null) {
+            source.setValueExpression("validator", validator);
+        }
     }
 }

@@ -21,15 +21,15 @@ package net.sf.jasperreports.jsf.validation;
 import javax.faces.application.FacesMessage;
 
 /**
- * The Class IllegalOutputFormatException.
+ * The Class IllegalDataSourceTypeException.
  */
-public class IllegalOutputFormatException extends IllegalAttributeValueException {
+public class IllegalSourceTypeException extends IllegalAttributeValueException {
 
-    public IllegalOutputFormatException(FacesMessage message) {
+    public IllegalSourceTypeException(FacesMessage message) {
         super(message);
     }
 
-    public IllegalOutputFormatException(FacesMessage message, Throwable cause) {
+    public IllegalSourceTypeException(FacesMessage message, Throwable cause) {
         super(message, cause);
     }
     
