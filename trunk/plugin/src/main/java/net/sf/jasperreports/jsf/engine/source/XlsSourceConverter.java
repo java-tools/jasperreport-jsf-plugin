@@ -21,6 +21,7 @@ package net.sf.jasperreports.jsf.engine.source;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,7 +34,6 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRXlsDataSource;
-import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.convert.DefaultSourceConverter;
 import net.sf.jasperreports.jsf.engine.Source;
@@ -68,16 +68,19 @@ public class XlsSourceConverter extends DefaultSourceConverter {
             try {
                 if (value instanceof File) {
                     dataSource = new JRXlsDataSource((File) value);
+                } else if (value instanceof URL) {
+                    InputStream stream = ((URL) value).openStream();
+                    dataSource = new JRXlsDataSource(stream);
                 } else if (value instanceof InputStream) {
                     dataSource = new JRXlsDataSource((InputStream) value);
                 } else if (value instanceof Workbook) {
                     dataSource = new JRXlsDataSource((Workbook) value);
                 } else if (value instanceof String) {
                     Resource resource = jrContext.createResource(context,
-                            component, (String) value);
+                        component, (String) value);
                     dataSource = new JRXlsDataSource(resource.getInputStream());
                 } else {
-                    throw new JRFacesException("Unrecognized value type: " +
+                    throw new SourceException("Unrecognized value type: " +
                             value.getClass().getName());
                 }
             } catch (JRException e) {
@@ -86,7 +89,8 @@ public class XlsSourceConverter extends DefaultSourceConverter {
                 throw new SourceException(e);
             }
         }
-        return new JRDataSourceHolder(dataSource);
+        
+        return new JRDataSourceWrapper(dataSource);
     }
 
 }

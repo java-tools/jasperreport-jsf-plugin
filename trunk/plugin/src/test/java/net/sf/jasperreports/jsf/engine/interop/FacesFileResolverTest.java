@@ -22,6 +22,7 @@ import net.sf.jasperreports.jsf.engine.interop.FacesFileResolver;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.resource.URLResourceTest;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
+import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
 import org.apache.shale.test.mock.MockFacesContext;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -45,7 +46,7 @@ public class FacesFileResolverTest {
 
     @DataPoint
     public static String REMOTE_RESOURCE =
-            URLResourceTest.remoteUrl().toString();
+            URLResourceTest.existantRemoteUrl().toString();
     
     private Mockery mockery = new Mockery() {{
         setImposteriser(ClassImposteriser.INSTANCE);
@@ -58,7 +59,7 @@ public class FacesFileResolverTest {
 
     @Before
     public void init() {
-        facesEnv = MockFacesEnvironment.getServletInstance();
+        facesEnv = new MockFacesServletEnvironment();
 
     }
 

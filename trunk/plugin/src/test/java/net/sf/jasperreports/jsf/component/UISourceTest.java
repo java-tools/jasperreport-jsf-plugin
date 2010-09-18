@@ -20,6 +20,7 @@ package net.sf.jasperreports.jsf.component;
 
 import java.sql.Connection;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
@@ -28,16 +29,16 @@ import javax.faces.validator.ValidatorException;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.jsf.convert.SourceConverter;
 import net.sf.jasperreports.jsf.engine.Source;
-import net.sf.jasperreports.jsf.engine.source.JRDataSourceHolder;
-import net.sf.jasperreports.jsf.engine.source.ConnectionHolder;
+import net.sf.jasperreports.jsf.engine.source.JRDataSourceWrapper;
+import net.sf.jasperreports.jsf.engine.source.ConnectionWrapper;
 import net.sf.jasperreports.jsf.test.JMockTheories;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
+import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockJRFacesContext;
 import net.sf.jasperreports.jsf.validation.IllegalSourceTypeException;
 import net.sf.jasperreports.jsf.validation.MissingAttributeException;
 
 import org.apache.shale.test.el.MockValueExpression;
-import org.apache.shale.test.mock.MockExternalContext;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -66,6 +67,9 @@ public final class UISourceTest {
 
     @DataPoint
     public static final String VALID_TYPE = "validType";
+
+    @DataPoint
+    public static final String INVALID_TYPE = "invalidType";
 
     @DataPoint
     public static final Object EMPTY_DATA = new Object[]{ };
@@ -102,6 +106,8 @@ public final class UISourceTest {
     private MockFacesEnvironment facesEnv;
     private MockJRFacesContext jrContext;
 
+    // Mock proxy instances
+    
     private Connection connection;
     private Source reportSource;
     private SourceConverter sourceConverter;
@@ -112,7 +118,7 @@ public final class UISourceTest {
 
     @Before
     public void init() {
-        facesEnv = MockFacesEnvironment.getServletInstance();
+        facesEnv = new MockFacesServletEnvironment();
 
         connection = mockery.mock(Connection.class);
         reportSource = mockery.mock(Source.class);
@@ -146,6 +152,7 @@ public final class UISourceTest {
         assumeThat(type, is(not(nullValue())));
         assumeThat(type, instanceOf(String.class));
         assumeThat(data, is(not(nullValue())));
+        assumeThat(value, is(nullValue()));
         assumeTrue(!jrContext.getAvailableSourceTypes().contains(type));
 
         final UISource component = createComponent(type, data, value);
@@ -169,9 +176,7 @@ public final class UISourceTest {
                     facesContext.getRenderResponse());
             assertTrue("Component remains valid after validation exception,",
                     !component.isValid());
-        }
-        
-        mockery.assertIsSatisfied();
+        }        
     }
 
     @Theory
@@ -196,8 +201,6 @@ public final class UISourceTest {
         component.processValidators(facesContext);
         component.processUpdates(facesContext);
 
-        mockery.assertIsSatisfied();
-
         assertTrue(facesContext.getExternalContext()
                 .getRequestMap().containsKey(clientId));
         Object source = facesContext.getExternalContext()
@@ -216,7 +219,7 @@ public final class UISourceTest {
         
         final FacesContext facesContext = facesEnv.getFacesContext();
         final SourceTestBean reportSourceBean = new SourceTestBean();
-        final MockExternalContext context = facesEnv.getExternalContext();
+        final ExternalContext context = facesEnv.getExternalContext();
         context.getRequestMap().put(DATA_BEAN_NAME, reportSourceBean);
 
         final UISource component = createComponent(type, data, value);
@@ -242,18 +245,18 @@ public final class UISourceTest {
         assertThat(actualValue, is(not(nullValue())));
         assertThat(actualValue, sameInstance(reportSource));
 
-        Source source = (Source) component.getValue();
+        Source source = component.getSubmittedSource();
         assertThat(source, is(not(nullValue())));
         assertThat(source, sameInstance(reportSource));
-
-        mockery.assertIsSatisfied();
     }
 
     @Theory
     public void whenDataSourceProvidedSendDataSourceHolderInRequest(String type,
             final Object data, MockValueExpression value) {
+        assumeThat(data, is(nullValue()));
         assumeThat(value, is(not(nullValue())));
         assumeThat(value.getExpressionString(), containsString("myReportSource"));
+        assumeTrue(jrContext.getAvailableSourceTypes().contains(type));
 
         final UISource component = createComponent(type, data, value);
         final FacesContext facesContext = facesEnv.getFacesContext();
@@ -261,12 +264,15 @@ public final class UISourceTest {
 
         final SourceTestBean reportSourceBean =
                 new SourceTestBean(dataSource);
-        MockExternalContext context = facesEnv.getExternalContext();
+        ExternalContext context = facesEnv.getExternalContext();
         context.getRequestMap().put(DATA_BEAN_NAME, reportSourceBean);
 
         mockery.checking(new Expectations(){{
-            never(reportSourceValidator).validate(facesContext, component, data);
-            never(sourceConverter).convertFromValue(facesContext, component, data);
+            oneOf(reportSourceValidator).validate(facesContext,
+                    component, dataSource);
+            oneOf(sourceConverter).convertFromValue(facesContext, 
+                    component, dataSource);
+            will(returnValue(new JRDataSourceWrapper(dataSource)));
         }});
 
         component.processDecodes(facesContext);
@@ -276,16 +282,16 @@ public final class UISourceTest {
         Object source = facesContext.getExternalContext()
                 .getRequestMap().get(clientId);
         assertThat(source, is(not(nullValue())));
-        assertThat(source, is(JRDataSourceHolder.class));
-
-        mockery.assertIsSatisfied();
+        assertThat(source, is(JRDataSourceWrapper.class));
     }
 
     @Theory
     public void whenConnectionProvidedSendConnectionHolderInRequest(String type,
             final Object data, MockValueExpression value) {
+        assumeThat(data, is(nullValue()));
         assumeThat(value, is(not(nullValue())));
         assumeThat(value.getExpressionString(), containsString("myReportSource"));
+        assumeTrue(jrContext.getAvailableSourceTypes().contains(type));
 
         final UISource component = createComponent(type, data, value);
         final FacesContext facesContext = facesEnv.getFacesContext();
@@ -293,12 +299,15 @@ public final class UISourceTest {
 
         final SourceTestBean reportSourceBean =
                 new SourceTestBean(connection);
-        MockExternalContext context = facesEnv.getExternalContext();
+        ExternalContext context = facesEnv.getExternalContext();
         context.getRequestMap().put(DATA_BEAN_NAME, reportSourceBean);
 
         mockery.checking(new Expectations(){{
-            never(reportSourceValidator).validate(facesContext, component, data);
-            never(sourceConverter).convertFromValue(facesContext, component, data);
+            oneOf(reportSourceValidator).validate(facesContext,
+                    component, connection);
+            oneOf(sourceConverter).convertFromValue(facesContext,
+                    component, connection);
+            will(returnValue(new ConnectionWrapper(connection)));
         }});
 
         component.processDecodes(facesContext);
@@ -308,9 +317,7 @@ public final class UISourceTest {
         Object source = facesContext.getExternalContext()
                 .getRequestMap().get(clientId);
         assertThat(source, is(not(nullValue())));
-        assertThat(source, is(ConnectionHolder.class));
-
-        mockery.assertIsSatisfied();
+        assertThat(source, is(ConnectionWrapper.class));
     }
 
     @Theory
@@ -325,12 +332,12 @@ public final class UISourceTest {
 
         mockery.checking(new Expectations(){{
             oneOf(reportSourceValidator).validate(facesContext, component, data);
+            oneOf(sourceConverter).convertFromValue(facesContext, component, data);
+            will(returnValue(reportSource));
         }});
 
         component.processDecodes(facesContext);
         component.processValidators(facesContext);
-        
-        mockery.assertIsSatisfied();
     }
 
     @Theory
@@ -353,19 +360,16 @@ public final class UISourceTest {
             fail("Expected a validation exception for the 'type' attribute.");
         } catch (ValidatorException e) {
             assertThat(e, instanceOf(MissingAttributeException.class));
-            assertThat(e.getMessage(), equalTo("type"));
             assertTrue("Context should have 'RenderResponse' state enabled.",
                     facesEnv.getFacesContext().getRenderResponse());
             assertTrue("Component remains valid after validation exception,",
                     !component.isValid());
         }
-
-        mockery.assertIsSatisfied();
     }
 
     @Theory
     public void withoutDataAndValueThrowValidationEx(
-            String type, final Object data, MockValueExpression value) {
+            final String type, final Object data, MockValueExpression value) {
         assumeThat(type, is(not(nullValue())));
         assumeThat(data, is(nullValue()));
         assumeThat(value, is(nullValue()));
@@ -376,7 +380,13 @@ public final class UISourceTest {
                     FacesMessage.SEVERITY_FATAL, "ILLEGAL_SOURCE_TYPE", type);
 
         mockery.checking(new Expectations(){{
-            never(reportSourceValidator).validate(facesContext, component, data);
+            oneOf(reportSourceValidator).validate(facesContext, component, data);
+            if (!jrContext.getAvailableSourceTypes().contains(type)) {
+                will(throwException(new IllegalSourceTypeException(message)));
+            } else {
+                oneOf(sourceConverter).convertFromValue(facesContext,
+                        component, data);
+            }
         }});
 
         try {
@@ -385,14 +395,12 @@ public final class UISourceTest {
             fail("Expected a validation exception for the 'data' attribute.");
         } catch (ValidatorException e) {
             assertThat(e, instanceOf(MissingAttributeException.class));
-            assertThat(e.getMessage(), equalTo("data"));
             assertTrue("Context should have 'RenderResponse' state enabled.",
                     facesEnv.getFacesContext().getRenderResponse());
             assertTrue("Component remains valid after validation exception,",
                     !component.isValid());
         }
 
-        mockery.assertIsSatisfied();
     }
 
     // Support methods

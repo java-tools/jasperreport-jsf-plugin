@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package net.sf.jasperreports.jsf.test.mock;
+package net.sf.jasperreports.jsf.test.webapp;
 
 /**
  *

@@ -122,6 +122,7 @@
 
     <junit.version>4.8.1</junit.version>
     <jmock.version>2.5.1</jmock.version>
+    <junitext.version>0.2.4</junitext.version>
 
     <slf4j.version>1.6.0</slf4j.version>
   </properties>
@@ -257,6 +258,12 @@
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>junitext</groupId>
+        <artifactId>junitext</artifactId>
+        <version>${junitext.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>

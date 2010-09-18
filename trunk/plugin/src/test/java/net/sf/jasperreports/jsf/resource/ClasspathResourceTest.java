@@ -22,13 +22,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import org.junit.Before;
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
-import static net.sf.jasperreports.jsf.test.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
 import static org.hamcrest.Matchers.*;
@@ -52,20 +50,29 @@ public class ClasspathResourceTest {
     @DataPoint
     public static final String NOEXT_RESOURCE = RESOURCE_PATH;
 
-    private ClassLoader classLoader;
+    @DataPoint
+    public static final ClassLoader NULL_CLASSLOADER = null;
 
-    @Before
-    public void init() {
-        classLoader = Thread.currentThread().getContextClassLoader();
+    @DataPoint
+    public static ClassLoader VALID_CLASSLOADER() {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        if (classLoader == null) {
+            classLoader = ClasspathResourceTest.class.getClassLoader();
+        }
+        return classLoader;
     }
 
     @Theory
-    public void checkWithValidResource(String name) throws Exception {
+    public void checkWithValidResourceAndLoader(String name, ClassLoader classLoader)
+            throws Exception {
+        assumeThat(name, notNullValue());
+        assumeThat(classLoader, notNullValue());
+
         InputStream expectedStream = null;
         assumeTrue(null != (expectedStream = classLoader
                 .getResourceAsStream(name)));
-
         URL expectedLocation = classLoader.getResource(name);
+
         ClasspathResource resource = new ClasspathResource(name, classLoader);
         assertThat(resource.getName(), sameInstance(name));
 
@@ -75,15 +82,16 @@ public class ClasspathResourceTest {
         } catch(Exception e) {
             assumeNoException(e);
         }
+
         assertThat(stream, is(not(nullValue())));
 
-        
         URL location = null;
         try {
             location = resource.getLocation();
         } catch(Exception e) {
             assumeNoException(e);
         }
+
         assertThat(location, is(not(nullValue())));
         assertThat(location, equalTo(expectedLocation));
         assertThat(resource.getPath(), equalTo(expectedLocation.getPath()));
@@ -95,7 +103,12 @@ public class ClasspathResourceTest {
     }
 
     @Theory
-    public void checkWithInvalidResource(String name) throws Exception {
+    @SuppressWarnings("unused")
+    public void checkWithInvalidResourceButValidLoader(String name, ClassLoader classLoader)
+            throws Exception {
+        assumeThat(name, notNullValue());
+        assumeThat(classLoader, notNullValue());
+
         InputStream expectedStream;
         assumeTrue(null == (expectedStream = classLoader
                 .getResourceAsStream(name)));
@@ -122,6 +135,20 @@ public class ClasspathResourceTest {
             fail("'getPath' must throw 'LocationNotFoundException'.");
         } catch (Exception e) {
             assertThat(e, is(LocationNotFoundException.class));
+        }
+    }
+
+    @Theory
+    public void nullLoaderThrowsIllegalArgEx(String name, ClassLoader classLoader) {
+        assumeThat(name, notNullValue());
+        assumeThat(classLoader, nullValue());
+
+        ClasspathResource resource = null;
+        try {
+            resource = new ClasspathResource(name, classLoader);
+            fail("A null class loader should throw IllegalArgumentException.");
+        } catch (RuntimeException e) {
+            assertThat(e, is(IllegalArgumentException.class));
         }
     }
 

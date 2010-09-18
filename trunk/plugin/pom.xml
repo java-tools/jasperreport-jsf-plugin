@@ -108,6 +108,10 @@
       <artifactId>junit</artifactId>
     </dependency>
     <dependency>
+      <groupId>junitext</groupId>
+      <artifactId>junitext</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.jmock</groupId>
       <artifactId>jmock-junit4</artifactId>
     </dependency>
@@ -205,10 +209,35 @@
                   <name>basedir</name>
                   <value>${basedir}</value>
                 </property>
+                <property>
+                  <name>documentRoot</name>
+                  <value>${basedir}/src/test/webapp</value>
+                </property>
               </systemProperties>
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>2.4</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <instrumentation>
+            <excludes>
+              <exclude>net/sf/jasperreports/jsf/**/UI*Tag.class</exclude>
+              <exclude>net/sf/jasperreports/jsf/**/Html*Tag.class</exclude>
+              <exclude>net/sf/jasperreports/jsf/**/*Exception.class</exclude>
+            </excludes>
+          </instrumentation>
+        </configuration>
       </plugin>
 
       <plugin>
@@ -257,10 +286,12 @@
           </links>
         </configuration>
       </plugin>
+      <!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changelog-plugin</artifactId>
       </plugin>
+      -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
@@ -272,6 +303,11 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>2.4</version>
       </plugin>
     </plugins>
   </reporting>

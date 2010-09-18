@@ -25,7 +25,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.context.DefaultJRFacesContext;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.convert.SourceConverter;
@@ -33,14 +32,13 @@ import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.ResourceResolver;
+import net.sf.jasperreports.jsf.resource.UnresolvedResourceException;
 
 /**
  *
  * @author aalonsodominguez
  */
 public class MockJRFacesContext extends JRFacesContext {
-
-    private DefaultJRFacesContext defaultContext;
 
     private Set<String> availableExportFormats = new HashSet<String>();
     private Set<String> availableDataSourceTypes = new HashSet<String>();
@@ -50,6 +48,8 @@ public class MockJRFacesContext extends JRFacesContext {
 
     private Filler filler;
     private Exporter exporter;
+
+    private ExternalContextHelper extContextHelper;
 
     public MockJRFacesContext(FacesContext context) {
         context.getExternalContext().getApplicationMap()
@@ -75,9 +75,14 @@ public class MockJRFacesContext extends JRFacesContext {
     public Resource createResource(
             FacesContext context, UIComponent component, String name) {
         if (resourceResolver != null) {
-            return resourceResolver.resolveResource(context, component, name);
+            Resource res = resourceResolver.resolveResource(context, component, name);
+            if (res == null) {
+                throw new UnresolvedResourceException(name);
+            }
+            return res;
+        } else {
+            return null;
         }
-        return defaultContext.createResource(context, component, name);
     }
 
     public Filler getFiller(
@@ -85,7 +90,7 @@ public class MockJRFacesContext extends JRFacesContext {
         if (filler != null) {
             return filler;
         }
-        return defaultContext.getFiller(context, component);
+        return null;
     }
 
     public void setFiller(Filler filler) {
@@ -94,7 +99,11 @@ public class MockJRFacesContext extends JRFacesContext {
 
     public ExternalContextHelper getExternalContextHelper(
             FacesContext context) {
-        return defaultContext.getExternalContextHelper(context);
+        return extContextHelper;
+    }
+
+    public void setExternalContextHelper(ExternalContextHelper extContextHelper) {
+        this.extContextHelper = extContextHelper;
     }
 
     public Exporter getExporter(
@@ -102,7 +111,7 @@ public class MockJRFacesContext extends JRFacesContext {
         if (exporter != null) {
             return exporter;
         }
-        return defaultContext.getExporter(context, component);
+        return null;
     }
 
     public void setExporter(Exporter exporter) {
@@ -114,7 +123,7 @@ public class MockJRFacesContext extends JRFacesContext {
         if (sourceConverter != null) {
             return sourceConverter;
         }
-        return defaultContext.createSourceConverter(context, component);
+        return null;
     }
 
     public Set<String> getAvailableExportFormats() {

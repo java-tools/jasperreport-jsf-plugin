@@ -19,6 +19,7 @@
 package net.sf.jasperreports.jsf.engine.source;
 
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
+import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.experimental.theories.Theories;
@@ -36,7 +37,7 @@ public class XmlSourceConverterTest {
 
     @Before
     public void init() {
-        facesEnv = MockFacesEnvironment.getServletInstance();
+        facesEnv = new MockFacesServletEnvironment();
     }
 
     @After

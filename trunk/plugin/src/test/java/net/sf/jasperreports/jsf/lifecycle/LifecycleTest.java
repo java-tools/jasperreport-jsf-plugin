@@ -6,6 +6,7 @@
 package net.sf.jasperreports.jsf.lifecycle;
 
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
+import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
 
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
@@ -31,7 +32,7 @@ public class LifecycleTest {
 
     @Before
     public void init() {
-        facesEnv = MockFacesEnvironment.getServletInstance();
+        facesEnv = new MockFacesServletEnvironment();
 
         restoreView = mockery.mock(RestoreViewPhaseListener.class);
         renderResponse = mockery.mock(RenderResponsePhaseListener.class);

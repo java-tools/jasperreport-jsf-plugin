@@ -70,13 +70,11 @@ public class DefaultResourceResolver implements ResourceResolver {
                     // If caller component is a report-based component then try to
                     // resolve the resource relative to the report resource (if given).
 
-                    ValueExpression ve = component.getValueExpression("value");
-                    if (ve != null &&
-                            String.class == ve.getType(context.getELContext())) {
-                        String path = getStringAttribute(
-                                component, "value", "./");
+                    Object value = ((UIReport) component).getValue();
+                    if (value != null && (value instanceof String)) {
                         rootPath = helper.getResourceRealPath(
-                            context.getExternalContext(), getPath(path));
+                            context.getExternalContext(), 
+                            "/" + getPath((String) value));
                     }
                 } else {
                     // If caller component is not a report-based component or
@@ -85,11 +83,12 @@ public class DefaultResourceResolver implements ResourceResolver {
 
                     String viewId = context.getViewRoot().getViewId();
                     rootPath = helper.getResourceRealPath(
-                            context.getExternalContext(), getPath(viewId));
+                            context.getExternalContext(), "/" + getPath(viewId));
                 }
 
                 if (rootPath != null) {
-                    File resourceFile = new File(normalize(rootPath + name));
+                    String resourceFileName = rootPath + "/" + name;
+                    File resourceFile = new File(normalize(resourceFileName));
                     if (resourceFile.exists()) {
                         resource = new FileResource(resourceFile);
                     }

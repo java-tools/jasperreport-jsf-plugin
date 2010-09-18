@@ -22,8 +22,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.component.UIComponent;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -51,8 +51,7 @@ public class JndiSourceConverter extends DatabaseSourceConverter {
     throws SourceException {
         final String jndiName = getStringAttribute(component, "value", null);
         if (jndiName == null || jndiName.length() == 0) {
-            throw new SourceException("JNDI report source requires a " +
-                    "JNDI name for a jdbc data source.");
+            return null;
         }
         logger.log(Level.FINE, "JRJSF_0005", jndiName);
 

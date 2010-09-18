@@ -25,6 +25,7 @@ import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.test.JMockTheories;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
+import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockJRFacesContext;
 import org.apache.shale.test.el.MockValueExpression;
 import org.apache.shale.test.mock.MockExternalContext;
@@ -32,6 +33,7 @@ import org.apache.shale.test.mock.MockFacesContext;
 
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
+import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -61,7 +63,9 @@ public class UIReportTest {
 
     }
 
-    private Mockery mockery = new JUnit4Mockery();
+    private Mockery mockery = new JUnit4Mockery() {{
+        setImposteriser(ClassImposteriser.INSTANCE);
+    }};
 
     private MockFacesEnvironment facesEnv;
     private MockJRFacesContext jrContext;
@@ -73,7 +77,7 @@ public class UIReportTest {
 
     @Before
     public void init() {
-        facesEnv = MockFacesEnvironment.getServletInstance();
+        facesEnv = new MockFacesServletEnvironment();
         jrContext = new MockJRFacesContext(facesEnv.getFacesContext());
         jrContext.getAvailableExportFormats().add(VALID_FORMAT);
 
@@ -84,8 +88,8 @@ public class UIReportTest {
         jrContext.setExporter(exporter);
         jrContext.setFiller(filler);
 
-        //component = new UIReport();
-        //component.setId("reportId");
+        component = new UIReport();
+        component.setId("reportId");
 
         MockValueExpression ve = new MockValueExpression(
                 "#{" + REPORT_BEAN_NAME + ".reportOrPrint}", null);

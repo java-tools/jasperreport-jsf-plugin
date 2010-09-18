@@ -22,19 +22,23 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 import net.sf.jasperreports.jsf.renderkit.html.FrameRenderer;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
+import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 
 /**
  *
  * @author aalonsodominguez
  */
+@RunWith(JMock.class)
 public class HtmlReportFrameTest {
 
     private Mockery context = new JUnit4Mockery() {{
@@ -48,7 +52,7 @@ public class HtmlReportFrameTest {
 
     @Before
     public void initSupportClasses() {
-        facesEnv = MockFacesEnvironment.getServletInstance();
+        facesEnv = new MockFacesServletEnvironment();
 
         reportPanel = new HtmlReportFrame();
         renderer = context.mock(ReportRenderer.class);

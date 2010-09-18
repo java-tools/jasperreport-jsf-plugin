@@ -44,7 +44,7 @@ import net.sf.jasperreports.jsf.validation.ReportValidatorBase;
 /**
  * The Class UIReport.
  */
-public abstract class UIReport extends UIComponentBase {
+public class UIReport extends UIComponentBase {
 
     /** The Constant COMPONENT_FAMILY. */
     public static final String COMPONENT_FAMILY =

@@ -1,12 +1,27 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ *
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1 of the License, or (at
+ * your option) any later version. This library is distributed in the hope
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place, Suite 330, Boston, MA 02111-1307 USA A.
+ *
+ * Alonso Dominguez
+ * alonsoft@users.sf.net
  */
-
 package net.sf.jasperreports.jsf.test.mock;
 
+import java.io.File;
 import javax.faces.FactoryFinder;
 import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
 import javax.faces.lifecycle.LifecycleFactory;
 import javax.faces.render.RenderKitFactory;
 
@@ -25,18 +40,6 @@ import org.apache.shale.test.mock.MockRenderKitFactory;
  * @author aalonsodominguez
  */
 public abstract class MockFacesEnvironment {
-
-    private static ThreadLocal<MockFacesEnvironment> currentInstance =
-            new ThreadLocal<MockFacesEnvironment>();
-    
-    public static MockFacesEnvironment getServletInstance() {
-        MockFacesEnvironment instance = currentInstance.get();
-        if (instance == null) {
-            instance = new MockFacesServletEnvironment();
-            currentInstance.set(instance);
-        }
-        return instance;
-    }
 
     private MockApplication application;
     private MockFacesContext facesContext;
@@ -98,7 +101,24 @@ public abstract class MockFacesEnvironment {
         return applicationFactory;
     }
 
-    public abstract MockExternalContext12 getExternalContext();
+    public File getDocumentRoot() {
+        String documentRootStr = System.getProperty("documentRoot");
+        if (documentRootStr == null || documentRootStr.length() == 0) {
+            throw new IllegalStateException("Missed system property 'documentRoot'.");
+        }
+        File documentRoot = new File(documentRootStr);
+        if (!documentRoot.exists()) {
+            throw new IllegalStateException("Directory '" +
+                    documentRootStr + "' doesn't exists.");
+        }
+        if (!documentRoot.isDirectory()) {
+            throw new IllegalStateException("'" + documentRootStr +
+                    "' is not a directory.");
+        }
+        return documentRoot;
+    }
+
+    public abstract ExternalContext getExternalContext();
 
     public MockFacesContext getFacesContext() {
         return facesContext;
@@ -137,8 +157,6 @@ public abstract class MockFacesEnvironment {
         facesContextFactory = null;
         lifecycleFactory = null;
         renderKitFactory = null;
-
-        currentInstance.set(null);
     }
 
     protected abstract void initializeExternalContext();

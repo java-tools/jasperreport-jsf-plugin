@@ -104,7 +104,7 @@ public class CsvSourceConverter extends DefaultSourceConverter {
                 (closeStream ? dataSourceStream : null));
     }
 
-    public static class CsvReportSource extends JRDataSourceHolder {
+    public static class CsvReportSource extends JRDataSourceWrapper {
 
         private String clientId;
         private InputStream stream;
@@ -112,6 +112,10 @@ public class CsvSourceConverter extends DefaultSourceConverter {
         public CsvReportSource(String clientId, JRDataSource dataSource,
                 InputStream stream) {
             super(dataSource);
+            if (clientId == null || clientId.length() == 0) {
+                throw new IllegalArgumentException(
+                        "'clientId' can't be empty or null");
+            }
             this.clientId = clientId;
             this.stream = stream;
         }

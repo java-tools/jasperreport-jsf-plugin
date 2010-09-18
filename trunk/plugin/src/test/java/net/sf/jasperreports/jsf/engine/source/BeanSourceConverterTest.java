@@ -29,6 +29,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.engine.Source;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
+import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
 
 import org.junit.After;
 import org.junit.Before;
@@ -52,6 +53,9 @@ public class BeanSourceConverterTest {
     public static final Object NULL_DATA = null;
 
     @DataPoint
+    public static final String STR_DATA = "STR_DATA";
+
+    @DataPoint
     public static final Object[] ARR_DATA = new Object[] {
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10
     };
@@ -66,7 +70,7 @@ public class BeanSourceConverterTest {
 
     @Before
     public void init() {
-        facesEnv = MockFacesEnvironment.getServletInstance();
+        facesEnv = new MockFacesServletEnvironment();
         component = new UISource();
         factory = new BeanSourceConverter();
     }
@@ -81,9 +85,9 @@ public class BeanSourceConverterTest {
     }
     
     @Theory
-    public void arrayDataReturnsArrayDataSource(final Object data) {
+    public void anyDataReturnsArrayDataSource(final Object data) {
         assumeThat(data, is(not(nullValue())));
-        assumeTrue(data instanceof Object[]);
+        assumeThat(data, is(not(instanceOf(Collection.class))));
 
         final FacesContext facesContext = facesEnv.getFacesContext();
 
@@ -92,17 +96,19 @@ public class BeanSourceConverterTest {
                 facesContext, component, data);
         assertThat(reportSource, is(not(nullValue())));
 
-        if (!(reportSource instanceof JRDataSourceHolder)) {
+        if (!(reportSource instanceof JRDataSourceWrapper)) {
             fail("'Returned reportSource is not JasperReport's data source wrapper");
         }
 
-        JRDataSource dataSource = ((JRDataSourceHolder) reportSource)
+        JRDataSource dataSource = ((JRDataSourceWrapper) reportSource)
                 .getDataSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JRBeanArrayDataSource.class));
 
-        JRBeanArrayDataSource bads = (JRBeanArrayDataSource) dataSource;
-        assertThat(bads.getData(), equalTo((Object[]) data));
+        if (data instanceof Object[]) {
+            JRBeanArrayDataSource bads = (JRBeanArrayDataSource) dataSource;
+            assertThat(bads.getData(), equalTo((Object[]) data));
+        }
     }
 
     @Theory
@@ -117,11 +123,11 @@ public class BeanSourceConverterTest {
                 facesContext, component, data);
         assertThat(reportSource, is(not(nullValue())));
 
-        if (!(reportSource instanceof JRDataSourceHolder)) {
+        if (!(reportSource instanceof JRDataSourceWrapper)) {
             fail("'Returned reportSource is not JasperReport's data source wrapper");
         }
 
-        JRDataSource dataSource = ((JRDataSourceHolder) reportSource)
+        JRDataSource dataSource = ((JRDataSourceWrapper) reportSource)
                 .getDataSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JRBeanCollectionDataSource.class));
@@ -139,11 +145,11 @@ public class BeanSourceConverterTest {
                 facesEnv.getFacesContext(), component, data);
         assertThat(reportSource, is(not(nullValue())));
         
-        if (!(reportSource instanceof JRDataSourceHolder)) {
+        if (!(reportSource instanceof JRDataSourceWrapper)) {
             fail("'Returned reportSource is not JasperReport's data source wrapper");
         }
         
-        JRDataSource dataSource = ((JRDataSourceHolder) reportSource)
+        JRDataSource dataSource = ((JRDataSourceWrapper) reportSource)
                 .getDataSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JREmptyDataSource.class));

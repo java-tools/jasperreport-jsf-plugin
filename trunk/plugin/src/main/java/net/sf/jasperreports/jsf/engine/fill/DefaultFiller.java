@@ -18,6 +18,7 @@
  */
 package net.sf.jasperreports.jsf.engine.fill;
 
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -27,6 +28,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 
+import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -35,11 +37,10 @@ import net.sf.jasperreports.engine.fill.JRFiller;
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.component.UISubreport;
+import net.sf.jasperreports.jsf.convert.SourceConverter;
 import net.sf.jasperreports.jsf.engine.Source;
 import net.sf.jasperreports.jsf.engine.FillerException;
 import net.sf.jasperreports.jsf.engine.Filler;
-import net.sf.jasperreports.jsf.engine.source.JRDataSourceHolder;
-import net.sf.jasperreports.jsf.engine.source.ConnectionHolder;
 import net.sf.jasperreports.jsf.util.Util;
 
 import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
@@ -53,7 +54,7 @@ public class DefaultFiller implements Filler {
     public static final String ATTR_JASPER_PRINT =
             Constants.PACKAGE_PREFIX + ".JASPER_PRINT";
 
-    public static final String SUBREPORT_PARAMETER_SEPARATOR = "_";
+    public static final String SUBREPORT_PARAMETER_SEPARATOR = ".";
 
     // Report Parameters
 
@@ -71,24 +72,22 @@ public class DefaultFiller implements Filler {
             throws FillerException {
         final String reportName = getStringAttribute(component, "name",
                 component.getClientId(context));
-
-        Source reportSource = component.getSubmittedSource();
-        JasperReport jasperReport = component.getSubmittedReport();
-
         logger.log(Level.FINE, "JRJSF_0003", reportName);
 
+        Source reportSource = component.getSubmittedSource();
         try {
             final Map<String, Object> params =
                     buildParamMap(context, component);
-            JasperPrint print = doFill(context, jasperReport,
-                    params, reportSource);
+            JasperPrint print = doFill(context, component, params);
             context.getExternalContext().getRequestMap()
                     .put(ATTR_JASPER_PRINT, print);
         } finally {
-            try {
-                reportSource.dispose();
-                reportSource = null;
-            } catch (Exception e) { }            
+            if (reportSource != null) {
+                try {
+                    reportSource.dispose();
+                    reportSource = null;
+                } catch (Exception e) { }  
+            }
         }
     }
     
@@ -116,9 +115,13 @@ public class DefaultFiller implements Filler {
         return parameters;
     }
 
-    protected JasperPrint doFill(FacesContext context, JasperReport report,
-            Map<String, Object> parameters, Source reportSource)
+    protected JasperPrint doFill(FacesContext context, UIReport component,
+            Map<String, Object> parameters)
     throws FillerException {
+        JasperReport report = component.getSubmittedReport();
+        Source reportSource = component.getSubmittedSource();
+        SourceConverter converter = component.getConverter();
+
         JRBaseFiller jrFiller;
         try {
             jrFiller = JRFiller.createFiller(report);
@@ -130,12 +133,14 @@ public class DefaultFiller implements Filler {
         try {
             if (reportSource == null) {
                 print = jrFiller.fill(parameters);
-            } else if (reportSource instanceof JRDataSourceHolder) {
-                print = jrFiller.fill(parameters,
-                        ((JRDataSourceHolder) reportSource).getDataSource());
-            } else if (reportSource instanceof ConnectionHolder) {
-                print = jrFiller.fill(parameters,
-                        ((ConnectionHolder) reportSource).getConnection());
+            } else {
+                Object sourceObj = converter.convertFromSource(context,
+                        component, reportSource);
+                if (reportSource instanceof JRDataSource) {
+                    print = jrFiller.fill(parameters, (JRDataSource) sourceObj);
+                } else if (reportSource instanceof Connection) {
+                    print = jrFiller.fill(parameters, (Connection) sourceObj);
+                }
             }
         } catch (final JRException e) {
             throw new FillerException(e);
@@ -152,7 +157,9 @@ public class DefaultFiller implements Filler {
                 parameters.put(subreport.getName(), 
                         subreport.getSubmittedReport());
                 processParameterMap(context, subreport, parameters, 
-                        subreport.getName());
+                        (prefix != null && prefix.length() > 0 ? 
+                            prefix + SUBREPORT_PARAMETER_SEPARATOR : "")
+                        + subreport.getName());
             } else if (kid instanceof UIParameter) {
                 final UIParameter param = (UIParameter) kid;
                 String paramName;

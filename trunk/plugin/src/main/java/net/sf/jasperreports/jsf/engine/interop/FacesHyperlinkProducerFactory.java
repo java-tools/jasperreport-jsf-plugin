@@ -37,16 +37,15 @@ public class FacesHyperlinkProducerFactory extends JRHyperlinkProducerFactory {
     /**
      * Instantiates a new faces hyperlink producer factory.
      *
-     * @param context
-     *            the context
-     * @param report
-     *            the report
+     * @param context the context
+     * @param report the report
      */
     public FacesHyperlinkProducerFactory(final FacesContext context,
             final UIComponent report) {
         super();
         if ((context == null) || (report == null)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(
+                    "'context' or 'report' can't be null");
         }
         this.context = context;
         this.report = report;

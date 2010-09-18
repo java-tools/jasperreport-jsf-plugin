@@ -1,0 +1,147 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package net.sf.jasperreports.jsf.test.mock.portlet;
+
+import java.io.File;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import javax.portlet.PortletContext;
+import javax.portlet.PortletRequestDispatcher;
+
+/**
+ *
+ * @author aalonsodominguez
+ */
+public class MockPortletContext implements PortletContext {
+
+    private Map<String, String> initParameterMap = new HashMap<String, String>();
+    private Map<String, Object> attributeMap = new HashMap<String, Object>();
+    private Map<String, String> mimeTypeMap = new HashMap<String, String>();
+
+    private String contextName;
+    private int minorVersion, majorVersion;
+
+    private File documentRoot;
+
+    private PortletRequestDispatcher dispather;
+
+    public MockPortletContext() {
+        this(2, 4);
+    }
+
+    public MockPortletContext(int majorVersion, int minorVersion) {
+        this.majorVersion = majorVersion;
+        this.minorVersion = minorVersion;
+    }
+
+    public String getServerInfo() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public PortletRequestDispatcher getRequestDispatcher(String path) {
+        return dispather;
+    }
+
+    public PortletRequestDispatcher getNamedDispatcher(String name) {
+        return dispather;
+    }
+
+    public void setRequestDispather(PortletRequestDispatcher dispatcher) {
+        this.dispather = dispatcher;
+    }
+
+    public InputStream getResourceAsStream(String path) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int getMajorVersion() {
+        return majorVersion;
+    }
+
+    public int getMinorVersion() {
+        return minorVersion;
+    }
+
+    public String getMimeType(String file) {
+        return mimeTypeMap.get(file);
+    }
+
+    public void setMimeType(String file, String mimeType) {
+        mimeTypeMap.put(file, mimeType);
+    }
+
+    public String getRealPath(String path) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Set<String> getResourcePaths(String path) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public URL getResource(String path) throws MalformedURLException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Object getAttribute(String name) {
+        return attributeMap.get(name);
+    }
+
+    public Enumeration<String> getAttributeNames() {
+        return Collections.enumeration(attributeMap.keySet());
+    }
+
+    public String getInitParameter(String name) {
+        return initParameterMap.get(name);
+    }
+
+    public Enumeration<String> getInitParameterNames() {
+        return Collections.enumeration(initParameterMap.keySet());
+    }
+
+    public void setInitParameter(String name, String value) {
+        initParameterMap.put(name, value);
+    }
+
+    public void log(String msg) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void log(String message, Throwable throwable) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void removeAttribute(String name) {
+        attributeMap.remove(name);
+    }
+
+    public void setAttribute(String name, Object object) {
+        attributeMap.put(name, object);
+    }
+
+    public String getPortletContextName() {
+        return contextName;
+    }
+
+    public void setPortletContextName(String contextName) {
+        this.contextName = contextName;
+    }
+
+    public Enumeration<String> getContainerRuntimeOptions() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setDocumentRoot(File documentRoot) {
+        this.documentRoot = documentRoot;
+    }
+
+}

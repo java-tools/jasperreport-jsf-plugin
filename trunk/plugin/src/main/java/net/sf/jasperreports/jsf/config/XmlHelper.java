@@ -50,6 +50,7 @@ class XmlHelper {
             if (childNode.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
+            
             final Element childElement = (Element) childNode;
             String childTagName = childElement.getTagName();
             final String childPrefix = childElement.getPrefix();

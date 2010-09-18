@@ -61,7 +61,8 @@ public class ContextResource extends AbstractResource
      * .lang.String)
      */
     public InputStream getInputStream() {
-        return getFacesContext().getExternalContext().getResourceAsStream(getName());
+        return getFacesContext()
+                .getExternalContext().getResourceAsStream(getName());
     }
 
     public String getPath() {
