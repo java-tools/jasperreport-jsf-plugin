@@ -31,6 +31,7 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.jsf.convert.DefaultSourceConverter;
 import net.sf.jasperreports.jsf.engine.Source;
@@ -53,17 +54,26 @@ public abstract class DatabaseSourceConverter
     protected Source createSource(FacesContext context,
             UIComponent component, Object value)
     throws SourceException {
-        Source reportSource;
         Connection connection = getConnection(context, component);
-        final String query = getStringAttribute(component, "query", null);
-        if (query != null && query.length() > 0) {
-            ResultSet rs = executeQuery(context, component, connection, query);
-            JRDataSource dataSource = new JRResultSetDataSource(rs);
-            reportSource = new JRDataSourceHolder(dataSource);
+        if (connection == null) {
+            if (logger.isLoggable(Level.WARNING)) {
+                String clientId = component.getClientId(context);
+                logger.log(Level.WARNING, "JRJSF_0020", clientId);
+            }
+            JRDataSource ds = new JREmptyDataSource();
+            return new JRDataSourceWrapper(ds);
         } else {
-            reportSource = new ConnectionHolder(connection);
+            Source reportSource;
+            final String query = getStringAttribute(component, "query", null);
+            if (query != null && query.length() > 0) {
+                ResultSet rs = executeQuery(context, component, connection, query);
+                JRDataSource dataSource = new JRResultSetDataSource(rs);
+                reportSource = new JRDataSourceWrapper(dataSource);
+            } else {
+                reportSource = new ConnectionWrapper(connection);
+            }
+            return reportSource;
         }
-        return reportSource;
     }
 
     protected abstract Connection getConnection(
@@ -88,7 +98,7 @@ public abstract class DatabaseSourceConverter
         try {
             st = conn.prepareStatement(query);
         } catch (SQLException ex) {
-            throw new SourceException(ex);
+            throw new UnpreparedStatementException(query, ex);
         }
 
         int paramIdx = 1;
@@ -117,14 +127,12 @@ public abstract class DatabaseSourceConverter
         try {
             return st.executeQuery();
         } catch (SQLException e) {
-            throw new SourceException(e);
+            throw new QueryExecutionException(query, e);
         } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (final SQLException e) {
-                    // ignore
-                }
+            try {
+                st.close();
+            } catch (final SQLException e) {
+                // ignore
             }
         }
 

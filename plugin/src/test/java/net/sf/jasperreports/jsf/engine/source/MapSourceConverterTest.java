@@ -20,6 +20,7 @@ package net.sf.jasperreports.jsf.engine.source;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.faces.context.FacesContext;
@@ -31,6 +32,7 @@ import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.engine.Source;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
+import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
 
 import org.junit.After;
 import org.junit.Before;
@@ -52,8 +54,13 @@ public class MapSourceConverterTest {
 
     @DataPoint
     public static final Object NULL_DATA = null;
+
     @DataPoint
     public static final Map[] ARR_DATA = new Map[]{};
+
+    @DataPoint
+    public static final Map SINGLE_DATA = new HashMap();
+
     @DataPoint
     public static final Collection<?> COLL_DATA = Arrays.asList(ARR_DATA);
 
@@ -63,7 +70,7 @@ public class MapSourceConverterTest {
 
     @Before
     public void init() {
-        facesEnv = MockFacesEnvironment.getServletInstance();
+        facesEnv = new MockFacesServletEnvironment();
         component = new UISource();
         factory = new MapSourceConverter();
     }
@@ -78,9 +85,9 @@ public class MapSourceConverterTest {
     }
 
     @Theory
-    public void arrayDataReturnsArrayDataSource(final Object data) {
+    public void anyDataReturnsArrayDataSource(final Object data) {
         assumeThat(data, is(not(nullValue())));
-        assumeTrue(data instanceof Object[]);
+        assumeThat(data, is(not(instanceOf(Collection.class))));
 
         final FacesContext facesContext = facesEnv.getFacesContext();
 
@@ -89,17 +96,19 @@ public class MapSourceConverterTest {
                 facesContext, component, data);
         assertThat(reportSource, is(not(nullValue())));
 
-        if (!(reportSource instanceof JRDataSourceHolder)) {
+        if (!(reportSource instanceof JRDataSourceWrapper)) {
             fail("'Returned reportSource is not JasperReport's data source wrapper");
         }
 
-        JRDataSource dataSource = ((JRDataSourceHolder) reportSource)
+        JRDataSource dataSource = ((JRDataSourceWrapper) reportSource)
                 .getDataSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JRMapArrayDataSource.class));
 
-        JRMapArrayDataSource bads = (JRMapArrayDataSource) dataSource;
-        assertThat(bads.getData(), equalTo((Object[]) data));
+        if (data instanceof Map[]) {
+            JRMapArrayDataSource bads = (JRMapArrayDataSource) dataSource;
+            assertThat(bads.getData(), equalTo((Object[]) data));
+        }
     }
 
     @Theory
@@ -114,11 +123,11 @@ public class MapSourceConverterTest {
                 facesContext, component, data);
         assertThat(reportSource, is(not(nullValue())));
 
-        if (!(reportSource instanceof JRDataSourceHolder)) {
+        if (!(reportSource instanceof JRDataSourceWrapper)) {
             fail("'Returned reportSource is not JasperReport's data source wrapper");
         }
 
-        JRDataSource dataSource = ((JRDataSourceHolder) reportSource)
+        JRDataSource dataSource = ((JRDataSourceWrapper) reportSource)
                 .getDataSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JRMapCollectionDataSource.class));
@@ -136,11 +145,11 @@ public class MapSourceConverterTest {
                 facesEnv.getFacesContext(), component, data);
         assertThat(reportSource, is(not(nullValue())));
 
-        if (!(reportSource instanceof JRDataSourceHolder)) {
+        if (!(reportSource instanceof JRDataSourceWrapper)) {
             fail("'Returned reportSource is not JasperReport's data source wrapper");
         }
 
-        JRDataSource dataSource = ((JRDataSourceHolder) reportSource)
+        JRDataSource dataSource = ((JRDataSourceWrapper) reportSource)
                 .getDataSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JREmptyDataSource.class));

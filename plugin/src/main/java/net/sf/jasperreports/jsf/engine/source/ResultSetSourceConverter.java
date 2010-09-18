@@ -55,7 +55,7 @@ public class ResultSetSourceConverter extends DefaultSourceConverter {
         } else {
             dataSource = new JRResultSetDataSource(rs);
         }
-        return new JRDataSourceHolder(dataSource);
+        return new JRDataSourceWrapper(dataSource);
     }
 
 }

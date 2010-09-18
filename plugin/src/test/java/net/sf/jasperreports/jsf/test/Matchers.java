@@ -23,6 +23,7 @@ import java.net.URL;
 import net.sf.jasperreports.jsf.test.matchers.ClasspathResource;
 import net.sf.jasperreports.jsf.test.matchers.ExistsURL;
 import net.sf.jasperreports.jsf.test.matchers.IsValidURL;
+import net.sf.jasperreports.jsf.test.matchers.UnexistantResource;
 
 import org.hamcrest.Matcher;
 
@@ -34,6 +35,14 @@ public final class Matchers {
 
     public static Matcher<String> classpathResource() {
         return ClasspathResource.classpathResource();
+    }
+
+    public static Matcher<String> unexistantResource() {
+        return UnexistantResource.unexistantResource();
+    }
+
+    public static Matcher<String> unexistantResource(ClassLoader classLoader) {
+        return UnexistantResource.unexistantResource(classLoader);
     }
 
     public static Matcher<URL> existsURL() {

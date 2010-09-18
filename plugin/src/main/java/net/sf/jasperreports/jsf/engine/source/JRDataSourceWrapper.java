@@ -18,29 +18,30 @@
  */
 package net.sf.jasperreports.jsf.engine.source;
 
-import java.sql.Connection;
-
 import net.sf.jasperreports.jsf.engine.Source;
+import net.sf.jasperreports.engine.JRDataSource;
 
 /**
  *
  * @author aalonsodominguez
  */
-public class ConnectionHolder implements Source {
+public class JRDataSourceWrapper implements Source {
 
-    private Connection connection;
+    private JRDataSource dataSource;
 
-    public ConnectionHolder(Connection connection) {
-        this.connection = connection;
+    public JRDataSourceWrapper(JRDataSource dataSource) {
+        if (dataSource == null) {
+            throw new IllegalArgumentException("'dataSource' can't be null");
+        }
+        this.dataSource = dataSource;
     }
 
-    public Connection getConnection() {
-        return connection;
+    public JRDataSource getDataSource() {
+        return dataSource;
     }
 
     public void dispose() throws Exception {
-        connection.close();
-        connection = null;
+        dataSource = null;
     }
 
 }

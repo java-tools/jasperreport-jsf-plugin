@@ -70,13 +70,13 @@
     <menu name="User Documentation">
       <item name="Getting Started" href="getting_started.html" />
       <item name="Rendering Reports" href="rendering_reports.html" />
-      <item name="Report Sources" href="datasources/index.html">
-        <item name="JDBC" href="datasources/jdbc.html" />
-        <item name="JNDI" href="datasources/jndi.html" />
-        <item name="CSV" href="datasources/csv.html" />
-        <item name="XML" href="datasources/xml.html" />
-        <item name="XLS" href="datasources/xls.html" />
-        <item name="Others" href="datasources/others.html" />
+      <item name="Report Sources" href="sources/index.html">
+        <item name="JDBC" href="sources/jdbc.html" />
+        <item name="JNDI" href="sources/jndi.html" />
+        <item name="CSV" href="sources/csv.html" />
+        <item name="XML" href="sources/xml.html" />
+        <item name="XLS" href="sources/xls.html" />
+        <item name="Others" href="sources/others.html" />
       </item>
       <item name="Sample Applications" href="samples/index.html">
         <item name="Use cases" href="samples/parametrized_report.html" />

@@ -1,12 +1,27 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ *
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1 of the License, or (at
+ * your option) any later version. This library is distributed in the hope
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place, Suite 330, Boston, MA 02111-1307 USA A.
+ *
+ * Alonso Dominguez
+ * alonsoft@users.sf.net
  */
-
 package net.sf.jasperreports.jsf.test;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.jmock.Mockery;
 import org.junit.experimental.theories.Theories;
@@ -20,6 +35,9 @@ import org.junit.runners.model.Statement;
  * @author antonio.alonso
  */
 public class JMockTheories extends Theories {
+
+    private static final Logger logger = Logger.getLogger(
+            JMockTheories.class.getPackage().getName());
 
     private final Field mockeryField;
 
@@ -51,6 +69,13 @@ public class JMockTheories extends Theories {
         }
     }
 
+    private void assertIsSatisfied(Object test) {
+        if (logger.isLoggable(Level.FINER)) {
+            logger.log(Level.FINER, "Checking mockery expectations.");
+        }
+        mockeryOf(test).assertIsSatisfied();
+    }
+
     public class AssertionSatisfiedRule implements MethodRule {
 
         public Statement apply(final Statement base,
@@ -59,9 +84,9 @@ public class JMockTheories extends Theories {
                 public void evaluate() throws Throwable {
                     try {
                         base.evaluate();
-                        mockeryOf(target).assertIsSatisfied();
+                        assertIsSatisfied(target);
                     } catch (Throwable e) {
-                        mockeryOf(target).assertIsSatisfied();
+                        assertIsSatisfied(target);
                         throw e;
                     }
                 }

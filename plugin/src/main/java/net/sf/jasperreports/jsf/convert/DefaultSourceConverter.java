@@ -28,8 +28,8 @@ import javax.sql.DataSource;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.jsf.engine.Source;
 import net.sf.jasperreports.jsf.engine.SourceException;
-import net.sf.jasperreports.jsf.engine.source.ConnectionHolder;
-import net.sf.jasperreports.jsf.engine.source.JRDataSourceHolder;
+import net.sf.jasperreports.jsf.engine.source.ConnectionWrapper;
+import net.sf.jasperreports.jsf.engine.source.JRDataSourceWrapper;
 
 /**
  *
@@ -55,16 +55,16 @@ public class DefaultSourceConverter implements SourceConverter {
         if (value instanceof Source) {
             source = (Source) value;
         } else if (value instanceof Connection) {
-            source = new ConnectionHolder((Connection) value);
+            source = new ConnectionWrapper((Connection) value);
         } else if (value instanceof DataSource) {
             try {
-                source = new ConnectionHolder(
+                source = new ConnectionWrapper(
                         ((DataSource) value).getConnection());
             } catch (SQLException e) {
                 throw new ConverterException(e);
             }
         } else if (value instanceof JRDataSource) {
-            source = new JRDataSourceHolder((JRDataSource) value);
+            source = new JRDataSourceWrapper((JRDataSource) value);
         } else {
             try {
                 source = createSource(context, component, value);
@@ -74,7 +74,7 @@ public class DefaultSourceConverter implements SourceConverter {
         }
 
         if (source == null) {
-            throw new ConverterException("Couldn't conver value '" +
+            throw new ConverterException("Couldn't convert value '" +
                     value + "' to a source object for component: " +
                     component.getClientId(context));
         }
@@ -96,10 +96,10 @@ public class DefaultSourceConverter implements SourceConverter {
             return null;
         }
 
-        if (source instanceof ConnectionHolder) {
-            return ((ConnectionHolder) source).getConnection();
-        } else if (source instanceof JRDataSourceHolder) {
-            return ((JRDataSourceHolder) source).getDataSource();
+        if (source instanceof ConnectionWrapper) {
+            return ((ConnectionWrapper) source).getConnection();
+        } else if (source instanceof JRDataSourceWrapper) {
+            return ((JRDataSourceWrapper) source).getDataSource();
         } else {
             throw new ConverterException("Unrecognized source type: " +
                     source.getClass().getName());

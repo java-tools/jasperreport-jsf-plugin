@@ -21,6 +21,7 @@ package net.sf.jasperreports.jsf.component;
 import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
@@ -30,7 +31,10 @@ import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.convert.SourceConverter;
 import net.sf.jasperreports.jsf.engine.Source;
+import net.sf.jasperreports.jsf.validation.MissingAttributeException;
 import net.sf.jasperreports.jsf.validation.SourceValidatorBase;
+
+import static net.sf.jasperreports.jsf.util.MessagesFactory.*;
 
 /**
  * The Class UIDataSource.
@@ -289,11 +293,13 @@ public class UISource extends UIComponentBase {
             throw new IllegalArgumentException();
         }
 
-        resetValue();
+        setValid(false);
+        setSubmittedSource(null);
+        
         super.processDecodes(context);
 
         try {
-            validate(context);
+            executeValidate(context);
             decodeValue(context);
         } catch (RuntimeException e) {
             context.renderResponse();
@@ -352,19 +358,43 @@ public class UISource extends UIComponentBase {
             throw new IllegalArgumentException();
         }
 
-        if (!isValid() || valueSet) {
+        if (!isValid()) {
             return;
         }
 
-        // Send report source as a request attribute
-        String clientId = getClientId(context);
-        context.getExternalContext().getRequestMap()
-                .put(clientId, submittedSource);
+        ValueExpression ve = getValueExpression("value");
+        if (valueSet && (ve != null) && (getSubmittedSource() != null)) {
+            try {
+                ve.setValue(getFacesContext().getELContext(),
+                        getSubmittedSource());
+            } catch (ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            // Send report source as a request attribute
+            String clientId = getClientId(context);
+            context.getExternalContext().getRequestMap()
+                    .put(clientId, submittedSource);
+        }
     }
 
     public void validate(FacesContext context) throws ValidatorException {
         if (context == null) {
             throw new IllegalArgumentException();
+        }
+
+        String aType = getType();
+        if (aType == null) {
+            FacesMessage message = createMessage(context,
+                    FacesMessage.SEVERITY_FATAL, "MISSING_ATTRIBUTE", "type");
+            throw new MissingAttributeException(message);
+        }
+
+        Object aValue = getValue();
+        if (aValue == null) {
+            FacesMessage message = createMessage(context,
+                    FacesMessage.SEVERITY_FATAL, "MISSING_ATTRIBUTE", "value");
+            throw new MissingAttributeException(message);
         }
 
         Validator aValidator = getValidator();
@@ -374,22 +404,19 @@ public class UISource extends UIComponentBase {
         }
 
         if (aValidator != null) {
-            try {
-                aValidator.validate(context, this, getValue());
-            } catch (ValidatorException e) {
-                setValid(false);
-                throw e;
-            }
+            aValidator.validate(context, this, getValue());
         }
     }
 
     protected void executeValidate(FacesContext context)
             throws ValidatorException {
-        Object providedValue = getValue();
-        if (providedValue == null) {
+//        Object providedValue = getValue();
+        if (!isValid()) {
             try {
                 validate(context);
+                setValid(true);
             } catch(ValidatorException e) {
+                setValid(false);
                 context.renderResponse();
                 throw e;
             }

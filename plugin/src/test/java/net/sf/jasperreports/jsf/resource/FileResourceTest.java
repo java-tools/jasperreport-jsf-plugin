@@ -19,6 +19,9 @@
 package net.sf.jasperreports.jsf.resource;
 
 import java.io.File;
+import java.io.IOError;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
@@ -27,66 +30,107 @@ import net.sf.jasperreports.jsf.test.TestConstants;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.theories.DataPoint;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import static org.junit.Assert.*;
+import static org.junit.Assume.*;
 import static org.hamcrest.Matchers.*;
 
 /**
  *
  * @author antonio.alonso
  */
-@RunWith(Parameterized.class)
+@RunWith(Theories.class)
 public class FileResourceTest {
 
-    @Parameters
-    public static Collection<?> testdata() {
+    @DataPoint
+    public static final File NULL_FILE = null;
+
+    @DataPoint
+    public static File DIRECTORY() {
+        return new File(
+                System.getProperty(TestConstants.PROP_BASEDIR));
+    }
+
+    @DataPoint
+    public static File FILE() {
         File basedir = new File(
                 System.getProperty(TestConstants.PROP_BASEDIR));
-        Object[][] array = new Object[][]{
-            { basedir },
-            { new File(basedir, "pom.xml") }
-        };
-        return Arrays.asList(array);
+        return new File(basedir, "pom.xml");
     }
 
-    private File file;
-    private FileResource resource;
+    @Theory
+    public void fileWorksShouldWorkFine(File file) throws Exception {
+        assumeThat(file, notNullValue());
+        assumeTrue(!file.isDirectory());
+        assumeTrue(file.exists());
 
-    public FileResourceTest(File file) {
-        this.file = file;
-    }
+        FileResource resource = new FileResource(file);
+        assertThat(resource, notNullValue());
+        assertThat(resource.getName(), equalTo(file.getName()));
 
-    @Before
-    public void init() {
-        resource = new FileResource(file);
-    }
-
-    @Test
-    public void getName() {
-        String name = resource.getName();
-        assertThat(name, is(not(nullValue())));
-        assertThat(name, equalTo(file.getName()));
-    }
-
-    @Test
-    public void getLocation() throws Exception {
         URL expectedLocation = new URL("file://" + file.getAbsolutePath());
         URL location = resource.getLocation();
-
-        assertThat(location, is(not(nullValue())));
+        assertThat(location, notNullValue());
         assertThat(location, equalTo(expectedLocation));
+
+        String expectedPath = file.getParentFile().getAbsolutePath();
+        String path = resource.getPath();
+        assertThat(path, notNullValue());
+        assertThat(path, equalTo(expectedPath));
+
+        InputStream stream = null;
+        try {
+            stream = resource.getInputStream();
+        } catch (Exception e) {
+            fail("No exception expected.");
+        }
+        assertThat(stream, notNullValue());
+
+        try {
+            stream.close();
+        } catch (IOException e) { }
     }
 
-    @Test
-    public void getPath() throws Exception {
-        String expectedPath = System.getProperty(TestConstants.PROP_BASEDIR);
-        String path = resource.getPath();
+    @Theory
+    public void nullFileThrowsIllegalArgEx(File file) {
+        assumeThat(file, nullValue());
 
-        assertThat(path, is(not(nullValue())));
+        FileResource resource = null;
+        try {
+            resource = new FileResource(file);
+            fail("An IllegalArgumentException should be thrown.");
+        } catch (RuntimeException e) {
+            assertThat(e, is(IllegalArgumentException.class));
+        }
+    }
+
+    @Theory
+    public void streamForDirectoryThrowsResourceEx(File file) {
+        assumeThat(file, notNullValue());
+        assumeTrue(file.isDirectory());
+
+        FileResource resource = new FileResource(file);
+        assertThat(resource, notNullValue());
+        assertThat(resource.getName(), equalTo(file.getName()));
+
+        String expectedPath = file.getAbsolutePath();
+        String path = resource.getPath();
+        assertThat(path, notNullValue());
         assertThat(path, equalTo(expectedPath));
+
+        InputStream stream = null;
+        try {
+            stream = resource.getInputStream();
+            fail("A ResourceException should be thrown.");
+        } catch (Exception e) {
+            assertThat(e, is(ResourceException.class));
+        }
     }
 
 }

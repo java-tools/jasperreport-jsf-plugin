@@ -67,7 +67,7 @@ public class BeanSourceConverter extends DefaultSourceConverter {
             }
             dataSource = new JRBeanArrayDataSource(beanArray);
         }
-        return new JRDataSourceHolder(dataSource);
+        return new JRDataSourceWrapper(dataSource);
     }
 
 }

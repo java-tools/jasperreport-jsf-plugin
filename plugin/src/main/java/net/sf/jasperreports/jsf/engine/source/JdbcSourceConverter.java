@@ -37,9 +37,12 @@ import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
  */
 public class JdbcSourceConverter extends DatabaseSourceConverter {
 
-    public static final String ATTR_DRIVER_CLASS_NAME = "driverClassName";
-    public static final String ATTR_USERNAME = "username";
-    public static final String ATTR_PASSWORD = "password";
+    public static final String ATTR_DRIVER_CLASS_NAME = 
+            "net.sf.jasperreports.jsf.jdbc.driverClassName";
+    public static final String ATTR_USERNAME = 
+            "net.sf.jasperreports.jsf.jdbc.username";
+    public static final String ATTR_PASSWORD = 
+            "net.sf.jasperreports.jsf.jdbc.password";
 
     /** The Constant logger. */
     private static final Logger logger = Logger.getLogger(
@@ -50,51 +53,50 @@ public class JdbcSourceConverter extends DatabaseSourceConverter {
     protected Connection getConnection(
             FacesContext context, UIComponent component)
     throws SourceException {
-        final String driverClass = (String) component
-                .getAttributes().get(ATTR_DRIVER_CLASS_NAME);
-        if ((driverClass == null) || (driverClass.length() == 0)) {
-            throw new SourceException(
-                    "jdbc report source type requires a driverClassName value!");
-        }
-
-        try {
-            Class.forName(driverClass);
-        } catch (final ClassNotFoundException e) {
-            throw new SourceException("Driver class not found: " +
-                    driverClass, e);
-        }
-        logger.log(Level.FINE, "JRJSF_0004", driverClass);
-
         final String connectionURL = getStringAttribute(
                 component, "value", null);
-        final String username = (String) component
-                .getAttributes().get(ATTR_USERNAME);
-        final String password = (String) component
-                .getAttributes().get(ATTR_PASSWORD);
-
-        if (connectionURL == null || connectionURL.length() == 0) {
-            throw new SourceException(
-                    "JDBC source requires a connection string"
-                    + " as the component value/source.");
-        }
-
-        Connection conn = null;
-        try {
-            if (username == null) {
-                logger.log(Level.FINE, "JRJSF_0007", connectionURL);
-                conn = DriverManager.getConnection(connectionURL);
-            } else {
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.log(Level.FINE, "JRJSF_0008", new Object[]{
-                                connectionURL, username});
-                }
-                conn = DriverManager.getConnection(connectionURL, username,
-                        password);
+        if (connectionURL == null) {
+            return null;
+        } else {
+            final String driverClass = (String) component
+                    .getAttributes().get(ATTR_DRIVER_CLASS_NAME);
+            if ((driverClass == null) || (driverClass.length() == 0)) {
+                throw new InvalidDatabaseDriverException(
+                        "jdbc report source type requires a driverClassName value!");
             }
-        } catch (final SQLException e) {
-            throw new SourceException(e);
+
+            try {
+                Class.forName(driverClass);
+            } catch (final ClassNotFoundException e) {
+                throw new InvalidDatabaseDriverException(
+                        "Driver class not found: " +
+                        driverClass, e);
+            }
+            logger.log(Level.FINE, "JRJSF_0004", driverClass);
+
+            final String username = (String) component
+                    .getAttributes().get(ATTR_USERNAME);
+            final String password = (String) component
+                    .getAttributes().get(ATTR_PASSWORD);
+
+            Connection conn = null;
+            try {
+                if (username == null) {
+                    logger.log(Level.FINE, "JRJSF_0007", connectionURL);
+                    conn = DriverManager.getConnection(connectionURL);
+                } else {
+                    if (logger.isLoggable(Level.FINE)) {
+                        logger.log(Level.FINE, "JRJSF_0008", new Object[]{
+                                    connectionURL, username});
+                    }
+                    conn = DriverManager.getConnection(connectionURL, username,
+                            password);
+                }
+            } catch (final SQLException e) {
+                throw new SourceException(e);
+            }
+            return conn;
         }
-        return conn;
     }
 
 }

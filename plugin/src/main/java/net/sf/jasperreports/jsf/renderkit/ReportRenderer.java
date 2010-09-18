@@ -117,10 +117,8 @@ public abstract class ReportRenderer extends Renderer {
     /**
      * Builds the report uri.
      *
-     * @param context
-     *            the context
-     * @param report
-     *            the report
+     * @param context the faces' context
+     * @param component the report component
      *
      * @return the string
      */

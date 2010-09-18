@@ -24,6 +24,9 @@ abstract class AbstractResource implements Resource {
 
     public AbstractResource(final String name) {
         super();
+        if (name == null || name.length() == 0) {
+            throw new IllegalArgumentException("'name' can't be empty or null");
+        }
         this.name = name;
     }
 

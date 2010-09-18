@@ -102,7 +102,7 @@ public class XmlSourceConverter extends DefaultSourceConverter {
             }
         }
 
-        return new JRDataSourceHolder(dataSource);
+        return new JRDataSourceWrapper(dataSource);
     }
 
     protected Document getXmlDocument(final FacesContext context,

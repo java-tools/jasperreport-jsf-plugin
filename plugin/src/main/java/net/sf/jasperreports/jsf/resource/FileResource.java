@@ -34,10 +34,16 @@ public final class FileResource implements Resource {
     private File file;
 
     protected FileResource(File file) {
+        if (file == null) {
+            throw new IllegalArgumentException("'file' can't be null");
+        }
         this.file = file;
     }
 
     public InputStream getInputStream() throws IOException {
+        if (file.isDirectory()) {
+            throw new ResourceException("Can't get a stream from a directory.");
+        }
         return new FileInputStream(file);
     }
 

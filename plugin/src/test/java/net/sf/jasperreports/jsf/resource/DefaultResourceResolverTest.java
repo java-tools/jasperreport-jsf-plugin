@@ -18,14 +18,22 @@
  */
 package net.sf.jasperreports.jsf.resource;
 
-import net.sf.jasperreports.jsf.component.html.HtmlReportFrame;
-import net.sf.jasperreports.jsf.test.JMockTheories;
-import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
+import java.io.IOException;
+import java.io.InputStream;
 
-import org.jmock.Mockery;
-import org.jmock.integration.junit4.JUnit4Mockery;
+import javax.faces.component.UIComponent;
+
+import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.component.UISource;
+import net.sf.jasperreports.jsf.component.html.HtmlReportFrame;
+import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
+import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
+import net.sf.jasperreports.jsf.util.Util;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.experimental.theories.DataPoint;
+import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
@@ -38,8 +46,45 @@ import static org.hamcrest.Matchers.*;
  *
  * @author antonio.alonso
  */
-@RunWith(JMockTheories.class)
+@RunWith(Theories.class)
 public class DefaultResourceResolverTest {
+
+    // Data points
+
+    @DataPoint
+    public static final String EMPTY_RESOURCE = "";
+
+    @DataPoint
+    public static final UIComponent NULL_COMPONENT = null;
+
+    @DataPoint
+    public static final String NULL_RESOURCE = null;
+
+    @DataPoint
+    public static final String CLASSPATH_RESOURCE_WITHOUT_PREFIX =
+            DefaultResourceResolverTest.class.getName().replaceAll("\\.", "/");
+
+    @DataPoint
+    public static final String CLASSPATH_RESOURCE_WITH_PREFIX =
+            ClasspathResource.PREFIX +
+            DefaultResourceResolverTest.class.getName().replaceAll("\\.", "/");
+
+    @DataPoint
+    public static final String CONTEXT_RESOURCE = "/WEB-INF/web.xml";
+
+    @DataPoint
+    public static final String RELATIVE_TO_REPORT_RESOURCE =
+            "LineaFactura.jasper";
+
+    @DataPoint
+    public static UIComponent REPORT_COMPONENT() {
+        HtmlReportFrame component = new HtmlReportFrame();
+        component.setValue("/WEB-INF/report/Factura.jasper");
+        return component;
+    }
+
+    @DataPoint
+    public static final UIComponent SOURCE_COMPONENT = new UISource();
 
     @DataPoint
     public static final String URL_RESOURCE =
@@ -47,26 +92,61 @@ public class DefaultResourceResolverTest {
             "jasperreports-jsf-1_0.tld";
 
     @DataPoint
-    public static final String CLASSPATH_RESOURCE = ClasspathResource.PREFIX +
-            ClasspathResourceTest.JAVA_RESOURCE;
+    public static final String UNEXISTANT_RESOURCE = "resource/doesnt/exists";
+
+    // Instance attributes
 
     private MockFacesEnvironment facesEnv;
 
-    private HtmlReportFrame component;
     private DefaultResourceResolver resolver;
-
-    private Mockery mockery = new JUnit4Mockery();
 
     @Before
     public void init() {
-        facesEnv = MockFacesEnvironment.getServletInstance();
-
-        component = new HtmlReportFrame();
+        facesEnv = new MockFacesServletEnvironment();
+        facesEnv.getFacesContext().getViewRoot().setViewId("/viewId.jsp");
         resolver = new DefaultResourceResolver();
     }
 
+    @After
+    public void dispose() {
+        resolver = null;
+
+        facesEnv.release();
+        facesEnv = null;
+    }
+
     @Theory
-    public void urlResource(String resourceName) {
+    public void nullResourceNameThrowsIllegalArgEx(String resourceName,
+            UIComponent component) {
+        assumeThat(resourceName, nullValue());
+
+        try {
+            resolver.resolveResource(facesEnv.getFacesContext(),
+                    component, resourceName);
+            fail("An IllegalArgumentException should be thrown.");
+        } catch (RuntimeException e) {
+            assertThat(e, is(IllegalArgumentException.class));
+        }
+    }
+
+    @Theory
+    public void emptyResourceNameThrowsIllegalArgEx(String resourceName,
+            UIComponent component) {
+        assumeThat(resourceName, notNullValue());
+        assumeTrue(resourceName.isEmpty());
+
+        try {
+            resolver.resolveResource(facesEnv.getFacesContext(),
+                    component, resourceName);
+            fail("An IllegalArgumentException should be thrown.");
+        } catch (RuntimeException e) {
+            assertThat(e, is(IllegalArgumentException.class));
+        }
+    }
+
+    @Theory
+    public void urlResolvesURLResource(String resourceName, UIComponent component) {
+        assumeNotNull(resourceName);
         assumeThat(resourceName, is(validURL()));
 
         Resource res = resolver.resolveResource(facesEnv.getFacesContext(),
@@ -78,7 +158,9 @@ public class DefaultResourceResolverTest {
     }
 
     @Theory
-    public void whenClasspathResource(String resourceName) {
+    public void classpathPrefixResolvesClasspathResource(String resourceName,
+            UIComponent component) {
+        assumeNotNull(resourceName);
         assumeThat(resourceName, is(classpathResource()));
 
         Resource res = resolver.resolveResource(facesEnv.getFacesContext(),
@@ -89,5 +171,88 @@ public class DefaultResourceResolverTest {
         assertThat(res.getName(), equalTo(resourceName.substring(
                 ClasspathResource.PREFIX.length())));
     }
+
+    @Theory
+    public void noClasspathPrefixResolvesClasspathResourceIfItExists(
+            String resourceName, UIComponent component) {
+        assumeNotNull(resourceName);
+        assumeTrue(!resourceName.isEmpty());
+        assumeThat(resourceName, not(startsWith(ClasspathResource.PREFIX)));
+
+        ClassLoader loader = Util.getClassLoader(this);
+        InputStream stream;
+        assumeTrue(null != (stream = loader.getResourceAsStream(resourceName)));
+
+        Resource res = resolver.resolveResource(facesEnv.getFacesContext(),
+                component, resourceName);
+
+        assertThat(res, is(not(nullValue())));
+        assertThat(res, is(ClasspathResource.class));
+
+        try {
+            stream.close();
+        } catch (IOException e) { }
+    }
+
+    @Theory
+    public void leadingSlashResolvesContextResource(String resourceName,
+            UIComponent component) {
+        assumeNotNull(resourceName);
+        assumeThat(resourceName, startsWith("/"));
+
+        Resource res = resolver.resolveResource(facesEnv.getFacesContext(),
+                component, resourceName);
+
+        assertNotNull(res);
+        assertThat(res, is(ContextResource.class));
+    }
+
+    @Theory
+    public void resourceRelativeToReportComponentResolvesFileResource(
+            String resourceName, UIComponent component) {
+        assumeNotNull(resourceName);
+        assumeTrue(!resourceName.isEmpty());
+        assumeThat(resourceName, not(startsWith("/")));
+        assumeNotNull(component);
+        assumeThat(component, is(UIReport.class));
+        assumeTrue(!Character.isLowerCase(resourceName.charAt(0)));
+
+        Resource res = resolver.resolveResource(facesEnv.getFacesContext(),
+                component, resourceName);
+        
+        assertNotNull(res);
+        assertThat(res, is(FileResource.class));
+    }
+
+    @Theory
+    public void resourceRelativeToSourceComponentResolvesNull(
+            String resourceName, UIComponent component) {
+        assumeNotNull(resourceName);
+        assumeTrue(!resourceName.isEmpty());
+        assumeThat(resourceName, not(startsWith("/")));
+        assumeNotNull(component);
+        assumeThat(component, is(UISource.class));
+
+        assumeTrue(!Character.isLowerCase(resourceName.charAt(0)));
+
+        Resource res = resolver.resolveResource(facesEnv.getFacesContext(),
+                component, resourceName);
+
+        assertThat(res, nullValue());
+    }
     
+    @Theory
+    public void unexistantResourceResolvesNull(String resourceName,
+            UIComponent component) {
+        assumeNotNull(resourceName);
+        assumeTrue(!resourceName.isEmpty());
+        assumeThat(resourceName, containsString("doesnt"));
+        assumeThat(component, nullValue());
+
+        Resource res = resolver.resolveResource(facesEnv.getFacesContext(),
+                component, resourceName);
+
+        assertThat(res, nullValue());
+    }
+
 }

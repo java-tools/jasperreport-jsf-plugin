@@ -32,6 +32,9 @@ public final class ClasspathResource extends AbstractResource
     protected ClasspathResource(final String name,
             final ClassLoader classLoader) {
         super(name);
+        if (classLoader == null) {
+            throw new IllegalArgumentException("'classLoader' can't ne null");
+        }
         this.classLoader = classLoader;
     }
 

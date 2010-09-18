@@ -27,6 +27,7 @@ import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.engine.Source;
 import net.sf.jasperreports.jsf.test.JMockTheories;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
+import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
 
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
@@ -47,7 +48,7 @@ import static org.hamcrest.Matchers.*;
 @RunWith(JMockTheories.class)
 public class ResultSetSourceConverterTest {
 
-    private static Mockery mockery = new JUnit4Mockery();
+    private static final Mockery mockery = new JUnit4Mockery();
 
     @DataPoint
     public static final ResultSet NULL_RESULTSET = null;
@@ -63,7 +64,7 @@ public class ResultSetSourceConverterTest {
 
     @Before
     public void init() {
-        facesEnv = MockFacesEnvironment.getServletInstance();
+        facesEnv = new MockFacesServletEnvironment();
 
         component = new UISource();
         component.setId("reportSourceId");
@@ -90,7 +91,7 @@ public class ResultSetSourceConverterTest {
                 facesEnv.getFacesContext(), component, resultSet);
         assertThat(source, is(not(nullValue())));
 
-        JRDataSource dataSource = ((JRDataSourceHolder) source).getDataSource();
+        JRDataSource dataSource = ((JRDataSourceWrapper) source).getDataSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JREmptyDataSource.class));
     }
@@ -105,7 +106,7 @@ public class ResultSetSourceConverterTest {
                 facesEnv.getFacesContext(), component, resultSet);
         assertThat(source, is(not(nullValue())));
 
-        JRDataSource dataSource = ((JRDataSourceHolder) source).getDataSource();
+        JRDataSource dataSource = ((JRDataSourceWrapper) source).getDataSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JRResultSetDataSource.class));
     }

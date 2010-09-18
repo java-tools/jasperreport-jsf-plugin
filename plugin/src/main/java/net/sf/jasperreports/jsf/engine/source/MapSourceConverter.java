@@ -65,7 +65,7 @@ public class MapSourceConverter extends DefaultSourceConverter {
             }
             dataSource = new JRMapArrayDataSource(mapArray);
         }
-        return new JRDataSourceHolder(dataSource);
+        return new JRDataSourceWrapper(dataSource);
     }
 
 }

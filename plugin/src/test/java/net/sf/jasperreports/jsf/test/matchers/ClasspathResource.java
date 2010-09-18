@@ -37,7 +37,7 @@ public class ClasspathResource extends BaseMatcher<String> {
     public boolean matches(Object item) {
         if (item == null) return false;
 
-               String resourceName;
+        String resourceName;
         if (item instanceof String) {
             resourceName = (String) item;
         } else {
