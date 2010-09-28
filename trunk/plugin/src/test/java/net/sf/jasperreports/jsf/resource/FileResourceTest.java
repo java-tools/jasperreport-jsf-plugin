@@ -19,23 +19,16 @@
 package net.sf.jasperreports.jsf.resource;
 
 import java.io.File;
-import java.io.IOError;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Collection;
 
-import net.sf.jasperreports.jsf.test.TestConstants;
+import net.sf.jasperreports.jsf.TestConstants;
 
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;

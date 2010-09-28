@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.context.FacesContext;
 
@@ -36,7 +38,13 @@ import net.sf.jasperreports.jsf.context.JRFacesContext;
 
 public class FacesFileResolver implements FileResolver {
 
+    private static final Logger logger = Logger.getLogger(
+            FacesFileResolver.class.getPackage().getName(),
+            "net.sf.jasperreports.jsf.LogMessages");
+
     private static final int BUFFER_SIZE = 2048;
+
+    private final File tempDir;
     
     private final UIReport report;
 
@@ -46,6 +54,10 @@ public class FacesFileResolver implements FileResolver {
             throw new IllegalArgumentException("'context' can't be null");
         }
         this.report = report;
+        tempDir = new File(System.getProperty("user.home") + "/.jsf");
+        if (!tempDir.exists()) {
+            tempDir.mkdirs();
+        }
     }
 
     public File resolveFile(final String name) {
@@ -67,20 +79,39 @@ public class FacesFileResolver implements FileResolver {
     }
 
     protected Resource resolveResource(String name) throws IOException {
-        return getJRFacesContext().createResource(getFacesContext(),
-                report, name);
+        return getJRFacesContext().createResource(
+                getFacesContext(), report, name);
     }
 
     protected File downloadResource(Resource resource) throws IOException {
-        File tempFile = File.createTempFile(
-                resource.getLocation().getFile(), null);
+        File tempFile = new File(tempDir, resource.getLocation().getFile());
+        if (logger.isLoggable(Level.INFO)) {
+            logger.log(Level.INFO, "JRJSF_0035", new Object[]{
+                resource.getLocation(), tempFile
+            });
+        }
+
+        tempFile.getParentFile().mkdirs();
+        tempFile.createNewFile();
+        
         InputStream is = resource.getInputStream();
         OutputStream os = new FileOutputStream(tempFile);
 
-        int read;
-        byte[] buff = new byte[BUFFER_SIZE];
-        while (0 > (read = is.read(buff))) {
-            os.write(buff, 0, read);
+        try {
+            int read;
+            byte[] buff = new byte[BUFFER_SIZE];
+            while (0 > (read = is.read(buff))) {
+                os.write(buff, 0, read);
+            }
+        } finally {
+            try {
+                is.close();
+                is = null;
+            } catch (IOException e) { }
+            try {
+                os.close();
+                os = null;
+            } catch (IOException e) { }
         }
 
         return tempFile;

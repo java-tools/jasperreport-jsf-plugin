@@ -76,9 +76,8 @@ public abstract class DefaultExporter implements Exporter {
         JasperPrint print = (JasperPrint) context.getExternalContext()
                 .getRequestMap().get(jasperPrintAttrName);
         if (print == null) {
-            throw new ExporterException("Report component '" +
-                    component.getClientId(context) +
-                    "' was not previously filled.");
+            throw new JasperPrintNotFoundException(
+                    component.getClientId(context));
         }
 
         final JRExporter exporter = createJRExporter(context, component);
@@ -97,7 +96,8 @@ public abstract class DefaultExporter implements Exporter {
         exporter.setParameter(JRExporterParameter.CHARACTER_ENCODING, encoding);
 
         setParameterUsingAttribute(component, exporter,
-                JRExporterParameter.IGNORE_PAGE_MARGINS, ATTR_IGNORE_PAGE_MARGINS);
+                JRExporterParameter.IGNORE_PAGE_MARGINS,
+                ATTR_IGNORE_PAGE_MARGINS);
         setParameterUsingAttribute(component, exporter,
                 JRExporterParameter.END_PAGE_INDEX, ATTR_END_PAGE_INDEX);
         setParameterUsingAttribute(component, exporter,
@@ -115,8 +115,8 @@ public abstract class DefaultExporter implements Exporter {
         exporter.setParameter(JRExporterParameter.FILE_RESOLVER, fr);
 
         /* EXPERIMENTAL: Goal is the ability of linking reports to faces views
-        final JRHyperlinkProducerFactory hpf = new FacesHyperlinkProducerFactory(
-                context, getComponent());
+        final JRHyperlinkProducerFactory hpf =
+            new FacesHyperlinkProducerFactory(component);
         exporter.setParameter(
                 JRExporterParameter.HYPERLINK_PRODUCER_FACTORY, hpf);
         */

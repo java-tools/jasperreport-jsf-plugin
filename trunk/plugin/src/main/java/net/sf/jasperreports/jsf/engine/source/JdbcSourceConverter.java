@@ -23,8 +23,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.component.UIComponent;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.engine.SourceException;
@@ -89,7 +89,8 @@ public class JdbcSourceConverter extends DatabaseSourceConverter {
                         logger.log(Level.FINE, "JRJSF_0008", new Object[]{
                                     connectionURL, username});
                     }
-                    conn = DriverManager.getConnection(connectionURL, username,
+                    conn = DriverManager.getConnection(
+                            connectionURL, username,
                             password);
                 }
             } catch (final SQLException e) {

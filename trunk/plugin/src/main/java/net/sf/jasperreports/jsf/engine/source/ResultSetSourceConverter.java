@@ -18,6 +18,7 @@
  */
 package net.sf.jasperreports.jsf.engine.source;
 
+import net.sf.jasperreports.jsf.engine.JRDataSourceWrapper;
 import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;

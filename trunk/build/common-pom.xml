@@ -123,6 +123,8 @@
     <junit.version>4.8.1</junit.version>
     <jmock.version>2.5.1</jmock.version>
     <junitext.version>0.2.4</junitext.version>
+    <simple-jndi.version>0.11.1</simple-jndi.version>
+    <hsqldb.version>1.8.0.7</hsqldb.version>
 
     <slf4j.version>1.6.0</slf4j.version>
   </properties>
@@ -279,6 +281,12 @@
         <scope>test</scope>
       </dependency>
       <dependency>
+        <groupId>simple-jndi</groupId>
+        <artifactId>simple-jndi</artifactId>
+        <version>${simple-jndi.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
         <groupId>org.apache.shale</groupId>
         <artifactId>shale-test</artifactId>
         <version>1.0.5</version>
@@ -309,6 +317,13 @@
         <groupId>org.slf4j</groupId>
         <artifactId>jcl-over-slf4j</artifactId>
         <version>${slf4j.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>hsqldb</groupId>
+        <artifactId>hsqldb</artifactId>
+        <version>${hsqldb.version}</version>
         <scope>test</scope>
       </dependency>
     </dependencies>

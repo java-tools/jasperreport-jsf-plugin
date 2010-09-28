@@ -58,6 +58,9 @@ public class JndiSourceConverter extends DatabaseSourceConverter {
         try {
             final Context jndi = new InitialContext();
             final DataSource ds = (DataSource) jndi.lookup(jndiName);
+            if (ds == null) {
+                throw new NullDataSourceException(jndiName);
+            }
             return ds.getConnection();
         } catch(NamingException e) {
             throw new SourceException(e);

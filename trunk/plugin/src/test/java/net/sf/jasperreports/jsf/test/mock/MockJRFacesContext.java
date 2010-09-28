@@ -54,6 +54,7 @@ public class MockJRFacesContext extends JRFacesContext {
     public MockJRFacesContext(FacesContext context) {
         context.getExternalContext().getApplicationMap()
                 .put(INSTANCE_KEY, this);
+        extContextHelper = new MockExternalContextHelper();
     }
 
     public SourceConverter getSourceConverter() {

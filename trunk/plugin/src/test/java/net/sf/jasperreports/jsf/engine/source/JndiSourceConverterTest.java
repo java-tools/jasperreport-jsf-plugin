@@ -19,15 +19,23 @@
 package net.sf.jasperreports.jsf.engine.source;
 
 import java.sql.Connection;
+import java.sql.SQLException;
+
+import javax.naming.NamingException;
+
 import net.sf.jasperreports.jsf.component.UISource;
+import net.sf.jasperreports.jsf.engine.SourceException;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
+
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
 import static org.hamcrest.Matchers.*;
@@ -41,6 +49,20 @@ public class JndiSourceConverterTest {
 
     @DataPoint
     public static final String NULL_VALUE = null;
+
+    @DataPoint
+    public static final String EMPTY_VALUE = "";
+
+    @DataPoint
+    public static final String NONE_DATASOURCE = "nullDS";
+
+    @DataPoint
+    public static final String INVALID_DATASOURCE =
+            "java:comp/env/jdbc/invalidDS";
+
+    @DataPoint
+    public static final String VALID_DATASOURCE = 
+            "java:comp/env/jdbc/myDataSource";
 
     private MockFacesEnvironment facesEnv;
 
@@ -57,6 +79,7 @@ public class JndiSourceConverterTest {
     @After
     public void dispose() {
         facesEnv.release();
+        facesEnv = null;
     }
 
     @Theory
@@ -68,6 +91,68 @@ public class JndiSourceConverterTest {
         Connection connection = converter.getConnection(
                 facesEnv.getFacesContext(), component);
         assertThat(connection, nullValue());
+    }
+
+    @Theory
+    public void emptyValueReturnsNull(String value) {
+        assumeThat(value, notNullValue());
+        assumeTrue(value.isEmpty());
+
+        component.setValue(value);
+
+        Connection connection = converter.getConnection(
+                facesEnv.getFacesContext(), component);
+        assertThat(connection, nullValue());
+    }
+
+    @Theory
+    public void invalidJnidNameThrowsNamingEx(String jndiName) {
+        assumeThat(jndiName, notNullValue());
+        assumeTrue(!jndiName.isEmpty());
+        assumeTrue(!jndiName.startsWith("java:"));
+
+        component.setValue(jndiName);
+
+        Connection connection;
+        try {
+            connection = converter.getConnection(
+                    facesEnv.getFacesContext(), component);
+            fail("A NamingException was expected");
+        } catch (Exception e) {
+            assertThat(e, is(SourceException.class));
+        }
+    }
+
+    @Theory
+    public void invalidDSThrowsSQLEx(String jndiName) {
+        assumeThat(jndiName, notNullValue());
+        assumeTrue(jndiName.startsWith("java:"));
+        assumeThat(jndiName, containsString("invalid"));
+
+        component.setValue(jndiName);
+
+        Connection connection;
+        try {
+            connection = converter.getConnection(
+                    facesEnv.getFacesContext(), component);
+            fail("A SQLException was expected");
+        } catch (Exception e) {
+            assumeThat(e, is(SourceException.class));
+            assumeThat(e.getCause(), notNullValue());
+            assumeThat(e.getCause(), is(SQLException.class));
+        }
+    }
+
+    @Theory
+    public void obtainValidConnection(String jndiName) {
+        assumeThat(jndiName, notNullValue());
+        assumeTrue(jndiName.startsWith("java:"));
+        assumeThat(jndiName, not(containsString("invalid")));
+
+        component.setValue(jndiName);
+        Connection connection = converter.getConnection(
+                facesEnv.getFacesContext(), component);
+        assertThat(connection, notNullValue());
     }
 
 }

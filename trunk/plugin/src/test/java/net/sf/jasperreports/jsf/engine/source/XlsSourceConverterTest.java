@@ -20,6 +20,7 @@ package net.sf.jasperreports.jsf.engine.source;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -28,6 +29,7 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.data.JRXlsDataSource;
 import net.sf.jasperreports.jsf.component.UISource;
+import net.sf.jasperreports.jsf.engine.JRDataSourceWrapper;
 import net.sf.jasperreports.jsf.engine.Source;
 import net.sf.jasperreports.jsf.engine.SourceException;
 import net.sf.jasperreports.jsf.resource.ClasspathResource;
@@ -46,6 +48,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -73,35 +76,43 @@ public class XlsSourceConverterTest {
     //        new ByteArrayInputStream(new byte[0]);
 
     @DataPoint
-    public static final String VALID_RESOURCE = ClasspathResource.PREFIX +
+    public static final String VALID_RESOURCE =
             XlsSourceConverterTest.class.getName()
             .replaceAll("\\.", "/") + ".xls";
 
     @DataPoint
-    public static final String INVALID_RESOURCE = ClasspathResource.PREFIX +
+    public static final String INVALID_RESOURCE =
             XlsSourceConverterTest.class.getName()
             .replaceAll("\\.", "/") + "_INVALID";
 
     @DataPoint
-    public static final File INVALID_FILE = new File(INVALID_RESOURCE);
-
-    @DataPoint
-    public static File VALID_FILE() {
-        return new File(facesEnv.getDocumentRoot(), "WEB-INF/web.xml");
+    public static File INVALID_FILE() {
+        String testDir = System.getProperty("basedir")
+                + "/src/test/resources/";
+        return new File(testDir, INVALID_RESOURCE);
     }
 
     @DataPoint
+    public static File VALID_FILE() {
+        String testDir = System.getProperty("basedir")
+                + "/src/test/resources/";
+        return new File(testDir, VALID_RESOURCE);
+    }
+
+    //@DataPoint
     public static final String INVALID_URL_STR =
             "ftp://jasperreportjsf.sourceforge.net/invalid/location";
 
     @DataPoint
-    public static URL VALID_URL() {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        return classLoader.getResource(VALID_RESOURCE);
+    public static URL VALID_URL(){
+        try {
+            return VALID_FILE().toURI().toURL();
+        } catch (MalformedURLException ex) {
+            return null;
+        }
     }
 
     @DataPoint
-    @SuppressWarnings("unused")
     public static URL INVALID_URL() {
         try {
             return new URL(INVALID_URL_STR);
@@ -195,7 +206,8 @@ public class XlsSourceConverterTest {
         }
     }
 
-    //@Theory
+    @Theory
+    @Ignore("needs a proper XLS file")
     public void validResourceReturnsJRDataSource(final Object resource)
             throws Exception {
         assumeThat(resource, is(not(nullValue())));
@@ -217,7 +229,16 @@ public class XlsSourceConverterTest {
         }
 
         final Resource resourceObj = mockery.mock(Resource.class);
-        final InputStream stream = new ByteArrayInputStream(new byte[0]);
+        InputStream stream = null;
+        if (resource instanceof URL) {
+            stream = ((URL) resource).openStream();
+        } else if (resource instanceof File) {
+            stream = new FileInputStream((File) resource);
+        } else if (resource instanceof String) {
+            stream = classLoader.getResourceAsStream((String) resource);
+        } else if (resource instanceof InputStream) {
+            stream = (InputStream) resource;
+        }
 
         component.setValue(resource);
 
@@ -233,14 +254,8 @@ public class XlsSourceConverterTest {
 
         mockery.checking(builder);
 
-        Source source;
-        try {
-            source = factory.createSource(facesEnv.getFacesContext(),
-                    component, resource);
-        } catch (SourceException e) {
-            fail("No exception is expected.");
-            return;
-        }
+        Source source = factory.createSource(facesEnv.getFacesContext(),
+                    component, resource);;
 
         assertThat(source, is(not(nullValue())));
         assertThat(source, is(JRDataSourceWrapper.class));

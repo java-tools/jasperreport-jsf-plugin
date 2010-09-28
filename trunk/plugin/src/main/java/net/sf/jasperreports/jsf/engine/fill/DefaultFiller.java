@@ -154,10 +154,10 @@ public class DefaultFiller implements Filler {
         for (final UIComponent kid : component.getChildren()) {
             if (kid instanceof UISubreport) {
                 final UISubreport subreport = (UISubreport) kid;
-                parameters.put(subreport.getName(), 
+                parameters.put(subreport.getName(),
                         subreport.getSubmittedReport());
-                processParameterMap(context, subreport, parameters, 
-                        (prefix != null && prefix.length() > 0 ? 
+                processParameterMap(context, subreport, parameters,
+                        (prefix != null && prefix.length() > 0 ?
                             prefix + SUBREPORT_PARAMETER_SEPARATOR : "")
                         + subreport.getName());
             } else if (kid instanceof UIParameter) {

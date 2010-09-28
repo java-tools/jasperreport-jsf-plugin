@@ -18,7 +18,6 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.export.JRXlsAbstractExporter;
@@ -30,8 +29,12 @@ import net.sf.jasperreports.jsf.component.UIReport;
  */
 public final class XlsExporter extends AbstractXlsExporter {
 
+    /** The MIME type for this exporter. */
     public static final String CONTENT_TYPE = "application/vnd.ms-excel";
 
+    /**
+     * @see net.sf.jasperreports.jsf.engine.Exporter#getContentType()
+     */
     public String getContentType() {
         return CONTENT_TYPE;
     }
@@ -40,12 +43,12 @@ public final class XlsExporter extends AbstractXlsExporter {
      * (non-Javadoc)
      *
      * @see
-     * net.sf.jasperreports.jsf.export.DefaultExporter#createJRExporter(javax.faces
-     * .context.FacesContext)
+     * net.sf.jasperreports.jsf.export.DefaultExporter#createJRExporter(
+     * javax.faces.context.FacesContext)
      */
     @Override
     protected JRXlsAbstractExporter createJRXlsExporter(
-            final FacesContext context, UIReport component) {
+            final FacesContext context, final UIReport component) {
         return new JRXlsExporter();
     }
 }

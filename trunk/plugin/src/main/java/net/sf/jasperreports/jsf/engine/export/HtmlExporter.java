@@ -30,7 +30,9 @@ import net.sf.jasperreports.jsf.component.UIReport;
  */
 public final class HtmlExporter extends DefaultExporter {
 
+    /** Content type for this exporter type. */
     public static final String CONTENT_TYPE = "text/html";
+
     /** The Constant ATTR_HTML_HEADER. */
     public static final String ATTR_HTML_HEADER = "HTML_HEADER";
     /** The Constant ATTR_HTML_FOOTER. */
@@ -42,6 +44,9 @@ public final class HtmlExporter extends DefaultExporter {
     /** The Constant ATTR_IMAGES_URI. */
     public static final String ATTR_IMAGES_URI = "IMAGES_URI";
 
+    /**
+     * @see net.sf.jasperreports.jsf.engine.Exporter#getContentType()
+     */
     public String getContentType() {
         return CONTENT_TYPE;
     }
@@ -50,12 +55,12 @@ public final class HtmlExporter extends DefaultExporter {
      * (non-Javadoc)
      *
      * @see
-     * net.sf.jasperreports.jsf.export.DefaultExporter#createJRExporter(javax.faces
-     * .context.FacesContext)
+     * net.sf.jasperreports.jsf.export.DefaultExporter#createJRExporter(
+     * javax.faces.context.FacesContext)
      */
     @Override
     protected JRExporter createJRExporter(
-            final FacesContext context, UIReport component) {
+            final FacesContext context, final UIReport component) {
         final JRHtmlExporter exporter = new JRHtmlExporter();
         setParameterUsingAttribute(component, exporter,
                 JRHtmlExporterParameter.HTML_HEADER, ATTR_HTML_HEADER);

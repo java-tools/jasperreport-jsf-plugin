@@ -18,6 +18,7 @@
  */
 package net.sf.jasperreports.jsf.engine.interop;
 
+import java.io.IOException;
 import java.io.Writer;
 import java.io.StringWriter;
 import java.util.List;
@@ -33,6 +34,7 @@ import javax.faces.render.RenderKitFactory;
 import net.sf.jasperreports.engine.JRHyperlinkParameter;
 import net.sf.jasperreports.engine.JRPrintHyperlink;
 import net.sf.jasperreports.engine.export.JRHyperlinkProducer;
+import net.sf.jasperreports.jsf.JRFacesException;
 
 /**
  * The Class FacesHyperlinkProducer.
@@ -42,10 +44,8 @@ public class FacesHyperlinkProducer implements JRHyperlinkProducer {
 
     /** The Constant ACCEPT_REQUEST_HEADER. */
     private static final String ACCEPT_REQUEST_HEADER = "Accept";
-    /** The context. */
-    private final transient FacesContext context;
     /** The report. */
-    private final transient UIComponent report;
+    private final UIComponent report;
 
     /**
      * Instantiates a new faces hyperlink producer.
@@ -55,12 +55,10 @@ public class FacesHyperlinkProducer implements JRHyperlinkProducer {
      * @param report
      *            the report
      */
-    public FacesHyperlinkProducer(final FacesContext context,
-            final UIComponent report) {
-        if ((context == null) || (report == null)) {
+    public FacesHyperlinkProducer(final UIComponent report) {
+        if (report == null) {
             throw new IllegalArgumentException();
         }
-        this.context = context;
         this.report = report;
     }
 
@@ -79,50 +77,60 @@ public class FacesHyperlinkProducer implements JRHyperlinkProducer {
      * .sf.jasperreports.engine.JRPrintHyperlink)
      */
     public String getHyperlink(final JRPrintHyperlink link) {
-        final StringBuffer sb = new StringBuffer();
-		final StringWriter sw = new StringWriter();
-		final ResponseWriter writer = getResponseWriter(context, sw);
-		
-        sb.append("<a");
-        sb.append(" href=\"").append(buildHref(link)).append("\"");
-        if (link.getHyperlinkAnchor() != null) {
-            sb.append(" name=\"").append(link.getHyperlinkAnchor()).append("\"");
+        final StringWriter sw = new StringWriter();
+        final ResponseWriter writer = getResponseWriter(sw);
+
+        try {
+            writer.startElement("a", report);
+            writer.writeAttribute("href", buildHref(link), null);
+
+            String anchor;
+            if ((anchor = link.getHyperlinkAnchor()) != null) {
+                writer.writeAttribute("name", anchor, null);
+            }
+
+            String target = "_blank";
+            switch (link.getHyperlinkTarget()) {
+            default:
+            }
+            writer.writeAttribute("target", target, null);
+
+            String tooltip;
+            if ((tooltip = link.getHyperlinkTooltip()) != null) {
+                writer.writeAttribute("title", tooltip, null);
+            }
+
+            writer.writeText(link.getHyperlinkPage(), report, null);
+
+            writer.endElement("a");
+        } catch (IOException e) {
+            throw new JRFacesException(e);
         }
 
-        sb.append(" target=\"");
-        switch (link.getHyperlinkTarget()) {
-
-        }
-        sb.append("\"");
-
-        if (link.getHyperlinkTooltip() != null) {
-            sb.append(" title=\"").append(link.getHyperlinkTooltip()).append(
-                    "\"");
-        }
-
-        sb.append(">").append(link.getHyperlinkPage());
-        sb.append("</a>");
-        return sb.toString();
+        return sw.toString();
     }
 
     /**
      * Gets the response writer.
      *
-     * @param context
-     *            the context
-     * @param writer
-     *            the writer
+     * @param writer the writer
      *
      * @return the response writer
      */
-    private ResponseWriter getResponseWriter(final FacesContext context,
-            final Writer writer) {
+    private ResponseWriter getResponseWriter(final Writer writer) {
+        FacesContext context = getFacesContext();
         final ResponseWriter current = context.getResponseWriter();
         if (current == null) {
             final UIViewRoot viewRoot = context.getViewRoot();
-            final RenderKitFactory rkf = (RenderKitFactory) FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
-            final RenderKit rk = rkf.getRenderKit(context, viewRoot.getRenderKitId());
-            return rk.createResponseWriter(writer, context.getExternalContext().getRequestHeaderMap().get(ACCEPT_REQUEST_HEADER), context.getExternalContext().getResponseCharacterEncoding());
+            final RenderKitFactory rkf = (RenderKitFactory)
+                    FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
+            final RenderKit rk = rkf.getRenderKit(
+                    context, viewRoot.getRenderKitId());
+            return rk.createResponseWriter(writer,
+                    context.getExternalContext().getRequestHeaderMap()
+                        .get(ACCEPT_REQUEST_HEADER),
+                    context.getExternalContext()
+                        .getResponseCharacterEncoding());
         } else {
             return current.cloneWithWriter(writer);
         }
@@ -143,11 +151,13 @@ public class FacesHyperlinkProducer implements JRHyperlinkProducer {
         List<?> params;
 
         if ((link.getHyperlinkParameters() != null)
-                && (params = link.getHyperlinkParameters().getParameters()) != null) {
+                && (params = link.getHyperlinkParameters()
+                .getParameters()) != null) {
             if (params.size() > 0) {
                 buff.append('?');
                 for (int i = 0; i < params.size(); i++) {
-                    final JRHyperlinkParameter param = (JRHyperlinkParameter) params.get(i);
+                    final JRHyperlinkParameter param =
+                            (JRHyperlinkParameter) params.get(i);
                     buff.append(param.getName());
                     buff.append('=');
                     buff.append(param.getValueExpression().getText());
@@ -155,6 +165,16 @@ public class FacesHyperlinkProducer implements JRHyperlinkProducer {
             }
         }
 
-        return context.getExternalContext().encodeResourceURL(buff.toString());
+        return getFacesContext().getExternalContext()
+                .encodeResourceURL(buff.toString());
     }
+
+    private FacesContext getFacesContext() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (context == null) {
+            throw new IllegalStateException("No current FacesContext!");
+        }
+        return context;
+    }
+
 }

@@ -19,7 +19,6 @@
 package net.sf.jasperreports.jsf.engine.interop;
 
 import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.export.JRHyperlinkProducer;
 import net.sf.jasperreports.engine.export.JRHyperlinkProducerFactory;
@@ -29,8 +28,6 @@ import net.sf.jasperreports.engine.export.JRHyperlinkProducerFactory;
  */
 public class FacesHyperlinkProducerFactory extends JRHyperlinkProducerFactory {
 
-    /** The context. */
-    private final transient FacesContext context;
     /** The report. */
     private final transient UIComponent report;
 
@@ -40,14 +37,12 @@ public class FacesHyperlinkProducerFactory extends JRHyperlinkProducerFactory {
      * @param context the context
      * @param report the report
      */
-    public FacesHyperlinkProducerFactory(final FacesContext context,
-            final UIComponent report) {
+    public FacesHyperlinkProducerFactory(final UIComponent report) {
         super();
-        if ((context == null) || (report == null)) {
+        if (report == null) {
             throw new IllegalArgumentException(
                     "'context' or 'report' can't be null");
         }
-        this.context = context;
         this.report = report;
     }
 
@@ -60,6 +55,6 @@ public class FacesHyperlinkProducerFactory extends JRHyperlinkProducerFactory {
      */
     @Override
     public final JRHyperlinkProducer getHandler(final String linkType) {
-        return new FacesHyperlinkProducer(context, report);
+        return new FacesHyperlinkProducer(report);
     }
 }

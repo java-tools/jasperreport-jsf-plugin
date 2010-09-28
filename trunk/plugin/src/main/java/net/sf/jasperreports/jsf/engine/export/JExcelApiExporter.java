@@ -39,13 +39,16 @@ public final class JExcelApiExporter extends AbstractXlsExporter {
     public static final String ATTR_CREATE_CUSTOM_PALETTE =
             "CREATE_CUSTOM_PALETTE";
 
+    /**
+     * @see net.sf.jasperreports.jsf.engine.Exporter#getContentType()
+     */
     public String getContentType() {
         return CONTENT_TYPE;
     }
 
     @Override
     protected JRXlsAbstractExporter createJRXlsExporter(
-            final FacesContext context, UIReport component)
+            final FacesContext context, final UIReport component)
             throws ExporterException {
         final JRXlsAbstractExporter exporter =
                 new net.sf.jasperreports.engine.export.JExcelApiExporter();
