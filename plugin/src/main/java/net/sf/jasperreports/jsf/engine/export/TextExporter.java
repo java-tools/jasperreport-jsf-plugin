@@ -30,7 +30,9 @@ import net.sf.jasperreports.jsf.component.UIReport;
  */
 public final class TextExporter extends DefaultExporter {
 
+    /** The MIME type of this exporter. */
     public static final String CONTENT_TYPE = "text/plain";
+
     /** The Constant ATTR_BETWEEN_PAGES_TEXT. */
     public static final String ATTR_BETWEEN_PAGES_TEXT = "BETWEEN_PAGES_TEXT";
     /** The Constant ATTR_CHARACTER_HEIGHT. */
@@ -44,6 +46,9 @@ public final class TextExporter extends DefaultExporter {
     /** The Constant ATTR_PAGE_WIDTH. */
     public static final String ATTR_PAGE_WIDTH = "PAGE_WIDTH";
 
+    /**
+     * @see net.sf.jasperreports.jsf.engine.Exporter#getContentType()
+     */
     public String getContentType() {
         return CONTENT_TYPE;
     }
@@ -52,12 +57,12 @@ public final class TextExporter extends DefaultExporter {
      * (non-Javadoc)
      *
      * @see
-     * net.sf.jasperreports.jsf.export.DefaultExporter#createJRExporter(javax.faces
-     * .context.FacesContext)
+     * net.sf.jasperreports.jsf.export.DefaultExporter#createJRExporter(
+     * javax.faces.context.FacesContext)
      */
     @Override
     protected JRExporter createJRExporter(
-            final FacesContext context, UIReport component) {
+            final FacesContext context, final UIReport component) {
         final JRTextExporter exporter = new JRTextExporter();
         setParameterUsingAttribute(component, exporter,
                 JRTextExporterParameter.BETWEEN_PAGES_TEXT,

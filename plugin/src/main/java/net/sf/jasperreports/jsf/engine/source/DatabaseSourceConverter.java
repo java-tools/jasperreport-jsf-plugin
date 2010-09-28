@@ -18,6 +18,8 @@
  */
 package net.sf.jasperreports.jsf.engine.source;
 
+import net.sf.jasperreports.jsf.engine.JRDataSourceWrapper;
+import net.sf.jasperreports.jsf.engine.ConnectionWrapper;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

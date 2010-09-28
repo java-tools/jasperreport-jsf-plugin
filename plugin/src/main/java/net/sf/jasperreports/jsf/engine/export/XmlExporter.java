@@ -30,12 +30,17 @@ import net.sf.jasperreports.jsf.component.UIReport;
  */
 public final class XmlExporter extends DefaultExporter {
 
+    /** The MIME type for this exporter. */
     public static final String CONTENT_TYPE = "text/xml";
+
     /** The Constant ATTR_DTD_LOCATION. */
     public static final String ATTR_DTD_LOCATION = "DTD_LOCATION";
     /** The Constant ATTR_IS_EMBEDDING_IMAGES. */
     public static final String ATTR_IS_EMBEDDING_IMAGES = "IS_EMBEDDING_IMAGES";
 
+    /**
+     * @see net.sf.jasperreports.jsf.engine.Exporter#getContentType()
+     */
     public String getContentType() {
         return CONTENT_TYPE;
     }
@@ -44,12 +49,12 @@ public final class XmlExporter extends DefaultExporter {
      * (non-Javadoc)
      *
      * @see
-     * net.sf.jasperreports.jsf.export.DefaultExporter#createJRExporter(javax.faces
-     * .context.FacesContext)
+     * net.sf.jasperreports.jsf.export.DefaultExporter#createJRExporter(
+     * javax.faces.context.FacesContext)
      */
     @Override
     protected JRExporter createJRExporter(
-            final FacesContext context, UIReport component) {
+            final FacesContext context, final UIReport component) {
         final JRXmlExporter exporter = new JRXmlExporter();
         setParameterUsingAttribute(component, exporter,
                 JRXmlExporterParameter.DTD_LOCATION, ATTR_DTD_LOCATION);

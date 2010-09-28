@@ -18,6 +18,8 @@
  */
 package net.sf.jasperreports.jsf.engine.source;
 
+import net.sf.jasperreports.jsf.engine.JRDataSourceWrapper;
+import net.sf.jasperreports.jsf.engine.ConnectionWrapper;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -92,6 +94,7 @@ public class DatabaseSourceConverterTest {
     @After
     public void dispose() {
         facesEnv.release();
+        facesEnv = null;
     }
 
     @Theory
@@ -132,6 +135,7 @@ public class DatabaseSourceConverterTest {
 
         final Connection expectedConnection = mockery.mock(Connection.class);
         converter.setConnection(expectedConnection);
+        component.setQuery(query);
 
         Source source = converter.createSource(facesEnv.getFacesContext(),
                 component, data);
@@ -151,7 +155,8 @@ public class DatabaseSourceConverterTest {
         assumeTrue(!query.isEmpty());
 
         final Connection connection = mockery.mock(Connection.class);
-        final PreparedStatement statement = mockery.mock(PreparedStatement.class);
+        final PreparedStatement statement =
+                mockery.mock(PreparedStatement.class);
         final ResultSet expectedRS = mockery.mock(ResultSet.class);
 
         converter.setConnection(connection);

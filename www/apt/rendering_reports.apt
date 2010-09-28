@@ -171,13 +171,13 @@ about each exporter and its specific attributes.
 
   It's very common working with reports which contain other mini-reports inside
 as a master-detail view. JasperReports JSF Plugin provides with a subreport component
-that can be used to insert a <detail> report inside a <master> one.
+that can be used to insert data into the <detail> report inside a <master> one.
 
   This component should be used this way:
 
 +---
 <jr:reportFrame value="...">
-    <f:param name="ORDER_ID" value="12" />
+    <f:param name="ORDER_ID" value="..." />
     <jr:subreport name="orderLines" value="...">
         <f:param name="FROM_DATE" value="..." />
         <f:param name="TO_DATE" value="..." />

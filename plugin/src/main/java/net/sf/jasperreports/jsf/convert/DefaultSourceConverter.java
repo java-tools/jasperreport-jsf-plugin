@@ -26,16 +26,20 @@ import javax.faces.context.FacesContext;
 import javax.sql.DataSource;
 
 import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.jsf.engine.Source;
 import net.sf.jasperreports.jsf.engine.SourceException;
-import net.sf.jasperreports.jsf.engine.source.ConnectionWrapper;
-import net.sf.jasperreports.jsf.engine.source.JRDataSourceWrapper;
+import net.sf.jasperreports.jsf.engine.ConnectionWrapper;
+import net.sf.jasperreports.jsf.engine.JRDataSourceWrapper;
 
 /**
  *
  * @author antonio.alonso
  */
 public class DefaultSourceConverter implements SourceConverter {
+
+    private static final Source NULL_SOURCE =
+            new JRDataSourceWrapper(new JREmptyDataSource());
 
     public Source convertFromValue(FacesContext context,
             UIComponent component, Object value)
@@ -48,7 +52,7 @@ public class DefaultSourceConverter implements SourceConverter {
         }
 
         if (value == null) {
-            return null;
+            return NULL_SOURCE;
         }
 
         Source source = null;
@@ -109,7 +113,7 @@ public class DefaultSourceConverter implements SourceConverter {
     protected Source createSource(FacesContext context,
             UIComponent component, Object value)
     throws SourceException {
-        return null;
+        return NULL_SOURCE;
     }
 
 }

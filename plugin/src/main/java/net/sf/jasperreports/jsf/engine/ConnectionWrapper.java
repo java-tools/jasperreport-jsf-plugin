@@ -16,7 +16,7 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.engine.source;
+package net.sf.jasperreports.jsf.engine;
 
 import java.sql.Connection;
 

@@ -19,8 +19,10 @@
 package net.sf.jasperreports.jsf.engine.source;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import net.sf.jasperreports.jsf.component.UISource;
+import net.sf.jasperreports.jsf.engine.SourceException;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
 
@@ -49,11 +51,11 @@ public class JdbcSourceConverterTest {
     public static final String INVALID_DRIVER = "invalidDriver";
 
     @DataPoint
-    public static final String VALID_DRIVER =
-            "net.sf.jasperreports.jsf.test.mock.MockJdbcDriver";
+    public static final String VALID_DRIVER = "org.hsqldb.jdbcDriver";
 
     @DataPoint
-    public static final String VALID_JDBC_URL = "jdbc:mock:localhost/test";
+    public static final String VALID_JDBC_URL =
+            "jdbc:hsqldb:file:target/test-db";
 
     private MockFacesEnvironment facesEnv;
     private JdbcSourceConverter converter;
@@ -83,11 +85,18 @@ public class JdbcSourceConverterTest {
     }
 
     @Theory
-    public void nullDriverThrowsEx(String value) {
+    public void nullOrEmptyDriverThrowsEx(String value, String driverClass) {
         assumeThat(value, notNullValue());
         assumeTrue(!value.isEmpty());
+        if (driverClass != null) {
+            assumeTrue(driverClass.isEmpty());
+        }
 
         component.setValue(value);
+        if (driverClass != null) {
+            component.getAttributes().put(
+                    JdbcSourceConverter.ATTR_DRIVER_CLASS_NAME, driverClass);
+       } 
 
         Connection connection;
         try {
@@ -123,6 +132,48 @@ public class JdbcSourceConverterTest {
             assertThat(e.getCause(), notNullValue());
             assertThat(e.getCause(), is(ClassNotFoundException.class));
         }
+    }
+
+    @Theory
+    public void invalidUrlThrowsSQLEx(String value, String driverClass) {
+        assumeNotNull(value, driverClass);
+        assumeThat(value, not(startsWith("jdbc")));
+        assumeThat(driverClass, startsWith("org.hsqldb"));
+
+        component.setValue(value);
+        component.getAttributes().put(
+                JdbcSourceConverter.ATTR_DRIVER_CLASS_NAME, driverClass);
+
+        Connection connection;
+        try {
+            connection = converter.getConnection(
+                    facesEnv.getFacesContext(), component);
+            fail("An exception was expected");
+        } catch (RuntimeException e) {
+            assertThat(e, is(SourceException.class));
+            assertThat(e.getCause(), notNullValue());
+            assertThat(e.getCause(), is(SQLException.class));
+        }
+    }
+
+    @Theory
+    public void validDataReturnsConnection(String value, String driverClass)
+    throws Exception {
+        assumeNotNull(value, driverClass);
+        assumeThat(value, startsWith("jdbc"));
+        assumeThat(driverClass, startsWith("org.hsqldb"));
+
+        component.setValue(value);
+        component.getAttributes().put(
+                JdbcSourceConverter.ATTR_DRIVER_CLASS_NAME, driverClass);
+        component.getAttributes().put(
+                JdbcSourceConverter.ATTR_USERNAME, "sa");
+        component.getAttributes().put(
+                JdbcSourceConverter.ATTR_PASSWORD, "");
+
+        Connection conn = converter.getConnection(
+                facesEnv.getFacesContext(), component);
+        assertThat(conn, notNullValue());
     }
 
 }

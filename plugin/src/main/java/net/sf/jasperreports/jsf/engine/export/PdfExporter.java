@@ -45,12 +45,12 @@ public final class PdfExporter extends DefaultExporter {
      * (non-Javadoc)
      *
      * @see
-     * net.sf.jasperreports.jsf.export.DefaultExporter#createJRExporter(javax.faces
-     * .context.FacesContext)
+     * net.sf.jasperreports.jsf.export.DefaultExporter#createJRExporter(
+     * javax.faces.context.FacesContext)
      */
     @Override
     protected JRExporter createJRExporter(
-            final FacesContext context, UIReport component) {
+            final FacesContext context, final UIReport component) {
         final JRPdfExporter exporter = new JRPdfExporter();
         setParameterUsingAttribute(component, exporter,
                 JRPdfExporterParameter.IS_COMPRESSED, ATTR_IS_COMPRESSED);
