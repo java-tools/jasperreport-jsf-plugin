@@ -38,7 +38,7 @@ import net.sf.jasperreports.jsf.engine.JRDataSourceWrapper;
  */
 public class DefaultSourceConverter implements SourceConverter {
 
-    private static final Source NULL_SOURCE =
+    protected static final Source NULL_SOURCE =
             new JRDataSourceWrapper(new JREmptyDataSource());
 
     public Source convertFromValue(FacesContext context,

@@ -57,13 +57,10 @@ abstract class HtmlReportRenderer extends ReportRenderer {
     /**
      * Render id attribute.
      *
-     * @param context
-     *            the context
-     * @param report
-     *            the report
+     * @param context the context
+     * @param report the report
      *
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     protected final void renderIdAttribute(final FacesContext context,
             final UIComponent report) throws IOException {
@@ -77,13 +74,10 @@ abstract class HtmlReportRenderer extends ReportRenderer {
     /**
      * Render attributes.
      *
-     * @param writer
-     *            the writer
-     * @param report
-     *            the report
+     * @param writer the writer
+     * @param report the report
      *
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     protected void renderAttributes(final ResponseWriter writer,
             final UIComponent report) throws IOException {

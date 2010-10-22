@@ -44,12 +44,25 @@ import net.sf.jasperreports.jsf.util.Util;
  */
 public abstract class ReportRenderer extends Renderer {
 
+    /** The logger instance */
     private static final Logger logger = Logger.getLogger(
             ReportRenderer.class.getPackage().getName(),
             "net.sf.jasperreports.jsf.LogMessages");
 
+    /**
+     * Obtain the specific content disposition for this kind of renderer.
+     *
+     * @return the content disposition.
+     */
     public abstract String getContentDisposition();
 
+    /**
+     * Encodes the report contents into the current response.
+     *
+     * @param context the faces' context.
+     * @param component the report component being rendered.
+     * @throws IOException if something happens when encoding the report.
+     */
     public void encodeContent(final FacesContext context,
             final UIReport component)
             throws IOException {
@@ -87,6 +100,15 @@ public abstract class ReportRenderer extends Renderer {
         }
     }
 
+    /**
+     * Encodes the HTTP <code>CONTENT-DISPOSITION</code> header string.
+     *
+     * @param component the report component.
+     * @param encoding current response encoding.
+     * @return An encoded <code>CONTENT-DISPOSITION</code> header value.
+     * @throws IOException if some error happens when encoding the
+     *                     report file name.
+     */
     public String encodeContentDisposition(
             final UIReport component, final String encoding)
             throws IOException {
@@ -94,12 +116,21 @@ public abstract class ReportRenderer extends Renderer {
         if (component.getName() != null) {
             disposition.append(getContentDisposition());
             disposition.append("; filename=");
-            disposition.append(URLEncoder.encode(component.getName(), encoding));
+            disposition.append(
+                    URLEncoder.encode(component.getName(), encoding));
         }
         return disposition.toString();
     }
 
-    public void encodeHeaders(final FacesContext context, final UIReport component)
+    /**
+     * Encodes the required headers into the current response.
+     *
+     * @param context the faces' context.
+     * @param component the report component.
+     * @throws IOException if some error happens writing the headers values.
+     */
+    public void encodeHeaders(final FacesContext context,
+            final UIReport component)
             throws IOException {
         if (context == null) {
             throw new IllegalArgumentException("Faces' context is null");
@@ -115,12 +146,13 @@ public abstract class ReportRenderer extends Renderer {
     }
 
     /**
-     * Builds the report uri.
+     * Builds the report URL which will trigger the <code>RENDER_REPORT</code>
+     * phase of the plugin's lifecycle.
      *
-     * @param context the faces' context
-     * @param component the report component
+     * @param context the faces' context.
+     * @param component the report component.
      *
-     * @return the string
+     * @return the report URL.
      */
     public String encodeReportURL(final FacesContext context,
             final UIComponent component) {
@@ -169,6 +201,13 @@ public abstract class ReportRenderer extends Renderer {
         return result;
     }
 
+    /**
+     * Establishes some flags into the faces' context so the plugin's lifecycle
+     * can perform the additional tasks needed to handle the
+     * <code>RENDER_REPORT</code> phase.
+     *
+     * @param context the faces' context.
+     */
     protected final void registerReportView(final FacesContext context) {
         if (Boolean.TRUE.equals(context.getExternalContext().getRequestMap()
                 .get(Constants.ATTR_REPORT_VIEW))) {
