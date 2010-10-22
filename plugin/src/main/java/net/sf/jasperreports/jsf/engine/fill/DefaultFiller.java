@@ -63,6 +63,10 @@ public class DefaultFiller implements Filler {
     /** The Constant PARAM_REPORT_LOCALE. */
     public static final String PARAM_REPORT_LOCALE = "REPORT_LOCALE";
 
+    public static final String PARAM_APPLICATION_SCOPE = "APPLICATION_SCOPE";
+    public static final String PARAM_SESSION_SCOPE = "SESSION_SCOPE";
+    public static final String PARAM_REQUEST_SCOPE = "REQUEST_SCOPE";
+
     /** The logger. */
     private static final Logger logger = Logger.getLogger(
             DefaultFiller.class.getPackage().getName(),
@@ -90,7 +94,7 @@ public class DefaultFiller implements Filler {
             }
         }
     }
-    
+
     /**
      * Builds the param map.
      *
@@ -102,15 +106,13 @@ public class DefaultFiller implements Filler {
     protected Map<String, Object> buildParamMap(final FacesContext context,
             final UIReport component)
     throws FillerException {
-        // Build param map using component's child parameters and subreports
         final Map<String, Object> parameters = new HashMap<String, Object>();
+
+        // Build param map using component's child parameters and subreports
         processParameterMap(context, component, parameters, null);
 
-        // Specific component parameters
-        parameters.put(PARAM_REPORT_CLASSLOADER,
-                Util.getClassLoader(component));
-        parameters.put(PARAM_REPORT_LOCALE,
-                context.getViewRoot().getLocale());
+        // Include implicit parameters
+        processImplicitParameters(context, component, parameters);
 
         return parameters;
     }
@@ -146,6 +148,22 @@ public class DefaultFiller implements Filler {
             throw new FillerException(e);
         }
         return print;
+    }
+
+    private void processImplicitParameters(FacesContext context,
+            UIReport component, Map<String, Object> parameters) {
+        // Specific component parameters
+        parameters.put(PARAM_REPORT_CLASSLOADER,
+                Util.getClassLoader(component));
+        parameters.put(PARAM_REPORT_LOCALE,
+                context.getViewRoot().getLocale());
+
+        parameters.put(PARAM_APPLICATION_SCOPE,
+                context.getExternalContext().getApplicationMap());
+        parameters.put(PARAM_SESSION_SCOPE,
+                context.getExternalContext().getSessionMap());
+        parameters.put(PARAM_REQUEST_SCOPE,
+                context.getExternalContext().getRequestMap());
     }
 
     private void processParameterMap(FacesContext context, UIReport component,

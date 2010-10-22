@@ -204,35 +204,30 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>default-test</id>
-            <configuration>
-              <excludes>
-                <exclude>**/webapp/*Test.java</exclude>
-                <exclude>**/test/**/*.java</exclude>
-              </excludes>
-              <systemProperties>
-                <property>
-                  <name>java.util.logging.config.file</name>
-                  <value>${test.logging.conf}</value>
-                </property>
-                <property>
-                  <name>basedir</name>
-                  <value>${basedir}</value>
-                </property>
-                <property>
-                  <name>documentRoot</name>
-                  <value>${basedir}/src/test/webapp</value>
-                </property>
-                <property>
-                  <name>hsqldbPath</name>
-                  <value>${basedir}/src/test/hsqldb</value>
-                </property>
-              </systemProperties>
-            </configuration>
-          </execution>
-        </executions>
+        <configuration>
+          <excludes>
+            <exclude>**/webapp/*Test.java</exclude>
+            <exclude>**/test/**/*.java</exclude>
+          </excludes>
+          <systemProperties>
+            <property>
+              <name>java.util.logging.config.file</name>
+              <value>${test.logging.conf}</value>
+            </property>
+            <property>
+              <name>basedir</name>
+              <value>${basedir}</value>
+            </property>
+            <property>
+              <name>documentRoot</name>
+              <value>${basedir}/src/test/webapp</value>
+            </property>
+            <property>
+              <name>hsqldbPath</name>
+              <value>${basedir}/src/test/hsqldb</value>
+            </property>
+          </systemProperties>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
