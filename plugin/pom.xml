@@ -94,7 +94,7 @@
       <artifactId>jsf4portlets-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>jasperreports</groupId>
+      <groupId>net.sf.jasperreports</groupId>
       <artifactId>jasperreports</artifactId>
     </dependency>
     <dependency>
@@ -107,10 +107,10 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
     </dependency>
-    <dependency>
+    <!--dependency>
       <groupId>junitext</groupId>
       <artifactId>junitext</artifactId>
-    </dependency>
+    </dependency-->
     <dependency>
       <groupId>org.jmock</groupId>
       <artifactId>jmock-junit4</artifactId>

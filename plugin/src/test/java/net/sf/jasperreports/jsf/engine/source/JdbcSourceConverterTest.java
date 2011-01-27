@@ -87,9 +87,9 @@ public class JdbcSourceConverterTest {
     @Theory
     public void nullOrEmptyDriverThrowsEx(String value, String driverClass) {
         assumeThat(value, notNullValue());
-        assumeTrue(!value.isEmpty());
+        assumeTrue(value.length() > 0);
         if (driverClass != null) {
-            assumeTrue(driverClass.isEmpty());
+            assumeTrue(driverClass.length() == 0);
         }
 
         component.setValue(value);
@@ -112,7 +112,7 @@ public class JdbcSourceConverterTest {
     @Theory
     public void invalidDriverThrowsEx(String value, String driverClass) {
         assumeNotNull(value, driverClass);
-        assumeTrue(!value.isEmpty());
+        assumeTrue(value.length() > 0);
         try {
             Class.forName(driverClass);
             assumeTrue(false);

@@ -75,7 +75,7 @@
         </executions>
         <dependencies>
           <dependency>
-            <groupId>jasperreports</groupId>
+            <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
             <version>${jasperreports.version}</version>
           </dependency>
@@ -168,7 +168,7 @@
     </dependency>
 
     <dependency>
-      <groupId>jasperreports</groupId>
+      <groupId>net.sf.jasperreports</groupId>
       <artifactId>jasperreports</artifactId>
     </dependency>
 
