@@ -96,7 +96,7 @@ public class JndiSourceConverterTest {
     @Theory
     public void emptyValueReturnsNull(String value) {
         assumeThat(value, notNullValue());
-        assumeTrue(value.isEmpty());
+        assumeTrue(value.length() == 0);
 
         component.setValue(value);
 
@@ -108,7 +108,7 @@ public class JndiSourceConverterTest {
     @Theory
     public void invalidJnidNameThrowsNamingEx(String jndiName) {
         assumeThat(jndiName, notNullValue());
-        assumeTrue(!jndiName.isEmpty());
+        assumeTrue(jndiName.length() > 0);
         assumeTrue(!jndiName.startsWith("java:"));
 
         component.setValue(jndiName);

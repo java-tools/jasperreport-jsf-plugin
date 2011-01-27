@@ -229,7 +229,7 @@
       </dependency>
 
       <dependency>
-        <groupId>jasperreports</groupId>
+        <groupId>net.sf.jasperreports</groupId>
         <artifactId>jasperreports</artifactId>
         <version>${jasperreports.version}</version>
         <scope>compile</scope>

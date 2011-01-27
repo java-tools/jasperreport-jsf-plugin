@@ -133,7 +133,7 @@ public class DefaultResourceResolverTest {
     public void emptyResourceNameThrowsIllegalArgEx(String resourceName,
             UIComponent component) {
         assumeThat(resourceName, notNullValue());
-        assumeTrue(resourceName.isEmpty());
+        assumeTrue(resourceName.length() == 0);
 
         try {
             resolver.resolveResource(facesEnv.getFacesContext(),
@@ -176,7 +176,7 @@ public class DefaultResourceResolverTest {
     public void noClasspathPrefixResolvesClasspathResourceIfItExists(
             String resourceName, UIComponent component) {
         assumeNotNull(resourceName);
-        assumeTrue(!resourceName.isEmpty());
+        assumeTrue(resourceName.length() > 0);
         assumeThat(resourceName, not(startsWith(ClasspathResource.PREFIX)));
 
         ClassLoader loader = Util.getClassLoader(this);
@@ -211,7 +211,7 @@ public class DefaultResourceResolverTest {
     public void resourceRelativeToReportComponentResolvesFileResource(
             String resourceName, UIComponent component) {
         assumeNotNull(resourceName);
-        assumeTrue(!resourceName.isEmpty());
+        assumeTrue(resourceName.length() > 0);
         assumeThat(resourceName, not(startsWith("/")));
         assumeNotNull(component);
         assumeThat(component, is(UIReport.class));
@@ -228,7 +228,7 @@ public class DefaultResourceResolverTest {
     public void resourceRelativeToSourceComponentResolvesNull(
             String resourceName, UIComponent component) {
         assumeNotNull(resourceName);
-        assumeTrue(!resourceName.isEmpty());
+        assumeTrue(resourceName.length() > 0);
         assumeThat(resourceName, not(startsWith("/")));
         assumeNotNull(component);
         assumeThat(component, is(UISource.class));
@@ -245,7 +245,7 @@ public class DefaultResourceResolverTest {
     public void unexistantResourceResolvesNull(String resourceName,
             UIComponent component) {
         assumeNotNull(resourceName);
-        assumeTrue(!resourceName.isEmpty());
+        assumeTrue(resourceName.length() > 0);
         assumeThat(resourceName, containsString("doesnt"));
         assumeThat(component, nullValue());
 

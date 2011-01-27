@@ -131,7 +131,7 @@ public class DatabaseSourceConverterTest {
     public void emptyQueryReturnsConnectionWrapper(final String query,
             final Object data) {
         assumeThat(query, notNullValue());
-        assumeTrue(query.isEmpty());
+        assumeTrue(query.length() == 0);
 
         final Connection expectedConnection = mockery.mock(Connection.class);
         converter.setConnection(expectedConnection);
@@ -152,7 +152,7 @@ public class DatabaseSourceConverterTest {
             final String query, final Object data)
     throws Exception {
         assumeThat(query, notNullValue());
-        assumeTrue(!query.isEmpty());
+        assumeTrue(query.length() > 0);
 
         final Connection connection = mockery.mock(Connection.class);
         final PreparedStatement statement =

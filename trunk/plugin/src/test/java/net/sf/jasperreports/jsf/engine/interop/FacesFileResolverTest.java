@@ -58,7 +58,7 @@ public class FacesFileResolverTest {
     public static String localResource() {
         String documentRoot = System.getProperty(
                 TestConstants.PROP_DOCUMENT_ROOT);
-        return documentRoot + "/index.xhtml";
+        return (documentRoot + "/index.xhtml").replaceAll("/", File.separator);
     }
 
     @DataPoint
@@ -129,7 +129,7 @@ public class FacesFileResolverTest {
             final String resourceName, final URL expectedURL)
             throws Exception {
         assumeNotNull(resourceName, expectedURL);
-        assumeTrue(!resourceName.isEmpty());
+        assumeTrue(resourceName.length() > 0);
         if (resourceName.startsWith("http")) {
             assumeThat(expectedURL.getProtocol(), equalTo("http"));
         } else {
