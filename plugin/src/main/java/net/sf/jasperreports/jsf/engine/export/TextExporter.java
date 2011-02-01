@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -26,9 +26,11 @@ import net.sf.jasperreports.engine.export.JRTextExporterParameter;
 import net.sf.jasperreports.jsf.component.UIReport;
 
 /**
- * The Class TextExporter.
+ * Exporter implementation which generates a plain text report.
+ *
+ * @author A. Alonso Dominguez
  */
-public final class TextExporter extends DefaultExporter {
+public final class TextExporter extends ExporterBase {
 
     /** The MIME type of this exporter. */
     public static final String CONTENT_TYPE = "text/plain";
@@ -57,7 +59,7 @@ public final class TextExporter extends DefaultExporter {
      * (non-Javadoc)
      *
      * @see
-     * net.sf.jasperreports.jsf.export.DefaultExporter#createJRExporter(
+     * net.sf.jasperreports.jsf.export.ExporterBase#createJRExporter(
      * javax.faces.context.FacesContext)
      */
     @Override

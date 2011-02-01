@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -47,7 +47,7 @@ public abstract class ReportRenderer extends Renderer {
     /** The logger instance */
     private static final Logger logger = Logger.getLogger(
             ReportRenderer.class.getPackage().getName(),
-            "net.sf.jasperreports.jsf.LogMessages");
+            Constants.LOG_MESSAGES_BUNDLE);
 
     /**
      * Obtain the specific content disposition for this kind of renderer.
@@ -96,7 +96,7 @@ public abstract class ReportRenderer extends Renderer {
         } finally {
             try {
                 reportData.close();
-            } catch (final IOException e) { }
+            } catch (final IOException e) { ; }
         }
     }
 

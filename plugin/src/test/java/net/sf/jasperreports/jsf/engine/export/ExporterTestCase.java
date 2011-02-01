@@ -82,13 +82,13 @@ public abstract class ExporterTestCase {
 
     public abstract Class<? extends JRExporter> getExpectedJRExporterClass();
 
-    public abstract Class<? extends DefaultExporter> getExporterUnderTestClass();
+    public abstract Class<? extends ExporterBase> getExporterUnderTestClass();
 
     @Test
     public void createJRExporterWithAttributes() throws Exception {
-        Class<? extends DefaultExporter> exporterClass =
+        Class<? extends ExporterBase> exporterClass =
                 getExporterUnderTestClass();
-        DefaultExporter exporter = exporterClass.newInstance();
+        ExporterBase exporter = exporterClass.newInstance();
         UIReport component = createComponent();
 
         JRExporter jrExporter = exporter.createJRExporter(
@@ -101,9 +101,9 @@ public abstract class ExporterTestCase {
 
     @Test
     public void offersProperContentType() throws Exception {
-        Class<? extends DefaultExporter> exporterClass =
+        Class<? extends ExporterBase> exporterClass =
                 getExporterUnderTestClass();
-        DefaultExporter exporter = exporterClass.newInstance();
+        ExporterBase exporter = exporterClass.newInstance();
 
         String contentType = exporter.getContentType();
         assertThat(contentType, notNullValue());

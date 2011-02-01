@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -22,32 +22,38 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import net.sf.jasperreports.jsf.Constants;
 
-import net.sf.jasperreports.jsf.component.UIReport;
-
 /**
- * The Class LinkRenderer.
+ * Renderer for report links.
+ * <p>
+ * Draws a HTML <tt>a</tt> element in the containing view. Report contents
+ * will be shown once user clicks on the rendered link.
  * 
  * @author A. Alonso Dominguez
  */
-public class OutputLinkRenderer extends HtmlReportRenderer {
+public final class OutputLinkRenderer extends HtmlReportRenderer {
 
+    /** Renderer content disposition. */
     public static final String CONTENT_DISPOSITION = "attachment";
 
-    /** The Constant RENDERER_TYPE. */
+    /** The renderer type. */
     public static final String RENDERER_TYPE = 
             Constants.PACKAGE_PREFIX + ".Link";
 
     /** The logger. */
     private static final Logger logger = Logger.getLogger(
             OutputLinkRenderer.class.getPackage().getName(),
-            "net.sf.jasperreports.jsf.LogMessages");
+            Constants.LOG_MESSAGES_BUNDLE);
 
+    /**
+     * Obtains the renderer's content disposition.
+     *
+     * @return the renderer's content disposition.
+     */
     public String getContentDisposition() {
         return CONTENT_DISPOSITION;
     }
@@ -96,8 +102,9 @@ public class OutputLinkRenderer extends HtmlReportRenderer {
      * (non-Javadoc)
      *
      * @see
-     * net.sf.jasperreports.jsf.renderkit.AbstractReportRenderer#renderAttributes
-     * (javax.faces.context.ResponseWriter, javax.faces.component.UIComponent)
+     * net.sf.jasperreports.jsf.renderkit.AbstractReportRenderer#
+     * renderAttributes(javax.faces.context.ResponseWriter,
+     * javax.faces.component.UIComponent)
      */
     @Override
     protected void renderAttributes(final ResponseWriter writer,

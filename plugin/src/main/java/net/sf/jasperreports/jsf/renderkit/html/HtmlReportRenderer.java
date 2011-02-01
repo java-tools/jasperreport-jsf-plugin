@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -19,7 +19,6 @@
 package net.sf.jasperreports.jsf.renderkit.html;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
@@ -29,19 +28,18 @@ import javax.faces.context.ResponseWriter;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 
 /**
- * The Class AbstractReportRenderer.
+ * Base renderer class with specific HTML features.
+ *
+ * @author A. Alonso Dominguez
  */
 abstract class HtmlReportRenderer extends ReportRenderer {
 
-    /** The Constant PASSTHRU_ATTRS. */
-    private static final String[] PASSTHRU_ATTRS = {"dir", "lang", "title",
-        "style", "datafld", "datasrc", "dataformatas", "ondblclick",
+    /** The HTML passthru attributes. */
+    private static final String[] PASSTHRU_ATTRS = {
+        "dir", "lang", "title", "style", "datafld", "datasrc",
         "onmousedown", "onmousemove", "onmouseout", "onmouseover",
-        "onmouseup", "accesskey", "tabindex"};
-
-    private static final Logger logger = Logger.getLogger(
-            HtmlReportRenderer.class.getPackage().getName(),
-            "net.sf.jasperreports.jsf.LogMessages");
+        "onmouseup", "accesskey", "tabindex"
+    };
 
     /*
      * (non-Javadoc)
@@ -72,7 +70,7 @@ abstract class HtmlReportRenderer extends ReportRenderer {
     }
 
     /**
-     * Render attributes.
+     * Render HTML attributes.
      *
      * @param writer the writer
      * @param report the report

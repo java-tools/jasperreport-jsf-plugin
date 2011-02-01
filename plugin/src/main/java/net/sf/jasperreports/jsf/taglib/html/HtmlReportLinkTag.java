@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -23,14 +23,13 @@ import javax.faces.component.UIComponent;
 
 import net.sf.jasperreports.jsf.component.html.HtmlReportLink;
 import net.sf.jasperreports.jsf.renderkit.html.OutputLinkRenderer;
-import net.sf.jasperreports.jsf.taglib.OutputReportTag;
 
 import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
  * The Class ReportLinkTag.
  */
-public class HtmlReportLinkTag extends OutputReportTag {
+public class HtmlReportLinkTag extends HtmlReportTagBase {
 
     /** The target. */
     private ValueExpression target;

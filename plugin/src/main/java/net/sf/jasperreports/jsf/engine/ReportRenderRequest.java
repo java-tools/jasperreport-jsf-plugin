@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -19,15 +19,29 @@
 package net.sf.jasperreports.jsf.engine;
 
 /**
+ * Represents a report render request.
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
 public interface ReportRenderRequest {
 
+    /**
+     * Obtains the report client id.
+     *
+     * @return the report client id.
+     */
     public String getReportClientId();
 
+    /**
+     * Obtains the view id.
+     *
+     * @return the view id.
+     */
     public String getViewId();
 
+    /**
+     * Release the request.
+     */
     public void release();
 
 }

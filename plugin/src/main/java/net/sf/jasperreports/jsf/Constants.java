@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -29,7 +29,7 @@ public final class Constants {
 
     /** Prefix string pre-appended to every constant name. */
     public static final String PACKAGE_PREFIX =
-		Constants.class.getPackage().getName();
+        Constants.class.getPackage().getName();
 
     /**
      * Request attribute used to mark a faces' view which contains at least
@@ -55,6 +55,11 @@ public final class Constants {
     /** Base string URI used to recognize Report render requests. */
     public static final String BASE_URI = "/" + PACKAGE_PREFIX + "/render";
 
+    /** Log messages bundle. */
+    public static final String LOG_MESSAGES_BUNDLE =
+            "net.sf.jasperreports.jsf.LogMessages";
+    
+    /** JasperPrint attribute name. */
     public static final String JASPER_PRINT_ATTR_NAME =
             PACKAGE_PREFIX + ".JASPER_PRINT_ATTR_NAME";
 

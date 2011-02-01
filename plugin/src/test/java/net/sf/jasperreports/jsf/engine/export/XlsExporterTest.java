@@ -41,7 +41,7 @@ public class XlsExporterTest extends ExporterTestCase {
     }
 
     @Override
-    public Class<? extends DefaultExporter> getExporterUnderTestClass() {
+    public Class<? extends ExporterBase> getExporterUnderTestClass() {
         return XlsExporter.class;
     }
 

@@ -102,7 +102,7 @@ public class DefaultExporterTest {
 
     @Test
     public void withoutJasperPrintThrowEx() {
-        DefaultExporter exporter = new MockDefaultExporter();
+        ExporterBase exporter = new MockDefaultExporter();
         try {
             exporter.export(facesEnv.getFacesContext(), report, stream);
         } catch (Exception e) {
@@ -129,7 +129,7 @@ public class DefaultExporterTest {
             oneOf(mockExporter).exportReport();
         }});
 
-        DefaultExporter exporter = new MockDefaultExporter();
+        ExporterBase exporter = new MockDefaultExporter();
         exporter.export(context, report, stream);
     }
 
@@ -144,7 +144,7 @@ public class DefaultExporterTest {
         context.getExternalContext().getRequestMap().put(
                 CUSTOM_JASPER_PRINT_NAME, print);
         report.getAttributes().put(
-                DefaultExporter.ATTR_CHARACTER_ENCODING, CUSTOM_ENCODING);
+                ExporterBase.ATTR_CHARACTER_ENCODING, CUSTOM_ENCODING);
 
         mockery.checking(new Expectations() {{
             atLeast(5).of(mockExporter).setParameter(
@@ -158,7 +158,7 @@ public class DefaultExporterTest {
             oneOf(mockExporter).exportReport();
         }});
 
-        DefaultExporter exporter = new MockDefaultExporter();
+        ExporterBase exporter = new MockDefaultExporter();
         exporter.export(context, report, stream);
     }
 
@@ -179,7 +179,7 @@ public class DefaultExporterTest {
             will(throwException(jrException));
         }});
 
-        DefaultExporter exporter = new MockDefaultExporter();
+        ExporterBase exporter = new MockDefaultExporter();
         try {
             exporter.export(context, report, stream);
         } catch (Exception e) {
@@ -189,7 +189,7 @@ public class DefaultExporterTest {
         }
     }
     
-    private class MockDefaultExporter extends DefaultExporter {
+    private class MockDefaultExporter extends ExporterBase {
 
         private String contentType;
 

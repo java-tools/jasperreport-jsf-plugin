@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -30,17 +30,25 @@ import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.util.FileResolver;
+import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 
+/**
+ * Integration of the JasperReports' <tt>FileResolver</tt>
+ * with the plugin's resource resolving mechanism.
+ * 
+ * @author A. Alonso Dominguez
+ */
 public class FacesFileResolver implements FileResolver {
 
+	/** The logger instance. */
     private static final Logger logger = Logger.getLogger(
             FacesFileResolver.class.getPackage().getName(),
-            "net.sf.jasperreports.jsf.LogMessages");
+            Constants.LOG_MESSAGES_BUNDLE);
 
     private static final int BUFFER_SIZE = 2048;
 
@@ -107,11 +115,11 @@ public class FacesFileResolver implements FileResolver {
             try {
                 is.close();
                 is = null;
-            } catch (IOException e) { }
+            } catch (IOException e) { ; }
             try {
                 os.close();
                 os = null;
-            } catch (IOException e) { }
+            } catch (IOException e) { ; }
         }
 
         return tempFile;

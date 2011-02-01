@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -20,6 +20,12 @@ package net.sf.jasperreports.jsf.config;
 
 import net.sf.jasperreports.jsf.JRFacesException;
 
+/**
+ * Exception wrapper which communicates any error happened
+ * when parsing the application configuration files.
+ *
+ * @author A. Alonso Dominguez
+ */
 public class ConfigurationException extends JRFacesException {
 
     /**
@@ -27,18 +33,37 @@ public class ConfigurationException extends JRFacesException {
      */
     private static final long serialVersionUID = -6436187355445724783L;
 
+    /**
+     * Default constructor.
+     */
     public ConfigurationException() {
         super();
     }
 
+    /**
+     * Consructor with a message and a cause.
+     *
+     * @param msg the message.
+     * @param t the cause.
+     */
     public ConfigurationException(final String msg, final Throwable t) {
         super(msg, t);
     }
 
+    /**
+     * Constructor with a message.
+     *
+     * @param msg the message.
+     */
     public ConfigurationException(final String msg) {
         super(msg);
     }
 
+    /**
+     * Constructor with a cause.
+     *
+     * @param t the cause.
+     */
     public ConfigurationException(final Throwable t) {
         super(t);
     }

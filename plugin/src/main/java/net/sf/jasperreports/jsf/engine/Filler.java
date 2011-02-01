@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -23,17 +23,20 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.jsf.component.UIReport;
 
 /**
- * The Interface Filler.
+ * The Filler interface.
+ *
+ * @author A. Alonso Dominguez
  */
 public interface Filler {
 
     /**
-     * Fill.
+     * Process the report component and fill it with the
+     * external data if needed.
      *
-     * @param context the context
-     * @param report the report
+     * @param context current faces' context.
+     * @param component the report component.
      *
-     * @throws FillerException the filler exception
+     * @throws FillerException if some error happens when processing the data.
      */
     public void fill(final FacesContext context, final UIReport component)
             throws FillerException;

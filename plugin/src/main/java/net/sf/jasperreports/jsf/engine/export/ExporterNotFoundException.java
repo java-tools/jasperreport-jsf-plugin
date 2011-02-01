@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,9 @@ package net.sf.jasperreports.jsf.engine.export;
 import net.sf.jasperreports.jsf.util.ServiceException;
 
 /**
- * The Class ExporterNotFoundException.
+ * Root class for exporter exceptions.
+ *
+ * @author A. Alonso Dominguez
  */
 public class ExporterNotFoundException extends ServiceException {
 
@@ -33,8 +35,7 @@ public class ExporterNotFoundException extends ServiceException {
     /**
      * Instantiates a new exporter not found exception.
      *
-     * @param msg
-     *            the msg
+     * @param msg the message
      */
     public ExporterNotFoundException(final String msg) {
         super(msg);

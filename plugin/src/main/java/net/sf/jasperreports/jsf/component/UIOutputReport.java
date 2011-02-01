@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -30,20 +30,29 @@ import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 
 /**
+ * Base report class for JSF components that output a report filled with data.
  *
- * @author antonio.alonso
+ * @author A. Alonso Dominguez
  */
 public class UIOutputReport extends UIReport {
 
+    /** Specified format for the report output. */
     private String format;
 
+    /** Specified exporter class. */
     private Exporter exporter;
 
+    /** Instantiates a new UIOutputReport. */
     public UIOutputReport() {
         super();
     }
 
-    public String getFormat() {
+    /**
+     * Obtains the specified format for the report output.
+     *
+     * @return format for the report output.
+     */
+    public final String getFormat() {
         if (format != null) {
             return format;
         }
@@ -60,11 +69,21 @@ public class UIOutputReport extends UIReport {
         }
     }
 
-    public void setFormat(final String format) {
+    /**
+     * Establishes a new value for the report's output.
+     *
+     * @param format the new value for the report's output
+     */
+    public final void setFormat(final String format) {
         this.format = format;
     }
 
-    public Exporter getExporter() {
+    /**
+     * Obtains the established exporter.
+     *
+     * @return the exporter.
+     */
+    public final Exporter getExporter() {
         if (exporter != null) {
             return exporter;
         }
@@ -81,23 +100,48 @@ public class UIOutputReport extends UIReport {
         }
     }
 
-    public void setExporter(Exporter exporter) {
+    /**
+     * Establishes a new exporter instance.
+     *
+     * @param exporter the new exporter instance.
+     */
+    public final void setExporter(final Exporter exporter) {
         this.exporter = exporter;
     }
 
     // UIOutputReport encode methods
 
-    public void encodeContent(final FacesContext context) throws IOException {
+    /**
+     * Encodes the report contents into the current response.
+     *
+     * @param context current faces' context.
+     * @throws IOException when an error happens encoding the results.
+     */
+    public final void encodeContent(final FacesContext context)
+    throws IOException {
         final ReportRenderer renderer = (ReportRenderer) getRenderer(context);
         renderer.encodeContent(context, this);
     }
 
-    public void encodeHeaders(final FacesContext context) throws IOException {
+    /**
+     * Encodes the report header into the current response.
+     *
+     * @param context current faces' context.
+     * @throws IOException when an error happens encoding the results.
+     */
+    public final void encodeHeaders(final FacesContext context)
+    throws IOException {
         final ReportRenderer renderer = (ReportRenderer) getRenderer(context);
         renderer.encodeHeaders(context, this);
     }
 
-    public void updateModel(FacesContext context) {
+    /**
+     * Updates the provided bean property with the
+     * interpretted report instance.
+     *
+     * @param context current faces' context.
+     */
+    public void updateModel(final FacesContext context) {
         if (context == null) {
             throw new NullPointerException();
         }
@@ -111,7 +155,12 @@ public class UIOutputReport extends UIReport {
             JRFacesContext jrContext = getJRFacesContext();
             ValueExpression ve = getValueExpression("value");
             if (ve != null) {
-
+                try {
+                    ve.setValue(getFacesContext().getELContext(),
+                            getSubmittedReport());
+                } catch (ELException e) {
+                    throw new FacesException(e);
+                }
             }
         }
     }

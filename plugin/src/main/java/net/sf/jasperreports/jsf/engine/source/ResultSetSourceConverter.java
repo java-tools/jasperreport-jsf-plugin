@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -29,18 +29,18 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
-import net.sf.jasperreports.jsf.convert.DefaultSourceConverter;
+import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.engine.Source;
 
 /**
  *
  * @author aalonsodominguez
  */
-public class ResultSetSourceConverter extends DefaultSourceConverter {
+public class ResultSetSourceConverter extends SourceConverterBase {
 
     private static final Logger logger = Logger.getLogger(
             ResultSetSourceConverter.class.getPackage().getName(),
-            "net.sf.jasperreports.jsf.LogMessages");
+            Constants.LOG_MESSAGES_BUNDLE);
 
     @Override
     protected Source createSource(FacesContext context,

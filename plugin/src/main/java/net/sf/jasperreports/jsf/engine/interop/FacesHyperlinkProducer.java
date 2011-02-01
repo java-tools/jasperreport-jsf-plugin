@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -39,7 +39,6 @@ import net.sf.jasperreports.jsf.JRFacesException;
 /**
  * The Class FacesHyperlinkProducer.
  */
-@SuppressWarnings("unused")
 public class FacesHyperlinkProducer implements JRHyperlinkProducer {
 
     /** The Constant ACCEPT_REQUEST_HEADER. */
@@ -50,10 +49,8 @@ public class FacesHyperlinkProducer implements JRHyperlinkProducer {
     /**
      * Instantiates a new faces hyperlink producer.
      *
-     * @param context
-     *            the context
-     * @param report
-     *            the report
+     * @param context the context
+     * @param report the report
      */
     public FacesHyperlinkProducer(final UIComponent report) {
         if (report == null) {
@@ -62,13 +59,6 @@ public class FacesHyperlinkProducer implements JRHyperlinkProducer {
         this.report = report;
     }
 
-    /*
-     * (sin Javadoc)
-     *
-     * @see
-     * net.sf.jasperreports.engine.export.JRHyperlinkProducer#getHyperlink(net
-     * .sf.jasperreports.engine.JRPrintHyperlink)
-     */
     /*
      * (non-Javadoc)
      *
@@ -139,8 +129,7 @@ public class FacesHyperlinkProducer implements JRHyperlinkProducer {
     /**
      * Builds the href.
      *
-     * @param link
-     *            the link
+     * @param link the link
      *
      * @return the string
      */
@@ -148,20 +137,18 @@ public class FacesHyperlinkProducer implements JRHyperlinkProducer {
         final StringBuffer buff = new StringBuffer();
         buff.append(link.getHyperlinkReference());
 
-        List<?> params;
-
-        if ((link.getHyperlinkParameters() != null)
-                && (params = link.getHyperlinkParameters()
-                .getParameters()) != null) {
-            if (params.size() > 0) {
-                buff.append('?');
-                for (int i = 0; i < params.size(); i++) {
-                    final JRHyperlinkParameter param =
-                            (JRHyperlinkParameter) params.get(i);
-                    buff.append(param.getName());
-                    buff.append('=');
-                    buff.append(param.getValueExpression().getText());
-                }
+        List<?> params = null;
+        if (link.getHyperlinkParameters() != null) {
+            params = link.getHyperlinkParameters().getParameters();
+        }
+        if (params != null && params.size() > 0) {
+            buff.append('?');
+            for (int i = 0; i < params.size(); i++) {
+                final JRHyperlinkParameter param =
+                        (JRHyperlinkParameter) params.get(i);
+                buff.append(param.getName());
+                buff.append('=');
+                buff.append(param.getValueExpression().getText());
             }
         }
 

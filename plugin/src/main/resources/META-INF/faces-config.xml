@@ -2,7 +2,7 @@
 
 <!--  
   JasperReports JSF Plugin
-  Copyright (C) 2010 A. Alonso Dominguez
+  Copyright (C) 2011 A. Alonso Dominguez
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -43,6 +43,12 @@
     </lifecycle>
 
     <component>
+        <description><![CDATA[
+Faces component tag used to provide to a report component
+the data needed for rendering. Consult library documentation
+about how to use this tag and its possible locations within
+the Faces tree.
+        ]]></description>
         <display-name>Report Source Component</display-name>
         <component-type>
             net.sf.jasperreports.jsf.Source
@@ -50,6 +56,14 @@
         <component-class>
             net.sf.jasperreports.jsf.component.UISource
         </component-class>
+        <property>
+            <display-name>Data source query</display-name>
+            <property-name>query</property-name>
+        </property>
+        <property>
+            <display-name>Type</display-name>
+            <property-name>type</property-name>
+        </property>
     </component>
 
     <component>

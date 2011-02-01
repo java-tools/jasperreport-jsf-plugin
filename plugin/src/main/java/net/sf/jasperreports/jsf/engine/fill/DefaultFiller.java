@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -46,8 +46,9 @@ import net.sf.jasperreports.jsf.util.Util;
 import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
+ * Default Filler implementation.
  *
- * @author antonio.alonso
+ * @author A. Alonso Dominguez
  */
 public class DefaultFiller implements Filler {
 
@@ -70,9 +71,17 @@ public class DefaultFiller implements Filler {
     /** The logger. */
     private static final Logger logger = Logger.getLogger(
             DefaultFiller.class.getPackage().getName(),
-            "net.sf.jasperreports.jsf.LogMessages");
+            Constants.LOG_MESSAGES_BUNDLE);
 
-    public final void fill(FacesContext context, UIReport component)
+    /**
+     * Fill the report object with data comming from the
+     * submitted source object (if specified).
+     *
+     * @param context current faces' context.
+     * @param component report component.
+     * @throws FillerException if filler throws any exception.
+     */
+    public final void fill(final FacesContext context, final UIReport component)
             throws FillerException {
         final String reportName = getStringAttribute(component, "name",
                 component.getClientId(context));
@@ -90,7 +99,7 @@ public class DefaultFiller implements Filler {
                 try {
                     reportSource.dispose();
                     reportSource = null;
-                } catch (Exception e) { }  
+                } catch (Exception e) { ; }  
             }
         }
     }
@@ -117,6 +126,15 @@ public class DefaultFiller implements Filler {
         return parameters;
     }
 
+    /**
+     * Performs the internal fill operation.
+     *
+     * @param context current faces' context.
+     * @param component report component
+     * @param parameters report parameters.
+     * @return the generated <tt>JasperPrint</tt> result.
+     * @throws FillerException if some error happens.
+     */
     protected JasperPrint doFill(FacesContext context, UIReport component,
             Map<String, Object> parameters)
     throws FillerException {
@@ -166,9 +184,16 @@ public class DefaultFiller implements Filler {
                 context.getExternalContext().getRequestMap());
     }
 
+    /**
+     * Builds parameter map recursively through the report/subreport tree.
+     *
+     * @param context cuurent faces' context.
+     * @param component report component.
+     * @param parameters report parameters.
+     * @param prefix parent's report name, used as a parameter prefix.
+     */
     private void processParameterMap(FacesContext context, UIReport component,
-            Map<String, Object> parameters, String prefix)
-    throws FillerException {
+            Map<String, Object> parameters, String prefix) {
         for (final UIComponent kid : component.getChildren()) {
             if (kid instanceof UISubreport) {
                 final UISubreport subreport = (UISubreport) kid;

@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -21,19 +21,36 @@ package net.sf.jasperreports.jsf.convert;
 import net.sf.jasperreports.jsf.JRFacesException;
 
 /**
+ * Base converter exception.
  *
- * @author antonio.alonso
+ * @author A. Alonso Dominguez
  */
 public class ConverterException extends JRFacesException {
 
+    /**
+     * Constructor with cause.
+     *
+     * @param t the cause.
+     */
     public ConverterException(Throwable t) {
         super(t);
     }
 
+    /**
+     * Constructor with message.
+     *
+     * @param msg the message.
+     */
     public ConverterException(String msg) {
         super(msg);
     }
 
+    /**
+     * Constructor with message and cause.
+     *
+     * @param msg the message.
+     * @param t the cause.
+     */
     public ConverterException(String msg, Throwable t) {
         super(msg, t);
     }

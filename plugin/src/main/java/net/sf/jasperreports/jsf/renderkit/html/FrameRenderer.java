@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -31,27 +31,41 @@ import net.sf.jasperreports.jsf.Constants;
 import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
- * The Class EmbedRenderer.
+ * Renderer for report frames.
+ * <p>
+ * Draws an inline HTML <tt>iframe</tt> element in the
+ * containing view. Report contents will be shown inside
+ * that nested frame element.
  * 
  * @author A. Alonso Dominguez
  */
-public class FrameRenderer extends HtmlReportRenderer {
+public final class FrameRenderer extends HtmlReportRenderer {
 
+    /** The constant representing the renderer's content disposition. */
     public static final String CONTENT_DISPOSITION = "inline";
-    
-    /** The Constant RENDERER_TYPE. */
-    public static final String RENDERER_TYPE = 
+
+    /** The renderer type. */
+    public static final String RENDERER_TYPE =
             Constants.PACKAGE_PREFIX + ".Frame";
-    
-    /** The Constant PASSTHRU_ATTRS. */
-    private static final String[] PASSTHRU_ATTRS = {"marginheight",
-        "marginwidth", "height", "width"};
+
+    /**
+     * HTML Component attributes that will be rendered as they have
+     * been establised.
+     */
+    private static final String[] PASSTHRU_ATTRS = {
+        "frameborder", "marginheight", "marginwidth", "height", "width"
+    };
 
     /** The logger. */
     private static final Logger logger = Logger.getLogger(
             FrameRenderer.class.getPackage().getName(),
-            "net.sf.jasperreports.jsf.LogMessages");
+            Constants.LOG_MESSAGES_BUNDLE);
 
+    /**
+     * Obtains the default content disposition for this renderer.
+     *
+     * @return the default content disposition
+     */
     public String getContentDisposition() {
         return CONTENT_DISPOSITION;
     }
@@ -66,7 +80,8 @@ public class FrameRenderer extends HtmlReportRenderer {
     @Override
     @SuppressWarnings("unused")
     public void encodeBegin(final FacesContext context,
-            final UIComponent component) throws IOException {
+            final UIComponent component)
+    throws IOException {
         logger.log(Level.FINE, "JRJSF_0002", component.getClientId(context));
 
         final String reportURI = encodeReportURL(context, component);
@@ -90,13 +105,13 @@ public class FrameRenderer extends HtmlReportRenderer {
      * (non-Javadoc)
      *
      * @see
-     * javax.faces.render.Renderer#encodeChildren(javax.faces.context.FacesContext
-     * , javax.faces.component.UIComponent)
+     * javax.faces.render.Renderer#encodeChildren(javax.faces.context.
+     * FacesContext, javax.faces.component.UIComponent)
      */
     @Override
     public void encodeChildren(final FacesContext context,
-            final UIComponent component) throws IOException {
-    }
+            final UIComponent component)
+    throws IOException { }
 
     /*
      * (non-Javadoc)
@@ -107,7 +122,8 @@ public class FrameRenderer extends HtmlReportRenderer {
      */
     @Override
     public void encodeEnd(final FacesContext context,
-            final UIComponent component) throws IOException {
+            final UIComponent component)
+    throws IOException {
         final ResponseWriter writer = context.getResponseWriter();
         writer.endElement("iframe");
 
@@ -124,21 +140,15 @@ public class FrameRenderer extends HtmlReportRenderer {
      * (non-Javadoc)
      *
      * @see
-     * net.sf.jasperreports.jsf.renderkit.AbstractReportRenderer#renderAttributes
-     * (javax.faces.context.ResponseWriter, javax.faces.component.UIComponent)
+     * net.sf.jasperreports.jsf.renderkit.AbstractReportRenderer#
+     * renderAttributes(javax.faces.context.ResponseWriter,
+     * javax.faces.component.UIComponent)
      */
     @Override
     protected void renderAttributes(final ResponseWriter writer,
-            final UIComponent report) throws IOException {
+            final UIComponent report)
+    throws IOException {
         super.renderAttributes(writer, report);
-
-        boolean frameborder = getBooleanAttribute(report, "frameborder", false);
-        
-        if (frameborder) {
-            writer.writeAttribute("frameborder", "1", null);
-        } else {
-            writer.writeAttribute("frameborder", "0", null);
-        }
 
         for (final String attrName : PASSTHRU_ATTRS) {
             final Object value = report.getAttributes().get(attrName);

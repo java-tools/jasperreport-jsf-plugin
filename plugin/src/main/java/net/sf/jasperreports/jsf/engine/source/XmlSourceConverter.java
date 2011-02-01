@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -44,8 +44,8 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
+import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
-import net.sf.jasperreports.jsf.convert.DefaultSourceConverter;
 import net.sf.jasperreports.jsf.engine.Source;
 import net.sf.jasperreports.jsf.engine.SourceException;
 import net.sf.jasperreports.jsf.resource.Resource;
@@ -57,14 +57,16 @@ import org.xml.sax.SAXException;
 import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
+ * Converter implementation which obtains an XML data source
+ * from an existant resource.
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
-public class XmlSourceConverter extends DefaultSourceConverter {
+public final class XmlSourceConverter extends SourceConverterBase {
 
     private static final Logger logger = Logger.getLogger(
             XmlSourceConverter.class.getPackage().getName(),
-            "net.sf.jasperreports.jsf.LogMessages");
+            Constants.LOG_MESSAGES_BUNDLE);
 
     @Override
     protected Source createSource(FacesContext context,
@@ -94,7 +96,7 @@ public class XmlSourceConverter extends DefaultSourceConverter {
             try {
                 if ((query != null) && (query.length() > 0)) {
                     dataSource = new JRXmlDataSource(xmlDocument,
-                            parseQuery(context, component, query));
+                            parseQuery(component, query));
                 } else {
                     dataSource = new JRXmlDataSource(xmlDocument);
                 }
@@ -166,7 +168,7 @@ public class XmlSourceConverter extends DefaultSourceConverter {
                 if (stream != null && closeStream) {
                     try {
                         stream.close();
-                    } catch (final IOException e) { }
+                    } catch (final IOException e) { ; }
                 }
                 stream = null;
             }
@@ -175,8 +177,7 @@ public class XmlSourceConverter extends DefaultSourceConverter {
         return document;
     }
 
-    private String parseQuery(final FacesContext context,
-            UIComponent component, final String query) {
+    private String parseQuery(UIComponent component, final String query) {
         final List<Object> params = new ArrayList<Object>();
 
         for (final UIComponent kid : component.getChildren()) {

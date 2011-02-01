@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -32,20 +32,38 @@ import net.sf.jasperreports.jsf.component.UIReport;
  * 
  * @author A. Alonso Dominguez
  */
-public final class DocxExporter extends DefaultExporter {
+public final class DocxExporter extends ExporterBase {
 
+    /** Exporter content type. */
     public static final String CONTENT_TYPE =
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-    //public static final String ATTR_FLEXIBLE_ROW_HEIGHT = "FLEXIBLE_ROW_HEIGHT";
-    public static final String ATTR_FRAMES_AS_NESTED_TABLES = "FRAMES_AS_NESTED_TABLES";
 
+    //public static final String ATTR_FLEXIBLE_ROW_HEIGHT =
+    //       "FLEXIBLE_ROW_HEIGHT";
+
+    /** Render frames as nested tables attribute. */
+    public static final String ATTR_FRAMES_AS_NESTED_TABLES =
+            "FRAMES_AS_NESTED_TABLES";
+
+    /**
+     * Obtains the exporter content type.
+     *
+     * @return the exporter content type.
+     */
     public String getContentType() {
         return CONTENT_TYPE;
     }
 
+    /**
+     * Creates the JRExporter instance wrapped by this implementation.
+     *
+     * @param context current faces' context.
+     * @param component report component.
+     * @return the JRExporter instance.
+     */
     @Override
     protected JRExporter createJRExporter(
-            final FacesContext context, UIReport component) {
+            final FacesContext context, final UIReport component) {
         final JRDocxExporter exporter = new JRDocxExporter();
         setParameterUsingAttribute(component, exporter,
                 JRDocxExporterParameter.FRAMES_AS_NESTED_TABLES,

@@ -2,7 +2,7 @@
 
 <!--  
   JasperReports JSF Plugin
-  Copyright (C) 2010 A. Alonso Dominguez
+  Copyright (C) 2011 A. Alonso Dominguez
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -61,6 +61,14 @@
             <set name="format" bindingType="VB" />
             <set name="value" bindingType="VB" />
             <set name="validator" bindingType="VB" />
+            <!-- Exporter attributes -->
+            <set name="encoding" bindingType="VB" />
+            <set name="ignorePageMargins" bindingType="VB" />
+            <set name="pageIndex" bindingType="VB" />
+            <set name="startPageIndex" bindingType="VB" />
+            <set name="endPageIndex" bindingType="VB" />
+            <set name="offsetX" bindingType="VB" />
+            <set name="offsetY" bindingType="VB" />
             <!-- HTML iframe attributes -->
             <set name="layout" bindingType="VB" />
             <set name="frameborder" bindingType="VB" />
@@ -81,6 +89,14 @@
             <set name="format" bindingType="VB" />
             <set name="value" bindingType="VB" />
             <set name="validator" bindingType="VB" />
+            <!-- Exporter attributes -->
+            <set name="encoding" bindingType="VB" />
+            <set name="ignorePageMargins" bindingType="VB" />
+            <set name="pageIndex" bindingType="VB" />
+            <set name="startPageIndex" bindingType="VB" />
+            <set name="endPageIndex" bindingType="VB" />
+            <set name="offsetX" bindingType="VB" />
+            <set name="offsetY" bindingType="VB" />
         </attributes>
     </component>
 

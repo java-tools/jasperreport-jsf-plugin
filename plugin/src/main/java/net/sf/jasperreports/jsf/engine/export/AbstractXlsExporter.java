@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -27,7 +27,7 @@ import net.sf.jasperreports.engine.export.JRXlsAbstractExporterParameter;
 import net.sf.jasperreports.jsf.component.UIReport;
 
 @SuppressWarnings("deprecation")
-abstract class AbstractXlsExporter extends DefaultExporter {
+abstract class AbstractXlsExporter extends ExporterBase {
 
     @Deprecated
     public static final String ATTR_IS_AUTO_DETECT_CELL_TYPE =

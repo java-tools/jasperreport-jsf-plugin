@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -19,8 +19,10 @@
 package net.sf.jasperreports.jsf.engine.source;
 
 /**
+ * Exception to inform that the user has specified an
+ * valid class name as the database driver. 
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
 public class InvalidDatabaseDriverException extends DatabaseSourceException {
 

@@ -2,7 +2,7 @@
 
 <!--  
   JasperReports JSF Plugin
-  Copyright (C) 2010 A. Alonso Dominguez
+  Copyright (C) 2011 A. Alonso Dominguez
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -29,9 +29,9 @@
 
     <description>JasperReports JSF Integration Tag Library</description>
     <display-name>JasperReports JSF TagLib</display-name>
-    <tlib-version>1.0</tlib-version>
+    <tlib-version>1.2</tlib-version>
     <short-name>jr</short-name>
-    <uri>http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_0.tld</uri>
+    <uri>http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_2.tld</uri>
 
     <listener>
         <listener-class>

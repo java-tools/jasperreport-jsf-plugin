@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -16,7 +16,7 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.convert;
+package net.sf.jasperreports.jsf.engine.source;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -27,16 +27,19 @@ import javax.sql.DataSource;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.jsf.convert.ConverterException;
+import net.sf.jasperreports.jsf.convert.SourceConverter;
 import net.sf.jasperreports.jsf.engine.Source;
 import net.sf.jasperreports.jsf.engine.SourceException;
 import net.sf.jasperreports.jsf.engine.ConnectionWrapper;
 import net.sf.jasperreports.jsf.engine.JRDataSourceWrapper;
 
 /**
+ * Base source converter class.
  *
- * @author antonio.alonso
+ * @author A. Alonso Dominguez
  */
-public class DefaultSourceConverter implements SourceConverter {
+public class SourceConverterBase implements SourceConverter {
 
     protected static final Source NULL_SOURCE =
             new JRDataSourceWrapper(new JREmptyDataSource());

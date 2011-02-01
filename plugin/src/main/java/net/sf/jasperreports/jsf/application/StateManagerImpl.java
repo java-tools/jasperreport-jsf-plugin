@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -31,22 +31,45 @@ import javax.faces.render.ResponseStateManager;
 import net.sf.jasperreports.jsf.Constants;
 
 /**
+ * JSF's StateManagerWrapper implementation used to cache the
+ * current view state so it can be restored in the future.
  *
  * @author A. Alonso Dominguez
  */
 public class StateManagerImpl extends StateManagerWrapper {
 
+    /** Established size for the buffer used when parsing the response. */
     private static final int BUFFER_SIZE = 128;
 
-    private StateManager delegate;
+    /** First delegate in our StateManager implementation chain. */
+    private final StateManager delegate;
 
-    public StateManagerImpl(StateManager delegate) {
+    /**
+     * Constructor for the StateManagerWrapper implmentation.
+     *
+     * @param delegate first delegate in the implementation chain.
+     */
+    public StateManagerImpl(final StateManager delegate) {
         this.delegate = delegate;
     }
 
+    /**
+     * Writes the given state into the current response.
+     * <p>
+     * This implementation of the <tt>writeState</tt> method buffers the
+     * current response before bypassing the responsiveness of writing the
+     * response state. This allows to the method to cache the current state
+     * date into the request attribute map so it can be restored in the future.
+     *
+     * @param context current FacesContext instance.
+     * @param state current view state.
+     * @throws IOException when some output errors happen when
+     *         encding the state.
+     *
+     */
     @Override
-    public void writeState(FacesContext context, Object state)
-            throws IOException {
+    public final void writeState(final FacesContext context, final Object state)
+    throws IOException {
         final ResponseWriter oldWriter = context.getResponseWriter();
         final StringWriter sw = new StringWriter(BUFFER_SIZE);
         final ResponseWriter newWriter = oldWriter.cloneWithWriter(sw);
@@ -69,11 +92,22 @@ public class StateManagerImpl extends StateManagerWrapper {
         }
     }
 
+    /**
+     * Obtains the first delegate in the implementation chain.
+     *
+     * @return first delegate in the chain.
+     */
     @Override
-    protected StateManager getWrapped() {
+    protected final StateManager getWrapped() {
         return delegate;
     }
 
+    /**
+     * Parses the view state data from the response buffer.
+     *
+     * @param buffer the response buffer as a string.
+     * @return the encoded view state.
+     */
     private String getViewState(String buffer) {
         int i = buffer.indexOf(ResponseStateManager.VIEW_STATE_PARAM);
         if (i < 0) {

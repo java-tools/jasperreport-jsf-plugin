@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -25,15 +25,35 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.jsf.engine.Source;
 
 /**
+ * Source converter interface.
  *
- * @author antonio.alonso
+ * @author A. Alonso Dominguez
  */
 public interface SourceConverter extends Serializable {
 
+    /**
+     * Obtains a <tt>Source</tt> instance from the value
+     * obtained as a parameter.
+     *
+     * @param context current faces' context.
+     * @param component faces' component asking for conversion.
+     * @param value the value that must be converted.
+     * @return a <tt>Source</tt>
+     * @throws ConverterException if value can't be converted.
+     */
     public Source convertFromValue(FacesContext context,
             UIComponent component, Object value)
     throws ConverterException;
 
+    /**
+     * Converts the received source into its original form.
+     *
+     * @param context current faces' context.
+     * @param component faces' component asking for conversion.
+     * @param source the source instance.
+     * @return a original source value.
+     * @throws ConverterException if source can't be converted.
+     */
     public Object convertFromSource(FacesContext context,
             UIComponent component, Source source)
     throws ConverterException;

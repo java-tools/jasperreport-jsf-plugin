@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -42,16 +42,17 @@ import net.sf.jasperreports.jsf.engine.ReportHttpRenderRequest;
 import net.sf.jasperreports.jsf.engine.ReportRenderRequest;
 
 /**
+ * Implementation of the <tt>RENDER_REPORT</tt> phase.
  *
  * @author A. Alonso Dominguez
  */
-public class RenderResponsePhaseListener extends AbstractReportPhaseListener
+public final class RenderResponsePhaseListener extends AbstractReportPhaseListener
         implements ContextCallback {
 
     /** The logger instance. */
     private static final Logger logger = Logger.getLogger(
             RenderResponsePhaseListener.class.getPackage().getName(),
-            "net.sf.jasperreports.jsf.LogMessages");
+            Constants.LOG_MESSAGES_BUNDLE);
 
     public RenderResponsePhaseListener() { }
 

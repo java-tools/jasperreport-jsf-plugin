@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -25,8 +25,9 @@ import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.engine.FillerException;
 
 /**
+ * Filler wrapper implementation.
  *
- * @author antonio.alonso
+ * @author A. Alonso Dominguez
  */
 public abstract class FillerWrapper implements Filler {
 

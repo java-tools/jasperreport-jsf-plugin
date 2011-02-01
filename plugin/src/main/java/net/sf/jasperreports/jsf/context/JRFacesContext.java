@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -18,7 +18,7 @@
  */
 package net.sf.jasperreports.jsf.context;
 
-import java.util.Set;
+import java.util.Collection;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -30,18 +30,27 @@ import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.util.Services;
 
 /**
+ * The specific plugin's faces' context.
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
 public abstract class JRFacesContext {
 
+    /** Singleton instance key. */
     protected static final String INSTANCE_KEY =
             JRFacesContext.class.getName();
 
+    /** Default instance. */
     private static final JRFacesContext DEFAULT_JRFACES_CONTEXT =
             new DefaultJRFacesContext();
 
-    public static JRFacesContext getInstance(FacesContext context) {
+    /**
+     * Obtains a singleton context instance.
+     *
+     * @param context current faces' context.
+     * @return the singleton instance.
+     */
+    public static JRFacesContext getInstance(final FacesContext context) {
         if (context == null) {
             throw new NullPointerException();
         }
@@ -57,22 +66,68 @@ public abstract class JRFacesContext {
         return instance;
     }
 
-    public abstract Set<String> getAvailableSourceTypes();
+    /**
+     * Collection of available source types.
+     *
+     * @return collection of available source types.
+     */
+    public abstract Collection<String> getAvailableSourceTypes();
 
-    public abstract Set<String> getAvailableExportFormats();
+    /**
+     * Collection of availbale export formats.
+     *
+     * @return collection of available export formats.
+     */
+    public abstract Collection<String> getAvailableExportFormats();
 
+
+    /**
+     * Obtains the external context helper instance.
+     *
+     * @param context current faces' context.
+     * @return the external context helper.
+     */
     public abstract ExternalContextHelper getExternalContextHelper(
             FacesContext context);
 
+    /**
+     * Instantiates a source converter appropiate for the given component.
+     *
+     * @param context current faces' context.
+     * @param component the component which is asking the source converter.
+     * @return a source converter instance.
+     */
     public abstract SourceConverter createSourceConverter(
             FacesContext context, UIComponent component);
 
+    /**
+     * Creates a new report instance.
+     *
+     * @param context current faces' context.
+     * @param component a report component.
+     * @param name resource name.
+     * @return a resource instance.
+     */
     public abstract Resource createResource(FacesContext context,
             UIComponent component, String name);
 
+    /**
+     * Obtains the report's filler instance.
+     *
+     * @param context current faces' context.
+     * @param component the report component.
+     * @return a filler instance.
+     */
     public abstract Filler getFiller(
             FacesContext context, UIReport component);
 
+    /**
+     * Obtains the report's exporter instance.
+     *
+     * @param context current faces' context.
+     * @param component the report component
+     * @return an exporter instance.
+     */
     public abstract Exporter getExporter(
             FacesContext context, UIReport component);
 

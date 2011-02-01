@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -26,9 +26,11 @@ import net.sf.jasperreports.engine.export.JRHtmlExporterParameter;
 import net.sf.jasperreports.jsf.component.UIReport;
 
 /**
- * The Class HtmlExporter.
+ * Exporter implementation which generates a HTML report.
+ *
+ * @author A. Alonso Dominguez
  */
-public final class HtmlExporter extends DefaultExporter {
+public final class HtmlExporter extends ExporterBase {
 
     /** Content type for this exporter type. */
     public static final String CONTENT_TYPE = "text/html";
@@ -55,7 +57,7 @@ public final class HtmlExporter extends DefaultExporter {
      * (non-Javadoc)
      *
      * @see
-     * net.sf.jasperreports.jsf.export.DefaultExporter#createJRExporter(
+     * net.sf.jasperreports.jsf.export.ExporterBase#createJRExporter(
      * javax.faces.context.FacesContext)
      */
     @Override

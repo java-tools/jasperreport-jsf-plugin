@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -29,21 +29,24 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import net.sf.jasperreports.jsf.Constants;
 
 import net.sf.jasperreports.jsf.engine.SourceException;
 
 import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
+ * Converter implementation which obtains a JDBC connection
+ * from a JNDI datasource name.
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
-public class JndiSourceConverter extends DatabaseSourceConverter {
+public final class JndiSourceConverter extends DatabaseSourceConverter {
 
     /** The Constant logger. */
     private static final Logger logger = Logger.getLogger(
             JndiSourceConverter.class.getPackage().getName(),
-            "net.sf.jasperreports.jsf.LogMessages");
+            Constants.LOG_MESSAGES_BUNDLE);
     
     @Override
     protected Connection getConnection(FacesContext context,

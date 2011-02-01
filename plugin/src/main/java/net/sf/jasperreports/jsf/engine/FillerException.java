@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,9 @@ package net.sf.jasperreports.jsf.engine;
 import net.sf.jasperreports.jsf.JRFacesException;
 
 /**
- * The Class FillerException.
+ * Root class for filler exceptions.
+ *
+ * @author A. Alonso Dominguez
  */
 public class FillerException extends JRFacesException {
 
@@ -31,10 +33,8 @@ public class FillerException extends JRFacesException {
     /**
      * Instantiates a new filler exception.
      *
-     * @param msg
-     *            the msg
-     * @param t
-     *            the t
+     * @param msg the message.
+     * @param t the cause.
      */
     public FillerException(final String msg, final Throwable t) {
         super(msg, t);
@@ -43,8 +43,7 @@ public class FillerException extends JRFacesException {
     /**
      * Instantiates a new filler exception.
      *
-     * @param msg
-     *            the msg
+     * @param msg the message.
      */
     public FillerException(final String msg) {
         super(msg);
@@ -53,8 +52,7 @@ public class FillerException extends JRFacesException {
     /**
      * Instantiates a new filler exception.
      *
-     * @param t
-     *            the t
+     * @param t the cause.
      */
     public FillerException(final Throwable t) {
         super(t);

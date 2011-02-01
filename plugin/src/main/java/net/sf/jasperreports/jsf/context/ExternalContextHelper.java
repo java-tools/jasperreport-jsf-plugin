@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -40,13 +40,6 @@ import net.sf.jasperreports.jsf.engine.ReportRenderRequest;
  */
 public abstract class ExternalContextHelper {
 
-    /**
-     * Application scoped key used to cache the application local instance
-     * of the ExternalContextHelper.
-     */
-    private static final String INSTANCE_KEY =
-            ExternalContextHelper.class.getName();
-
     /** Name of the Portlet class. */
     private static final String PORTLET_CLASS = "javax.portlet.Portlet";
 
@@ -64,7 +57,8 @@ public abstract class ExternalContextHelper {
      * @return an instance of the ExternalContextHelper
      */
     protected static ExternalContextHelper newInstance (
-            final ExternalContext context) {
+            final ExternalContext context)
+    throws InvalidEnvironmentException {
         ExternalContextHelper instance = null;
         if (isServletContext(context)) {
             instance = new ServletContextHelper();
