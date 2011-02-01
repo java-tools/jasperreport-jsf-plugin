@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -16,7 +16,7 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.convert;
+package net.sf.jasperreports.jsf.engine.source;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -28,6 +28,8 @@ import javax.sql.DataSource;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.convert.ConverterException;
+import net.sf.jasperreports.jsf.convert.SourceConverter;
 import net.sf.jasperreports.jsf.engine.ConnectionWrapper;
 import net.sf.jasperreports.jsf.engine.JRDataSourceWrapper;
 import net.sf.jasperreports.jsf.engine.Source;
@@ -55,7 +57,7 @@ import static org.hamcrest.Matchers.*;
  * @author aalonsodominguez
  */
 @RunWith(JMockTheories.class)
-public class DefaultSourceConverterTest {
+public class SourceConverterBaseTest {
 
     @DataPoint
     public static final Object NULL_VALUE = null;
@@ -65,7 +67,7 @@ public class DefaultSourceConverterTest {
 
     @DataPoint
     public static final Source EMPTY_SOURCE =
-            DefaultSourceConverter.NULL_SOURCE;
+            SourceConverterBase.NULL_SOURCE;
 
     @DataPoint
     public static final Source NULL_SOURCE = null;
@@ -335,7 +337,7 @@ public class DefaultSourceConverterTest {
         assertThat(conn, sameInstance(expectedConn));
     }
 
-    private static class DummyDefaultSourceConverter extends DefaultSourceConverter {
+    private static class DummyDefaultSourceConverter extends SourceConverterBase {
 
         private Source expectedSource;
         private SourceException expectedException;

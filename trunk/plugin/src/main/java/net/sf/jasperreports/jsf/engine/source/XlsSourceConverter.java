@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -35,22 +35,24 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRXlsDataSource;
+import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
-import net.sf.jasperreports.jsf.convert.DefaultSourceConverter;
 import net.sf.jasperreports.jsf.engine.Source;
 import net.sf.jasperreports.jsf.engine.SourceException;
 import net.sf.jasperreports.jsf.resource.Resource;
 
 /**
+ * Converter implementation which obtains a XLS data source
+ * from an existant resource.
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
-public class XlsSourceConverter extends DefaultSourceConverter {
+public class XlsSourceConverter extends SourceConverterBase {
 
     /** The logger instance. */
     private static final Logger logger = Logger.getLogger(
             XlsSourceConverter.class.getPackage().getName(),
-            "net.sf.jasperreports.jsf.LogMessages");
+            Constants.LOG_MESSAGES_BUNDLE);
 
     @Override
     protected Source createSource(FacesContext context,

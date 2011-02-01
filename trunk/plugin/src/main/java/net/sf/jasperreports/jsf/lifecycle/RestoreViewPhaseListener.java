@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -32,24 +32,24 @@ import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 
 /**
+ * Establishes some changes in the request wrapping it and
+ * forcing the faces' lifecycle to restore the lastest view.
  *
- * @author aalonsodominguez
+ * @author A- Alonso Dominguez
  */
 public class RestoreViewPhaseListener extends AbstractReportPhaseListener {
 
     private static final Logger logger = Logger.getLogger(
             RestoreViewPhaseListener.class.getPackage().getName(),
-            "net.sf.jasperreports.jsf.LogMessages");
+            Constants.LOG_MESSAGES_BUNDLE);
 
     public RestoreViewPhaseListener() { }
 
     public void afterPhase(PhaseEvent event) throws FacesException {
         FacesContext context = event.getFacesContext();
-        if (isReportRequest(context)) {
-            if (null == context.getViewRoot()) {
-                throw new ReportLifecycleException(
-                        "Report holder view couldn't be restored");
-            }
+        if (isReportRequest(context) && (null == context.getViewRoot())) {
+            throw new ReportLifecycleException(
+                    "Report holder view couldn't be restored");
         }
     }
 

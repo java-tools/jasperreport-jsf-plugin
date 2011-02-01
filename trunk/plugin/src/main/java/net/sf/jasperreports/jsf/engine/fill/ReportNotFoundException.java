@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,10 @@ package net.sf.jasperreports.jsf.engine.fill;
 import net.sf.jasperreports.jsf.engine.FillerException;
 
 /**
- * The Class ReportNotFoundException.
+ * Exception thrown when a <tt>Filler</tt> implementation can't
+ * find the report resource.
+ *
+ * @author A. Alonso Dominguez
  */
 public class ReportNotFoundException extends FillerException {
 
@@ -33,8 +36,7 @@ public class ReportNotFoundException extends FillerException {
     /**
      * Instantiates a new report not found exception.
      *
-     * @param msg
-     *            the msg
+     * @param msg the message
      */
     public ReportNotFoundException(final String msg) {
         super(msg);
@@ -43,8 +45,8 @@ public class ReportNotFoundException extends FillerException {
     /**
      * Instantiates a new report not found exception.
      *
-     * @param msg
-     *            the msg
+     * @param msg the message
+     * @param t the cause
      */
     public ReportNotFoundException(final String msg, final Throwable t) {
         super(msg, t);

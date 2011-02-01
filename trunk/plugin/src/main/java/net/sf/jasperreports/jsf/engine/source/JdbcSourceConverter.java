@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -26,16 +26,20 @@ import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import net.sf.jasperreports.jsf.Constants;
 
 import net.sf.jasperreports.jsf.engine.SourceException;
 
 import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
+ * Converter implementation which obtains a JDBC connection
+ * from a JDBC url and some additional attributes added to the
+ * requesting component.
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
-public class JdbcSourceConverter extends DatabaseSourceConverter {
+public final class JdbcSourceConverter extends DatabaseSourceConverter {
 
     public static final String ATTR_DRIVER_CLASS_NAME = 
             "net.sf.jasperreports.jsf.jdbc.driverClassName";
@@ -47,7 +51,7 @@ public class JdbcSourceConverter extends DatabaseSourceConverter {
     /** The Constant logger. */
     private static final Logger logger = Logger.getLogger(
             JdbcSourceConverter.class.getPackage().getName(),
-            "net.sf.jasperreports.jsf.LogMessages");
+            Constants.LOG_MESSAGES_BUNDLE);
 
     @Override
     protected Connection getConnection(

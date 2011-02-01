@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -20,27 +20,42 @@ package net.sf.jasperreports.jsf.engine;
 
 import java.sql.Connection;
 
-import net.sf.jasperreports.jsf.engine.Source;
-
 /**
+ * <tt>Source</tt> implementation of a connection wrapper.
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
 public class ConnectionWrapper implements Source {
 
+    /** The wrapped connection. */
     private Connection connection;
 
-    public ConnectionWrapper(Connection connection) {
+    /**
+     * Constructor with connection instance.
+     *
+     * @param connection the connection to wrap.
+     */
+    public ConnectionWrapper(final Connection connection) {
         if (connection == null) {
             throw new IllegalArgumentException("'connection' can't be null");
         }
         this.connection = connection;
     }
 
-    public Connection getConnection() {
+    /**
+     * Obtains the wrapped connection.
+     *
+     * @return the wrapped connection.
+     */
+    public final Connection getConnection() {
         return connection;
     }
 
+    /**
+     * Disposes this source instance.
+     *
+     * @throws Exception if some error happens closing the connection.
+     */
     public void dispose() throws Exception {
         connection.close();
         connection = null;

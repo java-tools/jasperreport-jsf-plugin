@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -18,28 +18,42 @@
  */
 package net.sf.jasperreports.jsf.engine;
 
-import net.sf.jasperreports.jsf.engine.Source;
 import net.sf.jasperreports.engine.JRDataSource;
 
 /**
+ * <tt>Source</tt> implementation of a <tt>JRDataSource</tt>.
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
 public class JRDataSourceWrapper implements Source {
 
+    /** The wrapped data source. */
     private JRDataSource dataSource;
 
-    public JRDataSourceWrapper(JRDataSource dataSource) {
+    /**
+     * Instantiates a new <tt>JRDataSourceWrapper</tt>.
+     *
+     * @param dataSource the data soruce to wrap.
+     */
+    public JRDataSourceWrapper(final JRDataSource dataSource) {
         if (dataSource == null) {
             throw new IllegalArgumentException("'dataSource' can't be null");
         }
         this.dataSource = dataSource;
     }
 
-    public JRDataSource getDataSource() {
+    /**
+     * Obtains the wrapped data source.
+     *
+     * @return the wrapped data source.
+     */
+    public final JRDataSource getDataSource() {
         return dataSource;
     }
 
+    /**
+     * Disposes this data source resources.
+     */
     public void dispose() throws Exception {
         dataSource = null;
     }

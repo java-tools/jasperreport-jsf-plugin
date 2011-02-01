@@ -37,7 +37,7 @@ public class JExcelApiExporterTest extends ExporterTestCase {
     }
 
     @Override
-    public Class<? extends DefaultExporter> getExporterUnderTestClass() {
+    public Class<? extends ExporterBase> getExporterUnderTestClass() {
         return JExcelApiExporter.class;
     }
 

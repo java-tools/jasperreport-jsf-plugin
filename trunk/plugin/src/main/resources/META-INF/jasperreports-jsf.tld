@@ -2,7 +2,7 @@
 
 <!--  
   JasperReports JSF Plugin
-  Copyright (C) 2010 A. Alonso Dominguez
+  Copyright (C) 2011 A. Alonso Dominguez
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -29,9 +29,9 @@
 
     <description>JasperReports JSF Integration Tag Library</description>
     <display-name>JasperReports JSF TagLib</display-name>
-    <tlib-version>1.0</tlib-version>
+    <tlib-version>1.2</tlib-version>
     <short-name>jr</short-name>
-    <uri>http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_0.tld</uri>
+    <uri>http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_2.tld</uri>
 
     <listener>
         <listener-class>
@@ -53,11 +53,13 @@ the Faces tree.
         </tag-class>
         <body-content>JSP</body-content>
         <attribute>
+            <description><![CDATA[Component identifier]]></description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
         </attribute>
         <attribute>
+            <description><![CDATA[Component binding]]></description>
             <name>binding</name>
             <required>false</required>
             <deferred-value>
@@ -65,6 +67,10 @@ the Faces tree.
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Specific source converter instance used to override the
+default behaviour of the plugin.
+            ]]></description>
             <name>converter</name>
             <required>false</required>
             <deferred-value>
@@ -113,6 +119,8 @@ library documentation.
         </attribute>
         <attribute>
             <description><![CDATA[
+Source value representing the source for the data
+to be supplied to other report components.
             ]]></description>
             <name>value</name>
             <required>false</required>
@@ -121,6 +129,10 @@ library documentation.
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Specific validator instance used to override the
+default behaviour of the plugin.
+            ]]></description>
             <name>validator</name>
             <required>false</required>
             <deferred-value>
@@ -136,11 +148,13 @@ library documentation.
         </tag-class>
         <body-content>JSP</body-content>
         <attribute>
+            <description><![CDATA[Component identifier]]></description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
         </attribute>
         <attribute>
+            <description><![CDATA[Component binding]]></description>
             <name>binding</name>
             <required>false</required>
             <deferred-value>
@@ -155,6 +169,10 @@ library documentation.
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Specific source converter instance used to override the
+default behaviour of the plugin.
+            ]]></description>
             <name>converter</name>
             <required>false</required>
             <deferred-value>
@@ -185,6 +203,10 @@ header when rendering the report contents.
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Specific validator instance used to override the
+default behaviour of the plugin.
+            ]]></description>
             <name>validator</name>
             <required>false</required>
             <deferred-value>
@@ -206,11 +228,13 @@ rendered inside the page.
         </tag-class>
         <body-content>JSP</body-content>
         <attribute>
+            <description><![CDATA[Component identifier]]></description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
         </attribute>
         <attribute>
+            <description><![CDATA[Component binding]]></description>
             <name>binding</name>
             <required>false</required>
             <deferred-value>
@@ -218,6 +242,29 @@ rendered inside the page.
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+HTML <tt>dir</tt> attribute.
+            ]]></description>
+            <name>dir</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+HTML <tt>lang</tt> attribute.
+            ]]></description>
+            <name>lang</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Should this report frame be rendered?
+            ]]></description>
             <name>rendered</name>
             <required>false</required>
             <deferred-value>
@@ -225,6 +272,10 @@ rendered inside the page.
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Specific source converter instance used to override the
+default behaviour of the plugin.
+            ]]></description>
             <name>converter</name>
             <required>false</required>
             <deferred-value>
@@ -267,13 +318,41 @@ values of this attribute.
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Output encoding of the report. Used to override
+the character encoding found by default int the request.
+            ]]></description>
+            <name>encoding</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Width of the border to be rendered around the report
+frame. A value of 0 is no border.
+            ]]></description>
             <name>frameborder</name>
+            <required>false</required>
+            <deferred-value>
+                <type>int</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Omit page margins in the exported report document.
+            ]]></description>
+            <name>ignorePageMargins</name>
             <required>false</required>
             <deferred-value>
                 <type>boolean</type>
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Internal HTML frame margin height.
+            ]]></description>
             <name>marginheight</name>
             <required>false</required>
             <deferred-value>
@@ -281,6 +360,9 @@ values of this attribute.
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Internal HTML frame margin width.
+            ]]></description>
             <name>marginwidth</name>
             <required>false</required>
             <deferred-value>
@@ -288,6 +370,7 @@ values of this attribute.
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[HTML frame height.]]></description>
             <name>height</name>
             <required>false</required>
             <deferred-value>
@@ -299,6 +382,64 @@ values of this attribute.
             <required>false</required>
             <deferred-value>
                 <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Specific report page to be rendered. Use this
+attribute when interested in outputting a single
+page report.
+            ]]></description>
+            <name>pageIndex</name>
+            <required>false</required>
+            <deferred-value>
+                <type>int</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+First page of the report to be rendered. Use this
+attribute when interested in outputting a range
+of pages from the report. The <tt>endPageIndex</tt>
+is mandatory when using this attribute.
+            ]]></description>
+            <name>startPageIndex</name>
+            <required>false</required>
+            <deferred-value>
+                <type>int</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+End page of the report to be rendered. Use this
+attribute when interested in outputting a range
+of pages from the report. The <tt>startPageIndex</tt>
+is mandatory when using this attribute.
+            ]]></description>
+            <name>endPageIndex</name>
+            <required>false</required>
+            <deferred-value>
+                <type>int</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+X offset inside the outputted report document.
+            ]]></description>
+            <name>offsetX</name>
+            <required>false</required>
+            <deferred-value>
+                <type>int</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+X offset inside the outputted report document.
+            ]]></description>
+            <name>offsetY</name>
+            <required>false</required>
+            <deferred-value>
+                <type>int</type>
             </deferred-value>
         </attribute>
         <attribute>
@@ -316,6 +457,7 @@ values of this attribute.
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[HTML frame width.]]></description>
             <name>width</name>
             <required>false</required>
             <deferred-value>
@@ -323,6 +465,10 @@ values of this attribute.
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Specific validator instance used to override the
+default behaviour of the plugin.
+            ]]></description>
             <name>validator</name>
             <required>false</required>
             <deferred-value>
@@ -345,18 +491,33 @@ report contents.
         </tag-class>
         <body-content>JSP</body-content>
         <attribute>
+            <description><![CDATA[Component identifier]]></description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
         </attribute>
         <attribute>
+            <description><![CDATA[Component binding]]></description>
             <name>binding</name>
             <required>false</required>
             <deferred-value>
                 <type>javax.faces.component.UIComponent</type>
             </deferred-value>
         </attribute>
+        <description><![CDATA[
+Output encoding of the report. Used to override
+the character encoding found by default int the request.
+            ]]></description>
+            <name>encoding</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
         <attribute>
+            <description><![CDATA[
+HTML <tt>dir</tt> attribute.
+            ]]></description>
             <name>dir</name>
             <required>false</required>
             <deferred-value>
@@ -364,6 +525,9 @@ report contents.
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+HTML <tt>lang</tt> attribute.
+            ]]></description>
             <name>lang</name>
             <required>false</required>
             <deferred-value>
@@ -371,6 +535,9 @@ report contents.
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Should this report frame be rendered?
+            ]]></description>
             <name>rendered</name>
             <required>false</required>
             <deferred-value>
@@ -378,6 +545,10 @@ report contents.
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Specific source converter instance used to override the
+default behaviour of the plugin.
+            ]]></description>
             <name>converter</name>
             <required>false</required>
             <deferred-value>
@@ -417,6 +588,74 @@ values of this attribute.
             <required>false</required>
             <deferred-value>
                 <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Omit page margins in the exported report document.
+            ]]></description>
+            <name>ignorePageMargins</name>
+            <required>false</required>
+            <deferred-value>
+                <type>boolean</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Specific report page to be rendered. Use this
+attribute when interested in outputting a single
+page report.
+            ]]></description>
+            <name>pageIndex</name>
+            <required>false</required>
+            <deferred-value>
+                <type>int</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+First page of the report to be rendered. Use this
+attribute when interested in outputting a range
+of pages from the report. The <tt>endPageIndex</tt>
+is mandatory when using this attribute.
+            ]]></description>
+            <name>startPageIndex</name>
+            <required>false</required>
+            <deferred-value>
+                <type>int</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+End page of the report to be rendered. Use this
+attribute when interested in outputting a range
+of pages from the report. The <tt>startPageIndex</tt>
+is mandatory when using this attribute.
+            ]]></description>
+            <name>endPageIndex</name>
+            <required>false</required>
+            <deferred-value>
+                <type>int</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+X offset inside the outputted report document.
+            ]]></description>
+            <name>offsetX</name>
+            <required>false</required>
+            <deferred-value>
+                <type>int</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+X offset inside the outputted report document.
+            ]]></description>
+            <name>offsetY</name>
+            <required>false</required>
+            <deferred-value>
+                <type>int</type>
             </deferred-value>
         </attribute>
         <attribute>

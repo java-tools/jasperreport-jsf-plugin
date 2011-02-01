@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -28,17 +28,21 @@ import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.renderkit.html.FrameRenderer;
 
 /**
- * The Class HtmlReport.
+ * Report frame faces component.
+ *
+ * @author A. Alonso Dominguez
  */
 public class HtmlReportFrame extends UIOutputReport {
 
-    /** The Constant COMPONENT_TYPE. */
-    public static final String COMPONENT_TYPE = 
+    /** The component type. */
+    public static final String COMPONENT_TYPE =
             Constants.PACKAGE_PREFIX + ".HtmlReportFrame";
 
     // common attributes
 
+    /** CSS style attributes. */
     private String style;
+    /** CSS style class. */
     private String styleClass;
 
     // iframe attributes
@@ -58,6 +62,7 @@ public class HtmlReportFrame extends UIOutputReport {
 
     // additional attributes
 
+    /** The layout, block or inline. */
     private String layout;
 
     /**
@@ -68,7 +73,12 @@ public class HtmlReportFrame extends UIOutputReport {
         setRendererType(FrameRenderer.RENDERER_TYPE);
     }
 
-    public String getLayout() {
+    /**
+     * Obtains the layout.
+     *
+     * @return the layout.
+     */
+    public final String getLayout() {
         if (layout != null) {
             return layout;
         }
@@ -85,7 +95,12 @@ public class HtmlReportFrame extends UIOutputReport {
         }
     }
 
-    public void setLayout(String layout) {
+    /**
+     * Establishes the new layout.
+     *
+     * @param layout the new layout.
+     */
+    public final void setLayout(final String layout) {
         this.layout = layout;
     }
 
@@ -94,15 +109,15 @@ public class HtmlReportFrame extends UIOutputReport {
      *
      * @return the frameborder
      */
-    public boolean getFrameborder() {
+    public final boolean getFrameborder() {
         if (frameborderSet) {
             return frameborder;
         }
         final ValueExpression ve = getValueExpression("frameborder");
         if (ve != null) {
             try {
-                return ((Boolean) ve.getValue(getFacesContext()
-                        .getELContext())).booleanValue();
+                return ((Boolean) ve.getValue(
+                        getFacesContext().getELContext())).booleanValue();
             } catch (final ELException e) {
                 throw new FacesException(e);
             }
@@ -116,7 +131,7 @@ public class HtmlReportFrame extends UIOutputReport {
      *
      * @param frameborder the new frameborder
      */
-    public void setFrameborder(final boolean frameborder) {
+    public final void setFrameborder(final boolean frameborder) {
         this.frameborder = frameborder;
         frameborderSet = true;
     }
@@ -126,7 +141,7 @@ public class HtmlReportFrame extends UIOutputReport {
      *
      * @return the marginheight
      */
-    public String getMarginheight() {
+    public final String getMarginheight() {
         if (marginheight != null) {
             return marginheight;
         }
@@ -147,7 +162,7 @@ public class HtmlReportFrame extends UIOutputReport {
      *
      * @param marginheight the new marginheight
      */
-    public void setMarginheight(final String marginheight) {
+    public final void setMarginheight(final String marginheight) {
         this.marginheight = marginheight;
     }
 
@@ -156,7 +171,7 @@ public class HtmlReportFrame extends UIOutputReport {
      *
      * @return the marginwidth
      */
-    public String getMarginwidth() {
+    public final String getMarginwidth() {
         if (marginwidth != null) {
             return marginwidth;
         }
@@ -177,7 +192,7 @@ public class HtmlReportFrame extends UIOutputReport {
      *
      * @param marginwidth the new marginwidth
      */
-    public void setMarginwidth(final String marginwidth) {
+    public final void setMarginwidth(final String marginwidth) {
         this.marginwidth = marginwidth;
     }
 
@@ -186,7 +201,7 @@ public class HtmlReportFrame extends UIOutputReport {
      *
      * @return the height
      */
-    public String getHeight() {
+    public final String getHeight() {
         if (height != null) {
             return height;
         }
@@ -207,7 +222,7 @@ public class HtmlReportFrame extends UIOutputReport {
      *
      * @param height the new height
      */
-    public void setHeight(final String height) {
+    public final void setHeight(final String height) {
         this.height = height;
     }
 
@@ -216,7 +231,7 @@ public class HtmlReportFrame extends UIOutputReport {
      *
      * @return the width
      */
-    public String getWidth() {
+    public final String getWidth() {
         if (width != null) {
             return width;
         }
@@ -237,11 +252,16 @@ public class HtmlReportFrame extends UIOutputReport {
      *
      * @param width the new width
      */
-    public void setWidth(final String width) {
+    public final void setWidth(final String width) {
         this.width = width;
     }
 
-    public String getStyle() {
+    /**
+     * Obtains the CSS style attributes.
+     *
+     * @return the CSS style attributes.
+     */
+    public final String getStyle() {
         if (style != null) {
             return style;
         }
@@ -257,18 +277,29 @@ public class HtmlReportFrame extends UIOutputReport {
         }
     }
 
-    public void setStyle(String style) {
+    /**
+     * Establishes the new CSS style attributes.
+     *
+     * @param style the new CSS style.
+     */
+    public final void setStyle(final String style) {
         this.style = style;
     }
 
-    public String getStyleClass() {
+    /**
+     * Obtains the CSS style class.
+     *
+     * @return the CSS style class.
+     */
+    public final String getStyleClass() {
         if (styleClass != null) {
             return styleClass;
         }
         ValueExpression ve = getValueExpression("styleClass");
         if (ve != null) {
             try {
-                return (String) ve.getValue(getFacesContext().getELContext());
+                return (String) ve.getValue(
+                        getFacesContext().getELContext());
             } catch (ELException e) {
                 throw new FacesException(e);
             }
@@ -277,7 +308,12 @@ public class HtmlReportFrame extends UIOutputReport {
         }
     }
 
-    public void setStyleClass(String styleClass) {
+    /**
+     * Establishes a new CSS style class.
+     *
+     * @param styleClass the CSS style class.
+     */
+    public final void setStyleClass(final String styleClass) {
         this.styleClass = styleClass;
     }
 
@@ -287,8 +323,8 @@ public class HtmlReportFrame extends UIOutputReport {
      * (non-Javadoc)
      *
      * @see
-     * javax.faces.component.html.HtmlPanelGroup#restoreState(javax.faces.context
-     * .FacesContext, java.lang.Object)
+     * javax.faces.component.html.HtmlPanelGroup#restoreState(
+     * javax.faces.context.FacesContext, java.lang.Object)
      */
     @Override
     public void restoreState(final FacesContext context, final Object state) {
@@ -327,5 +363,4 @@ public class HtmlReportFrame extends UIOutputReport {
         values[9] = styleClass;
         return values;
     }
-
 }

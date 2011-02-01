@@ -55,7 +55,7 @@ public class JdbcSourceConverterTest {
 
     @DataPoint
     public static final String VALID_JDBC_URL =
-            "jdbc:hsqldb:file:target/test-db";
+            "jdbc:hsqldb:file:target/test-db/data";
 
     private MockFacesEnvironment facesEnv;
     private JdbcSourceConverter converter;

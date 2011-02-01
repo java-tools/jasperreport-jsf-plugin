@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -37,38 +37,50 @@ import net.sf.jasperreports.jsf.validation.SourceValidatorBase;
 import static net.sf.jasperreports.jsf.util.MessagesFactory.*;
 
 /**
- * The Class UIDataSource.
+ * Faces component (non-rendered) used to feed the report
+ * with external data.
+ *
+ * @author A. Alonso Dominguez
  */
 public class UISource extends UIComponentBase {
 
-    /** The Constant COMPONENT_FAMILY. */
+    /** Specific family name used with report sources. */
     public static final String COMPONENT_FAMILY =
             Constants.PACKAGE_PREFIX + ".Source";
-    
-    /** The Constant COMPONENT_TYPE. */
+
+    /** Specific component type name. */
     public static final String COMPONENT_TYPE =
             Constants.PACKAGE_PREFIX + ".Source";
 
     // Fields
 
-    /** The query. */
+    /** The query used to filter the results. */
     private String query = null;
-    /** The type. */
+
+    /** The type of this source instance. */
     private String type = null;
-    /** The type set. */
+    /** Flag to identify if type attribute has been locally set. */
     private boolean typeSet = false;
+
+    /** Flag to determine if this source instance is valid. */
     private boolean valid = true;
-    /** The value */
+
+    /** The source value. */
     private Object value;
+    /** Flag to identify if value attribute has been locally set. */
     private boolean valueSet = false;
 
+    /** The source converter instance. */
     private SourceConverter converter;
+
+    /** The source validator instance. */
     private Validator validator;
 
+    /** The interpretted source value. */
     private Source submittedSource;
 
     /**
-     * Instantiates a new uI data source.
+     * Instantiates a new data source.
      */
     public UISource() {
         super();
@@ -140,11 +152,21 @@ public class UISource extends UIComponentBase {
         typeSet = true;
     }
 
-    public boolean isValid() {
+    /**
+     * Checks if this source configuration is valid.
+     *
+     * @return if this source instance is valid.
+     */
+    public final boolean isValid() {
         return valid;
     }
 
-    public void setValid(boolean valid) {
+    /**
+     * Establishes a new value for the <tt>valid</tt> state.
+     *
+     * @param valid new valid value.
+     */
+    protected final void setValid(final boolean valid) {
         this.valid = valid;
     }
 
@@ -180,7 +202,12 @@ public class UISource extends UIComponentBase {
         valueSet = true;
     }
 
-    public SourceConverter getConverter() {
+    /**
+     * Obtains the <tt>SourceConverter</tt> instance.
+     *
+     * @return current <tt>SourceConverter</tt> instance.
+     */
+    public final SourceConverter getConverter() {
         if (converter != null) {
             return converter;
         }
@@ -197,7 +224,12 @@ public class UISource extends UIComponentBase {
         }
     }
 
-    public void setConverter(SourceConverter converter) {
+    /**
+     * Establishes a new <tt>SourceConverter</tt> instance.
+     *
+     * @param converter the new <tt>SourceConverter</tt> instance.
+     */
+    public final void setConverter(final SourceConverter converter) {
         this.converter = converter;
     }
 
@@ -210,7 +242,7 @@ public class UISource extends UIComponentBase {
             try {
                 return (Validator) ve.getValue(
                         getFacesContext().getELContext());
-            } catch(ELException e) {
+            } catch (ELException e) {
                 throw new FacesException(e);
             }
         } else {
@@ -423,7 +455,12 @@ public class UISource extends UIComponentBase {
         }
     }
 
-    protected JRFacesContext getJRFacesContext() {
+    /**
+     * Obtains the current <tt>JRFacesContext</tt> instance.
+     *
+     * @return current <tt>JRFacesContext</tt> instance.
+     */
+    protected final JRFacesContext getJRFacesContext() {
         return JRFacesContext.getInstance(getFacesContext());
     }
 

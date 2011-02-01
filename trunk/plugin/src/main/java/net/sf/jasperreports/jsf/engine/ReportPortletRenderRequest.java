@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -38,8 +38,8 @@ import net.sf.jasperreports.jsf.Constants;
 public class ReportPortletRenderRequest extends ResourceRequestWrapper
         implements ReportRenderRequest {
 
-    private String oldViewId;
-    private String viewState;
+    private final String oldViewId;
+    private final String viewState;
 
     public ReportPortletRenderRequest(ResourceRequest request, String viewId,
             String viewState) {

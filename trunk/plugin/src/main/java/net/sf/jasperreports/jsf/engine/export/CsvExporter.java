@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -26,16 +26,25 @@ import net.sf.jasperreports.engine.export.JRCsvExporterParameter;
 import net.sf.jasperreports.jsf.component.UIReport;
 
 /**
- * The Class CsvExporter.
+ * Exporter implementation that generates a CSV data file.
+ *
+ * @author A. Alonso Dominguez
  */
-public final class CsvExporter extends DefaultExporter {
+public final class CsvExporter extends ExporterBase {
 
+    /** Exporter content type. */
     public static final String CONTENT_TYPE = "text/plain";
+
     /** The Constant ATTR_FIELD_DELIMITER. */
     public static final String ATTR_FIELD_DELIMITER = "FIELD_DELIMITER";
     /** The Constant ATTR_RECORD_DELIMITER. */
     public static final String ATTR_RECORD_DELIMITER = "RECORD_DELIMITER";
 
+    /**
+     * Obtains the exporter content type.
+     *
+     * @return the exporter content type.
+     */
     public String getContentType() {
         return CONTENT_TYPE;
     }
@@ -44,12 +53,12 @@ public final class CsvExporter extends DefaultExporter {
      * (non-Javadoc)
      *
      * @see
-     * net.sf.jasperreports.jsf.export.DefaultExporter#createJRExporter(javax.faces
+     * net.sf.jasperreports.jsf.export.ExporterBase#createJRExporter(javax.faces
      * .context.FacesContext)
      */
     @Override
     protected JRExporter createJRExporter(
-            final FacesContext context, UIReport component) {
+            final FacesContext context, final UIReport component) {
         final JRCsvExporter exporter = new JRCsvExporter();
         setParameterUsingAttribute(component, exporter,
                 JRCsvExporterParameter.FIELD_DELIMITER, ATTR_FIELD_DELIMITER);

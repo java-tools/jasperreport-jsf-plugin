@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -24,17 +24,34 @@ import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import net.sf.jasperreports.jsf.Constants;
 
-public class ConfigurationStartupListener implements ServletContextListener {
+/**
+ * Startup configuration initializer.
+ *
+ * @author A. Alonso Dominguez
+ */
+public final class ConfigurationStartupListener
+        implements ServletContextListener {
 
+    /** The logger instance. */
     private static final Logger logger = Logger.getLogger(
             ConfigurationStartupListener.class.getPackage().getName(),
-            "net.sf.jasperreports.jsf.LogMessages");
+            Constants.LOG_MESSAGES_BUNDLE);
 
-    public void contextDestroyed(ServletContextEvent sce) {
-    }
+    /**
+     * Listener callback invoked when the web application is to be destroyed.
+     *
+     * @param sce the destroying event.
+     */
+    public void contextDestroyed(final ServletContextEvent sce) { }
 
-    public void contextInitialized(ServletContextEvent sce) {
+    /**
+     * Listener callback invoked when the web application is initialized.
+     *
+     * @param sce the initializing event.
+     */
+    public void contextInitialized(final ServletContextEvent sce) {
         if (logger.isLoggable(Level.FINE)) {
             logger.log(Level.FINE, "JRJSF_0022");
         }

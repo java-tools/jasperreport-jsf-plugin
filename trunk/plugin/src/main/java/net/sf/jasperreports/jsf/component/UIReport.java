@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -42,30 +42,54 @@ import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.validation.ReportValidatorBase;
 
 /**
- * The Class UIReport.
+ * Base class for report components.
+ *
+ * @author A. Alonso Dominguez
  */
 public class UIReport extends UIComponentBase {
 
-    /** The Constant COMPONENT_FAMILY. */
+    /** Name used to identify the reports component family. */
     public static final String COMPONENT_FAMILY =
             Constants.PACKAGE_PREFIX + ".Report";
 
+    /** The logger instance. */
     private static final Logger logger = Logger.getLogger(
             UIReport.class.getPackage().getName(),
-            "net.sf.jasperreports.jsf.LogMessages");
+            Constants.LOG_MESSAGES_BUNDLE);
 
-    /** The source. */
+    /** The source object from where obtain the report's data. */
     private Object source;
 
+    /** The report's name. */
     private String name;
+
+    /**
+     * Valid flag to determine if the component has been
+     * correclty configured.
+     */
     private boolean valid = true;
+
+    /** Report value, which is the report itself. */
     private Object value;
+    /**
+     * Boolean flag used to know if report value has been
+     * programatically set.
+     */
     private boolean valueSet = false;
 
+    /**
+     * Converter instance used to interpret the value of the
+     * <tt>source</tt> attribute.
+     */
     private SourceConverter converter;
+
+    /** Validator instance. */
     private Validator validator;
 
+    /** Interpretted source instance. */
     private Source submittedSource;
+
+    /** Intepretted report instance. */
     private JasperReport submittedReport;
 
     /**
@@ -75,16 +99,21 @@ public class UIReport extends UIComponentBase {
         super();
     }
 
-    public String getFamily() {
+    /**
+     * Obtains the family name.
+     *
+     * @return the family name.
+     */
+    public final String getFamily() {
         return COMPONENT_FAMILY;
     }
     
-    /*
-     * (non-Javadoc)
+    /**
+     * Obtains the established report source.
      *
-     * @see net.sf.jasperreports.jsf.component.UIReport#getDataSource()
+     * @return the report source.
      */
-    public Object getSource() {
+    public final Object getSource() {
         if (source != null) {
             return source;
         }
@@ -101,18 +130,21 @@ public class UIReport extends UIComponentBase {
         }
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Establishes a new report source.
      *
-     * @see
-     * net.sf.jasperreports.jsf.component.UIReport#setDataSource(java.lang.String
-     * )
+     * @param source the new report source.
      */
-    public void setSource(final Object dataSource) {
-        this.source = dataSource;
+    public final void setSource(final Object source) {
+        this.source = source;
     }
 
-    public String getName() {
+    /**
+     * Obtains the name of the report.
+     *
+     * @return the name of the report
+     */
+    public final String getName() {
         if (name != null) {
             return name;
         }
@@ -129,11 +161,21 @@ public class UIReport extends UIComponentBase {
         }
     }
 
-    public void setName(final String name) {
+    /**
+     * Establishes a new name for the report.
+     *
+     * @param name the new report name.
+     */
+    public final void setName(final String name) {
         this.name = name;
     }
 
-    public Object getValue() {
+    /**
+     * Obtains the current report value.
+     *
+     * @return the report value
+     */
+    public final Object getValue() {
         if (valueSet) {
             return value;
         }
@@ -150,16 +192,32 @@ public class UIReport extends UIComponentBase {
         }
     }
 
-    public void setValue(Object value) {
+    /**
+     * Establishes a new value for this project.
+     *
+     * @param value the new value.
+     */
+    public final void setValue(final Object value) {
         this.value = value;
         this.valueSet = true;
     }
 
-    public boolean isLocalValueSet() {
+    /**
+     * Used to identify if current value has been programatically set.
+     *
+     * @return true if report's value has been set by means of the
+     *         <tt>setValue</tt> method, false otherwise.
+     */
+    public final boolean isLocalValueSet() {
         return valueSet;
     }
 
-    public SourceConverter getConverter() {
+    /**
+     * Obtains the current converter instance.
+     *
+     * @return a source converter instance.
+     */
+    public final SourceConverter getConverter() {
         if (converter != null) {
             return converter;
         }
@@ -176,11 +234,21 @@ public class UIReport extends UIComponentBase {
         }
     }
 
-    public void setConverter(SourceConverter converter) {
+    /**
+     * Establishes a new source converter instance.
+     *
+     * @param converter a new converter instance.
+     */
+    public final void setConverter(final SourceConverter converter) {
         this.converter = converter;
     }
 
-    public Validator getValidator() {
+    /**
+     * Obtain the report validator instance.
+     *
+     * @return the validator instance.
+     */
+    public final Validator getValidator() {
         if (validator != null) {
             return validator;
         }
@@ -197,31 +265,66 @@ public class UIReport extends UIComponentBase {
         }
     }
 
-    public void setValidator(Validator validator) {
+    /**
+     * Establishes a new validator instance.
+     *
+     * @param validator the validator instance.
+     */
+    public final void setValidator(final Validator validator) {
         this.validator = validator;
     }
 
-    public Source getSubmittedSource() {
+    /**
+     * Obtains the interpretted report source.
+     *
+     * @return the interpretted report source.
+     */
+    public final Source getSubmittedSource() {
         return submittedSource;
     }
 
-    public void setSubmittedSource(Source submittedSource) {
+    /**
+     * Establishes the value for the report source.
+     *
+     * @param submittedSource the report source.
+     */
+    public final void setSubmittedSource(final Source submittedSource) {
         this.submittedSource = submittedSource;
     }
 
-    public JasperReport getSubmittedReport() {
+    /**
+     * Obtains the interpretted report value.
+     *
+     * @return the interpretted report value.
+     */
+    public final JasperReport getSubmittedReport() {
         return submittedReport;
     }
 
-    public void setSubmittedReport(JasperReport submittedReport) {
+    /**
+     * Establishes the interpretted report value.
+     *
+     * @param submittedReport the report value.
+     */
+    public final void setSubmittedReport(final JasperReport submittedReport) {
         this.submittedReport = submittedReport;
     }
 
-    public boolean isValid() {
+    /**
+     * Obtains the valid flag.
+     *
+     * @return true is this report is well configured.
+     */
+    public final boolean isValid() {
         return valid;
     }
 
-    public void setValid(boolean valid) {
+    /**
+     * Establishes the value for the valid flag.
+     *
+     * @param valid if this report is valid.
+     */
+    protected final void setValid(final boolean valid) {
         this.valid = valid;
     }
 
@@ -248,7 +351,8 @@ public class UIReport extends UIComponentBase {
      * (non-Javadoc)
      *
      * @see
-     * javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext
+     * javax.faces.component.StateHolder#saveState(javax.faces.context.
+     * FacesContext
      * )
      */
     @Override
@@ -265,6 +369,9 @@ public class UIReport extends UIComponentBase {
         return values;
     }
 
+    /**
+     * Resets the report component state.
+     */
     public void resetValue() {
         this.value = null;
         this.valueSet = false;
@@ -272,8 +379,13 @@ public class UIReport extends UIComponentBase {
         this.submittedSource = null;
     }
 
+    /**
+     * Performs the decoding process in which the source value is interpretted.
+     *
+     * @param context current faces' context.
+     */
     @Override
-    public void processDecodes(FacesContext context) {
+    public void processDecodes(final FacesContext context) {
         if (context == null) {
             throw new IllegalArgumentException();
         }
@@ -285,16 +397,16 @@ public class UIReport extends UIComponentBase {
         resetValue();
         super.processDecodes(context);
 
-        try {
-            decodeSource(context);
-        } catch (RuntimeException e) {
-            context.renderResponse();
-            throw e;
-        }
+        executeDecodes(context);
     }
 
+    /**
+     * Method invoked during the <tt>PROCESS_VALIDATORS</tt> phase.
+     *
+     * @param context current faces' instance.
+     */
     @Override
-    public void processValidators(FacesContext context) {
+    public void processValidators(final FacesContext context) {
         if (context == null) {
             throw new NullPointerException();
         }
@@ -302,11 +414,17 @@ public class UIReport extends UIComponentBase {
         if (!isRendered()) {
             return;
         }
+
         super.processValidators(context);
         executeValidate(context);
     }
 
-    protected void decodeSource(FacesContext context) {
+    /**
+     * Decodes the <tt>source</tt> value into a <tt>Source</tt> instace.
+     *
+     * @param context current faces' context.
+     */
+    protected final void decodeSource(final FacesContext context) {
         if (context == null) {
             throw new IllegalArgumentException();
         }
@@ -322,7 +440,12 @@ public class UIReport extends UIComponentBase {
         setSubmittedSource(aSource);
     }
 
-    protected void decodeReport(FacesContext context) {
+    /**
+     * Decodes the report value.
+     *
+     * @param context current faces' context.
+     */
+    protected final void decodeReport(final FacesContext context) {
         if (context == null) {
             throw new IllegalArgumentException();
         }
@@ -377,8 +500,14 @@ public class UIReport extends UIComponentBase {
         setSubmittedReport(aReport);
     }
 
-    public void validate(FacesContext context)
-            throws ValidatorException {
+    /**
+     * Validates the current report instance.
+     *
+     * @param context current faces' context
+     * @throws ValidatorException when report configuration is not valid.
+     */
+    public void validate(final FacesContext context)
+    throws ValidatorException {
         if (context == null) {
             throw new NullPointerException();
         }
@@ -399,18 +528,47 @@ public class UIReport extends UIComponentBase {
         }
     }
 
-    protected JRFacesContext getJRFacesContext() {
+    /**
+     * Utility method for obtaining the current JRFacesContext instance.
+     *
+     * @return current JRFacesContext instance.
+     */
+    protected final JRFacesContext getJRFacesContext() {
         return JRFacesContext.getInstance(getFacesContext());
     }
 
-    protected void executeValidate(FacesContext context) {
+    /**
+     * Executes the decoding process.
+     *
+     * @param context current faces' context.
+     */
+    protected final void executeDecodes(final FacesContext context) {
+        if (context == null) {
+            throw new NullPointerException();
+        }
+
+        try {
+            decodeSource(context);
+            decodeReport(context);
+        } catch (RuntimeException e) {
+            context.renderResponse();
+            throw e;
+        }
+    }
+
+    /**
+     * Executes the validation process.
+     *
+     * @param context current faces' context.
+     */
+    protected final void executeValidate(final FacesContext context) {
         if (context == null) {
             throw new NullPointerException();
         }
 
         try {
             validate(context);
-        } catch(ValidatorException e) {
+        } catch (ValidatorException e) {
             context.renderResponse();
             throw e;
         }

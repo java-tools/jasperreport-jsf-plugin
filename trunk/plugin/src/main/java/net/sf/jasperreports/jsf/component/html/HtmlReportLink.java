@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -28,16 +28,23 @@ import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.renderkit.html.OutputLinkRenderer;
 
 /**
- * The Class HtmlReportLink.
+ * Report link faces' component.
+ *
+ * @author A. Alonso Dominguez
  */
 public class HtmlReportLink extends UIOutputReport {
 
-    /** The Constant COMPONENT_TYPE. */
+    /** The report component type. */
     public static final String COMPONENT_TYPE =
             Constants.PACKAGE_PREFIX + ".HtmlReportLink";
 
+    // HTML attributes
+
+    /** The target HTML frame. */
     private String target;
+    /** The CSS style attributes. */
     private String style;
+    /** The CSS style class. */
     private String styleClass;
 
     /**
@@ -48,7 +55,12 @@ public class HtmlReportLink extends UIOutputReport {
         setRendererType(OutputLinkRenderer.RENDERER_TYPE);
     }
 
-    public String getTarget() {
+    /**
+     * Obtains the target HTML frame.
+     *
+     * @return the target HTML frame.
+     */
+    public final String getTarget() {
         if (target != null) {
             return target;
         }
@@ -64,11 +76,21 @@ public class HtmlReportLink extends UIOutputReport {
         }
     }
 
-    public void setTarget(String target) {
+    /**
+     * Establishes a new target HTML frame.
+     *
+     * @param target the new target HTML frame.
+     */
+    public final void setTarget(final String target) {
         this.target = target;
     }
 
-    public String getStyle() {
+    /**
+     * Obtains the CSS style attributes.
+     *
+     * @return the CSS style attributes.
+     */
+    public final String getStyle() {
         if (style != null) {
             return style;
         }
@@ -84,10 +106,20 @@ public class HtmlReportLink extends UIOutputReport {
         }
     }
 
-    public void setStyle(String style) {
+    /**
+     * Establishes the new CSS style attributes.
+     *
+     * @param style the new CSS style.
+     */
+    public final void setStyle(final String style) {
         this.style = style;
     }
 
+    /**
+     * Obtains the CSS style class.
+     *
+     * @return the CSS style class.
+     */
     public String getStyleClass() {
         if (styleClass != null) {
             return styleClass;
@@ -104,12 +136,24 @@ public class HtmlReportLink extends UIOutputReport {
         }
     }
 
+    /**
+     * Establishes a new CSS style class.
+     *
+     * @param styleClass the CSS style class.
+     */
     public void setStyleClass(String styleClass) {
         this.styleClass = styleClass;
     }
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * javax.faces.component.html.HtmlPanelGroup#restoreState(
+     * javax.faces.context.FacesContext, java.lang.Object)
+     */
     @Override
-    public void restoreState(FacesContext context, Object state) {
+    public void restoreState(final FacesContext context, final Object state) {
         Object[] values = (Object[]) state;
         super.restoreState(context, values[0]);
         target = (String) values[1];
@@ -117,8 +161,15 @@ public class HtmlReportLink extends UIOutputReport {
         styleClass = (String) values[3];
     }
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * javax.faces.component.html.HtmlPanelGroup#saveState(javax.faces.context
+     * .FacesContext)
+     */
     @Override
-    public Object saveState(FacesContext context) {
+    public Object saveState(final FacesContext context) {
         Object[] values = new Object[4];
         values[0] = super.saveState(context);
         values[1] = target;

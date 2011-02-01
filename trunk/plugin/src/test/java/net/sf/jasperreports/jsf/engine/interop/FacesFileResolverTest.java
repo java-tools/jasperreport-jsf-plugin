@@ -58,7 +58,7 @@ public class FacesFileResolverTest {
     public static String localResource() {
         String documentRoot = System.getProperty(
                 TestConstants.PROP_DOCUMENT_ROOT);
-        return (documentRoot + "/index.xhtml").replaceAll("/", File.separator);
+        return new File(documentRoot + "/index.xhtml").getAbsolutePath();
     }
 
     @DataPoint

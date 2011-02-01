@@ -2,7 +2,7 @@
 
 <!--  
   JasperReports JSF Plugin
-  Copyright (C) 2010 A. Alonso Dominguez
+  Copyright (C) 2011 A. Alonso Dominguez
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -28,7 +28,7 @@
 
 <facelet-taglib>
     <namespace>
-        http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_0.tld
+        http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_2.tld
     </namespace>
 
     <tag>

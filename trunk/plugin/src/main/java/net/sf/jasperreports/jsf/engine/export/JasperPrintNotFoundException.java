@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -21,18 +21,31 @@ package net.sf.jasperreports.jsf.engine.export;
 import net.sf.jasperreports.jsf.engine.ExporterException;
 
 /**
+ * Notification that no <tt>JasperPrint</tt> instance has been
+ * found for the specified component id.
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
-public class JasperPrintNotFoundException extends ExporterException {
+public final class JasperPrintNotFoundException extends ExporterException {
 
+    /** Component's client id. */
     private String clientId;
 
-    public JasperPrintNotFoundException(String clientId) {
+    /**
+     * Instantiates a new exception for the specified client id.
+     *
+     * @param clientId the component's client id.
+     */
+    public JasperPrintNotFoundException(final String clientId) {
         super(clientId);
         this.clientId = clientId;
     }
 
+    /**
+     * Obtains the component's client id.
+     *
+     * @return the component's client id.
+     */
     public String getClientId() {
         return clientId;
     }

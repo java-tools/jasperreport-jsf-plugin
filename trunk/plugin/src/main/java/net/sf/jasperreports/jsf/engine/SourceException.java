@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -21,20 +21,37 @@ package net.sf.jasperreports.jsf.engine;
 import net.sf.jasperreports.jsf.JRFacesException;
 
 /**
+ * Root exception for source related exceptions.
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
 public class SourceException extends JRFacesException {
 
-    public SourceException(Throwable t) {
+    /**
+     * Constructor with cause.
+     *
+     * @param t the cause.
+     */
+    public SourceException(final Throwable t) {
         super(t);
     }
 
-    public SourceException(String msg) {
+    /**
+     * Constructor with message.
+     *
+     * @param msg the message.
+     */
+    public SourceException(final String msg) {
         super(msg);
     }
 
-    public SourceException(String msg, Throwable t) {
+    /**
+     * Constructor with message and cause.
+     *
+     * @param msg the message.
+     * @param t the cause.
+     */
+    public SourceException(final String msg, final Throwable t) {
         super(msg, t);
     }
 

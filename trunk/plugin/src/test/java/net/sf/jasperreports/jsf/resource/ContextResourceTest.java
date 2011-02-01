@@ -18,6 +18,7 @@
  */
 package net.sf.jasperreports.jsf.resource;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -77,8 +78,12 @@ public class ContextResourceTest {
 
         assertThat(location, notNullValue());
         assertThat(location, equalTo(expectedLocation));
-		//TODO enable this assertion
+	//TODO enable this assertion
         //assertThat(resource.getPath(), equalTo(location.getPath()));
+
+        File path = new File(resource.getPath());
+        File pathExpected = new File(location.getPath());
+        assertThat(path, equalTo(pathExpected));
 
         try {
             stream.close();

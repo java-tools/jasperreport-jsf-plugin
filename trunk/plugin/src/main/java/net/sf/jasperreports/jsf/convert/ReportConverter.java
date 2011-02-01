@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -24,13 +24,24 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.engine.JasperReport;
 
 /**
+ * Report converter interface.
  *
- * @author antonio.alonso
+ * @author A. Alonso Dominguez
  */
 public interface ReportConverter {
 
+    /**
+     * Obtains a <tt>JasperReport</tt> instance from the value
+     * received as a parameter.
+     *
+     * @param context current faces' context.
+     * @param component the faces' component asking for conversion.
+     * @param value the value that must be converted.
+     * @return a <tt>JasperReport</tt> instance.
+     * @throws ConverterException if value can't be converted.
+     */
     public JasperReport convertFromValue(FacesContext context,
             UIComponent component, Object value)
     throws ConverterException;
-    
+
 }

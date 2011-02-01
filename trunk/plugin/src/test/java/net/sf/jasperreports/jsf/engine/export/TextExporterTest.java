@@ -38,7 +38,7 @@ public class TextExporterTest extends ExporterTestCase {
     }
 
     @Override
-    public Class<? extends DefaultExporter> getExporterUnderTestClass() {
+    public Class<? extends ExporterBase> getExporterUnderTestClass() {
         return TextExporter.class;
     }
 

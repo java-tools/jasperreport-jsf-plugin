@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -32,12 +32,28 @@ import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 import net.sf.jasperreports.jsf.engine.ReportHttpRenderRequest;
 import net.sf.jasperreports.jsf.engine.ReportRenderRequest;
 
+/**
+ * Servlet implementation of the external context helper.
+ *
+ * @author A. Alonso Dominguez
+ */
 final class ServletContextHelper extends ExternalContextHelper {
 
+    /**
+     * Private constructor to prevent instantiation.
+     */
     protected ServletContextHelper() { }
 
+    /**
+     * Creates a <code>ReportRenderRequest</code> based on the data code in the
+     * current ExternalContext.
+     *
+     * @param context the current ExternalContext
+     * @return A representation of the request render request
+     */
     @Override
-    public ReportRenderRequest restoreReportRequest(ExternalContext context) {
+    public ReportRenderRequest restoreReportRequest(
+            final ExternalContext context) {
         final Configuration config = Configuration.getInstance(context);
         final String viewId = context.getRequestParameterMap()
                 .get(Constants.PARAM_VIEWID);
@@ -50,6 +66,12 @@ final class ServletContextHelper extends ExternalContextHelper {
         return (ReportRenderRequest) request;
     }
 
+    /**
+     * Obtains the server name of the current request.
+     *
+     * @param context the current ExternalContext
+     * @return the server name
+     */
     @Override
     public String getRequestServerName(final ExternalContext context) {
         final HttpServletRequest request = (HttpServletRequest)
@@ -57,6 +79,12 @@ final class ServletContextHelper extends ExternalContextHelper {
         return request.getServerName();
     }
 
+    /**
+     * Gets the request uri.
+     *
+     * @param context the context
+     * @return the request uri
+     */
     @Override
     public String getRequestURI(final ExternalContext context) {
         final HttpServletRequest request = (HttpServletRequest)
@@ -64,12 +92,30 @@ final class ServletContextHelper extends ExternalContextHelper {
         return request.getRequestURI();
     }
 
+    /**
+     * Obtains the real path name of the resource local to the current context.
+     *
+     * @param context the current ExternalContext
+     * @param name the resource name
+     * @return the resource real path name
+     */
     @Override
-    public String getResourceRealPath(final ExternalContext context, String name) {
+    public String getResourceRealPath(final ExternalContext context,
+            final String name) {
         final ServletContext ctx = (ServletContext) context.getContext();
         return ctx.getRealPath(name);
     }
 
+    /**
+     * Writes the report headers into the current response using the report
+     * renderer.
+     *
+     * @param context the current ExternalContext
+     * @param renderer the report renderer instance
+     * @param report the report component instance
+     * @throws IOException if any input or output error happens when writing
+     *         the report headers
+     */
     @Override
     public void writeHeaders(final ExternalContext context,
             final ReportRenderer renderer, final UIReport report)
@@ -86,6 +132,14 @@ final class ServletContextHelper extends ExternalContextHelper {
         }
     }
 
+    /**
+     * Writes the report contents into the context response.
+     *
+     * @param context the context
+     * @param contentType the content type
+     * @param data the data
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
     @Override
     public void writeResponse(final ExternalContext context,
             final String contentType, final byte[] data) throws IOException {

@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -23,14 +23,13 @@ import javax.faces.component.UIComponent;
 
 import net.sf.jasperreports.jsf.component.html.HtmlReportFrame;
 import net.sf.jasperreports.jsf.renderkit.html.FrameRenderer;
-import net.sf.jasperreports.jsf.taglib.OutputReportTag;
 
 import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
  * The Class ReportTag.
  */
-public class HtmlReportFrameTag extends OutputReportTag {
+public class HtmlReportFrameTag extends HtmlReportTagBase {
 
     private ValueExpression layout;
     /** The frameborder. */
@@ -157,7 +156,7 @@ public class HtmlReportFrameTag extends OutputReportTag {
     protected void setProperties(final UIComponent component) {
         super.setProperties(component);
 
-        setBooleanAttribute(component, "frameborder", frameborder);
+        setIntegerAttribute(component, "frameborder", frameborder);
         setStringAttribute(component, "height", height);
         setStringAttribute(component, "layout", layout);
         setStringAttribute(component, "marginheight", marginheight);

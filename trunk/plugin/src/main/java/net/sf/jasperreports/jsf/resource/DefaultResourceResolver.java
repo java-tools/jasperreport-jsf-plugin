@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -22,7 +22,6 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -32,13 +31,12 @@ import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.util.Util;
 
 import static org.apache.commons.io.FilenameUtils.*;
-import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
  *
  * @author aalonsodominguez
  */
-public class DefaultResourceResolver implements ResourceResolver {
+public final class DefaultResourceResolver implements ResourceResolver {
 
     public Resource resolveResource(FacesContext context, UIComponent component,
             String name) {

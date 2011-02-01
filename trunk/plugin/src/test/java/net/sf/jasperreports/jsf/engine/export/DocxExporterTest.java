@@ -38,7 +38,7 @@ public class DocxExporterTest extends ExporterTestCase {
     }
 
     @Override
-    public Class<? extends DefaultExporter> getExporterUnderTestClass() {
+    public Class<? extends ExporterBase> getExporterUnderTestClass() {
         return DocxExporter.class;
     }
 

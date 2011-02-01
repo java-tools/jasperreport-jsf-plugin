@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -37,10 +37,11 @@ import net.sf.jasperreports.jsf.engine.interop.FacesFileResolver;
 import net.sf.jasperreports.jsf.util.Util;
 
 /**
+ * Base class for <tt>Exporter</tt> implementations.
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
-public abstract class DefaultExporter implements Exporter {
+public abstract class ExporterBase implements Exporter {
 
     public static final String ATTR_CHARACTER_ENCODING = "CHARACTER_ENCODING";
     public static final String ATTR_FILTER = "FILTER";
@@ -64,9 +65,9 @@ public abstract class DefaultExporter implements Exporter {
      * @throws IOException Signals that an I/O exception has occurred.
      * @throws ExporterException the exporter exception
      */
-    public void export(final FacesContext context,
+    public final void export(final FacesContext context,
             final UIReport component, final OutputStream stream)
-            throws IOException, ExporterException {
+    throws IOException, ExporterException {
         String jasperPrintAttrName = context.getExternalContext()
                 .getInitParameter(Constants.JASPER_PRINT_ATTR_NAME);
         if (jasperPrintAttrName == null) {
