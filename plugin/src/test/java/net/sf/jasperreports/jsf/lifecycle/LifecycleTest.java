@@ -13,12 +13,14 @@ import org.jmock.integration.junit4.JUnit4Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  *
  * @author aalonsodominguez
  */
+@Ignore
 public class LifecycleTest {
 
     private Mockery mockery = new JUnit4Mockery() {{
