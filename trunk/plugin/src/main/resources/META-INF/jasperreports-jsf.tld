@@ -504,7 +504,8 @@ report contents.
                 <type>javax.faces.component.UIComponent</type>
             </deferred-value>
         </attribute>
-        <description><![CDATA[
+        <attribute>
+        	<description><![CDATA[
 Output encoding of the report. Used to override
 the character encoding found by default int the request.
             ]]></description>

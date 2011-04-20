@@ -48,6 +48,8 @@
       </includes>
       <binaries>
         <outputDirectory>/samples</outputDirectory>
+        <includeDependencies>false</includeDependencies>
+        <unpack>false</unpack>
       </binaries>
     </moduleSet>
   </moduleSets>
@@ -85,6 +87,14 @@
     <fileSet>
       <directory>plugin/target/site</directory>
       <outputDirectory>/doc/plugin</outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>plugin/target/apidocs</directory>
+      <outputDirectory>/doc/apidocs</outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>plugin/target/site/tlddoc</directory>
+      <outputDirectory>/doc/tlddoc</outputDirectory>
     </fileSet>
     <fileSet>
       <directory>samples/jrjsf-usecases/target/site</directory>
