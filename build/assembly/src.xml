@@ -32,14 +32,9 @@
       <directory>.</directory>
       <outputDirectory>/</outputDirectory>
         <useDefaultExcludes>true</useDefaultExcludes>
-	<includes>
-          <include>LICENSE*</include>
-          <include>README*</include>
-          <include>NOTICE*</include>
-          <include>pom.xml</include>
-        </includes>
         <excludes>
           <exclude>**/target/**</exclude>
+          <exclude>**/.settings/**</exclude>
         </excludes>
     </fileSet>
   </fileSets>

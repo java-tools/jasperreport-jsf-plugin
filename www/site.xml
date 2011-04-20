@@ -107,7 +107,7 @@
       </item>
       <item name="Reference">
         <item name="API Docs" href="apidocs/index.html" />
-        <item name="TLD Docs" href="plugin/tlddoc/index.html" />
+        <item name="TLD Docs" href="tlddoc/index.html" />
       </item>
     </menu>
     
