@@ -89,6 +89,12 @@ the <<<value>>> attribute:
 </jr:reportFrame>
 +-- 
 
+  <<Note>>: Since 1.0-RC version classpath resources can be specified also without
+the <<<classpath:>>> prefix. This is done in order to address some issues found when
+those resources are looked up from inside the JasperReports engine. However, the
+prefered way to specify this kind of resources is still prepending the <<<classpath:>>>
+prefix.
+
 *** External URL Resources
 
   When loading resources from an URL simply use any normal URL as the value of
@@ -110,6 +116,19 @@ will be resolved inside the application context.
 <jr:reportFrame value="/reports/orders.jasper">
     ...
 </jr:reportFrame>
++--
+
+*** Request-relative Resources
+
+  Request-relative resources are a special kind of resources that are resolved locally
+against current request. Let's say that a report based component is asking for a
+request-relative resource, it will be looked for relative to the report file. If it's
+a sourcve based component asking for a request-relative resource, it will be looked
+for relative to current view id.
+
+**** Request-relative resource locally to view id
++--
+<jr:source value="orders.xls" />
 +--
 
 ** Report Parameters
