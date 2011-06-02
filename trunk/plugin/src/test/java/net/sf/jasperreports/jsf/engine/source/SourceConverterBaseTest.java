@@ -224,6 +224,7 @@ public class SourceConverterBaseTest {
     }
 
     @Theory
+    @SuppressWarnings("unused")
     public void withDataSourceValueAndSQLExThrowConverterEx() throws Exception {
         final DataSource expectedDS = mockery.mock(DataSource.class);
         final SQLException expectedCause = new SQLException();
@@ -235,9 +236,9 @@ public class SourceConverterBaseTest {
             will(throwException(expectedCause));
         }});
 
-        Source source;
+		Source source;
         try {
-            source = source = converter.convertFromValue(
+            source = converter.convertFromValue(
                 facesEnv.getFacesContext(), component, expectedDS);
             fail("A ConverterException was expected");
         } catch (Exception e) {
@@ -267,7 +268,8 @@ public class SourceConverterBaseTest {
         assertThat(dataSource, sameInstance(expectedDS));
     }
 
-    @Theory
+	@Theory
+	@SuppressWarnings("unchecked")
     public void withAnyValueReturnSource(final Object value) {
         assumeThat(value, allOf(notNullValue(),
                 not(sameInstance(EMPTY_SOURCE))));
@@ -282,7 +284,8 @@ public class SourceConverterBaseTest {
         assertThat(source, sameInstance(expectedSource));
     }
 
-    @Theory
+	@Theory
+	@SuppressWarnings("unused")
     public void ifAnyValueThrowsExRethrowConverterEx(final Object value) {
         assumeThat(value, notNullValue());
 
@@ -306,6 +309,7 @@ public class SourceConverterBaseTest {
     }
 
     @Theory
+    @SuppressWarnings("unused")
     public void ifAnyValueReturnsNullThrowConverterEx(final Object value) {
         assumeThat(value, notNullValue());
 

@@ -18,6 +18,7 @@
  */
 package net.sf.jasperreports.jsf.context;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import javax.faces.component.UIComponent;
@@ -30,7 +31,6 @@ import net.sf.jasperreports.jsf.engine.source.SourceConverterBase;
 import net.sf.jasperreports.jsf.convert.SourceConverter;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.ExporterException;
-import net.sf.jasperreports.jsf.engine.export.ExporterNotFoundException;
 import net.sf.jasperreports.jsf.engine.fill.DefaultFiller;
 import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.resource.DefaultResourceResolver;
@@ -62,6 +62,8 @@ public final class DefaultJRFacesContext extends JRFacesContext {
     private final Map<String, SourceConverter> sourceConverterMap;
     /** Exporter map. */
     private final Map<String, Exporter> exporterMap;
+    /** MIME type to exporter format map. */
+    private final Map<ContentType, String> contentTypeMap;
     /** Current fillter instance. */
     private final Filler filler;
     /** Current resource resolver instance. */
@@ -73,6 +75,14 @@ public final class DefaultJRFacesContext extends JRFacesContext {
     protected DefaultJRFacesContext() {
         sourceConverterMap = Services.map(SourceConverter.class);
         exporterMap = Services.map(Exporter.class);
+        
+        contentTypeMap = new HashMap<ContentType, String>();
+        for (Map.Entry<String, Exporter> entry : exporterMap.entrySet()) {
+        	for (ContentType ct : entry.getValue().getContentTypes()) {
+        		contentTypeMap.put(ct, entry.getKey());
+        	}
+        }
+        
         filler = Services.chain(Filler.class, DEFAULT_FILLER);
         resourceResolver = Services.chain(
                 ResourceResolver.class, DEFAULT_RESOURCE_RESOLVER);
@@ -181,10 +191,20 @@ public final class DefaultJRFacesContext extends JRFacesContext {
             final UIReport component) {
         String format = getStringAttribute(component, "format", null);
         if (format != null) {
-            final Exporter exporter = exporterMap.get(format);
+            Exporter exporter;
+            if (ContentType.isContentType(format)) {
+            	ContentType ct = new ContentType(format);
+            	format = contentTypeMap.get(ct);
+            	if (format == null) {
+            		throw new UnsupportedContentTypeException(ct);
+            	}
+            }
+            exporter = exporterMap.get(format);
+            
             if (exporter == null) {
                 throw new ExporterNotFoundException(format);
             }
+            
             return exporter;
         } else {
             throw new ExporterException(

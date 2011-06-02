@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -48,10 +48,11 @@ public class AbstractResourceTest {
     public static final String NON_NULL_NAME = "resource";
 
     @Theory
+    @SuppressWarnings("unused")
     public void nullNameOrEmptyThrowsIllegalArgEx(String name) {
         assumeThat(name, nullValue());
 
-        Resource resource = null;
+		Resource resource = null;
         try {
             resource = new DummyResource(name);
             fail("A null resource name should throw an IllegalArgumentException");
@@ -61,6 +62,7 @@ public class AbstractResourceTest {
     }
 
     @Theory
+    @SuppressWarnings("unused")
     public void emptyNameThrowsIllegalArgEx(String name) {
         assumeThat(name, notNullValue());
         assumeTrue(name.length() == 0);

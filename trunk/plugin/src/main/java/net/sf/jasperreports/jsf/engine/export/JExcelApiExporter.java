@@ -18,12 +18,16 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import net.sf.jasperreports.jsf.engine.ExporterException;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.export.JExcelApiExporterParameter;
 import net.sf.jasperreports.engine.export.JRXlsAbstractExporter;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.context.ContentType;
 
 /**
  * Exports the report contents to an Excel file using the JExcel API.
@@ -33,17 +37,17 @@ import net.sf.jasperreports.jsf.component.UIReport;
 public final class JExcelApiExporter extends AbstractXlsExporter {
 
     /** MIME type of the exported report. */
-    public static final String CONTENT_TYPE = "application/vnd.ms-excel";
+    public static final ContentType CONTENT_TYPE = new ContentType("application/vnd.ms-excel");
 
     /** 'CREATE_CUSTOM_PALLETE' exporter attribute name. */
     public static final String ATTR_CREATE_CUSTOM_PALETTE =
             "CREATE_CUSTOM_PALETTE";
 
     /**
-     * @see net.sf.jasperreports.jsf.engine.Exporter#getContentType()
+     * @see net.sf.jasperreports.jsf.engine.Exporter#getContentTypes()
      */
-    public String getContentType() {
-        return CONTENT_TYPE;
+    public Collection<ContentType> getContentTypes() {
+        return Collections.singleton(CONTENT_TYPE);
     }
 
     @Override

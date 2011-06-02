@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -18,25 +18,31 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Collection;
 
 import javax.faces.context.FacesContext;
-import net.sf.jasperreports.engine.JRException;
 
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.context.ContentType;
 import net.sf.jasperreports.jsf.engine.ExporterException;
 import net.sf.jasperreports.jsf.engine.fill.DefaultFiller;
-import net.sf.jasperreports.jsf.test.JMockTheories;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
-import org.apache.shale.test.mock.MockServletContext;
 
+import org.apache.shale.test.mock.MockServletContext;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -45,11 +51,7 @@ import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.experimental.theories.DataPoint;
 import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
 
 /**
  *
@@ -191,7 +193,7 @@ public class DefaultExporterTest {
     
     private class MockDefaultExporter extends ExporterBase {
 
-        private String contentType;
+        private Collection<ContentType> contentTypes;
 
         @Override
         protected JRExporter createJRExporter(FacesContext context, 
@@ -200,12 +202,12 @@ public class DefaultExporterTest {
             return mockExporter;
         }
 
-        public String getContentType() {
-            return contentType;
+        public Collection<ContentType> getContentTypes() {
+            return contentTypes;
         }
 
-        public void setContentType(String contentType) {
-            this.contentType = contentType;
+        public void setContentTypes(Collection<ContentType> contentTypes) {
+            this.contentTypes = contentTypes;
         }
 
     }

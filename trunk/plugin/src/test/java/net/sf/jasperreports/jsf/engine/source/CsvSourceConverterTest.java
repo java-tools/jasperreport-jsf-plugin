@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -111,7 +111,6 @@ public class CsvSourceConverterTest {
     }
 
     @DataPoint
-    @SuppressWarnings("unused")
     public static URL INVALID_URL() {
         try {
             return new URL(INVALID_URL_STR);
@@ -267,7 +266,8 @@ public class CsvSourceConverterTest {
         }
     }
 
-    @Theory
+	@Theory
+	@SuppressWarnings("unchecked")
     public void validResourceReturnsJRDataSource(final Object resource)
             throws Exception {
         assumeThat(resource, is(not(nullValue())));
@@ -323,7 +323,7 @@ public class CsvSourceConverterTest {
     }
 
     @Theory
-    @SuppressWarnings("unused")
+    @SuppressWarnings({ "unused", "unchecked" })
     public void invalidDataThrowsSourceEx(Object data) {
         assumeThat(data, notNullValue());
         assumeThat(data, not(anyOf(

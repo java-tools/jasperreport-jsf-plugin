@@ -18,12 +18,16 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporterParameter;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.context.ContentType;
 
 /**
  * Exports the reports contents to a MS Office 2007 (Word) document.
@@ -35,8 +39,8 @@ import net.sf.jasperreports.jsf.component.UIReport;
 public final class DocxExporter extends ExporterBase {
 
     /** Exporter content type. */
-    public static final String CONTENT_TYPE =
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    public static final ContentType CONTENT_TYPE =
+            new ContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 
     //public static final String ATTR_FLEXIBLE_ROW_HEIGHT =
     //       "FLEXIBLE_ROW_HEIGHT";
@@ -50,8 +54,8 @@ public final class DocxExporter extends ExporterBase {
      *
      * @return the exporter content type.
      */
-    public String getContentType() {
-        return CONTENT_TYPE;
+    public Collection<ContentType> getContentTypes() {
+        return Collections.singleton(CONTENT_TYPE);
     }
 
     /**

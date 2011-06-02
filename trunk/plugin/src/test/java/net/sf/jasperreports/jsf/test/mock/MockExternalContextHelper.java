@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -19,8 +19,11 @@
 package net.sf.jasperreports.jsf.test.mock;
 
 import java.io.IOException;
+import java.util.Collection;
+
 import javax.faces.context.ExternalContext;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.context.ContentType;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.engine.ReportRenderRequest;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
@@ -34,6 +37,11 @@ public class MockExternalContextHelper extends ExternalContextHelper {
     private String requestServerName;
 
     @Override
+	public Collection<ContentType> getAcceptedContentTypes(ExternalContext context) {
+		throw new UnsupportedOperationException("Not supported yet");
+	}
+
+	@Override
     public ReportRenderRequest restoreReportRequest(ExternalContext context) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -63,7 +71,7 @@ public class MockExternalContextHelper extends ExternalContextHelper {
     }
 
     @Override
-    public void writeResponse(ExternalContext context, String contentType, byte[] data) throws IOException {
+    public void writeResponse(ExternalContext context, ContentType contentType, byte[] data) throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

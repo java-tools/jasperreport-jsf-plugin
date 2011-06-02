@@ -18,12 +18,16 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRHtmlExporter;
 import net.sf.jasperreports.engine.export.JRHtmlExporterParameter;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.context.ContentType;
 
 /**
  * Exporter implementation which generates a HTML report.
@@ -33,7 +37,7 @@ import net.sf.jasperreports.jsf.component.UIReport;
 public final class HtmlExporter extends ExporterBase {
 
     /** Content type for this exporter type. */
-    public static final String CONTENT_TYPE = "text/html";
+    public static final ContentType CONTENT_TYPE = new ContentType("text/html");
 
     /** The Constant ATTR_HTML_HEADER. */
     public static final String ATTR_HTML_HEADER = "HTML_HEADER";
@@ -47,10 +51,10 @@ public final class HtmlExporter extends ExporterBase {
     public static final String ATTR_IMAGES_URI = "IMAGES_URI";
 
     /**
-     * @see net.sf.jasperreports.jsf.engine.Exporter#getContentType()
+     * @see net.sf.jasperreports.jsf.engine.Exporter#getContentTypes()
      */
-    public String getContentType() {
-        return CONTENT_TYPE;
+    public Collection<ContentType> getContentTypes() {
+        return Collections.singleton(CONTENT_TYPE);
     }
 
     /*

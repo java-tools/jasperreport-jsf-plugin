@@ -20,10 +20,12 @@ package net.sf.jasperreports.jsf.engine;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Collection;
 
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.context.ContentType;
 
 /**
  * The Exporter interface.
@@ -37,7 +39,7 @@ public interface Exporter {
      *
      * @return the exporter's content type.
      */
-    public abstract String getContentType();
+    public abstract Collection<ContentType> getContentTypes();
 
     /**
      * Export.

@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -63,7 +63,8 @@ public class CsvReportSourceTest {
         dataSource = mockery.mock(JRDataSource.class);
     }
 
-    @Theory
+	@Theory
+	@SuppressWarnings("unused")
     public void nullClientIdThrowsIllegalArgEx(String clientId) {
         assumeThat(clientId, nullValue());
 
@@ -77,6 +78,7 @@ public class CsvReportSourceTest {
     }
 
     @Theory
+    @SuppressWarnings("unused")
     public void emptyClientIdThrowsIllegalArgEx(String clientId) {
         assumeThat(clientId, notNullValue());
         assumeTrue(clientId.length() == 0);

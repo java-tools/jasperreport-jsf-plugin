@@ -16,7 +16,7 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.engine.export;
+package net.sf.jasperreports.jsf.context;
 
 import net.sf.jasperreports.jsf.util.ServiceException;
 

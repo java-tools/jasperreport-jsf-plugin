@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -18,24 +18,25 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
+
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Properties;
 
 import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.context.ContentType;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
 
 /**
  *
@@ -78,7 +79,7 @@ public abstract class ExporterTestCase {
         properties.load(stream);
     }
 
-    public abstract String getExpectedContentType();
+    public abstract Collection<ContentType> getExpectedContentType();
 
     public abstract Class<? extends JRExporter> getExpectedJRExporterClass();
 
@@ -105,9 +106,9 @@ public abstract class ExporterTestCase {
                 getExporterUnderTestClass();
         ExporterBase exporter = exporterClass.newInstance();
 
-        String contentType = exporter.getContentType();
-        assertThat(contentType, notNullValue());
-        assertThat(contentType, equalTo(getExpectedContentType()));
+        Collection<ContentType> contentTypes = exporter.getContentTypes();
+        assertThat(contentTypes, notNullValue());
+        assertThat(contentTypes, equalTo(getExpectedContentType()));
     }
 
     protected UIReport createComponent() {

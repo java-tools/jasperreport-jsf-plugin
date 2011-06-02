@@ -19,6 +19,12 @@
 package net.sf.jasperreports.jsf.context;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
+
 import javax.faces.context.ExternalContext;
 import javax.portlet.PortletContext;
 import javax.portlet.PortletRequest;
@@ -43,7 +49,26 @@ final class PortletContextHelper extends ExternalContextHelper {
      */
     protected PortletContextHelper() { }
 
-    /**
+    @Override
+	public Collection<ContentType> getAcceptedContentTypes(
+			final ExternalContext context) {
+    	if ("2.0".equals(getPortletVersion())) {
+    		ResourceRequest request = (ResourceRequest) context.getRequest();
+    		Enumeration<String> values = request.getProperties("Accept");
+        	List<ContentType> list = new ArrayList<ContentType>();
+        	while (values.hasMoreElements()) {
+        		ContentType type = new ContentType(values.nextElement());
+        		list.add(type);
+        	}
+        	Collections.sort(list);
+        	return Collections.unmodifiableList(list);
+    	} else {
+            throw new IllegalStateException(
+            	"Only Resource Request/Response state is allowed");
+    	}
+	}
+
+	/**
      * Creates a <code>ReportRenderRequest</code> based on the data code in the
      * current ExternalContext.
      *
@@ -145,11 +170,11 @@ final class PortletContextHelper extends ExternalContextHelper {
      */
     @Override
     public void writeResponse(final ExternalContext context,
-            final String contentType, final byte[] data) throws IOException {
+            final ContentType contentType, final byte[] data) throws IOException {
         if ("2.0".equals(getPortletVersion())) {
             final ResourceResponse response = (ResourceResponse)
                     context.getResponse();
-            response.setContentType(contentType);
+            response.setContentType(contentType.toString());
             response.setContentLength(data.length);
             response.getPortletOutputStream().write(data);
         } else {

@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -18,8 +18,12 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRRtfExporter;
+import net.sf.jasperreports.jsf.context.ContentType;
 
 /**
  *
@@ -28,8 +32,8 @@ import net.sf.jasperreports.engine.export.JRRtfExporter;
 public class RtfExporterTest extends ExporterTestCase {
 
     @Override
-    public String getExpectedContentType() {
-        return RtfExporter.CONTENT_TYPE;
+    public Collection<ContentType> getExpectedContentType() {
+        return Collections.singleton(RtfExporter.CONTENT_TYPE);
     }
 
     @Override

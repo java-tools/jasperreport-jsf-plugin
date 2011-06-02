@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -18,10 +18,18 @@
  */
 package net.sf.jasperreports.jsf.engine.source;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeThat;
+import static org.junit.Assume.assumeTrue;
+
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import javax.naming.NamingException;
 
 import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.engine.SourceException;
@@ -30,15 +38,10 @@ import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
-import static org.hamcrest.Matchers.*;
 
 /**
  *
@@ -106,6 +109,7 @@ public class JndiSourceConverterTest {
     }
 
     @Theory
+    @SuppressWarnings("unused")
     public void invalidJnidNameThrowsNamingEx(String jndiName) {
         assumeThat(jndiName, notNullValue());
         assumeTrue(jndiName.length() > 0);
@@ -124,6 +128,7 @@ public class JndiSourceConverterTest {
     }
 
     @Theory
+    @SuppressWarnings("unused")
     public void invalidDSThrowsSQLEx(String jndiName) {
         assumeThat(jndiName, notNullValue());
         assumeTrue(jndiName.startsWith("java:"));

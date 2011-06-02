@@ -18,12 +18,16 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.context.ContentType;
 
 /**
  * Exporter implementation which generates a PDF report.
@@ -32,15 +36,16 @@ import net.sf.jasperreports.jsf.component.UIReport;
  */
 public final class PdfExporter extends ExporterBase {
 
-    public static final String CONTENT_TYPE = "application/pdf";
+    public static final ContentType CONTENT_TYPE = new ContentType("application/pdf");
+    
     /** The Constant ATTR_IS_COMPRESSED. */
     public static final String ATTR_IS_COMPRESSED = "IS_COMPRESSED";
     /** The Constant ATTR_IS_ENCRYPTED. */
     public static final String ATTR_IS_ENCRYPTED = "IS_ENCRYPTED";
     public static final String ATTR_IS_TAGGED = "IS_TAGGED";
 
-    public String getContentType() {
-        return CONTENT_TYPE;
+    public Collection<ContentType> getContentTypes() {
+        return Collections.singleton(CONTENT_TYPE);
     }
 
     /*

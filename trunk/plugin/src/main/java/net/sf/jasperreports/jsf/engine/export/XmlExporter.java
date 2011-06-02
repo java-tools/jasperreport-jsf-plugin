@@ -18,12 +18,16 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRXmlExporter;
 import net.sf.jasperreports.engine.export.JRXmlExporterParameter;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.context.ContentType;
 
 /**
  * Exporter implementation which generates a XML report.
@@ -33,7 +37,9 @@ import net.sf.jasperreports.jsf.component.UIReport;
 public final class XmlExporter extends ExporterBase {
 
     /** The MIME type for this exporter. */
-    public static final String CONTENT_TYPE = "text/xml";
+    public static final ContentType[] CONTENT_TYPES = { 
+    	new ContentType("application/xml"), new ContentType("text/xml") 
+    };
 
     /** The Constant ATTR_DTD_LOCATION. */
     public static final String ATTR_DTD_LOCATION = "DTD_LOCATION";
@@ -41,10 +47,10 @@ public final class XmlExporter extends ExporterBase {
     public static final String ATTR_IS_EMBEDDING_IMAGES = "IS_EMBEDDING_IMAGES";
 
     /**
-     * @see net.sf.jasperreports.jsf.engine.Exporter#getContentType()
+     * @see net.sf.jasperreports.jsf.engine.Exporter#getContentTypes()
      */
-    public String getContentType() {
-        return CONTENT_TYPE;
+    public Collection<ContentType> getContentTypes() {
+        return Arrays.asList(CONTENT_TYPES);
     }
 
     /*

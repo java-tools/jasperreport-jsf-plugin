@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -78,7 +78,7 @@ public class ContextResourceTest {
 
         assertThat(location, notNullValue());
         assertThat(location, equalTo(expectedLocation));
-	//TODO enable this assertion
+        //TODO enable this assertion
         //assertThat(resource.getPath(), equalTo(location.getPath()));
 
         File path = new File(resource.getPath());

@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -56,10 +56,12 @@ public class MapSourceConverterTest {
     @DataPoint
     public static final Object NULL_DATA = null;
 
-    @DataPoint
+	@DataPoint
+	@SuppressWarnings("rawtypes")
     public static final Map[] ARR_DATA = new Map[]{};
 
     @DataPoint
+    @SuppressWarnings("rawtypes")
     public static final Map SINGLE_DATA = new HashMap();
 
     @DataPoint
@@ -113,6 +115,7 @@ public class MapSourceConverterTest {
     }
 
     @Theory
+    @SuppressWarnings("rawtypes")
     public void collectionDataReturnsCollectionDataSource(Object data) {
         assumeThat(data, is(not(nullValue())));
         assumeThat(data, is(Collection.class));

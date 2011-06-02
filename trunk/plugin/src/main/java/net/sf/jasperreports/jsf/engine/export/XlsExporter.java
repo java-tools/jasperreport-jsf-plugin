@@ -18,11 +18,15 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.export.JRXlsAbstractExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.context.ContentType;
 
 /**
  * Exporter implementation which generates a XLS report.
@@ -32,13 +36,14 @@ import net.sf.jasperreports.jsf.component.UIReport;
 public final class XlsExporter extends AbstractXlsExporter {
 
     /** The MIME type for this exporter. */
-    public static final String CONTENT_TYPE = "application/vnd.ms-excel";
+    public static final ContentType CONTENT_TYPE = 
+    	new ContentType("application/vnd.ms-excel");
 
     /**
-     * @see net.sf.jasperreports.jsf.engine.Exporter#getContentType()
+     * @see net.sf.jasperreports.jsf.engine.Exporter#getContentTypes()
      */
-    public String getContentType() {
-        return CONTENT_TYPE;
+    public Collection<ContentType> getContentTypes() {
+        return Collections.singleton(CONTENT_TYPE);
     }
 
     /*
