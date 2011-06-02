@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -23,14 +23,14 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.logging.Logger;
 
-import org.xml.sax.SAXException;
-
-import com.meterware.httpunit.WebResponse;
-import com.meterware.servletunit.ServletRunner;
-import com.meterware.servletunit.ServletUnitClient;
+import net.sf.jasperreports.jsf.test.webapp.MockWebappContainer;
 
 import org.junit.After;
 import org.junit.Before;
+import org.xml.sax.SAXException;
+
+import com.meterware.httpunit.WebResponse;
+import com.meterware.servletunit.ServletUnitClient;
 
 /**
  * The Class JasperReportTest.
@@ -39,9 +39,11 @@ public abstract class ProfilerTestCase {
 
     public static final String PROP_CONTEXT_DIR = "context-dir";
     public static final String PROP_CONTEXT_PATH = "context-path";
-
+    public static final String PROP_CONTAINER_TYPE = "container-type";
+    
     private static final String HOSTNAME = "localhost";
-    private static final String WEB_XML = "WEB-INF/web.xml";
+    private static final String DEFAULT_WEB_XML = "WEB-INF/web.xml";
+    private static final String DEFAULT_PORTLET_XML = "WEB-INF/portlet.xml";
 
     private static final Logger logger = Logger.getLogger(
             ProfilerTestCase.class.getPackage().getName());
@@ -51,8 +53,8 @@ public abstract class ProfilerTestCase {
     /** The context path. */
     private String contextPath;
 
-    /** The runner. */
-    private transient ServletRunner runner;
+    private MockWebappContainer container;
+    
     private transient ServletUnitClient client;
 
     /*
@@ -64,12 +66,21 @@ public abstract class ProfilerTestCase {
     public void startContainer() throws Exception {
         contextDir = new File(System.getProperty(PROP_CONTEXT_DIR));
         contextPath = System.getProperty(PROP_CONTEXT_PATH);
+        String containerType = System.getProperty(PROP_CONTAINER_TYPE, "servlet");
 
         logger.info("Starting web application '" + contextPath
                 + "' from directory: " + contextDir);
 
-        final File webXml = new File(contextDir, WEB_XML);
-        runner = new ServletRunner(webXml, contextPath);
+        if ("servlet".equals(containerType)) {
+        	container = MockWebappContainer.getServletContainer(
+        			contextDir, contextPath, DEFAULT_WEB_XML);
+        } else if ("portlet".equals(containerType)) {
+        	container = MockWebappContainer.getPortletContainer(
+        			contextDir, contextPath, DEFAULT_WEB_XML, DEFAULT_PORTLET_XML);
+        } else {
+        	throw new IllegalArgumentException("Illegal container type: " + containerType);
+        }
+        container.start();
     }
 
     /*
@@ -84,13 +95,12 @@ public abstract class ProfilerTestCase {
         }
         client = null;
 
-        runner.shutDown();
-        runner = null;
+        container.stop();
     }
 
     protected final ServletUnitClient getClient() {
         if (client == null) {
-            client = runner.newClient();
+            client = container.createClient();
         }
         return client;
     }

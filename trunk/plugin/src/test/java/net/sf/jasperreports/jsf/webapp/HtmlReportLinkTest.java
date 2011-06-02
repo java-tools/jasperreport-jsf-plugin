@@ -38,6 +38,7 @@ public class HtmlReportLinkTest extends ComponentProfilerTestCase {
     public static Collection<?> linkIdentifiers() {
         return Arrays.asList(new Object[][]{{"reportForm:reportLink"}});
     }
+    
     private final String linkId;
 
     public HtmlReportLinkTest(final String linkId) {
@@ -47,9 +48,12 @@ public class HtmlReportLinkTest extends ComponentProfilerTestCase {
     @Test
     public void clickOnLink() throws Exception {
         final WebResponse reportView = getComponentView();
+        
         final WebLink link = reportView.getLinkWithID(linkId);
         Assert.assertNotNull("Link '" + linkId + "' is null", link);
+        
         System.out.println("---> Here I click the link");
+        
         final WebResponse reportResponse = link.click();
         Assert.assertEquals("Report content type is not of expected type",
                 "text/html", reportResponse.getContentType());

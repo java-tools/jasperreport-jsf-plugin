@@ -18,12 +18,28 @@
  */
 package net.sf.jasperreports.jsf.test.webapp;
 
+import java.io.File;
+
+import com.meterware.servletunit.ServletUnitClient;
+
 /**
  *
  * @author antonio.alonso
  */
 public abstract class MockWebappContainer {
 
+	public static MockWebappContainer getServletContainer(
+			File contextDir, String contextPath, String webXml) {
+		return new MockWebappServletContainer(contextDir, contextPath, webXml);
+	}
+	
+	public static MockWebappContainer getPortletContainer(
+			File contextDir, String contextPath, String webXml, String portletXml) {
+		return new MockWebappPortletContainer(contextDir, contextPath, webXml);
+	}
+	
+	public abstract ServletUnitClient createClient();
+	
     public abstract boolean isStarted();
 
     public abstract void start() throws Exception;
