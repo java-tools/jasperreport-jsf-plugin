@@ -47,6 +47,11 @@ import net.sf.jasperreports.jsf.util.Util;
  */
 public class SourceConverterBase implements SourceConverter {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7915218134982872003L;
+
 	private static final Logger logger = Logger.getLogger(
 			SourceConverterBase.class.getPackage().getName(), 
 			Constants.LOG_MESSAGES_BUNDLE);

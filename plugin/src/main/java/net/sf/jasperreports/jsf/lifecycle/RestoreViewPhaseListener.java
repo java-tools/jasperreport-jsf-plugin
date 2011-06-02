@@ -39,7 +39,11 @@ import net.sf.jasperreports.jsf.context.ReportRenderRequest;
  */
 public class RestoreViewPhaseListener extends AbstractReportPhaseListener {
 
-    private static final Logger logger = Logger.getLogger(
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7123125597556150875L;
+	private static final Logger logger = Logger.getLogger(
             RestoreViewPhaseListener.class.getPackage().getName(),
             Constants.LOG_MESSAGES_BUNDLE);
 

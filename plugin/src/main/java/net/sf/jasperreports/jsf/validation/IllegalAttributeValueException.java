@@ -23,7 +23,12 @@ import javax.faces.validator.ValidatorException;
 
 public class IllegalAttributeValueException extends ValidatorException {
 
-    public IllegalAttributeValueException(
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6876751630231138321L;
+
+	public IllegalAttributeValueException(
             FacesMessage message, Throwable cause) {
         super(message, cause);
     }

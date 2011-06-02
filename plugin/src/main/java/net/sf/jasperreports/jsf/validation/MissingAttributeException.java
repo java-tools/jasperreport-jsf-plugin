@@ -26,7 +26,12 @@ import javax.faces.validator.ValidatorException;
  */
 public class MissingAttributeException extends ValidatorException {
 
-    public MissingAttributeException(FacesMessage message, Throwable cause) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7452003302337700709L;
+
+	public MissingAttributeException(FacesMessage message, Throwable cause) {
         super(message, cause);
     }
 

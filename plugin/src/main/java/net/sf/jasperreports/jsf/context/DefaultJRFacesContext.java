@@ -94,7 +94,8 @@ public final class DefaultJRFacesContext extends JRFacesContext {
      *
      * @return collection of available source types.
      */
-    public Collection<String> getAvailableSourceTypes() {
+    @Override
+	public Collection<String> getAvailableSourceTypes() {
         return Collections.unmodifiableSet(sourceConverterMap.keySet());
     }
 
@@ -103,7 +104,8 @@ public final class DefaultJRFacesContext extends JRFacesContext {
      *
      * @return collection of available export formats.
      */
-    public Collection<String> getAvailableExportFormats() {
+    @Override
+	public Collection<String> getAvailableExportFormats() {
         return Collections.unmodifiableSet(exporterMap.keySet());
     }
 

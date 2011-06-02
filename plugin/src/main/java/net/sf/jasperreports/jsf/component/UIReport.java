@@ -104,7 +104,8 @@ public class UIReport extends UIComponentBase {
      *
      * @return the family name.
      */
-    public final String getFamily() {
+    @Override
+	public final String getFamily() {
         return COMPONENT_FAMILY;
     }
     
@@ -338,7 +339,7 @@ public class UIReport extends UIComponentBase {
     public void restoreState(final FacesContext context, final Object state) {
         final Object[] values = (Object[]) state;
         super.restoreState(context, values[0]);
-        source = (String) values[1];
+        source = values[1];
         name = (String) values[2];
         value = values[3];
         valueSet = ((Boolean) values[4]).booleanValue();
@@ -467,7 +468,7 @@ public class UIReport extends UIComponentBase {
             }
 
             Resource resource = getJRFacesContext().createResource(
-                    context, this, (String) valueStr);
+                    context, this, valueStr);
             
             ObjectInputStream ois = null;
             try {

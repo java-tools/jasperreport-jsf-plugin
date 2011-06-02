@@ -28,7 +28,12 @@ import net.sf.jasperreports.jsf.engine.SourceException;
  */
 public class DatabaseSourceException extends SourceException {
 
-    public DatabaseSourceException(String msg, Throwable t) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3181089925898816416L;
+
+	public DatabaseSourceException(String msg, Throwable t) {
         super(msg, t);
     }
 

@@ -64,7 +64,11 @@ import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
  */
 public final class XmlSourceConverter extends SourceConverterBase {
 
-    private static final Logger logger = Logger.getLogger(
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5512987093226353550L;
+	private static final Logger logger = Logger.getLogger(
             XmlSourceConverter.class.getPackage().getName(),
             Constants.LOG_MESSAGES_BUNDLE);
 

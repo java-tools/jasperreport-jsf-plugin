@@ -26,7 +26,12 @@ import net.sf.jasperreports.jsf.engine.SourceException;
  */
 public class NullDataSourceException extends SourceException {
 
-    public NullDataSourceException(String msg) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2587570291869280043L;
+
+	public NullDataSourceException(String msg) {
         super(msg);
     }
 

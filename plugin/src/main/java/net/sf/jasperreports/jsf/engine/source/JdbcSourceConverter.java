@@ -41,7 +41,11 @@ import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
  */
 public final class JdbcSourceConverter extends DatabaseSourceConverter {
 
-    public static final String ATTR_DRIVER_CLASS_NAME = 
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2746686961906403123L;
+	public static final String ATTR_DRIVER_CLASS_NAME = 
             "net.sf.jasperreports.jsf.jdbc.driverClassName";
     public static final String ATTR_USERNAME = 
             "net.sf.jasperreports.jsf.jdbc.username";

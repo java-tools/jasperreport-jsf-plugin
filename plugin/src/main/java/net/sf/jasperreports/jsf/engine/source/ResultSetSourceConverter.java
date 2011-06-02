@@ -38,7 +38,11 @@ import net.sf.jasperreports.jsf.engine.Source;
  */
 public class ResultSetSourceConverter extends SourceConverterBase {
 
-    private static final Logger logger = Logger.getLogger(
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8234770955803696671L;
+	private static final Logger logger = Logger.getLogger(
             ResultSetSourceConverter.class.getPackage().getName(),
             Constants.LOG_MESSAGES_BUNDLE);
 

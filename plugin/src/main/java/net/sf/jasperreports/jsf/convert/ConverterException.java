@@ -28,6 +28,11 @@ import net.sf.jasperreports.jsf.JRFacesException;
 public class ConverterException extends JRFacesException {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3926351703220572677L;
+
+	/**
      * Constructor with cause.
      *
      * @param t the cause.

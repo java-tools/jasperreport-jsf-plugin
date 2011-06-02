@@ -26,7 +26,12 @@ package net.sf.jasperreports.jsf.engine.source;
  */
 public class QueryExecutionException extends DatabaseSourceException {
 
-    public QueryExecutionException(String msg, Throwable t) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2320009449359587656L;
+
+	public QueryExecutionException(String msg, Throwable t) {
         super(msg, t);
     }
 
