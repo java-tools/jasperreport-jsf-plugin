@@ -43,7 +43,11 @@ import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
  */
 public final class JndiSourceConverter extends DatabaseSourceConverter {
 
-    /** The Constant logger. */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7288394077963583107L;
+	/** The Constant logger. */
     private static final Logger logger = Logger.getLogger(
             JndiSourceConverter.class.getPackage().getName(),
             Constants.LOG_MESSAGES_BUNDLE);

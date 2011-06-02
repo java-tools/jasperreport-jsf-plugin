@@ -50,7 +50,11 @@ import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 public abstract class DatabaseSourceConverter
         extends SourceConverterBase {
 
-    private static final Logger logger = Logger.getLogger(
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5189066786528032421L;
+	private static final Logger logger = Logger.getLogger(
             DatabaseSourceConverter.class.getPackage().getName(),
             Constants.LOG_MESSAGES_BUNDLE);
 

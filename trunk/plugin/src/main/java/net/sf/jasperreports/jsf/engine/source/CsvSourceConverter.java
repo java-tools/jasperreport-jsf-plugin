@@ -48,7 +48,11 @@ import net.sf.jasperreports.jsf.resource.ResourceException;
  */
 public final class CsvSourceConverter extends SourceConverterBase {
 
-    private static final Logger logger = Logger.getLogger(
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6864862649769320498L;
+	private static final Logger logger = Logger.getLogger(
             CsvSourceConverter.class.getPackage().getName(),
             Constants.LOG_MESSAGES_BUNDLE);
 

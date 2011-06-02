@@ -26,7 +26,12 @@ import net.sf.jasperreports.jsf.JRFacesException;
  */
 public class ReportLifecycleException extends JRFacesException {
 
-    public ReportLifecycleException(String msg) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1413170193796771678L;
+
+	public ReportLifecycleException(String msg) {
         super(msg);
     }
 

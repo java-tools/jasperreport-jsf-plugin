@@ -28,6 +28,11 @@ import net.sf.jasperreports.jsf.JRFacesException;
 public class SourceException extends JRFacesException {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8082995472606939922L;
+
+	/**
      * Constructor with cause.
      *
      * @param t the cause.

@@ -54,7 +54,8 @@ public final class OutputLinkRenderer extends HtmlReportRenderer {
      *
      * @return the renderer's content disposition.
      */
-    public String getContentDisposition() {
+    @Override
+	public String getContentDisposition() {
         return CONTENT_DISPOSITION;
     }
 
@@ -66,7 +67,6 @@ public final class OutputLinkRenderer extends HtmlReportRenderer {
      * javax.faces.component.UIComponent)
      */
     @Override
-    @SuppressWarnings("unused")
     public void encodeBegin(final FacesContext context,
             final UIComponent component) throws IOException {
 

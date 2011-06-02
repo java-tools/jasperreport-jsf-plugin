@@ -27,6 +27,11 @@ package net.sf.jasperreports.jsf;
 public class InvalidEnvironmentException extends JRFacesException {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8127180860144035756L;
+
+	/**
      * Used to instantiate a new InvalidEnvironmentException.
      *
      * @param msg the exception message.

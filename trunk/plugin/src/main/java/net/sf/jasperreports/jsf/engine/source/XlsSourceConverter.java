@@ -49,7 +49,11 @@ import net.sf.jasperreports.jsf.resource.Resource;
  */
 public class XlsSourceConverter extends SourceConverterBase {
 
-    /** The logger instance. */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7178708636660103845L;
+	/** The logger instance. */
     private static final Logger logger = Logger.getLogger(
             XlsSourceConverter.class.getPackage().getName(),
             Constants.LOG_MESSAGES_BUNDLE);

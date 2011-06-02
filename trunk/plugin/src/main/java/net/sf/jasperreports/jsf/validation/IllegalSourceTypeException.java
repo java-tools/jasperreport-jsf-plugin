@@ -25,7 +25,12 @@ import javax.faces.application.FacesMessage;
  */
 public class IllegalSourceTypeException extends IllegalAttributeValueException {
 
-    public IllegalSourceTypeException(FacesMessage message) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -9209497335738655363L;
+
+	public IllegalSourceTypeException(FacesMessage message) {
         super(message);
     }
 

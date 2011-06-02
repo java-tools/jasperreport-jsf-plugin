@@ -42,7 +42,11 @@ import net.sf.jasperreports.jsf.engine.Source;
  */
 public final class MapSourceConverter extends SourceConverterBase {
 
-    private static final Logger logger = Logger.getLogger(
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 343587676980464141L;
+	private static final Logger logger = Logger.getLogger(
             MapSourceConverter.class.getPackage().getName(),
             Constants.LOG_MESSAGES_BUNDLE);
 

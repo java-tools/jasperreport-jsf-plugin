@@ -24,7 +24,12 @@ package net.sf.jasperreports.jsf.resource;
  */
 public class LocationNotFoundException extends ResourceException {
 
-    public LocationNotFoundException(String msg) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -334637788861694728L;
+
+	public LocationNotFoundException(String msg) {
         super(msg);
     }
 

@@ -26,7 +26,12 @@ package net.sf.jasperreports.jsf.engine.source;
  */
 public class UnpreparedStatementException extends DatabaseSourceException {
 
-    public UnpreparedStatementException(String msg, Throwable t) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -650417415867827288L;
+
+	public UnpreparedStatementException(String msg, Throwable t) {
         super(msg, t);
     }
 

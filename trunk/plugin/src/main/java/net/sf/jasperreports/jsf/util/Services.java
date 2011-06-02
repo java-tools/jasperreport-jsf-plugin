@@ -70,7 +70,8 @@ public final class Services {
      * @throws ServiceException If any error happens when loading the
      *         service chain.
      */
-    public static <T> T chain(final Class<T> clazz, final T defaultInstance)
+    @SuppressWarnings("unchecked")
+	public static <T> T chain(final Class<T> clazz, final T defaultInstance)
             throws ServiceException {
         final ClassLoader loader = Util.getClassLoader(null);
         final Enumeration<URL> resources = getServiceResources(clazz, loader);

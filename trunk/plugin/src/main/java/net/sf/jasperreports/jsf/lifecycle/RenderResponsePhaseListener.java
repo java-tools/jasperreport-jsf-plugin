@@ -48,7 +48,11 @@ import net.sf.jasperreports.jsf.context.ReportRenderRequest;
 public final class RenderResponsePhaseListener extends AbstractReportPhaseListener
         implements ContextCallback {
 
-    /** The logger instance. */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7619710717020985138L;
+	/** The logger instance. */
     private static final Logger logger = Logger.getLogger(
             RenderResponsePhaseListener.class.getPackage().getName(),
             Constants.LOG_MESSAGES_BUNDLE);

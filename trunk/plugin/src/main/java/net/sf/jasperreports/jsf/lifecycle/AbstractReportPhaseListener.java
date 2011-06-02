@@ -38,7 +38,12 @@ import net.sf.jasperreports.jsf.context.ReportRenderRequest;
  */
 abstract class AbstractReportPhaseListener implements PhaseListener {
 
-    protected boolean isReportRequest(final FacesContext context) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5217054276289258005L;
+
+	protected boolean isReportRequest(final FacesContext context) {
         final JRFacesContext jrContext = JRFacesContext.getInstance(context);
 
         Object request = context.getExternalContext().getRequest();

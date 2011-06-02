@@ -25,7 +25,6 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 
@@ -152,7 +151,6 @@ public class UIOutputReport extends UIReport {
 
         Object providedValue = getValue();
         if (providedValue == null) {
-            JRFacesContext jrContext = getJRFacesContext();
             ValueExpression ve = getValueExpression("value");
             if (ve != null) {
                 try {

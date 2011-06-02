@@ -42,7 +42,11 @@ import net.sf.jasperreports.jsf.engine.SourceException;
  */
 public final class BeanSourceConverter extends SourceConverterBase {
 
-    private static final Logger logger = Logger.getLogger(
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6307709860143591157L;
+	private static final Logger logger = Logger.getLogger(
             BeanSourceConverter.class.getPackage().getName(),
             Constants.LOG_MESSAGES_BUNDLE);
 

@@ -25,7 +25,12 @@ import javax.faces.application.FacesMessage;
  */
 public class IllegalOutputFormatException extends IllegalAttributeValueException {
 
-    public IllegalOutputFormatException(FacesMessage message) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5471756531676463998L;
+
+	public IllegalOutputFormatException(FacesMessage message) {
         super(message);
     }
 

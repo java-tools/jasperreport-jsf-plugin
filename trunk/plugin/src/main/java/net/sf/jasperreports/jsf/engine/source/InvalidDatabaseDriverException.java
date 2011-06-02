@@ -26,7 +26,12 @@ package net.sf.jasperreports.jsf.engine.source;
  */
 public class InvalidDatabaseDriverException extends DatabaseSourceException {
 
-    public InvalidDatabaseDriverException(String msg) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1734698700294745303L;
+
+	public InvalidDatabaseDriverException(String msg) {
         super(msg);
     }
 

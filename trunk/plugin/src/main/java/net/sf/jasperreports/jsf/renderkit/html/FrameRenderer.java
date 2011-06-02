@@ -66,7 +66,8 @@ public final class FrameRenderer extends HtmlReportRenderer {
      *
      * @return the default content disposition
      */
-    public String getContentDisposition() {
+    @Override
+	public String getContentDisposition() {
         return CONTENT_DISPOSITION;
     }
 
@@ -78,7 +79,6 @@ public final class FrameRenderer extends HtmlReportRenderer {
      * javax.faces.component.UIComponent)
      */
     @Override
-    @SuppressWarnings("unused")
     public void encodeBegin(final FacesContext context,
             final UIComponent component)
     throws IOException {

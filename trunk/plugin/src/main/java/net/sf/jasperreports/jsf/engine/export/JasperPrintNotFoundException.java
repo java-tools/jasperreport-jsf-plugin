@@ -28,7 +28,11 @@ import net.sf.jasperreports.jsf.engine.ExporterException;
  */
 public final class JasperPrintNotFoundException extends ExporterException {
 
-    /** Component's client id. */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8058174868853873831L;
+	/** Component's client id. */
     private String clientId;
 
     /**

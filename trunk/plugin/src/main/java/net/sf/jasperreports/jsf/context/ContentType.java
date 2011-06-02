@@ -6,6 +6,11 @@ import java.util.regex.Pattern;
 
 public class ContentType implements Serializable, Comparable<ContentType> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5337880747998334976L;
+
 	private static final Pattern PATTERN = Pattern.compile("(.+)/(.+)");
 	
 	public static boolean isContentType(String value) {
@@ -47,10 +52,12 @@ public class ContentType implements Serializable, Comparable<ContentType> {
 		return true;
 	}
 	
+	@Override
 	public int hashCode() {
 		return (7 * type.hashCode()) + (11 * subtype.hashCode());
 	}
 	
+	@Override
 	public boolean equals(Object o) {
 		if (null == o) return false;
 		if (this == o) return true;
@@ -61,6 +68,7 @@ public class ContentType implements Serializable, Comparable<ContentType> {
 				&& subtype.equals(other.subtype);
 	}
 	
+	@Override
 	public String toString() {
 		return (type + "/" + subtype);
 	}
