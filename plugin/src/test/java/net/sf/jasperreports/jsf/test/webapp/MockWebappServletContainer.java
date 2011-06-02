@@ -27,29 +27,27 @@ import com.meterware.servletunit.ServletUnitClient;
  *
  * @author aalonsodominguez
  */
-public class MockWebappServletContainer extends MockWebappContainer {
+class MockWebappServletContainer extends MockWebappContainer {
 
-    public static final String DEFAULT_WEBXML = "WEB-INF/web.xml";
-
-    private String contextDir;
+    private File contextDir;
     private String contextPath;
     private File webXml;
 
     private ServletRunner runner = null;
     private boolean started = false;
 
-    public MockWebappServletContainer(String contextDir, String contextPath) {
-        this(contextDir, contextPath, DEFAULT_WEBXML);
-    }
-
-    public MockWebappServletContainer(String contextDir, String contextPath,
+    public MockWebappServletContainer(File contextDir, String contextPath,
             String webXml) {
         this.contextDir = contextDir;
         this.contextPath = contextPath;
         this.webXml = new File(this.contextDir, webXml);
     }
 
-    public String getContextPath() {
+    public File getContextDir() {
+		return contextDir;
+	}
+
+	public String getContextPath() {
         return contextPath;
     }
 

@@ -35,6 +35,9 @@
   </parent>
 
   <name>JasperReports JSF Plugin - Implementation</name>
+  
+  <description><![CDATA[Core implementation of the JasperReports & JSF integration.]]></description>
+  
   <artifactId>jasperreports-jsf</artifactId>
   <packaging>jar</packaging>
 
@@ -358,6 +361,9 @@
                   <includes>
                     <include>**/webapp/*Test.java</include>
                   </includes>
+                  <excludes>
+                    <exclude>**/webapp/*PortletTest.java</exclude>
+                  </excludes>
                   <systemProperties>
                     <property>
                       <name>context-dir</name>
@@ -370,6 +376,10 @@
                     <property>
                       <name>web-xml</name>
                       <value>${test.web.xml}</value>
+                    </property>
+                    <property>
+                      <name>container-type</name>
+                      <value>servlet</value>
                     </property>
                   </systemProperties>
                 </configuration>
@@ -422,6 +432,10 @@
                     <property>
                       <name>web-xml</name>
                       <value>${test.web.xml}</value>
+                    </property>
+                    <property>
+                      <name>container-type</name>
+                      <value>portlet</value>
                     </property>
                   </systemProperties>
                 </configuration>
