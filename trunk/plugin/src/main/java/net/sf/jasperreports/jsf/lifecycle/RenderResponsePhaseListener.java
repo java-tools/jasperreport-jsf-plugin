@@ -38,7 +38,7 @@ import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
-import net.sf.jasperreports.jsf.engine.ReportRenderRequest;
+import net.sf.jasperreports.jsf.context.ReportRenderRequest;
 
 /**
  * Implementation of the <tt>RENDER_REPORT</tt> phase.

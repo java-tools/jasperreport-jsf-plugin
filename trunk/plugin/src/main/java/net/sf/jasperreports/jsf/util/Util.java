@@ -21,10 +21,17 @@ package net.sf.jasperreports.jsf.util;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.faces.FacesException;
+import javax.faces.component.NamingContainer;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+
+import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.component.UISource;
+import net.sf.jasperreports.jsf.config.IllegalFacesMappingException;
 
 /**
  * The Class Util.
@@ -33,7 +40,7 @@ public final class Util {
 
     private static final Logger logger = Logger.getLogger(
             Util.class.getPackage().getName(),
-            "net.sf.jasperreports.jsf.LogMessages");
+            Constants.LOG_MESSAGES_BUNDLE);
     
     /** The Constant INVOCATION_PATH. */
     private static final String INVOCATION_PATH =
@@ -102,7 +109,7 @@ public final class Util {
         // Exception in order to prevent an endless
         // RequestDispatcher loop
         if ("/*".equals(mapping)) {
-            throw new FacesException("Illegal faces mapping: " + mapping);
+            throw new IllegalFacesMappingException(mapping);
         }
 
         if (mapping != null) {
@@ -138,9 +145,16 @@ public final class Util {
         return mapping.charAt(0) == '/';
     }
 
-    public static String resolveDataSourceId(FacesContext context, UIReport component,
-            String dataSourceId) {
-        return null;
+    public static UISource resolveSourceId(FacesContext context, 
+    		UIReport report, String sourceId) {
+    	UISource result = null;
+    	UIComponent component;
+    	do {
+	    	component = getNamingContainer(report);
+	    	String id = component.getClientId(context) + ":" + sourceId;
+	    	result = (UISource) component.findComponent(id);
+    	} while (!(component instanceof UIViewRoot));
+        return result;
     }
 
     /**
@@ -185,6 +199,14 @@ public final class Util {
             // Servlet invoked using extension mapping
             return servletPath.substring(servletPath.lastIndexOf('.'));
         }
+    }
+    
+    private static UIComponent getNamingContainer(UIComponent child) {
+    	UIComponent component = child;
+    	do {
+    		component = component.getParent();
+    	} while (!(component instanceof NamingContainer));
+    	return component;
     }
 
     private Util() { }

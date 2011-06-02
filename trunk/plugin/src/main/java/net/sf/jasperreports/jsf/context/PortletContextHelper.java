@@ -35,7 +35,6 @@ import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.config.Configuration;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
-import net.sf.jasperreports.jsf.engine.ReportRenderRequest;
 
 /**
  * Portlet implementation of the external context helper.
@@ -78,12 +77,22 @@ final class PortletContextHelper extends ExternalContextHelper {
     @Override
     public ReportRenderRequest restoreReportRequest(
             final ExternalContext context) {
-        final Configuration config = Configuration.getInstance(context);
-        final String viewId = context.getRequestParameterMap()
-                .get(Constants.PARAM_VIEWID);
-        final String viewState = getViewCacheMap(context).get(viewId);
-
-        throw new UnsupportedOperationException("Not supported yet.");
+    	if ("2.0".equals(getPortletVersion())) {
+	        final Configuration config = Configuration.getInstance(context);
+	        ResourceRequest request = (ResourceRequest)
+            		context.getRequest();
+	        final String viewId = context.getRequestParameterMap()
+	                .get(Constants.PARAM_VIEWID);
+	        final String viewState = getViewCacheMap(context).get(viewId);
+	        
+	        request = new ReportPortletRenderRequest(request, 
+	        		config.getDefaultMapping(), viewId, viewState);
+	        context.setRequest(request);
+	        return (ReportRenderRequest) request;
+    	} else {
+            throw new IllegalStateException(
+        		"Only Resource Request/Response state is allowed");
+    	}
     }
 
     /**

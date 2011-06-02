@@ -25,6 +25,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.context.ContentType;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.convert.SourceConverter;
@@ -42,7 +43,8 @@ public class MockJRFacesContext extends JRFacesContext {
 
     private Set<String> availableExportFormats = new HashSet<String>();
     private Set<String> availableDataSourceTypes = new HashSet<String>();
-
+    private Set<ContentType> supportedContentTypes = new HashSet<ContentType>();
+    
     private SourceConverter sourceConverter;
     private ResourceResolver resourceResolver;
 
@@ -142,5 +144,13 @@ public class MockJRFacesContext extends JRFacesContext {
     public void setAvailableDataSourceTypes(Set<String> availableDataSourceTypes) {
         this.availableDataSourceTypes = availableDataSourceTypes;
     }
+
+	public Set<ContentType> getSupportedContentTypes() {
+		return supportedContentTypes;
+	}
+
+	public void setSupportedContentTypes(Set<ContentType> supportedContentTypes) {
+		this.supportedContentTypes = supportedContentTypes;
+	}
     
 }

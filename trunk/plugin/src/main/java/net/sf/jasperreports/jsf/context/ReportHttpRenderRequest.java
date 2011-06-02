@@ -16,7 +16,7 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.engine;
+package net.sf.jasperreports.jsf.context;
 
 import java.util.Collections;
 import java.util.Enumeration;

@@ -96,6 +96,9 @@ public abstract class ReportRenderer extends Renderer {
             exporter.export(context, component, reportData);
             ContentType contentType = findAppropiateContentType(context, 
             		component, exporter.getContentTypes());
+            if (contentType == null) {
+            	throw new UnsupportedExporterException(exporter.getClass().getName());
+            }
             helper.writeResponse(context.getExternalContext(),
                     contentType, reportData.toByteArray());
         } finally {
