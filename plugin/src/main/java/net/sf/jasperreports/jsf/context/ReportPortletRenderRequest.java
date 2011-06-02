@@ -17,7 +17,7 @@
  * alonsoft@users.sf.net
  */
 
-package net.sf.jasperreports.jsf.engine;
+package net.sf.jasperreports.jsf.context;
 
 import java.util.Collections;
 import java.util.Enumeration;
@@ -41,12 +41,12 @@ public class ReportPortletRenderRequest extends ResourceRequestWrapper
     private final String oldViewId;
     private final String viewState;
 
-    public ReportPortletRenderRequest(ResourceRequest request, String viewId,
-            String viewState) {
+    public ReportPortletRenderRequest(ResourceRequest request,
+    		String facesMapping, String viewId, String viewState) {
         super(request);
+        
         this.oldViewId = (String) request.getAttribute(Bridge.VIEW_ID);
         request.setAttribute(Bridge.VIEW_ID, viewId);
-
         this.viewState = viewState;
     }
 

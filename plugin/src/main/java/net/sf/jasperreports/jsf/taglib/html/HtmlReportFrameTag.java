@@ -43,9 +43,6 @@ public class HtmlReportFrameTag extends HtmlReportTagBase {
     /** The width. */
     private ValueExpression width;
 
-    private ValueExpression style;
-    private ValueExpression styleClass;
-
     public void setLayout(ValueExpression layout) {
         this.layout = layout;
     }
@@ -95,14 +92,6 @@ public class HtmlReportFrameTag extends HtmlReportTagBase {
         this.width = width;
     }
 
-    public void setStyle(ValueExpression style) {
-        this.style = style;
-    }
-
-    public void setStyleClass(ValueExpression styleClass) {
-        this.styleClass = styleClass;
-    }
-
     // TagSupport
 
     /*
@@ -114,8 +103,6 @@ public class HtmlReportFrameTag extends HtmlReportTagBase {
     public void release() {
         super.release();
         layout = null;
-        style = null;
-        styleClass = null;
         frameborder = null;
         marginheight = null;
         marginwidth = null;
@@ -161,8 +148,6 @@ public class HtmlReportFrameTag extends HtmlReportTagBase {
         setStringAttribute(component, "layout", layout);
         setStringAttribute(component, "marginheight", marginheight);
         setStringAttribute(component, "marginwidth", marginwidth);
-        setStringAttribute(component, "style", style);
-        setStringAttribute(component, "styleClass", styleClass);
         setStringAttribute(component, "width", width);
     }
 }

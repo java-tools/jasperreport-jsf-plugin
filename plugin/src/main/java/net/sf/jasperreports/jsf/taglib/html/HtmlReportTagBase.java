@@ -33,6 +33,10 @@ abstract class HtmlReportTagBase extends OutputReportTag {
     private ValueExpression dir;
 
     private ValueExpression lang;
+    
+    private ValueExpression style;
+    
+    private ValueExpression styleClass;
 
     public void setDir(ValueExpression dir) {
         this.dir = dir;
@@ -42,11 +46,21 @@ abstract class HtmlReportTagBase extends OutputReportTag {
         this.lang = lang;
     }
 
-    @Override
+    public void setStyle(ValueExpression style) {
+		this.style = style;
+	}
+
+	public void setStyleClass(ValueExpression styleClass) {
+		this.styleClass = styleClass;
+	}
+
+	@Override
     public void release() {
         super.release();
         dir = null;
         lang = null;
+        style = null;
+        styleClass = null;
     }
 
     @Override
@@ -55,6 +69,8 @@ abstract class HtmlReportTagBase extends OutputReportTag {
 
         setStringAttribute(component, "dir", dir);
         setStringAttribute(component, "lang", lang);
+        setStringAttribute(component, "style", style);
+        setStringAttribute(component, "styleClass", styleClass);
     }
 
 }

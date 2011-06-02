@@ -20,6 +20,8 @@ package net.sf.jasperreports.jsf.engine.source;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -27,12 +29,16 @@ import javax.sql.DataSource;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.convert.ConverterException;
 import net.sf.jasperreports.jsf.convert.SourceConverter;
 import net.sf.jasperreports.jsf.engine.Source;
 import net.sf.jasperreports.jsf.engine.SourceException;
 import net.sf.jasperreports.jsf.engine.ConnectionWrapper;
 import net.sf.jasperreports.jsf.engine.JRDataSourceWrapper;
+import net.sf.jasperreports.jsf.util.Util;
 
 /**
  * Base source converter class.
@@ -41,6 +47,10 @@ import net.sf.jasperreports.jsf.engine.JRDataSourceWrapper;
  */
 public class SourceConverterBase implements SourceConverter {
 
+	private static final Logger logger = Logger.getLogger(
+			SourceConverterBase.class.getPackage().getName(), 
+			Constants.LOG_MESSAGES_BUNDLE);
+	
     protected static final Source NULL_SOURCE =
             new JRDataSourceWrapper(new JREmptyDataSource());
 
@@ -74,7 +84,7 @@ public class SourceConverterBase implements SourceConverter {
             source = new JRDataSourceWrapper((JRDataSource) value);
         } else {
             try {
-                source = createSource(context, component, value);
+                source = resolveSource(context, component, value);
             } catch (SourceException e) {
                 throw new ConverterException(e);
             }
@@ -117,6 +127,31 @@ public class SourceConverterBase implements SourceConverter {
             UIComponent component, Object value)
     throws SourceException {
         return NULL_SOURCE;
+    }
+    
+    private Source resolveSource(FacesContext context, UIComponent component, Object value)
+    throws SourceException {
+    	Source result = null;
+    	if ((value instanceof String) && (component instanceof UIReport)) {
+    		// Look for a UISource component that may have the string value
+    		// as component id in the same view container
+    		UISource source = Util.resolveSourceId(context, 
+    				(UIReport) component, (String) value);
+    		if (source != null) {
+    			result = source.getSubmittedSource();
+    			if (logger.isLoggable(Level.FINE)) {
+    				logger.log(Level.FINE, "JRJSF_0036", new Object[]{ 
+    						component.getClientId(context),
+    						source.getClientId(context)
+    				});
+    			}
+    		}
+    	}
+    	
+    	if (result == null) {
+    		result = createSource(context, component, value);
+    	}
+    	return result;
     }
 
 }

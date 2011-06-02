@@ -25,6 +25,7 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
 import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.context.ContentType;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 
 import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
@@ -40,7 +41,15 @@ public class ReportValidatorBase implements Validator {
         final JRFacesContext jrContext = JRFacesContext.getInstance(context);
         String format = getStringAttribute(component, "format", null);
         if (format != null && format.length() > 0) {
-            if (!jrContext.getAvailableExportFormats().contains(format)) {
+        	boolean valid = false;
+        	if (ContentType.isContentType(format)) {
+        		ContentType ct = new ContentType(format);
+        		valid = jrContext.getSupportedContentTypes().contains(ct);
+        	} else {
+        		valid = jrContext.getAvailableExportFormats().contains(format);
+        	}
+        	
+            if (!valid) {
                 FacesMessage message = createMessage(context,
                         FacesMessage.SEVERITY_FATAL, "ILLEGAL_OUTPUT_FORMAT", format);
                 throw new IllegalOutputFormatException(message);

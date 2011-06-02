@@ -158,7 +158,7 @@ public final class XmlSourceConverter extends SourceConverterBase {
 
             if (stream == null) {
                 throw new SourceException("Unrecognized XML "
-                        + "value source type: " + value.getClass());
+                        + "value source type: " + value.getClass().getName());
             }
 
             try {

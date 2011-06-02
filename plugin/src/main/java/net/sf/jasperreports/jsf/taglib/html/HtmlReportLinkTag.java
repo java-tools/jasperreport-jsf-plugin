@@ -33,8 +33,6 @@ public class HtmlReportLinkTag extends HtmlReportTagBase {
 
     /** The target. */
     private ValueExpression target;
-    private ValueExpression style;
-    private ValueExpression styleClass;
 
     /**
      * Sets the target.
@@ -44,14 +42,6 @@ public class HtmlReportLinkTag extends HtmlReportTagBase {
      */
     public void setTarget(final ValueExpression target) {
         this.target = target;
-    }
-
-    public void setStyle(ValueExpression style) {
-        this.style = style;
-    }
-
-    public void setStyleClass(ValueExpression styleClass) {
-        this.styleClass = styleClass;
     }
 
     // TagSupport
@@ -65,8 +55,6 @@ public class HtmlReportLinkTag extends HtmlReportTagBase {
     public void release() {
         super.release();
         target = null;
-        style = null;
-        styleClass = null;
     }
 
     // UIComponentELTag
@@ -103,7 +91,6 @@ public class HtmlReportLinkTag extends HtmlReportTagBase {
         super.setProperties(component);
 
         setStringAttribute(component, "target", target);
-        setStringAttribute(component, "style", style);
-        setStringAttribute(component, "styleClass", styleClass);
+        
     }
 }

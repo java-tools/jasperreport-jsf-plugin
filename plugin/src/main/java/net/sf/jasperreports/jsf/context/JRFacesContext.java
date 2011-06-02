@@ -80,6 +80,7 @@ public abstract class JRFacesContext {
      */
     public abstract Collection<String> getAvailableExportFormats();
 
+    public abstract Collection<ContentType> getSupportedContentTypes();
 
     /**
      * Obtains the external context helper instance.

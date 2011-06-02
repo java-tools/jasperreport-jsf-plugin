@@ -33,6 +33,8 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import net.sf.jasperreports.jsf.Constants;
+
 /**
  * Utility class to handle the different kind of pluggable services required
  * by the implementation.
@@ -44,7 +46,7 @@ public final class Services {
     /** The logger. */
     private static final Logger logger = Logger.getLogger(
             Services.class.getPackage().getName(),
-            "net.sf.jasperreports.jsf.LogMessages");
+            Constants.LOG_MESSAGES_BUNDLE);
 
     /** The root folder from where load service resource files. */
     private static final String SERVICES_ROOT = "META-INF/services/";

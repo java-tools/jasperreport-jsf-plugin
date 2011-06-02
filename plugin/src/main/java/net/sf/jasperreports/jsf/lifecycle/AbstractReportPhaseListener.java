@@ -24,7 +24,7 @@ import javax.faces.event.PhaseListener;
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
-import net.sf.jasperreports.jsf.engine.ReportRenderRequest;
+import net.sf.jasperreports.jsf.context.ReportRenderRequest;
 
 /**
  * The listener interface for receiving reportPhase events. The class that is

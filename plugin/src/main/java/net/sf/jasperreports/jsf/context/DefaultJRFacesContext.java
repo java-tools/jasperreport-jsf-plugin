@@ -18,28 +18,29 @@
  */
 package net.sf.jasperreports.jsf.context;
 
+import static net.sf.jasperreports.jsf.util.ComponentUtil.getStringAttribute;
+
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import javax.faces.component.UIComponent;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.engine.source.SourceConverterBase;
+import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.convert.SourceConverter;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.ExporterException;
-import net.sf.jasperreports.jsf.engine.fill.DefaultFiller;
 import net.sf.jasperreports.jsf.engine.Filler;
+import net.sf.jasperreports.jsf.engine.fill.DefaultFiller;
+import net.sf.jasperreports.jsf.engine.source.SourceConverterBase;
 import net.sf.jasperreports.jsf.resource.DefaultResourceResolver;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.ResourceResolver;
 import net.sf.jasperreports.jsf.resource.UnresolvedResourceException;
 import net.sf.jasperreports.jsf.util.Services;
-
-import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
  * Default implementation for the <tt>JRFacesContext</tt> abstract class.
@@ -93,8 +94,8 @@ public final class DefaultJRFacesContext extends JRFacesContext {
      *
      * @return collection of available source types.
      */
-    public Set<String> getAvailableSourceTypes() {
-        return sourceConverterMap.keySet();
+    public Collection<String> getAvailableSourceTypes() {
+        return Collections.unmodifiableSet(sourceConverterMap.keySet());
     }
 
     /**
@@ -102,11 +103,16 @@ public final class DefaultJRFacesContext extends JRFacesContext {
      *
      * @return collection of available export formats.
      */
-    public Set<String> getAvailableExportFormats() {
-        return exporterMap.keySet();
+    public Collection<String> getAvailableExportFormats() {
+        return Collections.unmodifiableSet(exporterMap.keySet());
     }
 
-    /**
+    @Override
+	public Collection<ContentType> getSupportedContentTypes() {
+		return Collections.unmodifiableSet(contentTypeMap.keySet());
+	}
+
+	/**
      * Obtains the external context helper instance.
      *
      * @param context current faces' context.

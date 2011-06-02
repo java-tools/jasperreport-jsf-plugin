@@ -31,7 +31,6 @@ import net.sf.jasperreports.jsf.InvalidEnvironmentException;
 
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
-import net.sf.jasperreports.jsf.engine.ReportRenderRequest;
 
 /**
  * Helper class that will provide with utility methods related with the
@@ -81,7 +80,8 @@ public abstract class ExternalContextHelper {
             instance = new PortletContextHelper();
         } else {
             throw new IllegalArgumentException(
-                    "Unrecognized application context");
+                    "Unrecognized application context: " + 
+                    context.getContext().getClass().getName());
         }
         return instance;
     }
@@ -208,7 +208,7 @@ public abstract class ExternalContextHelper {
      * @param context the current ExternalContext
      * @return the view cache map
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public final Map<String, String> getViewCacheMap(
             final ExternalContext context) {
         Map<String, String> cacheMap = (Map) context.getSessionMap()
