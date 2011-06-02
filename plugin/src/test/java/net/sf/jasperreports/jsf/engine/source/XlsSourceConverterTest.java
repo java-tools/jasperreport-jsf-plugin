@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -18,7 +18,20 @@
  */
 package net.sf.jasperreports.jsf.engine.source;
 
-import java.io.ByteArrayInputStream;
+import static net.sf.jasperreports.jsf.test.Matchers.existsURL;
+import static net.sf.jasperreports.jsf.test.Matchers.unexistantResource;
+import static net.sf.jasperreports.jsf.test.Matchers.validURL;
+import static org.hamcrest.Matchers.anyOf;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeThat;
+import static org.junit.Assume.assumeTrue;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -32,7 +45,6 @@ import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.engine.JRDataSourceWrapper;
 import net.sf.jasperreports.jsf.engine.Source;
 import net.sf.jasperreports.jsf.engine.SourceException;
-import net.sf.jasperreports.jsf.resource.ClasspathResource;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.ResourceResolver;
 import net.sf.jasperreports.jsf.test.JMockTheories;
@@ -52,11 +64,6 @@ import org.junit.Ignore;
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
-import static org.hamcrest.Matchers.*;
-import static net.sf.jasperreports.jsf.test.Matchers.*;
 
 /**
  *
@@ -186,7 +193,7 @@ public class XlsSourceConverterTest {
     }
 
     @Theory
-    @SuppressWarnings("unused")
+    @SuppressWarnings({ "unused", "unchecked" })
     public void invalidDataThrowsSourceEx(Object data) {
         assumeThat(data, notNullValue());
         assumeThat(data, not(anyOf(
@@ -206,8 +213,9 @@ public class XlsSourceConverterTest {
         }
     }
 
-    @Theory
+	@Theory
     @Ignore("needs a proper XLS file")
+    @SuppressWarnings("unchecked")
     public void validResourceReturnsJRDataSource(final Object resource)
             throws Exception {
         assumeThat(resource, is(not(nullValue())));

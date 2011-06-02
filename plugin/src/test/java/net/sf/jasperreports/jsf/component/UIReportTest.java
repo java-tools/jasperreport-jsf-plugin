@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -20,6 +20,7 @@ package net.sf.jasperreports.jsf.component;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.validator.Validator;
+
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.Filler;
@@ -27,23 +28,16 @@ import net.sf.jasperreports.jsf.test.JMockTheories;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockJRFacesContext;
-import org.apache.shale.test.el.MockValueExpression;
-import org.apache.shale.test.mock.MockExternalContext;
-import org.apache.shale.test.mock.MockFacesContext;
 
+import org.apache.shale.test.el.MockValueExpression;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
-import static org.hamcrest.Matchers.*;
 
 /**
  *

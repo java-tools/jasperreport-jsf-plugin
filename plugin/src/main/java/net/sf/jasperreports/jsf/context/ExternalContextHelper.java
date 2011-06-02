@@ -19,6 +19,7 @@
 package net.sf.jasperreports.jsf.context;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import javax.faces.application.ViewHandler;
@@ -161,6 +162,9 @@ public abstract class ExternalContextHelper {
      */
     protected ExternalContextHelper() { }
 
+    public abstract Collection<ContentType> getAcceptedContentTypes(
+    		final ExternalContext context);
+    
     /**
      * Creates a <code>ReportRenderRequest</code> based on the data code in the
      * current ExternalContext.
@@ -261,6 +265,6 @@ public abstract class ExternalContextHelper {
      * @throws IOException Signals that an I/O exception has occurred.
      */
     public abstract void writeResponse(final ExternalContext context,
-            final String contentType, final byte[] data) throws IOException;
+            final ContentType contentType, final byte[] data) throws IOException;
 
 }

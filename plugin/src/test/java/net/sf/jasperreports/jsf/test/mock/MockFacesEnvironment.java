@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -19,6 +19,7 @@
 package net.sf.jasperreports.jsf.test.mock;
 
 import java.io.File;
+
 import javax.faces.FactoryFinder;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
@@ -27,7 +28,6 @@ import javax.faces.render.RenderKitFactory;
 
 import org.apache.shale.test.mock.MockApplication;
 import org.apache.shale.test.mock.MockApplicationFactory;
-import org.apache.shale.test.mock.MockExternalContext12;
 import org.apache.shale.test.mock.MockFacesContext;
 import org.apache.shale.test.mock.MockFacesContextFactory;
 import org.apache.shale.test.mock.MockLifecycle;

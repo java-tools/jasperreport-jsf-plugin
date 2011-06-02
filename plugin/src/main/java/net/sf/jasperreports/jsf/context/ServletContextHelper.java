@@ -19,6 +19,13 @@
 package net.sf.jasperreports.jsf.context;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Enumeration;
+import java.util.List;
+
 import javax.faces.context.ExternalContext;
 
 import javax.servlet.ServletContext;
@@ -66,6 +73,23 @@ final class ServletContextHelper extends ExternalContextHelper {
         return (ReportRenderRequest) request;
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
+	public Collection<ContentType> getAcceptedContentTypes(final ExternalContext context) {
+    	final HttpServletRequest request = (HttpServletRequest)
+				context.getRequest();
+    	
+    	Enumeration<String> values = request.getHeaders("Accept");
+    	List<ContentType> list = new ArrayList<ContentType>();
+    	while (values.hasMoreElements()) {
+    		ContentType type = new ContentType(values.nextElement());
+    		list.add(type);
+    	}
+    	Collections.sort(list);
+    	
+    	return Collections.unmodifiableList(list);
+    }
+    
     /**
      * Obtains the server name of the current request.
      *
@@ -142,10 +166,10 @@ final class ServletContextHelper extends ExternalContextHelper {
      */
     @Override
     public void writeResponse(final ExternalContext context,
-            final String contentType, final byte[] data) throws IOException {
+            final ContentType contentType, final byte[] data) throws IOException {
         final HttpServletResponse response = (HttpServletResponse)
-                context.getResponse();
-        response.setContentType(contentType);
+                context.getResponse();        
+        response.setContentType(contentType.toString());
         response.setContentLength(data.length);
         response.getOutputStream().write(data);
     }

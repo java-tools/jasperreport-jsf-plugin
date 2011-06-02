@@ -18,11 +18,15 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRRtfExporter;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.context.ContentType;
 
 /**
  * Exporter implementation which generates a RTF report.
@@ -32,15 +36,15 @@ import net.sf.jasperreports.jsf.component.UIReport;
 public final class RtfExporter extends ExporterBase {
 
     /** Report content type. */
-    public static final String CONTENT_TYPE = "application/rtf";
+    public static final ContentType CONTENT_TYPE = new ContentType("application/rtf");
 
     /**
      * Obtains the exporter content type.
      *
      * @return the exporter content type.
      */
-    public String getContentType() {
-        return CONTENT_TYPE;
+    public Collection<ContentType> getContentTypes() {
+        return Collections.singleton(CONTENT_TYPE);
     }
 
     /*

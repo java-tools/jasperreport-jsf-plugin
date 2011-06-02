@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2010 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -84,7 +84,8 @@ public class JdbcSourceConverterTest {
         assertThat(connection, nullValue());
     }
 
-    @Theory
+	@Theory
+	@SuppressWarnings("unused")
     public void nullOrEmptyDriverThrowsEx(String value, String driverClass) {
         assumeThat(value, notNullValue());
         assumeTrue(value.length() > 0);
@@ -110,6 +111,7 @@ public class JdbcSourceConverterTest {
     }
 
     @Theory
+    @SuppressWarnings("unused")
     public void invalidDriverThrowsEx(String value, String driverClass) {
         assumeNotNull(value, driverClass);
         assumeTrue(value.length() > 0);
@@ -135,6 +137,7 @@ public class JdbcSourceConverterTest {
     }
 
     @Theory
+    @SuppressWarnings("unused")
     public void invalidUrlThrowsSQLEx(String value, String driverClass) {
         assumeNotNull(value, driverClass);
         assumeThat(value, not(startsWith("jdbc")));

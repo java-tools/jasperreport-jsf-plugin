@@ -18,12 +18,16 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRTextExporter;
 import net.sf.jasperreports.engine.export.JRTextExporterParameter;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.context.ContentType;
 
 /**
  * Exporter implementation which generates a plain text report.
@@ -33,7 +37,7 @@ import net.sf.jasperreports.jsf.component.UIReport;
 public final class TextExporter extends ExporterBase {
 
     /** The MIME type of this exporter. */
-    public static final String CONTENT_TYPE = "text/plain";
+    public static final ContentType CONTENT_TYPE = new ContentType("text/plain");
 
     /** The Constant ATTR_BETWEEN_PAGES_TEXT. */
     public static final String ATTR_BETWEEN_PAGES_TEXT = "BETWEEN_PAGES_TEXT";
@@ -49,10 +53,10 @@ public final class TextExporter extends ExporterBase {
     public static final String ATTR_PAGE_WIDTH = "PAGE_WIDTH";
 
     /**
-     * @see net.sf.jasperreports.jsf.engine.Exporter#getContentType()
+     * @see net.sf.jasperreports.jsf.engine.Exporter#getContentTypes()
      */
-    public String getContentType() {
-        return CONTENT_TYPE;
+    public Collection<ContentType> getContentTypes() {
+        return Collections.singleton(CONTENT_TYPE);
     }
 
     /*

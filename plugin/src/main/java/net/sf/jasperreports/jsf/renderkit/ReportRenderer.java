@@ -21,6 +21,7 @@ package net.sf.jasperreports.jsf.renderkit;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,8 +35,10 @@ import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.config.Configuration;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.Filler;
+import net.sf.jasperreports.jsf.context.ContentType;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
+import net.sf.jasperreports.jsf.util.ComponentUtil;
 import net.sf.jasperreports.jsf.util.Util;
 
 /**
@@ -88,11 +91,13 @@ public abstract class ReportRenderer extends Renderer {
         try {
             if (logger.isLoggable(Level.FINE)) {
                 logger.log(Level.FINE, "JRJSF_0010", new Object[]{clientId,
-                            exporter.getContentType()});
+                            exporter.getContentTypes()});
             }
             exporter.export(context, component, reportData);
+            ContentType contentType = findAppropiateContentType(context, 
+            		component, exporter.getContentTypes());
             helper.writeResponse(context.getExternalContext(),
-                    exporter.getContentType(), reportData.toByteArray());
+                    contentType, reportData.toByteArray());
         } finally {
             try {
                 reportData.close();
@@ -201,6 +206,42 @@ public abstract class ReportRenderer extends Renderer {
         return result;
     }
 
+    private ContentType findAppropiateContentType(FacesContext context, UIReport component, 
+    		Collection<ContentType> possibleValues) {
+    	ContentType result = null;
+    	
+    	String formatValue = ComponentUtil.getStringAttribute(component, "format", null);
+    	if (ContentType.isContentType(formatValue)) {
+    		ContentType format = new ContentType(formatValue);
+    		if (isContentTypeAccepted(context, format)) {
+    			result = format;
+    		}
+    	}
+    	
+    	if (result == null) {
+    		for (ContentType type : possibleValues) {
+    			if (isContentTypeAccepted(context, type)) {
+    				result = type;
+    				break;
+    			}
+    		}
+    	}
+    	
+    	return result;
+    }
+    
+    private boolean isContentTypeAccepted(FacesContext context, ContentType contentType) {
+    	JRFacesContext jrFacesContext = JRFacesContext.getInstance(context);
+    	ExternalContextHelper helper = jrFacesContext.getExternalContextHelper(context);
+    	for (ContentType accepted : helper.getAcceptedContentTypes(
+    			context.getExternalContext())) {
+    		if (accepted.implies(contentType)) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
     /**
      * Establishes some flags into the faces' context so the plugin's lifecycle
      * can perform the additional tasks needed to handle the

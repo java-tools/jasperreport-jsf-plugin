@@ -18,12 +18,16 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRCsvExporter;
 import net.sf.jasperreports.engine.export.JRCsvExporterParameter;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.context.ContentType;
 
 /**
  * Exporter implementation that generates a CSV data file.
@@ -33,7 +37,7 @@ import net.sf.jasperreports.jsf.component.UIReport;
 public final class CsvExporter extends ExporterBase {
 
     /** Exporter content type. */
-    public static final String CONTENT_TYPE = "text/plain";
+    public static final ContentType CONTENT_TYPE = new ContentType("text/plain");
 
     /** The Constant ATTR_FIELD_DELIMITER. */
     public static final String ATTR_FIELD_DELIMITER = "FIELD_DELIMITER";
@@ -45,8 +49,8 @@ public final class CsvExporter extends ExporterBase {
      *
      * @return the exporter content type.
      */
-    public String getContentType() {
-        return CONTENT_TYPE;
+    public Collection<ContentType> getContentTypes() {
+        return Collections.singleton(CONTENT_TYPE);
     }
 
     /*
