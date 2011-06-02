@@ -44,6 +44,14 @@
     <url>http://jasperreportjsf.svn.sourceforge.net/viewvc/jasperreportjsf/trunk</url>
   </scm>
 
+  <distributionManagement>
+    <site>
+      <id>jasperreportjsf.web.sourceforge.net</id>
+      <name>JasperReports JSF Plugin Website</name>
+      <url>scp://shell.sourceforge.net/home/groups/j/ja/jasperreportjsf/htdocs/web</url>
+    </site>
+  </distributionManagement>
+
   <modules>
     <module>plugin</module>
     <module>samples</module>
@@ -77,7 +85,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.0</version>
+        <version>2.2</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -96,6 +104,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changelog-plugin</artifactId>
+        <version>2.1</version>
       </plugin>
       -->
       <plugin>
