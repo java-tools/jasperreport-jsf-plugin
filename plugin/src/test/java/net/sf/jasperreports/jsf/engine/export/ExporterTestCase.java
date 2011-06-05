@@ -30,6 +30,7 @@ import java.util.Properties;
 
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.test.dummy.DummyUIReport;
 import net.sf.jasperreports.jsf.context.ContentType;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
@@ -112,7 +113,7 @@ public abstract class ExporterTestCase {
     }
 
     protected UIReport createComponent() {
-        UIReport report = new UIReport();
+        UIReport report = new DummyUIReport();
         Enumeration e = properties.propertyNames();
         while (e.hasMoreElements()) {
             String name = (String) e.nextElement();

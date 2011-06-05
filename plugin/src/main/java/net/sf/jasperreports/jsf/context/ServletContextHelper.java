@@ -71,15 +71,16 @@ final class ServletContextHelper extends ExternalContextHelper {
 
     @Override
     @SuppressWarnings("unchecked")
-	public Collection<ContentType> getAcceptedContentTypes(final ExternalContext context) {
+    public Collection<ContentType> getAcceptedContentTypes(
+        final ExternalContext context) {
     	final HttpServletRequest request = (HttpServletRequest)
-				context.getRequest();
+            context.getRequest();
     	
     	Enumeration<String> values = request.getHeaders("Accept");
     	List<ContentType> list = new ArrayList<ContentType>();
     	while (values.hasMoreElements()) {
-    		ContentType type = new ContentType(values.nextElement());
-    		list.add(type);
+            ContentType type = new ContentType(values.nextElement());
+            list.add(type);
     	}
     	Collections.sort(list);
     	

@@ -23,7 +23,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
-import net.sf.jasperreports.jsf.engine.source.JdbcSourceConverter;
+import net.sf.jasperreports.jsf.engine.converters.JdbcSourceConverter;
 
 import static net.sf.jasperreports.jsf.util.MessagesFactory.*;
 

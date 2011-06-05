@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.engine.Filler;
+import net.sf.jasperreports.jsf.test.dummy.DummyUIReport;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
 
@@ -50,7 +51,7 @@ public class FillerWrapperTest {
     public void init() {
         facesEnv = new MockFacesServletEnvironment();
         wrappedInstance = mockery.mock(Filler.class);
-        component = new UIReport();
+        component = new DummyUIReport();
     }
 
     @Test

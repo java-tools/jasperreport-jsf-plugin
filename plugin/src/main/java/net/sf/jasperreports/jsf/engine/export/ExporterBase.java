@@ -68,14 +68,7 @@ public abstract class ExporterBase implements Exporter {
     public final void export(final FacesContext context,
             final UIReport component, final OutputStream stream)
     throws IOException, ExporterException {
-        String jasperPrintAttrName = context.getExternalContext()
-                .getInitParameter(Constants.JASPER_PRINT_ATTR_NAME);
-        if (jasperPrintAttrName == null) {
-            jasperPrintAttrName = DefaultFiller.ATTR_JASPER_PRINT;
-        }
-
-        JasperPrint print = (JasperPrint) context.getExternalContext()
-                .getRequestMap().get(jasperPrintAttrName);
+        JasperPrint print = component.getSubmittedPrint();
         if (print == null) {
             throw new JasperPrintNotFoundException(
                     component.getClientId(context));

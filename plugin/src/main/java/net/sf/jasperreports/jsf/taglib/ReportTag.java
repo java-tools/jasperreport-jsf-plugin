@@ -30,7 +30,9 @@ import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
  */
 public abstract class ReportTag extends UIComponentELTag {
 
-    private ValueExpression converter;
+    private ValueExpression sourceConverter;
+
+    private ValueExpression reportConverter;
 
     /** The data source. */
     private ValueExpression source;
@@ -39,8 +41,12 @@ public abstract class ReportTag extends UIComponentELTag {
 
     private ValueExpression validator;
 
-    public void setConverter(ValueExpression converter) {
-        this.converter = converter;
+    public void setSourceConverter(ValueExpression converter) {
+        this.sourceConverter = converter;
+    }
+
+    public void setReportConveter(ValueExpression converter) {
+        this.reportConverter = converter;
     }
 
     /**
@@ -70,7 +76,8 @@ public abstract class ReportTag extends UIComponentELTag {
     @Override
     public void release() {
         super.release();
-        converter = null;
+        sourceConverter = null;
+        reportConverter = null;
         source = null;
         name = null;
         validator = null;
@@ -91,8 +98,11 @@ public abstract class ReportTag extends UIComponentELTag {
         setStringAttribute(component, "reportSource", source);
 
         UIReport report = (UIReport) component;
-        if (converter != null) {
-            report.setValueExpression("converter", converter);
+        if (sourceConverter != null) {
+            report.setValueExpression("sourceConverter", sourceConverter);
+        }
+        if (reportConverter != null) {
+            report.setValueExpression("reportConverter", reportConverter);
         }
         if (validator != null) {
             report.setValueExpression("validator", validator);

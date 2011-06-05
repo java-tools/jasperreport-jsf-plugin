@@ -39,6 +39,7 @@ import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.context.ContentType;
 import net.sf.jasperreports.jsf.engine.ExporterException;
 import net.sf.jasperreports.jsf.engine.fill.DefaultFiller;
+import net.sf.jasperreports.jsf.test.dummy.DummyUIReport;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
 
@@ -81,7 +82,7 @@ public class DefaultExporterTest {
     public void init() {
         facesEnv = new MockFacesServletEnvironment();
 
-        report = new UIReport();
+        report = new DummyUIReport();
         report.setId(REPORT_ID);
 
         mockExporter = mockery.mock(JRExporter.class);

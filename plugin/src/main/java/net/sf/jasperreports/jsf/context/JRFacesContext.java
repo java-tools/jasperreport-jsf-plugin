@@ -23,6 +23,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.convert.ReportConverter;
 import net.sf.jasperreports.jsf.convert.SourceConverter;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.Filler;
@@ -100,6 +101,9 @@ public abstract class JRFacesContext {
      */
     public abstract SourceConverter createSourceConverter(
             FacesContext context, UIComponent component);
+
+    public abstract ReportConverter createReportConverter(
+            FacesContext context, UIReport component);
 
     /**
      * Creates a new report instance.

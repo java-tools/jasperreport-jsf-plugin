@@ -120,21 +120,21 @@ public class ClasspathResourceTest {
             resource.getInputStream();
             fail("'getInputStream' must throw 'LocationNotFoundException'.");
         } catch (Exception e) {
-            assertThat(e, is(LocationNotFoundException.class));
+            assertThat(e, is(ClasspathLocationNotFoundException.class));
         }
 
         try {
             resource.getLocation();
             fail("'getLocation' must throw 'LocationNotFoundException'.");
         } catch (Exception e) {
-            assertThat(e, is(LocationNotFoundException.class));
+            assertThat(e, is(ClasspathLocationNotFoundException.class));
         }
 
         try {
             resource.getPath();
             fail("'getPath' must throw 'LocationNotFoundException'.");
         } catch (Exception e) {
-            assertThat(e, is(LocationNotFoundException.class));
+            assertThat(e, is(ClasspathLocationNotFoundException.class));
         }
     }
 

@@ -18,10 +18,10 @@
  */
 package net.sf.jasperreports.jsf.convert;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.jsf.component.UIReport;
 
 /**
  * Report converter interface.
@@ -41,7 +41,7 @@ public interface ReportConverter {
      * @throws ConverterException if value can't be converted.
      */
     public JasperReport convertFromValue(FacesContext context,
-            UIComponent component, Object value)
+            UIReport component, Object value)
     throws ConverterException;
 
 }
