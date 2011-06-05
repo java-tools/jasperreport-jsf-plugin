@@ -168,6 +168,20 @@
   </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/conf</directory>
+        <targetPath>META-INF</targetPath>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+      <resource>
+        <directory>src/main/services</directory>
+        <targetPath>META-INF/services</targetPath>
+      </resource>
+    </resources>
     <testResources>
       <testResource>
         <directory>${basedir}/src/test/resources</directory>
@@ -337,6 +351,11 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jsftools-maven-plugin</artifactId>
         <version>1.0-SNAPSHOT</version>
+        <configuration>
+          <generatorConfigFile>src/jsftools/generatorConfig.properties</generatorConfigFile>
+          <facesConfigFile>src/main/resources/META-INF/faces-config.xml</facesConfigFile>
+        </configuration>
+      </plugin>
       </plugin-->
     </plugins>
   </reporting>

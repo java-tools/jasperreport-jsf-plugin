@@ -30,12 +30,15 @@ import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.component.UISource;
+import net.sf.jasperreports.jsf.convert.ConverterException;
+import net.sf.jasperreports.jsf.convert.ReportConverter;
 import net.sf.jasperreports.jsf.convert.SourceConverter;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.ExporterException;
 import net.sf.jasperreports.jsf.engine.Filler;
+import net.sf.jasperreports.jsf.engine.converters.ReportConverterBase;
 import net.sf.jasperreports.jsf.engine.fill.DefaultFiller;
-import net.sf.jasperreports.jsf.engine.source.SourceConverterBase;
+import net.sf.jasperreports.jsf.engine.converters.SourceConverterBase;
 import net.sf.jasperreports.jsf.resource.DefaultResourceResolver;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.ResourceResolver;
@@ -61,6 +64,7 @@ public final class DefaultJRFacesContext extends JRFacesContext {
 
     /** Source converter map. */
     private final Map<String, SourceConverter> sourceConverterMap;
+    private final Map<String, ReportConverter> reportConverterMap;
     /** Exporter map. */
     private final Map<String, Exporter> exporterMap;
     /** MIME type to exporter format map. */
@@ -75,8 +79,9 @@ public final class DefaultJRFacesContext extends JRFacesContext {
      */
     protected DefaultJRFacesContext() {
         sourceConverterMap = Services.map(SourceConverter.class);
+        reportConverterMap = Services.map(ReportConverter.class);
+
         exporterMap = Services.map(Exporter.class);
-        
         contentTypeMap = new HashMap<ContentType, String>();
         for (Map.Entry<String, Exporter> entry : exporterMap.entrySet()) {
         	for (ContentType ct : entry.getValue().getContentTypes()) {
@@ -152,6 +157,30 @@ public final class DefaultJRFacesContext extends JRFacesContext {
         if (converter == null) {
             converter = new SourceConverterBase();
         }
+
+        return converter;
+    }
+
+    public ReportConverter createReportConverter(final FacesContext context,
+            final UIReport component) {
+        ReportConverter converter = null;
+
+        Object aValue = component.getValue();
+
+        String valueStr;
+        if (aValue instanceof String) {
+            valueStr = (String) aValue;
+            String type = valueStr.substring(
+                    valueStr.lastIndexOf("."));
+            if (type != null && type.length() > 0) {
+                converter = reportConverterMap.get(type);
+            }
+        }
+
+        if (converter == null) {
+            converter = new ReportConverterBase();
+        }
+
         return converter;
     }
 

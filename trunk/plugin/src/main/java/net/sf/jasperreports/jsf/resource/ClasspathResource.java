@@ -31,7 +31,7 @@ public final class ClasspathResource extends AbstractResource
 
     protected ClasspathResource(final String name,
             final ClassLoader classLoader) {
-        super(name);
+        super(stripPrefix(name));
         if (classLoader == null) {
             throw new IllegalArgumentException("'classLoader' can't ne null");
         }
@@ -62,8 +62,15 @@ public final class ClasspathResource extends AbstractResource
         return location.getPath();
     }
 
+    private static String stripPrefix(String resourceName) {
+        if (resourceName.startsWith(PREFIX)) {
+            return resourceName.substring(PREFIX.length());
+        }
+        return resourceName;
+    }
+
     private void throwLocationNotFoundException() {
-        throw new LocationNotFoundException(
+        throw new ClasspathLocationNotFoundException(
                 "Resource location for classpath resource '" + getName()
                 + "' couldn't be identified.");
     }

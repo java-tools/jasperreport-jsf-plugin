@@ -25,6 +25,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.test.JMockTheories;
+import net.sf.jasperreports.jsf.test.dummy.DummyUIReport;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockJRFacesContext;
@@ -82,7 +83,7 @@ public class UIReportTest {
         jrContext.setExporter(exporter);
         jrContext.setFiller(filler);
 
-        component = new UIReport();
+        component = new DummyUIReport();
         component.setId("reportId");
 
         MockValueExpression ve = new MockValueExpression(

@@ -52,50 +52,57 @@ public final class DefaultResourceResolver implements ResourceResolver {
         } catch (MalformedURLException e) {
             final ClassLoader loader = Util.getClassLoader(this);
             if (name.startsWith(ClasspathResource.PREFIX)) {
-                resource = new ClasspathResource(
-                        name.substring(ClasspathResource.PREFIX.length()),
-                        loader);
+                resource = new ClasspathResource(name, loader);
             } else if (name.startsWith("/")) {
                 resource = new ContextResource(name);
             } else if (loader.getResource(name) != null) {
                 resource = new ClasspathResource(name, loader);
             } else {
-                JRFacesContext jrContext = JRFacesContext.getInstance(context);
-                ExternalContextHelper helper = jrContext.getExternalContextHelper(context);
-                String rootPath = null;
-                
-                if ((component != null) && (component instanceof UIReport)) {
-                    // If caller component is a report-based component then try to
-                    // resolve the resource relative to the report resource (if given).
-
-                    Object value = ((UIReport) component).getValue();
-                    if (value != null && (value instanceof String)) {
-                        rootPath = helper.getResourceRealPath(
-                            context.getExternalContext(), 
-                            "/" + getPath((String) value));
-                    }
-                } else {
-                    // If caller component is not a report-based component or
-                    // there is not any component at all, resolve the resource
-                    // name relative to the current view.
-
-                    String viewId = context.getViewRoot().getViewId();
-                    rootPath = helper.getResourceRealPath(
-                            context.getExternalContext(), "/" + getPath(viewId));
-                }
-
-                if (rootPath != null) {
-                    String resourceFileName = rootPath + "/" + name;
-                    File resourceFile = new File(normalize(resourceFileName));
-                    if (resourceFile.exists()) {
-                        resource = new FileResource(resourceFile);
-                    }
-                }
+                resource = resolveRelative(context, component, name);
             }
         }
-        
+
         // If at this point 'resource' is null then the resource couldn't
         // be resolved by this ResourceResolver implementation
+        return resource;
+    }
+
+    private Resource resolveRelative(FacesContext context, 
+            UIComponent component, String name) {
+        Resource resource = null;
+        JRFacesContext jrContext = JRFacesContext.getInstance(context);
+        ExternalContextHelper helper =
+                jrContext.getExternalContextHelper(context);
+        String rootPath = null;
+
+        if ((component != null) && (component instanceof UIReport)) {
+            // If caller component is a report-based component then try to
+            // resolve the resource relative to the report resource (if given).
+
+            Object value = ((UIReport) component).getValue();
+            if (value != null && (value instanceof String)) {
+                rootPath = helper.getResourceRealPath(
+                    context.getExternalContext(),
+                    "/" + getPath((String) value));
+            }
+        } else {
+            // If caller component is not a report-based component or
+            // there is not any component at all, resolve the resource
+            // name relative to the current view.
+
+            String viewId = context.getViewRoot().getViewId();
+            rootPath = helper.getResourceRealPath(
+                    context.getExternalContext(), "/" + getPath(viewId));
+        }
+
+        if (rootPath != null) {
+            String resourceFileName = rootPath + "/" + name;
+            File resourceFile = new File(normalize(resourceFileName));
+            if (resourceFile.exists()) {
+                resource = new FileResource(resourceFile);
+            }
+        }
+
         return resource;
     }
 

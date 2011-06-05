@@ -145,18 +145,6 @@ public final class Util {
         return mapping.charAt(0) == '/';
     }
 
-    public static UISource resolveSourceId(FacesContext context, 
-    		UIReport report, String sourceId) {
-    	UISource result = null;
-    	UIComponent component;
-    	do {
-	    	component = getNamingContainer(report);
-	    	String id = component.getClientId(context) + ":" + sourceId;
-	    	result = (UISource) component.findComponent(id);
-    	} while (!(component instanceof UIViewRoot));
-        return result;
-    }
-
     /**
      * <p>
      * Return the appropriate {@link javax.faces.webapp.FacesServlet} mapping
@@ -199,14 +187,6 @@ public final class Util {
             // Servlet invoked using extension mapping
             return servletPath.substring(servletPath.lastIndexOf('.'));
         }
-    }
-    
-    private static UIComponent getNamingContainer(UIComponent child) {
-    	UIComponent component = child;
-    	do {
-    		component = component.getParent();
-    	} while (!(component instanceof NamingContainer));
-    	return component;
     }
 
     private Util() { }

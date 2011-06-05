@@ -32,12 +32,12 @@ import java.net.URL;
 public interface Resource {
 
     /**
-     * Name of the resource
+     * Name of the resource.
      */
     public String getName();
 
     /**
-     * Obtains the URL location of this resource
+     * Obtains the URL location of this resource.
      *
      * @return The location of the resource
      * @throws IOException
@@ -55,9 +55,9 @@ public interface Resource {
     public InputStream getInputStream() throws IOException;
 
     /**
-     * The path part of the resource
+     * The path part of the resource.
      *
-     * @return the absolute path to the resource
+     * @return the absolute path to the resource.
      */
     public String getPath();
 }

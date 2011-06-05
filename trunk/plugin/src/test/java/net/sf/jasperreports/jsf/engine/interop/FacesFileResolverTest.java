@@ -30,6 +30,7 @@ import net.sf.jasperreports.jsf.TestConstants;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.resource.ResourceResolver;
+import net.sf.jasperreports.jsf.test.dummy.DummyUIReport;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockJRFacesContext;
@@ -96,7 +97,7 @@ public class FacesFileResolverTest {
     @Before
     public void init() throws Exception {
         facesEnv = new MockFacesServletEnvironment();
-        component = new UIReport();
+        component = new DummyUIReport();
         resourceResolver = mockery.mock(ResourceResolver.class);
         jrContext = new MockJRFacesContext(facesEnv.getFacesContext());
         jrContext.setResourceResolver(resourceResolver);

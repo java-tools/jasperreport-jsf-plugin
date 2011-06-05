@@ -46,28 +46,29 @@ final class PortletContextHelper extends ExternalContextHelper {
     /**
      * Protected constructor to prevent instantiation.
      */
-    protected PortletContextHelper() { }
+    protected PortletContextHelper() {
+    }
 
     @Override
-	public Collection<ContentType> getAcceptedContentTypes(
-			final ExternalContext context) {
-    	if ("2.0".equals(getPortletVersion())) {
-    		ResourceRequest request = (ResourceRequest) context.getRequest();
-    		Enumeration<String> values = request.getProperties("Accept");
-        	List<ContentType> list = new ArrayList<ContentType>();
-        	while (values.hasMoreElements()) {
-        		ContentType type = new ContentType(values.nextElement());
-        		list.add(type);
-        	}
-        	Collections.sort(list);
-        	return Collections.unmodifiableList(list);
-    	} else {
+    public Collection<ContentType> getAcceptedContentTypes(
+            final ExternalContext context) {
+        if ("2.0".equals(getPortletVersion())) {
+            ResourceRequest request = (ResourceRequest) context.getRequest();
+            Enumeration<String> values = request.getProperties("Accept");
+            List<ContentType> list = new ArrayList<ContentType>();
+            while (values.hasMoreElements()) {
+                ContentType type = new ContentType(values.nextElement());
+                list.add(type);
+            }
+            Collections.sort(list);
+            return Collections.unmodifiableList(list);
+        } else {
             throw new IllegalStateException(
-            	"Only Resource Request/Response state is allowed");
-    	}
-	}
+                    "Only Resource Request/Response state is allowed");
+        }
+    }
 
-	/**
+    /**
      * Creates a <code>ReportRenderRequest</code> based on the data code in the
      * current ExternalContext.
      *
@@ -77,22 +78,22 @@ final class PortletContextHelper extends ExternalContextHelper {
     @Override
     public ReportRenderRequest restoreReportRequest(
             final ExternalContext context) {
-    	if ("2.0".equals(getPortletVersion())) {
-	        final Configuration config = Configuration.getInstance(context);
-	        ResourceRequest request = (ResourceRequest)
-            		context.getRequest();
-	        final String viewId = context.getRequestParameterMap()
-	                .get(Constants.PARAM_VIEWID);
-	        final String viewState = getViewCacheMap(context).get(viewId);
-	        
-	        request = new ReportPortletRenderRequest(request, 
-	        		config.getDefaultMapping(), viewId, viewState);
-	        context.setRequest(request);
-	        return (ReportRenderRequest) request;
-    	} else {
+        if ("2.0".equals(getPortletVersion())) {
+            final Configuration config = Configuration.getInstance(context);
+            ResourceRequest request = (ResourceRequest) context.getRequest();
+            final String viewId = context.getRequestParameterMap().get(
+                    Constants.PARAM_VIEWID);
+            final String viewState = getViewCacheMap(context).get(viewId);
+
+            request = new ReportPortletRenderRequest(request,
+                                                     config.getDefaultMapping(),
+                                                     viewId, viewState);
+            context.setRequest(request);
+            return (ReportRenderRequest) request;
+        } else {
             throw new IllegalStateException(
-        		"Only Resource Request/Response state is allowed");
-    	}
+                    "Only Resource Request/Response state is allowed");
+        }
     }
 
     /**
@@ -104,8 +105,8 @@ final class PortletContextHelper extends ExternalContextHelper {
     @Override
     public String getRequestURI(final ExternalContext context) {
         if ("2.0".equals(getPortletVersion())) {
-            final ResourceRequest request = (ResourceRequest)
-                    context.getRequest();
+            final ResourceRequest request =
+                    (ResourceRequest) context.getRequest();
             return request.getResourceID();
         } else {
             return null;
@@ -153,15 +154,16 @@ final class PortletContextHelper extends ExternalContextHelper {
             final ReportRenderer renderer, final UIReport report)
             throws IOException {
         if ("2.0".equals(getPortletVersion())) {
-            final ResourceResponse response = (ResourceResponse)
-                    context.getResponse();
+            final ResourceResponse response = (ResourceResponse) context.
+                    getResponse();
             response.setProperty("Cache-Type", "no-cache");
             response.setProperty("Expires", "0");
 
             if (report.getName() != null) {
                 response.setProperty("Content-Disposition",
-                        renderer.encodeContentDisposition(report,
-                        response.getCharacterEncoding()));
+                                     renderer.encodeContentDisposition(report,
+                                                                       response.
+                        getCharacterEncoding()));
             }
         } else {
             throw new IllegalStateException(
@@ -181,8 +183,8 @@ final class PortletContextHelper extends ExternalContextHelper {
     public void writeResponse(final ExternalContext context,
             final ContentType contentType, final byte[] data) throws IOException {
         if ("2.0".equals(getPortletVersion())) {
-            final ResourceResponse response = (ResourceResponse)
-                    context.getResponse();
+            final ResourceResponse response = (ResourceResponse) context.
+                    getResponse();
             response.setContentType(contentType.toString());
             response.setContentLength(data.length);
             response.getPortletOutputStream().write(data);

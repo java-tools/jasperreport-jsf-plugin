@@ -28,6 +28,7 @@ import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.context.ContentType;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
+import net.sf.jasperreports.jsf.convert.ReportConverter;
 import net.sf.jasperreports.jsf.convert.SourceConverter;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.Filler;
@@ -44,18 +45,15 @@ public class MockJRFacesContext extends JRFacesContext {
     private Set<String> availableExportFormats = new HashSet<String>();
     private Set<String> availableDataSourceTypes = new HashSet<String>();
     private Set<ContentType> supportedContentTypes = new HashSet<ContentType>();
-    
     private SourceConverter sourceConverter;
+    private ReportConverter reportConverter;
     private ResourceResolver resourceResolver;
-
     private Filler filler;
     private Exporter exporter;
-
     private ExternalContextHelper extContextHelper;
 
     public MockJRFacesContext(FacesContext context) {
-        context.getExternalContext().getApplicationMap()
-                .put(INSTANCE_KEY, this);
+        context.getExternalContext().getApplicationMap().put(INSTANCE_KEY, this);
         extContextHelper = new MockExternalContextHelper();
     }
 
@@ -67,6 +65,14 @@ public class MockJRFacesContext extends JRFacesContext {
         this.sourceConverter = sourceConverter;
     }
 
+    public ReportConverter getReportConverter() {
+        return reportConverter;
+    }
+
+    public void setReportConverter(ReportConverter reportConverter) {
+        this.reportConverter = reportConverter;
+    }
+
     public ResourceResolver getResourceResolver() {
         return resourceResolver;
     }
@@ -74,11 +80,12 @@ public class MockJRFacesContext extends JRFacesContext {
     public void setResourceResolver(ResourceResolver resourceResolver) {
         this.resourceResolver = resourceResolver;
     }
-    
+
     public Resource createResource(
             FacesContext context, UIComponent component, String name) {
         if (resourceResolver != null) {
-            Resource res = resourceResolver.resolveResource(context, component, name);
+            Resource res = resourceResolver.resolveResource(context, component,
+                                                            name);
             if (res == null) {
                 throw new UnresolvedResourceException(name);
             }
@@ -129,6 +136,15 @@ public class MockJRFacesContext extends JRFacesContext {
         return null;
     }
 
+    @Override
+    public ReportConverter createReportConverter(FacesContext context,
+            UIReport component) {
+        if (reportConverter != null) {
+            return reportConverter;
+        }
+        return null;
+    }
+
     public Set<String> getAvailableExportFormats() {
         return availableExportFormats;
     }
@@ -145,12 +161,11 @@ public class MockJRFacesContext extends JRFacesContext {
         this.availableDataSourceTypes = availableDataSourceTypes;
     }
 
-	public Set<ContentType> getSupportedContentTypes() {
-		return supportedContentTypes;
-	}
+    public Set<ContentType> getSupportedContentTypes() {
+        return supportedContentTypes;
+    }
 
-	public void setSupportedContentTypes(Set<ContentType> supportedContentTypes) {
-		this.supportedContentTypes = supportedContentTypes;
-	}
-    
+    public void setSupportedContentTypes(Set<ContentType> supportedContentTypes) {
+        this.supportedContentTypes = supportedContentTypes;
+    }
 }

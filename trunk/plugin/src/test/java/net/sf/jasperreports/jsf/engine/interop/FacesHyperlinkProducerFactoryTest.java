@@ -20,6 +20,7 @@ package net.sf.jasperreports.jsf.engine.interop;
 
 import net.sf.jasperreports.engine.export.JRHyperlinkProducer;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.test.dummy.DummyUIReport;
 
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theories;
@@ -53,7 +54,7 @@ public class FacesHyperlinkProducerFactoryTest {
 
     @Theory
     public void validComponentReturnsProducer(final String anyValue) {
-        UIReport report = new UIReport();
+        UIReport report = new DummyUIReport();
         FacesHyperlinkProducerFactory factory =
                 new FacesHyperlinkProducerFactory(report);
         JRHyperlinkProducer producter = factory.getHandler(anyValue);

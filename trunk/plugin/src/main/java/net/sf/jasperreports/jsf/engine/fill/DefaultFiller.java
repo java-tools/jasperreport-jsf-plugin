@@ -36,6 +36,7 @@ import net.sf.jasperreports.engine.fill.JRBaseFiller;
 import net.sf.jasperreports.engine.fill.JRFiller;
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.component.UISubreport;
 import net.sf.jasperreports.jsf.convert.SourceConverter;
 import net.sf.jasperreports.jsf.engine.Source;
@@ -92,8 +93,7 @@ public class DefaultFiller implements Filler {
             final Map<String, Object> params =
                     buildParamMap(context, component);
             JasperPrint print = doFill(context, component, params);
-            context.getExternalContext().getRequestMap()
-                    .put(ATTR_JASPER_PRINT, print);
+            component.setSubmittedPrint(print);
         } finally {
             if (reportSource != null) {
                 try {
@@ -139,8 +139,8 @@ public class DefaultFiller implements Filler {
             Map<String, Object> parameters)
     throws FillerException {
         JasperReport report = component.getSubmittedReport();
-        Source reportSource = component.getSubmittedSource();
-        SourceConverter converter = component.getConverter();
+        Source reportSource = findReportSource(component);
+        SourceConverter converter = component.getSourceConverter();
 
         JRBaseFiller jrFiller;
         try {
@@ -166,6 +166,24 @@ public class DefaultFiller implements Filler {
             throw new FillerException(e);
         }
         return print;
+    }
+
+    private Source findReportSource(UIReport report) {
+        Source result = report.getSubmittedSource();
+        if (result == null) {
+            UISource source = null;
+            for (UIComponent component : report.getChildren()) {
+                if (component instanceof UISource) {
+                    source = (UISource) component;
+                    break;
+                }
+            }
+
+            if (source != null) {
+                result = source.getSubmittedSource();
+            }
+        }
+        return result;
     }
 
     private void processImplicitParameters(FacesContext context,

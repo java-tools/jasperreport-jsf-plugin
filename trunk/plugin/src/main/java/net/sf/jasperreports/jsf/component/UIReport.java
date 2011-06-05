@@ -18,10 +18,6 @@
  */
 package net.sf.jasperreports.jsf.component;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import javax.el.ELException;
@@ -31,14 +27,14 @@ import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+import net.sf.jasperreports.engine.JasperPrint;
 
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.ContextClassLoaderObjectInputStream;
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
+import net.sf.jasperreports.jsf.convert.ReportConverter;
 import net.sf.jasperreports.jsf.convert.SourceConverter;
 import net.sf.jasperreports.jsf.engine.Source;
-import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.validation.ReportValidatorBase;
 
 /**
@@ -46,7 +42,7 @@ import net.sf.jasperreports.jsf.validation.ReportValidatorBase;
  *
  * @author A. Alonso Dominguez
  */
-public class UIReport extends UIComponentBase {
+public abstract class UIReport extends UIComponentBase {
 
     /** Name used to identify the reports component family. */
     public static final String COMPONENT_FAMILY =
@@ -81,7 +77,9 @@ public class UIReport extends UIComponentBase {
      * Converter instance used to interpret the value of the
      * <tt>source</tt> attribute.
      */
-    private SourceConverter converter;
+    private SourceConverter sourceConverter;
+
+    private ReportConverter reportConverter;
 
     /** Validator instance. */
     private Validator validator;
@@ -91,6 +89,8 @@ public class UIReport extends UIComponentBase {
 
     /** Intepretted report instance. */
     private JasperReport submittedReport;
+
+    private JasperPrint submittedPrint;
 
     /**
      * Instantiates a new UIReport.
@@ -214,15 +214,15 @@ public class UIReport extends UIComponentBase {
     }
 
     /**
-     * Obtains the current converter instance.
+     * Obtains the current sourceConverter instance.
      *
-     * @return a source converter instance.
+     * @return a source sourceConverter instance.
      */
-    public final SourceConverter getConverter() {
-        if (converter != null) {
-            return converter;
+    public final SourceConverter getSourceConverter() {
+        if (sourceConverter != null) {
+            return sourceConverter;
         }
-        ValueExpression ve = getValueExpression("converter");
+        ValueExpression ve = getValueExpression("sourceConverter");
         if (ve != null) {
             try {
                 return (SourceConverter) ve.getValue(
@@ -231,17 +231,38 @@ public class UIReport extends UIComponentBase {
                 throw new FacesException(e);
             }
         } else {
-            return converter;
+            return sourceConverter;
         }
     }
 
     /**
-     * Establishes a new source converter instance.
+     * Establishes a new source sourceConverter instance.
      *
-     * @param converter a new converter instance.
+     * @param sourceConverter a new sourceConverter instance.
      */
-    public final void setConverter(final SourceConverter converter) {
-        this.converter = converter;
+    public final void setSourceConverter(final SourceConverter converter) {
+        this.sourceConverter = converter;
+    }
+
+    public final ReportConverter getReportConverter() {
+        if (reportConverter != null) {
+            return reportConverter;
+        }
+        ValueExpression ve = getValueExpression("reportConverter");
+        if (ve != null) {
+            try {
+                return (ReportConverter) ve.getValue(
+                        getFacesContext().getELContext());
+            } catch (ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return reportConverter;
+        }
+    }
+
+    public void setReportConverter(final ReportConverter reportConverter) {
+        this.reportConverter = reportConverter;
     }
 
     /**
@@ -311,6 +332,14 @@ public class UIReport extends UIComponentBase {
         this.submittedReport = submittedReport;
     }
 
+    public JasperPrint getSubmittedPrint() {
+        return submittedPrint;
+    }
+
+    public void setSubmittedPrint(JasperPrint submittedPrint) {
+        this.submittedPrint = submittedPrint;
+    }
+
     /**
      * Obtains the valid flag.
      *
@@ -343,7 +372,7 @@ public class UIReport extends UIComponentBase {
         name = (String) values[2];
         value = values[3];
         valueSet = ((Boolean) values[4]).booleanValue();
-        converter = (SourceConverter) values[5];
+        sourceConverter = (SourceConverter) values[5];
         valid = ((Boolean) values[6]).booleanValue();
         validator = (Validator) values[7];
     }
@@ -364,7 +393,7 @@ public class UIReport extends UIComponentBase {
         values[2] = name;
         values[3] = value;
         values[4] = valueSet;
-        values[5] = converter;
+        values[5] = sourceConverter;
         values[6] = valid;
         values[7] = validator;
         return values;
@@ -378,6 +407,8 @@ public class UIReport extends UIComponentBase {
         this.valueSet = false;
         this.valid = true;
         this.submittedSource = null;
+        this.submittedReport = null;
+        this.submittedPrint = null;
     }
 
     /**
@@ -430,7 +461,7 @@ public class UIReport extends UIComponentBase {
             throw new IllegalArgumentException();
         }
 
-        SourceConverter aConverter = getConverter();
+        SourceConverter aConverter = getSourceConverter();
         if (aConverter == null) {
             aConverter = getJRFacesContext()
                     .createSourceConverter(context, this);
@@ -451,53 +482,14 @@ public class UIReport extends UIComponentBase {
             throw new IllegalArgumentException();
         }
 
-        Object aValue = getValue();
-        if (aValue == null) {
-            return;
+        ReportConverter aConverter = getReportConverter();
+        if (aConverter == null) {
+            aConverter = getJRFacesContext()
+                    .createReportConverter(context, this);
         }
 
-        JasperReport aReport;
-        if (aValue instanceof JasperReport) {
-            aReport = (JasperReport) aValue;
-        } else {
-            String valueStr;
-            if (aValue instanceof String) {
-                valueStr = (String) aValue;
-            } else {
-                valueStr = aValue.toString();
-            }
-
-            Resource resource = getJRFacesContext().createResource(
-                    context, this, valueStr);
-            
-            ObjectInputStream ois = null;
-            try {
-                ois = new ContextClassLoaderObjectInputStream(
-                        resource.getInputStream());
-                aReport = (JasperReport) ois.readObject();
-            } catch (IOException e) {
-                if (logger.isLoggable(Level.SEVERE)) {
-                    LogRecord record = new LogRecord(
-                            Level.SEVERE, "JRJSF_0033");
-                    record.setParameters(new Object[]{
-                                resource.getName()});
-                    record.setThrown(e);
-                    logger.log(record);
-                }
-                throw new FacesException(e);
-            } catch (ClassNotFoundException e) {
-                if (logger.isLoggable(Level.SEVERE)) {
-                    LogRecord record = new LogRecord(
-                            Level.SEVERE, "JRJSF_0034");
-                    record.setParameters(new Object[]{
-                                resource.getName()});
-                    record.setThrown(e);
-                    logger.log(record);
-                }
-                throw new FacesException(e);
-            }
-        }
-
+        JasperReport aReport = aConverter.convertFromValue(
+                context, this, getValue());
         setSubmittedReport(aReport);
     }
 
