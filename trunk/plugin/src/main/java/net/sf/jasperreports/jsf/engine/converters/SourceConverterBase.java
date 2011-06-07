@@ -164,19 +164,23 @@ public class SourceConverterBase implements SourceConverter {
 
     private UISource resolveSourceId(FacesContext context,
             UIReport report, String sourceId) {
-        UISource result = null;
-        UIComponent component;
-
-        do {
-            component = getNamingContainer(report);
-            String id = component.getClientId(context) + ":" + sourceId;
-            UIComponent found = component.findComponent(id);
-            if ((found != null) && (found instanceof UISource)) {
-                result = (UISource) found;
-                break;
-            }
-        } while (!(component instanceof UIViewRoot));
-
+    	// Try to find source component using 'sourceId' as an
+    	// absolute ID
+    	UIViewRoot viewRoot = context.getViewRoot();
+        UISource result = (UISource) viewRoot.findComponent(sourceId);
+        if (result == null) {
+	        UIComponent component;
+	
+	        do {
+	            component = getNamingContainer(report);
+	            String id = component.getClientId(context) + ":" + sourceId;
+	            UIComponent found = component.findComponent(id);
+	            if ((found != null) && (found instanceof UISource)) {
+	                result = (UISource) found;
+	                break;
+	            }
+	        } while (!(component instanceof UIViewRoot));
+        }
         return result;
     }
 

@@ -19,6 +19,7 @@
 package net.sf.jasperreports.jsf.context;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -41,7 +42,7 @@ import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
  * @author A. Alonso Dominguez
  */
 final class ServletContextHelper extends ExternalContextHelper {
-
+	
     /**
      * Private constructor to prevent instantiation.
      */
@@ -163,11 +164,20 @@ final class ServletContextHelper extends ExternalContextHelper {
      */
     @Override
     public void writeResponse(final ExternalContext context,
-            final ContentType contentType, final byte[] data) throws IOException {
+            final ContentType contentType, final InputStream stream) 
+    throws IOException {
         final HttpServletResponse response = (HttpServletResponse)
                 context.getResponse();        
         response.setContentType(contentType.toString());
-        response.setContentLength(data.length);
-        response.getOutputStream().write(data);
+        
+        int contentLength = 0;
+        byte[] data = new byte[BUFFER_SIZE];
+        int bytesRead;
+        while (-1 != (bytesRead = stream.read(data))) {
+        	response.getOutputStream().write(data, 0, bytesRead);
+        	contentLength += bytesRead;
+        }
+        
+        response.setContentLength(contentLength);
     }
 }

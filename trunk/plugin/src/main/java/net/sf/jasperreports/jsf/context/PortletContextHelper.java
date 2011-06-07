@@ -19,6 +19,7 @@
 package net.sf.jasperreports.jsf.context;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -181,13 +182,22 @@ final class PortletContextHelper extends ExternalContextHelper {
      */
     @Override
     public void writeResponse(final ExternalContext context,
-            final ContentType contentType, final byte[] data) throws IOException {
+            final ContentType contentType, final InputStream stream) 
+    throws IOException {
         if ("2.0".equals(getPortletVersion())) {
             final ResourceResponse response = (ResourceResponse) context.
                     getResponse();
             response.setContentType(contentType.toString());
-            response.setContentLength(data.length);
-            response.getPortletOutputStream().write(data);
+            
+            int contentLength = 0;
+            byte[] data = new byte[BUFFER_SIZE];
+            int bytesRead;
+            while (-1 != (bytesRead = stream.read(data))) {
+            	response.getPortletOutputStream().write(data, 0, bytesRead);
+            	contentLength += bytesRead;
+            }
+            
+            response.setContentLength(contentLength);
         } else {
             throw new IllegalStateException(
                     "Only Resource Request/Response state is allowed");
