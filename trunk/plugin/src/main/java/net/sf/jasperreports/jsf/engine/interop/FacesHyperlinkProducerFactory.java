@@ -31,14 +31,18 @@ public class FacesHyperlinkProducerFactory extends JRHyperlinkProducerFactory {
     /** The report. */
     private final transient UIComponent report;
 
+    private JRHyperlinkProducerFactory delegate;
+    
     /**
      * Instantiates a new faces hyperlink producer factory.
      *
      * @param context the context
      * @param report the report
      */
-    public FacesHyperlinkProducerFactory(final UIComponent report) {
+    public FacesHyperlinkProducerFactory(
+            final JRHyperlinkProducerFactory delegate, final UIComponent report) {
         super();
+        this.delegate = delegate;
         if (report == null) {
             throw new IllegalArgumentException(
                     "'context' or 'report' can't be null");
@@ -55,6 +59,13 @@ public class FacesHyperlinkProducerFactory extends JRHyperlinkProducerFactory {
      */
     @Override
     public final JRHyperlinkProducer getHandler(final String linkType) {
-        return new FacesHyperlinkProducer(report);
+        JRHyperlinkProducer producer = null;
+        if (delegate != null) {
+            producer = delegate.getHandler(linkType);
+        }
+        if (producer == null) {
+            producer = new FacesHyperlinkProducer(report);
+        }
+        return producer;
     }
 }

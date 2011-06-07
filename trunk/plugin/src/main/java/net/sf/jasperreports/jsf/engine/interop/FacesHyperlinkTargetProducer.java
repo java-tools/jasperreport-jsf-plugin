@@ -18,13 +18,36 @@
  */
 package net.sf.jasperreports.jsf.engine.interop;
 
+import javax.faces.context.FacesContext;
+
 import net.sf.jasperreports.engine.JRPrintHyperlink;
 import net.sf.jasperreports.engine.export.JRHyperlinkTargetProducer;
+import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.context.JRFacesContext;
 
 public class FacesHyperlinkTargetProducer implements JRHyperlinkTargetProducer {
 
+    private UIReport report;
+
+    public FacesHyperlinkTargetProducer(UIReport report) {
+        this.report = report;
+    }
+    
     public String getHyperlinkTarget(JRPrintHyperlink hyperlink) {
         // TODO Auto-generated method stub
         return null;
     }
+    
+    private FacesContext getFacesContext() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (context == null) {
+            throw new IllegalStateException("No faces context");
+        }
+        return context;
+    }
+    
+    private JRFacesContext getJRFacesContext() {
+        return JRFacesContext.getInstance(getFacesContext());
+    }
+    
 }

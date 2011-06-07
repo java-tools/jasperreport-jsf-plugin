@@ -32,6 +32,11 @@ import net.sf.jasperreports.jsf.resource.Resource;
  */
 public class ReportConverterBase implements ReportConverter {
 
+    public boolean accepts(Object value) {
+        if (value == null) return true;
+        return (true);
+    }
+    
     public final JasperReport convertFromValue(FacesContext context,
             UIReport component, Object value)
     throws ConverterException {

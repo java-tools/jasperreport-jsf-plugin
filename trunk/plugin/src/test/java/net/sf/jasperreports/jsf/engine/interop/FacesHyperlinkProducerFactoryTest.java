@@ -46,7 +46,7 @@ public class FacesHyperlinkProducerFactoryTest {
     @Theory
     public void nullComponentThrowsIllegalArgEx() {
         try {
-            new FacesHyperlinkProducerFactory(null);
+            new FacesHyperlinkProducerFactory(null, null);
         } catch (Exception e) {
             assertThat(e, is(IllegalArgumentException.class));
         }
@@ -56,7 +56,7 @@ public class FacesHyperlinkProducerFactoryTest {
     public void validComponentReturnsProducer(final String anyValue) {
         UIReport report = new DummyUIReport();
         FacesHyperlinkProducerFactory factory =
-                new FacesHyperlinkProducerFactory(report);
+                new FacesHyperlinkProducerFactory(null, report);
         JRHyperlinkProducer producter = factory.getHandler(anyValue);
 
         assertThat(producter, notNullValue());

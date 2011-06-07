@@ -53,9 +53,6 @@ import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
  */
 public class DefaultFiller implements Filler {
 
-    public static final String ATTR_JASPER_PRINT =
-            Constants.PACKAGE_PREFIX + ".JASPER_PRINT";
-
     public static final String SUBREPORT_PARAMETER_SEPARATOR = ".";
 
     // Report Parameters

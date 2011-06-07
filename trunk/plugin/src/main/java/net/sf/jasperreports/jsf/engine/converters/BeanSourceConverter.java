@@ -43,23 +43,24 @@ import net.sf.jasperreports.jsf.engine.SourceException;
 public final class BeanSourceConverter extends SourceConverterBase {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -6307709860143591157L;
-	private static final Logger logger = Logger.getLogger(
+     * 
+     */
+    private static final long serialVersionUID = -6307709860143591157L;
+    
+    private static final Logger logger = Logger.getLogger(
             BeanSourceConverter.class.getPackage().getName(),
             Constants.LOG_MESSAGES_BUNDLE);
 
     @Override
     public Source createSource(FacesContext context,
             UIComponent component, Object value)
-    throws SourceException {
+            throws SourceException {
         JRDataSource dataSource;
 
         if (value == null) {
             if (logger.isLoggable(Level.WARNING)) {
                 logger.log(Level.WARNING, "JRJSF_0020",
-                        component.getClientId(context));
+                           component.getClientId(context));
             }
             dataSource = new JREmptyDataSource();
         } else if (value instanceof Collection<?>) {
@@ -76,5 +77,4 @@ public final class BeanSourceConverter extends SourceConverterBase {
         }
         return new JRDataSourceWrapper(dataSource);
     }
-
 }
