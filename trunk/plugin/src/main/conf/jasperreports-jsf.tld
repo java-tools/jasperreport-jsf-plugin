@@ -215,6 +215,17 @@ header when rendering the report contents.
         </attribute>
         <attribute>
             <description><![CDATA[
+Any value representing the source for the report
+file, source or compiled to be processed.
+            ]]></description>
+            <name>value</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.Object</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
 Specific validator instance used to override the
 default behaviour of the plugin.
             ]]></description>
@@ -498,6 +509,17 @@ X offset inside the outputted report document.
             <required>false</required>
             <deferred-value>
                 <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Any value representing the source for the report
+file, source or compiled to be processed.
+            ]]></description>
+            <name>value</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.Object</type>
             </deferred-value>
         </attribute>
         <attribute>
@@ -791,6 +813,10 @@ X offset inside the outputted report document.
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Any value representing the source for the report
+file, source or compiled to be processed.
+            ]]></description>
             <name>value</name>
             <required>false</required>
             <deferred-value>

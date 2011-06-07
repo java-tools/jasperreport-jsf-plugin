@@ -136,11 +136,13 @@ public class SourceTag extends UIComponentELTag {
         setStringAttribute(component, "data", data);
         setStringAttribute(component, "query", query);
         setStringAttribute(component, "type", type);
-        setStringAttribute(component, "value", value);
 
         UISource source = (UISource) component;
         if (converter != null) {
             source.setValueExpression("converter", converter);
+        }
+        if (value != null) {
+        	source.setValueExpression("value", value);
         }
         if (validator != null) {
             source.setValueExpression("validator", validator);

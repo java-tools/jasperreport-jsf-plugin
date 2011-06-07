@@ -39,6 +39,8 @@ public abstract class ReportTag extends UIComponentELTag {
 
     private ValueExpression name;
 
+    private ValueExpression value;
+    
     private ValueExpression validator;
 
     public void setSourceConverter(ValueExpression converter) {
@@ -62,7 +64,11 @@ public abstract class ReportTag extends UIComponentELTag {
         this.name = name;
     }
 
-    public void setValidator(ValueExpression validator) {
+    public void setValue(ValueExpression value) {
+		this.value = value;
+	}
+
+	public void setValidator(ValueExpression validator) {
         this.validator = validator;
     }
 
@@ -80,6 +86,7 @@ public abstract class ReportTag extends UIComponentELTag {
         reportConverter = null;
         source = null;
         name = null;
+        value = null;
         validator = null;
     }
 
@@ -103,6 +110,9 @@ public abstract class ReportTag extends UIComponentELTag {
         }
         if (reportConverter != null) {
             report.setValueExpression("reportConverter", reportConverter);
+        }
+        if (value != null) {
+        	report.setValueExpression("value", value);
         }
         if (validator != null) {
             report.setValueExpression("validator", validator);
