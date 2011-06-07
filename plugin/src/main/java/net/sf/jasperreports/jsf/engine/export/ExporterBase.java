@@ -28,11 +28,9 @@ import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.util.FileResolver;
-import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.ExporterException;
-import net.sf.jasperreports.jsf.engine.fill.DefaultFiller;
 import net.sf.jasperreports.jsf.engine.interop.FacesFileResolver;
 import net.sf.jasperreports.jsf.util.Util;
 

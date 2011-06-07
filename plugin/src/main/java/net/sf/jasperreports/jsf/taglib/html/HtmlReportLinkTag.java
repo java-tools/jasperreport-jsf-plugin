@@ -31,10 +31,52 @@ import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
  */
 public class HtmlReportLinkTag extends HtmlReportTagBase {
 
+	private ValueExpression accesskey;
+	
+	private ValueExpression ondblclick;
+    
+    private ValueExpression onmousedown;
+    
+    private ValueExpression onmousemove;
+    
+    private ValueExpression onmouseup;
+    
+    private ValueExpression onmouseout;
+    
+    private ValueExpression onmouseover;
+	
     /** The target. */
     private ValueExpression target;
 
-    /**
+    public void setAccesskey(ValueExpression accesskey) {
+		this.accesskey = accesskey;
+	}
+
+	public void setOndblclick(ValueExpression ondblclick) {
+		this.ondblclick = ondblclick;
+	}
+
+	public void setOnmousedown(ValueExpression onmousedown) {
+		this.onmousedown = onmousedown;
+	}
+
+	public void setOnmousemove(ValueExpression onmousemove) {
+		this.onmousemove = onmousemove;
+	}
+
+	public void setOnmouseup(ValueExpression onmouseup) {
+		this.onmouseup = onmouseup;
+	}
+
+	public void setOnmouseout(ValueExpression onmouseout) {
+		this.onmouseout = onmouseout;
+	}
+
+	public void setOnmouseover(ValueExpression onmouseover) {
+		this.onmouseover = onmouseover;
+	}
+
+	/**
      * Sets the target.
      *
      * @param target
@@ -54,6 +96,13 @@ public class HtmlReportLinkTag extends HtmlReportTagBase {
     @Override
     public void release() {
         super.release();
+        accesskey = null;
+        ondblclick = null;
+        onmousedown = null;
+        onmousemove = null;
+        onmouseout = null;
+        onmouseover = null;
+        onmouseup = null;
         target = null;
     }
 
@@ -90,7 +139,13 @@ public class HtmlReportLinkTag extends HtmlReportTagBase {
     protected void setProperties(final UIComponent component) {
         super.setProperties(component);
 
+        setStringAttribute(component, "accesskey", accesskey);
+        setStringAttribute(component, "ondblclick", ondblclick);
+        setStringAttribute(component, "onmousedown", onmousedown);
+        setStringAttribute(component, "onmousemove", onmousemove);
+        setStringAttribute(component, "onmouseout", onmouseout);
+        setStringAttribute(component, "onmouseover", onmouseover);
+        setStringAttribute(component, "onmouseup", onmouseup);
         setStringAttribute(component, "target", target);
-        
     }
 }

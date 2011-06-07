@@ -29,10 +29,14 @@ import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
  * @author aalonsodominguez
  */
 abstract class HtmlReportTagBase extends OutputReportTag {
-
+	
     private ValueExpression dir;
 
     private ValueExpression lang;
+    
+    private ValueExpression tabindex;
+    
+    private ValueExpression title;
     
     private ValueExpression style;
     
@@ -46,7 +50,15 @@ abstract class HtmlReportTagBase extends OutputReportTag {
         this.lang = lang;
     }
 
-    public void setStyle(ValueExpression style) {
+	public void setTabindex(ValueExpression tabindex) {
+		this.tabindex = tabindex;
+	}
+
+	public void setTitle(ValueExpression title) {
+		this.title = title;
+	}
+
+	public void setStyle(ValueExpression style) {
 		this.style = style;
 	}
 
@@ -59,6 +71,8 @@ abstract class HtmlReportTagBase extends OutputReportTag {
         super.release();
         dir = null;
         lang = null;
+        tabindex = null;
+        title = null;
         style = null;
         styleClass = null;
     }
@@ -69,6 +83,8 @@ abstract class HtmlReportTagBase extends OutputReportTag {
 
         setStringAttribute(component, "dir", dir);
         setStringAttribute(component, "lang", lang);
+        setStringAttribute(component, "tabindex", tabindex);
+        setStringAttribute(component, "title", title);
         setStringAttribute(component, "style", style);
         setStringAttribute(component, "styleClass", styleClass);
     }
