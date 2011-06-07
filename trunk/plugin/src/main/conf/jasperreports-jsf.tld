@@ -465,6 +465,20 @@ X offset inside the outputted report document.
             </deferred-value>
         </attribute>
         <attribute>
+            <name>tabindex</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>title</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
             <name>style</name>
             <required>false</required>
             <deferred-value>
@@ -526,7 +540,8 @@ report contents.
                 <type>javax.faces.component.UIComponent</type>
             </deferred-value>
         </attribute>
-        <description><![CDATA[
+        <attribute>
+        	<description><![CDATA[
 Output encoding of the report. Used to override
 the character encoding found by default int the request.
             ]]></description>
@@ -749,6 +764,13 @@ X offset inside the outputted report document.
         </attribute>
         <attribute>
             <name>styleClass</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>tabindex</name>
             <required>false</required>
             <deferred-value>
                 <type>java.lang.String</type>
