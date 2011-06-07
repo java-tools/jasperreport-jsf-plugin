@@ -18,6 +18,7 @@
  */
 package net.sf.jasperreports.jsf.renderkit;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -87,24 +88,33 @@ public abstract class ReportRenderer extends Renderer {
                 .getExternalContextHelper(context);
         final Exporter exporter = jrContext
                 .getExporter(context, component);
-        final ByteArrayOutputStream reportData = new ByteArrayOutputStream();
+        
+        ByteArrayInputStream input = null;
+        final ByteArrayOutputStream output = new ByteArrayOutputStream();
         try {
             if (logger.isLoggable(Level.FINE)) {
                 logger.log(Level.FINE, "JRJSF_0010", new Object[]{clientId,
                             exporter.getContentTypes()});
             }
-            exporter.export(context, component, reportData);
+            exporter.export(context, component, output);
             ContentType contentType = findAppropiateContentType(context, 
             		component, exporter.getContentTypes());
             if (contentType == null) {
             	throw new UnsupportedExporterException(exporter.getClass().getName());
             }
+            
+            input = new ByteArrayInputStream(output.toByteArray());
             helper.writeResponse(context.getExternalContext(),
-                    contentType, reportData.toByteArray());
+                    contentType, input);
         } finally {
             try {
-                reportData.close();
+                output.close();
             } catch (final IOException e) { ; }
+            if (input != null) {
+            	try {
+            		input.close();
+            	} catch (final IOException e) { ; }
+            }
         }
     }
 
@@ -178,6 +188,11 @@ public abstract class ReportRenderer extends Renderer {
                 .getExternalContextHelper(context);
 
         final StringBuffer reportURI = new StringBuffer(Constants.BASE_URI);
+        String name = ComponentUtil.getStringAttribute(component, "name", null);
+        if (name != null) {
+        	reportURI.append("/").append(name);
+        }
+        
         String mapping = Util.getInvocationPath(context);
         if (!config.getFacesMappings().contains(mapping)) {
             if (logger.isLoggable(Level.WARNING)) {

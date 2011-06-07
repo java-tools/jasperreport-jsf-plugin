@@ -19,6 +19,7 @@
 package net.sf.jasperreports.jsf.context;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,6 +50,8 @@ public abstract class ExternalContextHelper {
 
     /** Name of the Bridge class. */
     private static final String BRIDGE_CLASS = "javax.portlet.faces.Bridge";
+    
+    protected static final int BUFFER_SIZE = 2014;
 
     /**
      * Obtains the application local instance of the ExternalContextHelper.
@@ -261,10 +264,13 @@ public abstract class ExternalContextHelper {
      *
      * @param context the context
      * @param contentType the content type
-     * @param data the data
+     * @param stream source from which read the data
      * @throws IOException Signals that an I/O exception has occurred.
      */
-    public abstract void writeResponse(final ExternalContext context,
-            final ContentType contentType, final byte[] data) throws IOException;
+    public abstract void writeResponse(
+    		final ExternalContext context,
+            final ContentType contentType, 
+            final InputStream stream) 
+    throws IOException;
 
 }

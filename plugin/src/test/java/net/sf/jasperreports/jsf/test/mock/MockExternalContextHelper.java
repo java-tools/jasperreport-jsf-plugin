@@ -19,6 +19,7 @@
 package net.sf.jasperreports.jsf.test.mock;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 
 import javax.faces.context.ExternalContext;
@@ -66,12 +67,14 @@ public class MockExternalContextHelper extends ExternalContextHelper {
     }
 
     @Override
-    public void writeHeaders(ExternalContext context, ReportRenderer renderer, UIReport report) throws IOException {
+    public void writeHeaders(ExternalContext context, ReportRenderer renderer, UIReport report) 
+    throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void writeResponse(ExternalContext context, ContentType contentType, byte[] data) throws IOException {
+    public void writeResponse(ExternalContext context, ContentType contentType, InputStream stream) 
+    throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
