@@ -18,7 +18,12 @@
  */
 package net.sf.jasperreports.jsf.engine.converters;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.convert.ConverterException;
@@ -33,7 +38,13 @@ public class SourceFileReportConverter extends ReportConverterBase {
     @Override
     protected JasperReport loadFromResource(FacesContext context,
             UIReport component, Resource resource) throws ConverterException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            return JasperCompileManager.compileReport(resource.getInputStream());
+        } catch (IOException ex) {
+            throw new ConverterException(ex);
+        } catch (JRException ex) {
+            throw new ConverterException(ex);
+        }
     }
 
 }

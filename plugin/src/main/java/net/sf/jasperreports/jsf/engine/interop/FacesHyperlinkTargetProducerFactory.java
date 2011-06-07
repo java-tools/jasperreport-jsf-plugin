@@ -20,14 +20,31 @@ package net.sf.jasperreports.jsf.engine.interop;
 
 import net.sf.jasperreports.engine.export.JRHyperlinkTargetProducer;
 import net.sf.jasperreports.engine.export.JRHyperlinkTargetProducerFactory;
+import net.sf.jasperreports.jsf.component.UIReport;
 
 public class FacesHyperlinkTargetProducerFactory
         extends JRHyperlinkTargetProducerFactory {
 
+    private JRHyperlinkTargetProducerFactory delegate;
+    
+    private UIReport report;
+
+    public FacesHyperlinkTargetProducerFactory(
+            JRHyperlinkTargetProducerFactory delegate, UIReport report) {
+        this.delegate = delegate;
+        this.report = report;
+    }
+    
     @Override
     public JRHyperlinkTargetProducer getHyperlinkTargetProducer(
             String linkTarget) {
-        // TODO Auto-generated method stub
-        return null;
+        JRHyperlinkTargetProducer result = null;
+        if (delegate != null) {
+            result = delegate.getHyperlinkTargetProducer(linkTarget);
+        }
+        if (result == null) {
+            result = new FacesHyperlinkTargetProducer(report);
+        }
+        return result;
     }
 }

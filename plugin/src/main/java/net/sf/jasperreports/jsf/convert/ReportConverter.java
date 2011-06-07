@@ -30,6 +30,8 @@ import net.sf.jasperreports.jsf.component.UIReport;
  */
 public interface ReportConverter {
 
+    public boolean accepts(Object value);
+    
     /**
      * Obtains a <tt>JasperReport</tt> instance from the value
      * received as a parameter.

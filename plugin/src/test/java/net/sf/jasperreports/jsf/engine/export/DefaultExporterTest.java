@@ -42,8 +42,8 @@ import net.sf.jasperreports.jsf.engine.fill.DefaultFiller;
 import net.sf.jasperreports.jsf.test.dummy.DummyUIReport;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
-
 import org.apache.shale.test.mock.MockServletContext;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -88,6 +88,8 @@ public class DefaultExporterTest {
         mockExporter = mockery.mock(JRExporter.class);
         stream = new ByteArrayOutputStream();
         print = mockery.mock(JasperPrint.class);
+        
+        report.setSubmittedPrint(print);
     }
 
     @After
@@ -105,6 +107,7 @@ public class DefaultExporterTest {
 
     @Test
     public void withoutJasperPrintThrowEx() {
+        report.setSubmittedPrint(null);
         ExporterBase exporter = new MockDefaultExporter();
         try {
             exporter.export(facesEnv.getFacesContext(), report, stream);
@@ -122,42 +125,10 @@ public class DefaultExporterTest {
     public void usingPrintInitsJRExporter() throws Exception {
         FacesContext context = facesEnv.getFacesContext();
         
-        context.getExternalContext().getRequestMap().put(
-                DefaultFiller.ATTR_JASPER_PRINT, print);
-
         mockery.checking(new Expectations() {{
-            atLeast(5).of(mockExporter).setParameter(
+            atLeast(6).of(mockExporter).setParameter(
                     with(any(JRExporterParameter.class)),
                     with(any(Object.class)));
-            oneOf(mockExporter).exportReport();
-        }});
-
-        ExporterBase exporter = new MockDefaultExporter();
-        exporter.export(context, report, stream);
-    }
-
-    @Test
-    public void useCustomJasperPrintNameAndEncoding() throws Exception {
-        FacesContext context = facesEnv.getFacesContext();
-        MockServletContext servletContext =
-                ((MockFacesServletEnvironment) facesEnv).getServletContext();
-        servletContext.addInitParameter(
-                Constants.JASPER_PRINT_ATTR_NAME, CUSTOM_JASPER_PRINT_NAME);
-
-        context.getExternalContext().getRequestMap().put(
-                CUSTOM_JASPER_PRINT_NAME, print);
-        report.getAttributes().put(
-                ExporterBase.ATTR_CHARACTER_ENCODING, CUSTOM_ENCODING);
-
-        mockery.checking(new Expectations() {{
-            atLeast(5).of(mockExporter).setParameter(
-                    with(any(JRExporterParameter.class)),
-                    with(any(Object.class)));
-            /*oneOf(mockExporter).setParameter(
-                    JRExporterParameter.CHARACTER_ENCODING, CUSTOM_ENCODING);
-            atLeast(1).of(mockExporter).setParameter(
-                    with(any(JRExporterParameter.class)),
-                    with(any(Object.class)));*/
             oneOf(mockExporter).exportReport();
         }});
 
@@ -169,13 +140,11 @@ public class DefaultExporterTest {
     public void withJRExRethrowItWrapped() throws Exception {
         FacesContext context = facesEnv.getFacesContext();
         String reportId = report.getClientId(context);
-        context.getExternalContext().getRequestMap().put(
-                DefaultFiller.ATTR_JASPER_PRINT, print);
-
+        
         final JRException jrException = new JRException(reportId);
 
         mockery.checking(new Expectations() {{
-            atLeast(5).of(mockExporter).setParameter(
+            atLeast(6).of(mockExporter).setParameter(
                     with(any(JRExporterParameter.class)),
                     with(any(Object.class)));
             oneOf(mockExporter).exportReport();

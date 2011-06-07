@@ -46,13 +46,15 @@ public class FacesHyperlinkProducer implements JRHyperlinkProducer {
     /** The report. */
     private final UIComponent report;
 
+    private ResponseWriter savedWriter = null;
+    
     /**
      * Instantiates a new faces hyperlink producer.
      *
      * @param context the context
      * @param report the report
      */
-    public FacesHyperlinkProducer(final UIComponent report) {
+    protected FacesHyperlinkProducer(final UIComponent report) {
         if (report == null) {
             throw new IllegalArgumentException();
         }
@@ -95,6 +97,8 @@ public class FacesHyperlinkProducer implements JRHyperlinkProducer {
             writer.endElement("a");
         } catch (IOException e) {
             throw new JRFacesException(e);
+        } finally {
+            restoreWriter(getFacesContext());
         }
 
         return sw.toString();
@@ -109,23 +113,31 @@ public class FacesHyperlinkProducer implements JRHyperlinkProducer {
      */
     private ResponseWriter getResponseWriter(final Writer writer) {
         FacesContext context = getFacesContext();
-        final ResponseWriter current = context.getResponseWriter();
+        ResponseWriter current = context.getResponseWriter();
         if (current == null) {
             final UIViewRoot viewRoot = context.getViewRoot();
             final RenderKitFactory rkf = (RenderKitFactory)
                     FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
             final RenderKit rk = rkf.getRenderKit(
                     context, viewRoot.getRenderKitId());
-            return rk.createResponseWriter(writer,
+            current = rk.createResponseWriter(writer,
                     context.getExternalContext().getRequestHeaderMap()
                         .get(ACCEPT_REQUEST_HEADER),
                     context.getExternalContext()
                         .getResponseCharacterEncoding());
         } else {
-            return current.cloneWithWriter(writer);
+            savedWriter = current;
+            current = current.cloneWithWriter(writer);
         }
+        context.setResponseWriter(current);
+        return current;
     }
 
+    private void restoreWriter(FacesContext context) {
+        context.setResponseWriter(savedWriter);
+        savedWriter = null;
+    }
+    
     /**
      * Builds the href.
      *
@@ -146,6 +158,9 @@ public class FacesHyperlinkProducer implements JRHyperlinkProducer {
             for (int i = 0; i < params.size(); i++) {
                 final JRHyperlinkParameter param =
                         (JRHyperlinkParameter) params.get(i);
+                if (i > 0) {
+                    buff.append("&");
+                }
                 buff.append(param.getName());
                 buff.append('=');
                 buff.append(param.getValueExpression().getText());

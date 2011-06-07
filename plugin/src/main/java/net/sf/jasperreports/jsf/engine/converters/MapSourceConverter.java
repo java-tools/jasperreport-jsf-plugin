@@ -43,10 +43,11 @@ import net.sf.jasperreports.jsf.engine.Source;
 public final class MapSourceConverter extends SourceConverterBase {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 343587676980464141L;
-	private static final Logger logger = Logger.getLogger(
+     * 
+     */
+    private static final long serialVersionUID = 343587676980464141L;
+    
+    private static final Logger logger = Logger.getLogger(
             MapSourceConverter.class.getPackage().getName(),
             Constants.LOG_MESSAGES_BUNDLE);
 
@@ -58,7 +59,7 @@ public final class MapSourceConverter extends SourceConverterBase {
         if (value == null) {
             if (logger.isLoggable(Level.WARNING)) {
                 logger.log(Level.WARNING, "JRJSF_0020",
-                        component.getClientId(context));
+                           component.getClientId(context));
             }
             dataSource = new JREmptyDataSource();
         } else if (value instanceof Collection<?>) {
@@ -74,5 +75,4 @@ public final class MapSourceConverter extends SourceConverterBase {
         }
         return new JRDataSourceWrapper(dataSource);
     }
-
 }

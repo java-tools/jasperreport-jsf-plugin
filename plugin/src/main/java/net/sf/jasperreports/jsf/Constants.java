@@ -58,10 +58,6 @@ public final class Constants {
     /** Log messages bundle. */
     public static final String LOG_MESSAGES_BUNDLE =
             "net.sf.jasperreports.jsf.LogMessages";
-    
-    /** JasperPrint attribute name. */
-    public static final String JASPER_PRINT_ATTR_NAME =
-            PACKAGE_PREFIX + ".JASPER_PRINT_ATTR_NAME";
 
     /** Parameter identifying the component which sended the request. */
     public static final String PARAM_CLIENTID =
