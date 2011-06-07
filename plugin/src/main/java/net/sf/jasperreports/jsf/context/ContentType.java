@@ -1,17 +1,20 @@
 package net.sf.jasperreports.jsf.context;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ContentType implements Serializable, Comparable<ContentType> {
+public final class ContentType implements Serializable, Comparable<ContentType> {
 
     /**
      *
      */
     private static final long serialVersionUID = 5337880747998334976L;
 
-    private static final Pattern PATTERN = Pattern.compile("(.+)/(.+)");
+    private static final Pattern PATTERN = 
+            Pattern.compile("(.+)/(.+)(;(.+)=(.+))*");
 
     public static boolean isContentType(String value) {
         return PATTERN.matcher(value).matches();
@@ -20,14 +23,24 @@ public class ContentType implements Serializable, Comparable<ContentType> {
     private String type;
     private String subtype;
 
+    private Map<String, String> parameters =
+            new HashMap<String, String>();
+    
     public ContentType(String value) {
         Matcher matcher = PATTERN.matcher(value);
         if (!matcher.matches()) {
             throw new IllegalArgumentException("Value '" + value
                                                + "' is not a valid MIME type.");
         }
+        
         this.type = matcher.group(0);
         this.subtype = matcher.group(1);
+        
+        for (int i = 2;i < matcher.groupCount();i+=3) {
+            String pname = matcher.group(i + 1);
+            String pvalue = matcher.group(i + 2);
+            parameters.put(pname, pvalue);
+        }
     }
 
     public int compareTo(ContentType o) {
@@ -65,7 +78,9 @@ public class ContentType implements Serializable, Comparable<ContentType> {
 
     @Override
     public int hashCode() {
-        return (7 * type.hashCode()) + (11 * subtype.hashCode());
+        return (7 * type.hashCode()) + 
+                (11 * subtype.hashCode()) +
+                (13 * parameters.hashCode());
     }
 
     @Override
@@ -82,11 +97,20 @@ public class ContentType implements Serializable, Comparable<ContentType> {
 
         final ContentType other = (ContentType) o;
         return type.equals(other.type)
-               && subtype.equals(other.subtype);
+               && subtype.equals(other.subtype)
+               && parameters.equals(other.parameters);
     }
 
     @Override
     public String toString() {
-        return (type + "/" + subtype);
+        StringBuilder str = new StringBuilder();
+        str.append(type).append("/").append(subtype);
+        for (Map.Entry<String, String> entry : parameters.entrySet()) {
+            str.append(";");
+            str.append(entry.getKey());
+            str.append("=");
+            str.append(entry.getValue());
+        }
+        return str.toString();
     }
 }
