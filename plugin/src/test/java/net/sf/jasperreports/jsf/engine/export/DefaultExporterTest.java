@@ -34,6 +34,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.JRHyperlinkProducerFactory;
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.context.ContentType;
@@ -129,6 +130,9 @@ public class DefaultExporterTest {
             atLeast(6).of(mockExporter).setParameter(
                     with(any(JRExporterParameter.class)),
                     with(any(Object.class)));
+            oneOf(mockExporter).getParameter(
+                    with(JRExporterParameter.HYPERLINK_PRODUCER_FACTORY));
+            will(returnValue(null));
             oneOf(mockExporter).exportReport();
         }});
 
@@ -147,6 +151,9 @@ public class DefaultExporterTest {
             atLeast(6).of(mockExporter).setParameter(
                     with(any(JRExporterParameter.class)),
                     with(any(Object.class)));
+            oneOf(mockExporter).getParameter(
+                    with(JRExporterParameter.HYPERLINK_PRODUCER_FACTORY));
+            will(returnValue(null));
             oneOf(mockExporter).exportReport();
             will(throwException(jrException));
         }});
