@@ -26,6 +26,7 @@ import net.sf.jasperreports.jsf.engine.Source;
  *
  * @author aalonsodominguez
  */
+@SuppressWarnings("serial")
 public class SourceTestBean implements Serializable {
 
     private Object myReportSource;

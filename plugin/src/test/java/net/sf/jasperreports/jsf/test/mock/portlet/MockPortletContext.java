@@ -25,6 +25,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -94,15 +95,30 @@ public class MockPortletContext implements PortletContext {
     }
 
     public String getRealPath(String path) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        File file = new File(documentRoot, path);
+        return file.getAbsolutePath();
     }
 
     public Set<String> getResourcePaths(String path) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    	File file = new File(documentRoot, path);
+    	if (file.isDirectory()) {
+    		Set<String> set = new HashSet<String>();
+    		for (File f : file.listFiles()) {
+    			String name = f.getAbsolutePath();
+    			name = name.substring(documentRoot.getAbsolutePath().length());
+    			set.add(name);
+    		}
+    		return Collections.unmodifiableSet(set);
+    	} else {
+    		String name = file.getAbsolutePath();
+    		return Collections.singleton(name.substring(
+    				documentRoot.getAbsolutePath().length()));
+    	}
     }
 
     public URL getResource(String path) throws MalformedURLException {
-        throw new UnsupportedOperationException("Not supported yet.");
+    	File file = new File(documentRoot, path);
+    	return file.toURI().toURL();
     }
 
     public Object getAttribute(String name) {

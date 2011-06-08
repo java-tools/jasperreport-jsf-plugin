@@ -98,6 +98,8 @@ public final class Services {
                                 "JRJSF_0014");
                         logRecord.setParameters(new Object[]{line});
                         logRecord.setThrown(e);
+                        logRecord.setResourceBundleName(logger.getResourceBundleName());
+                        logRecord.setResourceBundle(logger.getResourceBundle());
                         logger.log(logRecord);
                         continue;
                     }
@@ -114,6 +116,8 @@ public final class Services {
                                 "JRJSF_0027");
                         logRecord.setParameters(new Object[]{line});
                         logRecord.setThrown(e);
+                        logRecord.setResourceBundleName(logger.getResourceBundleName());
+                        logRecord.setResourceBundle(logger.getResourceBundle());
                         logger.log(logRecord);
                         continue;
                     }
@@ -130,6 +134,8 @@ public final class Services {
                                 "JRJSF_0015");
                         logRecord.setParameters(new Object[]{line});
                         logRecord.setThrown(e);
+                        logRecord.setResourceBundleName(logger.getResourceBundleName());
+                        logRecord.setResourceBundle(logger.getResourceBundle());
                         logger.log(logRecord);
                         continue;
                     }
@@ -141,6 +147,8 @@ public final class Services {
                         "JRJSF_0012");
                 logRecord.setParameters(new Object[]{url});
                 logRecord.setThrown(e);
+                logRecord.setResourceBundleName(logger.getResourceBundleName());
+                logRecord.setResourceBundle(logger.getResourceBundle());
                 logger.log(logRecord);
             } finally {
                 if (reader != null) {

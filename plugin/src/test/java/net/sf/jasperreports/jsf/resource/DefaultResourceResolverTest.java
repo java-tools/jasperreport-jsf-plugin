@@ -18,6 +18,11 @@
  */
 package net.sf.jasperreports.jsf.resource;
 
+import static net.sf.jasperreports.jsf.test.Matchers.*;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
+import static org.junit.Assume.*;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -36,11 +41,6 @@ import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-
-import static net.sf.jasperreports.jsf.test.Matchers.*;
-import static org.junit.Assume.*;
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
 
 /**
  *
@@ -222,6 +222,7 @@ public class DefaultResourceResolverTest {
         
         assertNotNull(res);
         assertThat(res, is(FileResource.class));
+        assertThat(res.getSimpleName(), equalTo(resourceName));
     }
 
     @Theory
