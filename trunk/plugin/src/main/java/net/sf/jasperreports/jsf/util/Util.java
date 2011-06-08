@@ -21,16 +21,11 @@ package net.sf.jasperreports.jsf.util;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
 import net.sf.jasperreports.jsf.Constants;
-import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.config.IllegalFacesMappingException;
 
 /**

@@ -89,7 +89,8 @@ public class MockPortletExternalContext extends ExternalContext {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
+	@Override
+	@SuppressWarnings("rawtypes")
     public Map getInitParameterMap() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

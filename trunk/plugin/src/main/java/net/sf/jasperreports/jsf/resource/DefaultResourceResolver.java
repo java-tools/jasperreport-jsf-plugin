@@ -92,11 +92,19 @@ public final class DefaultResourceResolver implements ResourceResolver {
 
             Object value = ((UIReport) component).getValue();
             if (value != null && (value instanceof String)) {
-                rootPath = helper.getResourceRealPath(
-                    context.getExternalContext(),
-                    "/" + getPath((String) value));
+            	String valueStr = (String) value;
+            	if (!valueStr.equals(name)) {
+            		// If the resource we are trying to resolve is the one
+            		// established in the report itself then resolve it
+            		// using the current viewRoot
+	                rootPath = helper.getResourceRealPath(
+	                    context.getExternalContext(),
+	                    "/" + getPath((String) value));
+            	}
             }
-        } else {
+        }
+        
+        if (rootPath == null) {
             // If caller component is not a report-based component or
             // there is not any component at all, resolve the resource
             // name relative to the current view.
@@ -107,7 +115,7 @@ public final class DefaultResourceResolver implements ResourceResolver {
         }
 
         if (rootPath != null) {
-            String resourceFileName = rootPath + "/" + name;
+            String resourceFileName = rootPath + File.separator + name;
             File resourceFile = new File(normalize(resourceFileName));
             if (resourceFile.exists()) {
                 resource = new FileResource(resourceFile);

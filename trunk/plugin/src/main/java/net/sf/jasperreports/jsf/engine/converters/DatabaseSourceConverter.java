@@ -123,9 +123,11 @@ public abstract class DatabaseSourceConverter
                     LogRecord record = new LogRecord(
                             Level.WARNING, "JRJSF_0028");
                     record.setParameters(new Object[]{
-                                paramIdx, param.getName(), query
-                            });
+                    		paramIdx, param.getName(), query
+                    });
                     record.setThrown(e);
+                    record.setResourceBundleName(logger.getResourceBundleName());
+                    record.setResourceBundle(logger.getResourceBundle());
                     logger.log(record);
                 }
             }

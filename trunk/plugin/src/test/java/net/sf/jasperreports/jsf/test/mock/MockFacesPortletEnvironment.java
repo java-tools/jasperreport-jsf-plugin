@@ -19,13 +19,13 @@
 package net.sf.jasperreports.jsf.test.mock;
 
 import javax.faces.context.ExternalContext;
+
 import net.sf.jasperreports.jsf.test.mock.portlet.MockPortletConfig;
 import net.sf.jasperreports.jsf.test.mock.portlet.MockPortletContext;
 import net.sf.jasperreports.jsf.test.mock.portlet.MockPortletExternalContext;
 import net.sf.jasperreports.jsf.test.mock.portlet.MockPortletRequest;
 import net.sf.jasperreports.jsf.test.mock.portlet.MockPortletResponse;
 import net.sf.jasperreports.jsf.test.mock.portlet.MockPortletSession;
-import org.apache.shale.test.mock.MockExternalContext12;
 
 /**
  *
@@ -60,7 +60,31 @@ public class MockFacesPortletEnvironment extends MockFacesEnvironment {
 
     @Override
     protected void releaseExternalContext() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        portletContext = null;
+        portletConfig = null;
+        portletSession = null;
+        portletRequest = null;
+        portletResponse = null;
     }
+
+	public MockPortletContext getPortletContext() {
+		return portletContext;
+	}
+
+	public MockPortletConfig getPortletConfig() {
+		return portletConfig;
+	}
+
+	public MockPortletSession getPortletSession() {
+		return portletSession;
+	}
+
+	public MockPortletRequest getPortletRequest() {
+		return portletRequest;
+	}
+
+	public MockPortletResponse getPortletResponse() {
+		return portletResponse;
+	}
 
 }
