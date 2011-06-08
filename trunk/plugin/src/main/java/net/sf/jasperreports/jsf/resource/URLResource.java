@@ -22,15 +22,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-public final class URLResource extends AbstractResource {
+public final class URLResource implements Resource {
 
     private final URL location;
 
     protected URLResource(final URL location) {
-        super(location.toString());
+        if (location == null) {
+        	throw new IllegalArgumentException("'location' can't be null");
+        }
         this.location = location;
     }
 
+    public String getName() {
+    	return location.toExternalForm();
+    }
+    
+    public String getSimpleName() {
+    	int slash = location.getPath().lastIndexOf('/');
+    	return location.getPath().substring(slash);
+    }
+    
     public InputStream getInputStream() throws IOException {
         return location.openStream();
     }
@@ -40,7 +51,12 @@ public final class URLResource extends AbstractResource {
     }
 
     public String getPath() {
-        return location.getPath();
+    	int slash = location.getPath().lastIndexOf('/');
+        return location.getPath().substring(0, slash);
+    }
+    
+    public String toString() {
+    	return location.toString();
     }
 
 }

@@ -112,7 +112,8 @@ public abstract class ExporterTestCase {
         assertThat(contentTypes, equalTo(getExpectedContentType()));
     }
 
-    protected UIReport createComponent() {
+    @SuppressWarnings("rawtypes")
+	protected UIReport createComponent() {
         UIReport report = new DummyUIReport();
         Enumeration e = properties.propertyNames();
         while (e.hasMoreElements()) {

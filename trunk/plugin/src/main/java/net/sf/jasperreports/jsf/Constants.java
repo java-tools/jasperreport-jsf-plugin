@@ -55,6 +55,9 @@ public final class Constants {
     /** Base string URI used to recognize Report render requests. */
     public static final String BASE_URI = "/" + PACKAGE_PREFIX + "/render";
 
+    public static final String FACES_HYPERLINK_TYPE = 
+    	PACKAGE_PREFIX + ".link";
+    
     /** Log messages bundle. */
     public static final String LOG_MESSAGES_BUNDLE =
             "net.sf.jasperreports.jsf.LogMessages";

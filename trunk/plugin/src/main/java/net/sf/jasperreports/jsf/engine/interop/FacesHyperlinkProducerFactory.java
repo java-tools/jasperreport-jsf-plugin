@@ -22,6 +22,7 @@ import javax.faces.component.UIComponent;
 
 import net.sf.jasperreports.engine.export.JRHyperlinkProducer;
 import net.sf.jasperreports.engine.export.JRHyperlinkProducerFactory;
+import net.sf.jasperreports.jsf.Constants;
 
 /**
  * A factory for creating FacesHyperlinkProducer objects.
@@ -29,9 +30,7 @@ import net.sf.jasperreports.engine.export.JRHyperlinkProducerFactory;
 public class FacesHyperlinkProducerFactory extends JRHyperlinkProducerFactory {
 
     /** The report. */
-    private final transient UIComponent report;
-
-    private JRHyperlinkProducerFactory delegate;
+    private final UIComponent report;
     
     /**
      * Instantiates a new faces hyperlink producer factory.
@@ -39,14 +38,12 @@ public class FacesHyperlinkProducerFactory extends JRHyperlinkProducerFactory {
      * @param context the context
      * @param report the report
      */
-    public FacesHyperlinkProducerFactory(
-            final JRHyperlinkProducerFactory delegate, final UIComponent report) {
-        super();
-        this.delegate = delegate;
+    public FacesHyperlinkProducerFactory(final UIComponent report) {
         if (report == null) {
             throw new IllegalArgumentException(
                     "'context' or 'report' can't be null");
         }
+        
         this.report = report;
     }
 
@@ -60,10 +57,7 @@ public class FacesHyperlinkProducerFactory extends JRHyperlinkProducerFactory {
     @Override
     public final JRHyperlinkProducer getHandler(final String linkType) {
         JRHyperlinkProducer producer = null;
-        if (delegate != null) {
-            producer = delegate.getHandler(linkType);
-        }
-        if (producer == null) {
+        if (Constants.FACES_HYPERLINK_TYPE.equals(linkType)) {
             producer = new FacesHyperlinkProducer(report);
         }
         return producer;

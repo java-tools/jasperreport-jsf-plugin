@@ -22,22 +22,39 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-public final class ClasspathResource extends AbstractResource
-        implements Resource {
+public final class ClasspathResource implements Resource {
 
     public static final String PREFIX = "classpath:";
 
+    private final String name;
     private final ClassLoader classLoader;
 
     protected ClasspathResource(final String name,
             final ClassLoader classLoader) {
-        super(stripPrefix(name));
+    	if (name == null || name.length() == 0) {
+            throw new IllegalArgumentException("'name' can't be empty or null");
+        }
         if (classLoader == null) {
             throw new IllegalArgumentException("'classLoader' can't ne null");
         }
+        
+        this.name = stripPrefix(name);
         this.classLoader = classLoader;
     }
 
+    public String getName() {
+    	return name;
+    }
+    
+    public String getSimpleName() {
+    	int slash = name.lastIndexOf('/');
+    	if (slash > 0) {
+    		return name.substring(slash);
+    	} else {
+    		return name;
+    	}
+    }
+    
     public InputStream getInputStream() throws IOException {
         final URL location = classLoader.getResource(getName());
         if (location == null) {
@@ -62,16 +79,23 @@ public final class ClasspathResource extends AbstractResource
         return location.getPath();
     }
 
+    public String toString() {
+    	StringBuilder str = new StringBuilder(PREFIX);
+    	str.append(name);
+    	return str.toString();
+    }
+    
+    private void throwLocationNotFoundException() {
+        throw new ClasspathLocationNotFoundException(
+                "Resource location for classpath resource '" + getName()
+                + "' couldn't be identified.");
+    }
+    
     private static String stripPrefix(String resourceName) {
         if (resourceName.startsWith(PREFIX)) {
             return resourceName.substring(PREFIX.length());
         }
         return resourceName;
     }
-
-    private void throwLocationNotFoundException() {
-        throw new ClasspathLocationNotFoundException(
-                "Resource location for classpath resource '" + getName()
-                + "' couldn't be identified.");
-    }
+    
 }

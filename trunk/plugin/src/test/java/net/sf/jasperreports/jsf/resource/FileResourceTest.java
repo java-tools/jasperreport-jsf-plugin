@@ -65,7 +65,8 @@ public class FileResourceTest {
 
         FileResource resource = new FileResource(file);
         assertThat(resource, notNullValue());
-        assertThat(resource.getName(), equalTo(file.getName()));
+        assertThat(resource.getName(), equalTo(file.getAbsolutePath()));
+        assertThat(resource.getSimpleName(), equalTo(file.getName()));
 
         URL expectedLocation = new URL("file://" + file.getAbsolutePath());
         URL location = resource.getLocation();
@@ -111,14 +112,6 @@ public class FileResourceTest {
         assumeTrue(file.isDirectory());
 
         FileResource resource = new FileResource(file);
-        assertThat(resource, notNullValue());
-        assertThat(resource.getName(), equalTo(file.getName()));
-
-        String expectedPath = file.getAbsolutePath();
-        String path = resource.getPath();
-        assertThat(path, notNullValue());
-        assertThat(path, equalTo(expectedPath));
-
         InputStream stream = null;
         try {
             stream = resource.getInputStream();

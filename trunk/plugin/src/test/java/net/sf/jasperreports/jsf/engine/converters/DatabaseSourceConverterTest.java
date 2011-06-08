@@ -340,7 +340,8 @@ public class DatabaseSourceConverterTest {
         }
     }
 
-    private static class MockDatabaseSourceConverter
+    @SuppressWarnings("serial")
+	private static class MockDatabaseSourceConverter
             extends DatabaseSourceConverter {
 
         private Connection connection = null;

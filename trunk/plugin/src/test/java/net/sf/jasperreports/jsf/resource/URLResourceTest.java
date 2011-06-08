@@ -22,97 +22,99 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Collection;
 
-import org.junit.experimental.theories.DataPoint;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
 import static org.hamcrest.Matchers.*;
 import static net.sf.jasperreports.jsf.test.Matchers.*;
 
-/**
- *
- * @author aalonsodominguez
- */
-@RunWith(Theories.class)
+@RunWith(Parameterized.class)
 public class URLResourceTest {
 
-    @DataPoint
-    public static URL existantRemoteUrl() {
-        try {
-            return new URL("http", "jasperreportjsf.sourceforge.net",
-                        "/tld/jasperreports-jsf-1_0.tld");
-        } catch (MalformedURLException e) {
-            return null;
-        }
-    }
-
-    @DataPoint
-    public static URL unexistantRemoteUrl() {
-        try {
-            return new URL("http", "jasperreportjsf.sourceforge.net",
-                        "/tld/jasperreports-jsf-1_0.xml");
-        } catch (MalformedURLException e) {
-            return null;
-        }
-    }
-
-    @DataPoint
-    public static URL localUrl() {
-        ClassLoader classLoader = Thread.currentThread()
-                .getContextClassLoader();
-        String baseName = URLResourceTest.class.getName()
-                .replaceAll("\\.", "/");
-        return classLoader.getResource(baseName);
-    }
-
-    @Theory
-    public void checkWithExistantURL(URL location) throws Exception {
-        assumeThat(location, notNullValue());
-        assumeThat(location, existsURL());
-
-        URLResource resource = new URLResource(location);
-
-        assertThat(resource.getLocation(), sameInstance(location));
-        assertThat(resource.getName(), equalTo(location.toString()));
-        assertThat(resource.getPath(), equalTo(location.getPath()));
-
-        InputStream stream = null;
+	@Parameters
+	public static Collection<Object[]> parameters() {
+		Object[][] params;
+		try {
+			URL exists = new URL("http", "jasperreportjsf.sourceforge.net",
+	        	"/tld/jasperreports-jsf-1_0.tld");
+			URL nonExists = new URL("http", "jasperreportjsf.sourceforge.net",
+	        	"/tld/jasperreports-jsf-1_0.xml");
+			params = new Object[][] { { exists }, { nonExists } };
+		} catch (MalformedURLException e) {
+			params = new Object[0][0];
+		}
+		return Arrays.asList(params);
+	}
+	
+	private final URL url;
+	private final URLResource resource;
+	
+	public URLResourceTest(URL url) {
+		this.url = url;
+		resource = new URLResource(url);
+	}
+	
+	@Test
+	public void checkGetName() {
+		String expectedName = url.toExternalForm();
+		assertThat(resource.getName(), equalTo(expectedName));
+	}
+	
+	@Test
+	public void checkGetSimpleName() {
+		String expectedName = url.getPath().substring(
+				url.getPath().lastIndexOf('/'));
+		assertThat(resource.getSimpleName(), equalTo(expectedName));
+	}
+	
+	@Test
+	public void checkGetLocation() throws Exception {
+		assertThat(resource.getLocation(), sameInstance(url));
+	}
+	
+	@Test
+	public void checkGetPath() throws Exception {
+		String expectedPath = url.getPath().substring(0, 
+        		url.getPath().lastIndexOf('/'));
+		assertThat(resource.getPath(), equalTo(expectedPath));
+	}
+	
+	@Test
+	public void checkGetInputStreamWithValidResource() throws Exception {
+		assumeThat(url, existsURL());
+		
+		InputStream stream = null;
         try {
             stream = resource.getInputStream();
         } catch (Exception e) {
-            assumeNoException(e);
+            fail("Received unexpected exception: " + e.getClass().getName());
         }
-
         assertThat(stream, notNullValue());
 
         try {
             stream.close();
         } catch (IOException e) { }
-    }
-
-    @Theory
-    @SuppressWarnings("unused")
-    public void checkWithUnexistantURL(URL location) throws Exception {
-        assumeThat(location, notNullValue());
-        assumeThat(location, not(existsURL()));
-
-        URLResource resource = new URLResource(location);
-
-        assertThat(resource.getLocation(), sameInstance(location));
-        assertThat(resource.getName(), equalTo(location.toString()));
-        assertThat(resource.getPath(), equalTo(location.getPath()));
-
-        InputStream stream = null;
+	}
+	
+	@Test
+	@SuppressWarnings("unused")
+	public void checkGetInputStreamWithUnexistantResource() {
+		assumeThat(url, not(existsURL()));
+		
+		InputStream stream = null;
         try {
             stream = resource.getInputStream();
             fail("A I/O exception should be thrown.");
         } catch (Exception e) {
             assertThat(e, is(IOException.class));
         }
-    }
-
+	}
+	
 }

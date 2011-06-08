@@ -34,16 +34,12 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.export.JRHyperlinkProducerFactory;
-import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.context.ContentType;
 import net.sf.jasperreports.jsf.engine.ExporterException;
-import net.sf.jasperreports.jsf.engine.fill.DefaultFiller;
 import net.sf.jasperreports.jsf.test.dummy.DummyUIReport;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
-import org.apache.shale.test.mock.MockServletContext;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -130,9 +126,6 @@ public class DefaultExporterTest {
             atLeast(6).of(mockExporter).setParameter(
                     with(any(JRExporterParameter.class)),
                     with(any(Object.class)));
-            oneOf(mockExporter).getParameter(
-                    with(JRExporterParameter.HYPERLINK_PRODUCER_FACTORY));
-            will(returnValue(null));
             oneOf(mockExporter).exportReport();
         }});
 
@@ -151,9 +144,6 @@ public class DefaultExporterTest {
             atLeast(6).of(mockExporter).setParameter(
                     with(any(JRExporterParameter.class)),
                     with(any(Object.class)));
-            oneOf(mockExporter).getParameter(
-                    with(JRExporterParameter.HYPERLINK_PRODUCER_FACTORY));
-            will(returnValue(null));
             oneOf(mockExporter).exportReport();
             will(throwException(jrException));
         }});
@@ -183,7 +173,8 @@ public class DefaultExporterTest {
             return contentTypes;
         }
 
-        public void setContentTypes(Collection<ContentType> contentTypes) {
+        @SuppressWarnings("unused")
+		public void setContentTypes(Collection<ContentType> contentTypes) {
             this.contentTypes = contentTypes;
         }
 

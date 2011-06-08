@@ -31,7 +31,7 @@ import java.net.URL;
  */
 public final class FileResource implements Resource {
 
-    private File file;
+    private final File file;
 
     protected FileResource(File file) {
         if (file == null) {
@@ -40,6 +40,14 @@ public final class FileResource implements Resource {
         this.file = file;
     }
 
+    public String getName() {
+        return file.getAbsolutePath();
+    }
+    
+    public String getSimpleName() {
+    	return file.getName();
+    }
+    
     public InputStream getInputStream() throws IOException {
         if (file.isDirectory()) {
             throw new ResourceException("Can't get a stream from a directory.");
@@ -51,10 +59,6 @@ public final class FileResource implements Resource {
         return new URL("file://" + file.getAbsolutePath());
     }
 
-    public String getName() {
-        return file.getName();
-    }
-
     public String getPath() {
         if (file.isFile()) {
             return file.getParentFile().getAbsolutePath();
@@ -63,4 +67,8 @@ public final class FileResource implements Resource {
         }
     }
 
+    public String toString() {
+    	return file.getAbsolutePath();
+    }
+    
 }

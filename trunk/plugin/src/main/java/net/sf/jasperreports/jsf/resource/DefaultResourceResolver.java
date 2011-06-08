@@ -21,10 +21,13 @@ package net.sf.jasperreports.jsf.resource;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
+import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
@@ -38,6 +41,10 @@ import static org.apache.commons.io.FilenameUtils.*;
  */
 public final class DefaultResourceResolver implements ResourceResolver {
 
+	private static final Logger logger = Logger.getLogger(
+			DefaultResourceResolver.class.getPackage().getName(),
+			Constants.LOG_MESSAGES_BUNDLE);
+	
     public Resource resolveResource(FacesContext context, UIComponent component,
             String name) {
         if (name == null || name.length() == 0) {
@@ -69,6 +76,10 @@ public final class DefaultResourceResolver implements ResourceResolver {
 
     private Resource resolveRelative(FacesContext context, 
             UIComponent component, String name) {
+    	if (logger.isLoggable(Level.FINE)) {
+    		logger.log(Level.FINE, "JRJSF_0039", name);
+    	}
+    	
         Resource resource = null;
         JRFacesContext jrContext = JRFacesContext.getInstance(context);
         ExternalContextHelper helper =
