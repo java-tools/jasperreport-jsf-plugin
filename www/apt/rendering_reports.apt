@@ -75,8 +75,8 @@ inside the application context but the plugin has its own resource loading mecha
 Advanced users can use the {{{devel/resource_loading.html}service provider interfaces}} 
 to extend functionality to the plugin. 
   
-  Currently, report resources can be loaded from the classpath, from the web 
-application context or, from an external URL. Following there are some examples:
+  Report resources can be loaded from the classpath, from the web application context, 
+  from an external URL or relative to the current request. Following there are some examples:
 
 *** Classpath Resources
 
@@ -121,14 +121,17 @@ will be resolved inside the application context.
 *** Request-relative Resources
 
   Request-relative resources are a special kind of resources that are resolved locally
-against current request. Let's say that a report based component is asking for a
-request-relative resource, it will be looked for relative to the report file. If it's
-a sourcve based component asking for a request-relative resource, it will be looked
-for relative to current view id.
+against current request. When using this kind of resources.
 
 **** Request-relative resource locally to view id
 +--
 <jr:source value="orders.xls" />
++--
+
+or
+
++--
+<jr:reportLink value="orders.jasper" />
 +--
 
 ** Report Parameters
