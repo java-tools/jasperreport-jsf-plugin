@@ -18,8 +18,6 @@
  */
 package net.sf.jasperreports.jsf.component;
 
-import java.util.logging.Logger;
-
 import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -27,8 +25,8 @@ import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
-import net.sf.jasperreports.engine.JasperPrint;
 
+import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
@@ -47,11 +45,6 @@ public abstract class UIReport extends UIComponentBase {
     /** Name used to identify the reports component family. */
     public static final String COMPONENT_FAMILY =
             Constants.PACKAGE_PREFIX + ".Report";
-
-    /** The logger instance. */
-    private static final Logger logger = Logger.getLogger(
-            UIReport.class.getPackage().getName(),
-            Constants.LOG_MESSAGES_BUNDLE);
 
     /** The source object from where obtain the report's data. */
     private Object source;
@@ -373,8 +366,9 @@ public abstract class UIReport extends UIComponentBase {
         value = values[3];
         valueSet = ((Boolean) values[4]).booleanValue();
         sourceConverter = (SourceConverter) values[5];
-        valid = ((Boolean) values[6]).booleanValue();
-        validator = (Validator) values[7];
+        reportConverter = (ReportConverter) values[6];
+        valid = ((Boolean) values[7]).booleanValue();
+        validator = (Validator) values[8];
     }
 
     /*
@@ -387,15 +381,16 @@ public abstract class UIReport extends UIComponentBase {
      */
     @Override
     public Object saveState(final FacesContext context) {
-        final Object[] values = new Object[8];
+        final Object[] values = new Object[9];
         values[0] = super.saveState(context);
         values[1] = source;
         values[2] = name;
         values[3] = value;
         values[4] = valueSet;
         values[5] = sourceConverter;
-        values[6] = valid;
-        values[7] = validator;
+        values[6] = reportConverter;
+        values[7] = valid;
+        values[8] = validator;
         return values;
     }
 

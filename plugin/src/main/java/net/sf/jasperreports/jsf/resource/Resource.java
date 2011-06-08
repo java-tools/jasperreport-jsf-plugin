@@ -36,6 +36,8 @@ public interface Resource {
      */
     public String getName();
 
+    public String getSimpleName();
+    
     /**
      * Obtains the URL location of this resource.
      *

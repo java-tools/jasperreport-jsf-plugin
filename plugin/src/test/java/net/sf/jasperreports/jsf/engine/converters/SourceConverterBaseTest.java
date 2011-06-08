@@ -343,7 +343,8 @@ public class SourceConverterBaseTest {
         assertThat(conn, sameInstance(expectedConn));
     }
 
-    private static class DummyDefaultSourceConverter extends SourceConverterBase {
+    @SuppressWarnings("serial")
+	private static class DummyDefaultSourceConverter extends SourceConverterBase {
 
         private Source expectedSource;
         private SourceException expectedException;

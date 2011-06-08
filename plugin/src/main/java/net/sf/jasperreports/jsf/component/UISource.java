@@ -308,7 +308,7 @@ public class UISource extends UIComponentBase {
      */
     @Override
     public Object saveState(final FacesContext context) {
-        final Object[] values = new Object[8];
+        final Object[] values = new Object[7];
         values[0] = super.saveState(context);
         values[1] = query;
         values[2] = type;

@@ -40,9 +40,10 @@ import net.sf.jasperreports.jsf.JRFacesException;
  * The Class FacesHyperlinkProducer.
  */
 public class FacesHyperlinkProducer implements JRHyperlinkProducer {
-
+	
     /** The Constant ACCEPT_REQUEST_HEADER. */
     private static final String ACCEPT_REQUEST_HEADER = "Accept";
+    
     /** The report. */
     private final UIComponent report;
 
@@ -146,9 +147,15 @@ public class FacesHyperlinkProducer implements JRHyperlinkProducer {
      * @return the string
      */
     private String buildHref(final JRPrintHyperlink link) {
-        final StringBuffer buff = new StringBuffer();
+        final StringBuilder buff = new StringBuilder();
         buff.append(link.getHyperlinkReference());
 
+        String anchor;
+        if ((anchor = link.getHyperlinkAnchor()) != null) {
+        	buff.append("#");
+        	buff.append(anchor);
+        }
+        
         List<?> params = null;
         if (link.getHyperlinkParameters() != null) {
             params = link.getHyperlinkParameters().getParameters();

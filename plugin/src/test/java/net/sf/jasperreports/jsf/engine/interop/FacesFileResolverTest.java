@@ -18,11 +18,22 @@
  */
 package net.sf.jasperreports.jsf.engine.interop;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeThat;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Random;
 
 import net.sf.jasperreports.engine.util.FileResolver;
@@ -39,51 +50,39 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.experimental.theories.DataPoint;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
+import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
-import static org.hamcrest.Matchers.*;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 /**
  *
  * @author aalonsodominguez
  */
-@RunWith(Theories.class)
+@RunWith(Parameterized.class)
 public class FacesFileResolverTest {
 
-    @DataPoint
-    public static String localResource() {
-        String documentRoot = System.getProperty(
-                TestConstants.PROP_DOCUMENT_ROOT);
-        return new File(documentRoot + "/index.xhtml").getAbsolutePath();
-    }
-
-    @DataPoint
-    public static URL localURL() {
-        File localFile = new File(localResource());
-        try {
-            return localFile.toURI().toURL();
-        } catch (MalformedURLException ex) {
-            return null;
-        }
-    }
-
-    @DataPoint
-    public static String REMOTE_RESOURCE =
+    private static String REMOTE_RESOURCE =
             "http://jasperreportjsf.sourceforge.net/web/index.html";
-
-    @DataPoint
-    public static URL remoteURL() {
-        try {
-            return new URL("http", "jasperreportjsf.sourceforge.net",
-                    80, "/web/index.html");
-        } catch (MalformedURLException ex) {
-            return null;
-        }
+    
+    @Parameters
+    public static Collection<Object[]> parameters() {
+    	Object[][] params;
+    	try {
+	    	String documentRoot = System.getProperty(
+	    			TestConstants.PROP_DOCUMENT_ROOT);
+	    	File localFile = new File(documentRoot + "/index.xhtml");
+	    	String localResource = localFile.getAbsolutePath();
+	    	URL localUrl = localFile.toURI().toURL();
+	    	URL remoteUrl = new URL(REMOTE_RESOURCE);
+	    	params = new Object[][] { 
+	    			{ localResource, localUrl }, 
+	    			{ REMOTE_RESOURCE, remoteUrl } 
+	    	};
+    	} catch (MalformedURLException e) {
+    		params = new Object[0][0];
+    	}
+    	return Arrays.asList(params);
     }
     
     private Mockery mockery = new Mockery();
@@ -93,12 +92,22 @@ public class FacesFileResolverTest {
 
     private ResourceResolver resourceResolver;
     private UIReport component;
+    private Resource resource;
 
+    private String resourceName;
+    private URL url;
+    
+    public FacesFileResolverTest(String resourceName, URL url) {
+    	this.resourceName = resourceName;
+    	this.url = url;
+    }
+    
     @Before
     public void init() throws Exception {
         facesEnv = new MockFacesServletEnvironment();
         component = new DummyUIReport();
         resourceResolver = mockery.mock(ResourceResolver.class);
+        resource = mockery.mock(Resource.class);
         jrContext = new MockJRFacesContext(facesEnv.getFacesContext());
         jrContext.setResourceResolver(resourceResolver);
     }
@@ -114,7 +123,7 @@ public class FacesFileResolverTest {
         facesEnv = null;
     }
 
-	@Theory
+	@Test
 	@SuppressWarnings("unused")
     public void nullReportCompThrowsIllegalArgEx() {
         try {
@@ -124,43 +133,57 @@ public class FacesFileResolverTest {
             assertThat(e, is(IllegalArgumentException.class));
         }
     }
-
-    @Theory
-    public void validResourceResolvesFile(
-            final String resourceName, final URL expectedURL)
-            throws Exception {
-        assumeNotNull(resourceName, expectedURL);
-        assumeTrue(resourceName.length() > 0);
-        if (resourceName.startsWith("http")) {
-            assumeThat(expectedURL.getProtocol(), equalTo("http"));
-        } else {
-            assumeThat(expectedURL.getProtocol(), equalTo("file"));
-        }
-
-        final InputStream stream = createStream();
-        final Resource resource = mockery.mock(Resource.class);
-
-        mockery.checking(new Expectations() {{
-            oneOf(resourceResolver).resolveResource(facesEnv.getFacesContext(),
+	
+	@Test
+	public void resolveLocalFile() throws Exception {
+		assumeThat(url.getProtocol(), not(equalTo("http")));
+		
+		mockery.checking(new Expectations() {{ 
+			oneOf(resourceResolver).resolveResource(facesEnv.getFacesContext(),
                     component, resourceName);
             will(returnValue(resource));
-            between(1, 3).of(resource).getLocation();
-            will(returnValue(expectedURL));
-            atMost(1).of(resource).getName();
+            oneOf(resource).getLocation();
+            will(returnValue(url));
+            oneOf(resource).getName();
             will(returnValue(resourceName));
-            atMost(1).of(resource).getInputStream();
-            will(returnValue(stream));
-        }});
-
-        FileResolver fr = new FacesFileResolver(component);
+		}});
+		
+		FileResolver fr = new FacesFileResolver(component);
         File file = fr.resolveFile(resourceName);
-
+        
+        mockery.assertIsSatisfied();
+        
         assertThat(file, not(nullValue()));
-        if (!expectedURL.getProtocol().equals("http")) {
-            assertThat(file.getAbsolutePath(), equalTo(resourceName));
-        }
+        assertThat(file.getAbsolutePath(), equalTo(resourceName));
         assertTrue("File '" + file + "' doesn't exists", file.exists());
-    }
+	}
+
+	@Test
+	public void resolveRemoteFile() throws Exception {
+		assumeThat(url.getProtocol(), equalTo("http"));
+		
+		final InputStream stream = createStream();
+		
+		mockery.checking(new Expectations() {{ 
+			oneOf(resourceResolver).resolveResource(facesEnv.getFacesContext(),
+                    component, resourceName);
+            will(returnValue(resource));
+            atMost(2).of(resource).getLocation();
+            will(returnValue(url));
+            oneOf(resource).getSimpleName();
+            will(returnValue("foo"));
+            oneOf(resource).getInputStream();
+            will(returnValue(stream));
+		}});
+		
+		FileResolver fr = new FacesFileResolver(component);
+        File file = fr.resolveFile(resourceName);
+        
+        mockery.assertIsSatisfied();
+        
+        assertThat(file, not(nullValue()));
+        assertTrue("File '" + file + "' doesn't exists", file.exists());
+	}
 
     private InputStream createStream() {
         Random random = new Random();

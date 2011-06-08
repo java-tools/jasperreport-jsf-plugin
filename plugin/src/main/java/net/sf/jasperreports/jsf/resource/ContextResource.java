@@ -30,18 +30,35 @@ import net.sf.jasperreports.jsf.context.JRFacesContext;
 /**
  * The Class ContextResourceLoader.
  */
-public final class ContextResource extends AbstractResource
-        implements Resource {
+public final class ContextResource implements Resource {
 
+	private final String name;
+	
     /**
      * Instantiates a new context resource loader.
      *
      * @param name the resource name
      */
     protected ContextResource(final String name) {
-        super(name);
+    	if (name == null || name.length() == 0) {
+            throw new IllegalArgumentException("'name' can't be empty or null");
+        }
+    	this.name = name;
     }
 
+    public String getName() {
+    	return name;
+    }
+    
+    public String getSimpleName() {
+    	int slash = name.lastIndexOf('/');
+    	if (slash > 0) {
+    		return name.substring(slash);
+    	} else {
+    		return name;
+    	}
+    }
+    
     /*
      * (non-Javadoc)
      *
@@ -72,6 +89,10 @@ public final class ContextResource extends AbstractResource
                 getFacesContext().getExternalContext(), getName());
     }
 
+    public String toString() {
+    	return name;
+    }
+    
     protected FacesContext getFacesContext() {
         FacesContext context = FacesContext.getCurrentInstance();
         if (context == null) {

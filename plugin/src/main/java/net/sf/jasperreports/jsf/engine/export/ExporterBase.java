@@ -28,14 +28,12 @@ import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRHyperlinkProducerFactory;
-import net.sf.jasperreports.engine.export.JRHyperlinkTargetProducerFactory;
 import net.sf.jasperreports.engine.util.FileResolver;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.ExporterException;
 import net.sf.jasperreports.jsf.engine.interop.FacesFileResolver;
 import net.sf.jasperreports.jsf.engine.interop.FacesHyperlinkProducerFactory;
-import net.sf.jasperreports.jsf.engine.interop.FacesHyperlinkTargetProducerFactory;
 import net.sf.jasperreports.jsf.util.Util;
 
 /**
@@ -110,22 +108,9 @@ public abstract class ExporterBase implements Exporter {
         final FileResolver fr = new FacesFileResolver(component);
         exporter.setParameter(JRExporterParameter.FILE_RESOLVER, fr);
 
-        JRHyperlinkProducerFactory hpf = (JRHyperlinkProducerFactory)
-                exporter.getParameter(JRExporterParameter.HYPERLINK_PRODUCER_FACTORY);
-        hpf = new FacesHyperlinkProducerFactory(hpf, component);
+        JRHyperlinkProducerFactory hpf = new FacesHyperlinkProducerFactory(component);
         exporter.setParameter(
                 JRExporterParameter.HYPERLINK_PRODUCER_FACTORY, hpf);
-        
-        /* EXPERIMENTAL: Goal is the ability of linking reports to faces views
-        final JRHyperlinkProducerFactory hpf =
-            new FacesHyperlinkProducerFactory(component);
-        exporter.setParameter(
-                JRExporterParameter.HYPERLINK_PRODUCER_FACTORY, hpf);
-        
-        final JRHyperlinkTargetProducerFactory htpf =
-                new FacesHyperlinkTargetProducerFactory(component);
-        exporter.setParameter(JRExporterParameter, encoding);
-         */
 
         try {
             exporter.exportReport();

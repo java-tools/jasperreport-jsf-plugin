@@ -33,9 +33,9 @@ import net.sf.jasperreports.engine.util.FileResolver;
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.resource.Resource;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
+import net.sf.jasperreports.jsf.resource.Resource;
 
 /**
  * Integration of the JasperReports' <tt>FileResolver</tt>
@@ -82,6 +82,13 @@ public class FacesFileResolver implements FileResolver {
         } catch (final IOException e) {
             throw new JRFacesException(e);
         }
+        
+        if (logger.isLoggable(Level.FINE)) {
+        	logger.log(Level.FINE, "JRJSF_0038", new Object[]{ 
+        			resultFile.getAbsolutePath(),
+        			report.getClientId(getFacesContext())
+        	});
+        }
 
         return resultFile;
     }
@@ -92,23 +99,22 @@ public class FacesFileResolver implements FileResolver {
     }
 
     protected File downloadResource(Resource resource) throws IOException {
-        File tempFile = new File(tempDir, resource.getLocation().getFile());
-        if (logger.isLoggable(Level.INFO)) {
-            logger.log(Level.INFO, "JRJSF_0035", new Object[]{
+    	File tempFile = File.createTempFile(resource.getSimpleName(), null);
+        if (logger.isLoggable(Level.FINE)) {
+            logger.log(Level.FINE, "JRJSF_0035", new Object[]{
                 resource.getLocation(), tempFile
             });
         }
 
-        tempFile.getParentFile().mkdirs();
         tempFile.createNewFile();
         
         InputStream is = resource.getInputStream();
         OutputStream os = new FileOutputStream(tempFile);
-
+        
         try {
             int read;
             byte[] buff = new byte[BUFFER_SIZE];
-            while (0 > (read = is.read(buff))) {
+            while (0 < (read = is.read(buff))) {
                 os.write(buff, 0, read);
             }
         } finally {

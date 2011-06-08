@@ -85,20 +85,10 @@ public class DefaultFiller implements Filler {
                 component.getClientId(context));
         logger.log(Level.FINE, "JRJSF_0003", reportName);
 
-        Source reportSource = component.getSubmittedSource();
-        try {
-            final Map<String, Object> params =
-                    buildParamMap(context, component);
-            JasperPrint print = doFill(context, component, params);
-            component.setSubmittedPrint(print);
-        } finally {
-            if (reportSource != null) {
-                try {
-                    reportSource.dispose();
-                    reportSource = null;
-                } catch (Exception e) { ; }  
-            }
-        }
+        final Map<String, Object> params =
+            buildParamMap(context, component);
+        JasperPrint print = doFill(context, component, params);
+    	component.setSubmittedPrint(print);
     }
 
     /**
@@ -136,8 +126,6 @@ public class DefaultFiller implements Filler {
             Map<String, Object> parameters)
     throws FillerException {
         JasperReport report = component.getSubmittedReport();
-        Source reportSource = findReportSource(component);
-        SourceConverter converter = component.getSourceConverter();
 
         JRBaseFiller jrFiller;
         try {
@@ -146,6 +134,8 @@ public class DefaultFiller implements Filler {
             throw new FillerException(e);
         }
         
+        Source reportSource = findReportSource(component);
+        SourceConverter converter = component.getSourceConverter();
         JasperPrint print = null;
         try {
             if (reportSource == null) {
@@ -161,6 +151,13 @@ public class DefaultFiller implements Filler {
             }
         } catch (final JRException e) {
             throw new FillerException(e);
+        } finally {
+        	if (reportSource != null) {
+                try {
+                    reportSource.dispose();
+                    reportSource = null;
+                } catch (Exception e) { ; }  
+            }
         }
         return print;
     }
