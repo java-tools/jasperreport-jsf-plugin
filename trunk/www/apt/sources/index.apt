@@ -92,17 +92,17 @@ that must be used for the <<<type>>> attribute of the data source component.
 *---------------------------------------------------------+---------*
 | Source                                                  | Type    |
 *---------------------------------------------------------+---------*
-| {{{jndi.html}JNDI Report Source}}                       | jndi    |
+| {{{./jndi.html}JNDI Report Source}}                     | jndi    |
 *---------------------------------------------------------+---------*
-| {{{jdbc.html}JDBC Report Source}}                       | jdbc    |
+| {{{./jdbc.html}JDBC Report Source}}                     | jdbc    |
 *---------------------------------------------------------+---------*
-| {{{csv.html}CSV Report Source}}                         | csv     |
+| {{{./csv.html}CSV Report Source}}                       | csv     |
 *---------------------------------------------------------+---------*
-| {{{xml.html}XML Report Source}}                         | xml     |
+| {{{./xml.html}XML Report Source}}                       | xml     |
 *---------------------------------------------------------+---------*
-| {{{xls.html}XLS Report Source}}                         | xls     |
+| {{{./xls.html}XLS Report Source}}                       | xls     |
 *---------------------------------------------------------+---------*
-| {{{other.html}Other Supported Sources}}                 | other   |
+| {{{./other.html}Other Supported Sources}}               | other   |
 *---------------------------------------------------------+---------*
 
   If no value is set to the <<<type>>> attribute no data will be injected
