@@ -30,9 +30,9 @@
   <name>JasperReports JSF Plugin - Common POM</name>
   <url>http://jasperreportjsf.sourceforge.net</url>
 
-  <groupId>net.sf.jasperreports</groupId>
+  <groupId>net.sf.jasperreports.jsf</groupId>
   <artifactId>jasperreports-jsf-common</artifactId>
-  <version>1.0-RC</version>
+  <version>1.0-beta-4</version>
 
   <packaging>pom</packaging>
 
@@ -84,12 +84,13 @@
       <name>Java.net Repository for Maven 2</name>
       <url>http://download.java.net/maven/2</url>
     </repository>
+    <!--
     <repository>
       <id>jboss.org</id>
       <name>JBoss Repository</name>
       <url>https://repository.jboss.org/nexus/content/groups/public</url>
     </repository>
-    <!--
+    
     <repository>
       <id>portal-repository.dev.java.net</id>
       <name>Java.net Portal Repository for Maven</name>
@@ -122,7 +123,6 @@
     <tomcat.version>6.0.26</tomcat.version>
     <junit.version>4.8.1</junit.version>
     <jmock.version>2.5.1</jmock.version>
-    <junitext.version>0.2.4</junitext.version>
     <simple-jndi.version>0.11.4.1</simple-jndi.version>
     <hsqldb.version>1.8.0.7</hsqldb.version>
 
@@ -267,12 +267,6 @@
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>${junit.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>junitext</groupId>
-        <artifactId>junitext</artifactId>
-        <version>${junitext.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>

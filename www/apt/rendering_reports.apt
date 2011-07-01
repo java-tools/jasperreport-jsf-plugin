@@ -123,7 +123,7 @@ will be resolved inside the application context.
   Request-relative resources are a special kind of resources that are resolved locally
 against current request. When using this kind of resources.
 
-**** Request-relative resource locally to view id
+<<Request-relative resource locally to view id>>
 +--
 <jr:source value="orders.xls" />
 +--

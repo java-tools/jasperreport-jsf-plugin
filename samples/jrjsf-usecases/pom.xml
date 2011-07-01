@@ -28,9 +28,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>net.sf.jasperreports</groupId>
+    <groupId>net.sf.jasperreports.jsf</groupId>
     <artifactId>jasperreports-jsf-common</artifactId>
-    <version>1.0-RC</version>
+    <version>1.0-beta-4</version>
     <relativePath>../../build/common-pom.xml</relativePath>
   </parent>
 
@@ -66,6 +66,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jasperreports-maven-plugin</artifactId>
+        <version>1.0-beta-2</version>
         <executions>
           <execution>
             <goals>
