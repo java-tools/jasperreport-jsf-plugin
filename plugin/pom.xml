@@ -48,7 +48,7 @@
   </scm>
 
   <properties>
-    <test.logging.conf>${basedir}/src/test/conf/logging.properties</test.logging.conf>
+    <test.logging.conf>${basedir}/src/test/etc/logging.properties</test.logging.conf>
     <test.context.dir>${basedir}/src/test/webapp</test.context.dir>
     <test.context.path>/jasperforge</test.context.path>
   </properties>
@@ -110,10 +110,6 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
     </dependency>
-    <!--dependency>
-      <groupId>junitext</groupId>
-      <artifactId>junitext</artifactId>
-    </dependency-->
     <dependency>
       <groupId>org.jmock</groupId>
       <artifactId>jmock-junit4</artifactId>
@@ -188,7 +184,7 @@
         <filtering>true</filtering>
       </testResource>
       <testResource>
-        <directory>${basedir}/src/test/webapp</directory>
+        <directory>${test.context.dir}</directory>
       </testResource>
       <testResource>
         <directory>${basedir}/src/test/jndi</directory>
@@ -209,7 +205,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.8</version>
         <configuration>
           <excludes>
             <exclude>**/webapp/*Test.java</exclude>
@@ -222,11 +217,11 @@
             </property>
             <property>
               <name>java.util.logging.config.file</name>
-              <value>${basedir}/src/etc/logging.properties</value>
+              <value>${test.logging.conf}</value>
             </property>
             <property>
               <name>documentRoot</name>
-              <value>${basedir}/src/test/webapp</value>
+              <value>${test.context.dir}</value>
             </property>
             <property>
               <name>hsqldbPath</name>
@@ -238,7 +233,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
-        <version>2.5</version>
         <executions>
           <execution>
             <goals>
@@ -260,7 +254,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>2.1.2</version>
         <executions>
           <execution>
             <id>package-sources</id>
@@ -274,7 +267,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.7</version>
         <executions>
           <execution>
             <id>package-javadocs</id>
@@ -285,85 +277,69 @@
           </execution>
         </executions>
       </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <configuration>
+          <reportPlugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-project-info-reports-plugin</artifactId>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-jxr-plugin</artifactId>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <configuration>
+                <links>
+                  <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
+                  <link>http://java.sun.com/javaee/5/docs/api</link>
+                  <link>http://jasperreports.sourceforge.net/api</link>
+                </links>
+              </configuration>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-pmd-plugin</artifactId>
+              <configuration>
+                <linkXRef>true</linkXRef>
+                <targetJdk>${jdk.version}</targetJdk>
+              </configuration>
+            </plugin>
+            <plugin>
+              <groupId>net.sourceforge.maven-taglib</groupId>
+              <artifactId>maven-taglib-plugin</artifactId>
+            </plugin>
+            <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>findbugs-maven-plugin</artifactId>
+              <configuration>
+                <includeFilterFile>src/findbugs/filter.xml</includeFilterFile>  
+              </configuration>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-changelog-plugin</artifactId>
+            </plugin>
+            <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>cobertura-maven-plugin</artifactId>
+              <configuration>
+                <formats>
+                  <format>xml</format>
+                  <format>html</format>
+                </formats>
+              </configuration>
+            </plugin>
+          </reportPlugins>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
-
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.2</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jxr-plugin</artifactId>
-        <version>2.2</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.7</version>
-        <configuration>
-          <links>
-            <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
-            <link>http://java.sun.com/javaee/5/docs/api</link>
-            <link>http://jasperreports.sourceforge.net/api</link>
-          </links>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-changelog-plugin</artifactId>
-        <version>2.2</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <version>2.5</version>
-        <configuration>
-          <linkXRef>true</linkXRef>
-          <targetJdk>1.5</targetJdk>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.6</version>
-        <configuration>
-          <supressionsLocation>src/checkstyle/supressions.xml</supressionsLocation>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>net.sourceforge.maven-taglib</groupId>
-        <artifactId>maven-taglib-plugin</artifactId>
-        <version>2.4</version>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <version>2.3.1</version>
-        <configuration>
-          <includeFilterFile>src/findbugs/filter.xml</includeFilterFile>  
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-        <version>2.5</version>
-      </plugin>
-      <!--plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>jsftools-maven-plugin</artifactId>
-        <version>1.0-SNAPSHOT</version>
-        <configuration>
-          <generatorConfigFile>src/jsftools/generatorConfig.properties</generatorConfigFile>
-          <facesConfigFile>src/main/resources/META-INF/faces-config.xml</facesConfigFile>
-        </configuration>
-      </plugin>
-      </plugin-->
-    </plugins>
-  </reporting>
 
   <profiles>
     <profile>
@@ -373,7 +349,6 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>2.8</version>
             <executions>
               <execution>
                 <id>tomcat6x-servlet-test</id>
@@ -432,7 +407,6 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>2.8</version>
             <executions>
               <execution>
                 <id>tomcat6x-portlet-test</id>

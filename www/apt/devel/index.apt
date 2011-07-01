@@ -20,7 +20,7 @@
 ~~ alonsoft@users.sf.net
 ~~ 
 
-                        ---
+            ---
 			Functional Features
 			---
 			A. Alonso Dominguez
@@ -38,11 +38,11 @@ core features.
 *---------------------------------------------------------+-----------------------------------------+
 | Functional Feature                                      | Description                             |
 *---------------------------------------------------------+-----------------------------------------+
-| {{{filler.html}Fillers}}                                | Responsible of data-source processing   |
+| {{{./filler.html}Fillers}}                              | Responsible of data-source processing   |
 *---------------------------------------------------------+-----------------------------------------+
-| {{{exporter.html}Exporters}}                            | Processors for different output formats |
+| {{{./exporter.html}Exporters}}                          | Processors for different output formats |
 *---------------------------------------------------------+-----------------------------------------+
-| {{{resource_loading.html}Resource Loading}}             | Built-in resource loading mechanism     |
+| {{{./resource_loading.html}Resource Loading}}           | Built-in resource loading mechanism     |
 *---------------------------------------------------------+-----------------------------------------+
-| {{{validators.html}Validators}}                         | Built-in validation framework           |
+| {{{./validators.html}Validators}}                       | Built-in validation framework           |
 *---------------------------------------------------------+-----------------------------------------+

@@ -54,7 +54,7 @@ if you want to provide means of accessing SQL data sources.
   <<<FillerFactories>>> should extend the 
 {{{../apidocs/net/sf/jasperreports/jsf/fill/AbstractFillerFactory.html}<<<AbstractFillerFactory>>>}}
 class which provides validation against the given data source component.
-To know more about validations see the {{{validators.html}Validators page}}}.
+To know more about validations see the {{{validators.html}Validators page}}.
 
 * Offering a new filler to the plugin
 
