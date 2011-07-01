@@ -31,7 +31,7 @@ Features for last versions
 each release of JasperReports JSF Plugin. When using the library pay attention
 to this list when using any of the functionalities provided.
 
-* 1.0-RC1
+* 1.0-beta-4
 
   * Plugin's lifecycle has been aligned with the standard JSF lifecycle.
 
@@ -41,9 +41,15 @@ to this list when using any of the functionalities provided.
     ** Plugin components are validated when reached the PROCESS_VALIDATORS phase,
        not inside the RENDER_RESPONSE phase.
 
-  * Plugin components refactored with better support for nested reports.
+  * Components refactored with better support for nested reports.
+  
+    ** Report objects are processed by a ReportConverter instance.
+    
+    ** Source objects are processed by a SourceConverter instance.
+    
+  * Support for <<<.jrxml>>> report files which are compiled on the fly (EXPERIMENTAL).
 
-  * Plugin components can now interact with managed beans updating the binded properties.
+  * Components can now receive values from managed beans' binded properties.
 
   * Enhanced built-in resource loading/resolving mechanism.
 

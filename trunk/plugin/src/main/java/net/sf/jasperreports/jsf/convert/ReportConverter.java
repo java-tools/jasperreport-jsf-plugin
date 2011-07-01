@@ -18,6 +18,8 @@
  */
 package net.sf.jasperreports.jsf.convert;
 
+import java.io.Serializable;
+
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JasperReport;
@@ -28,7 +30,7 @@ import net.sf.jasperreports.jsf.component.UIReport;
  *
  * @author A. Alonso Dominguez
  */
-public interface ReportConverter {
+public interface ReportConverter extends Serializable {
 
     public boolean accepts(Object value);
     
