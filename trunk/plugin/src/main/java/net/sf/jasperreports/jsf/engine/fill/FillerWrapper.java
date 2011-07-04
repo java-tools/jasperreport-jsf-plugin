@@ -31,11 +31,18 @@ import net.sf.jasperreports.jsf.engine.FillerException;
  */
 public abstract class FillerWrapper implements Filler {
 
+    private final Filler delegate;
+    
+    public FillerWrapper(Filler delegate) {
+        if (delegate == null) {
+            throw new IllegalArgumentException();
+        }
+        this.delegate = delegate;
+    }
+    
     public void fill(FacesContext context, UIReport component)
             throws FillerException {
-        getWrapped().fill(context, component);
+        delegate.fill(context, component);
     }
-
-    protected abstract Filler getWrapped();
 
 }

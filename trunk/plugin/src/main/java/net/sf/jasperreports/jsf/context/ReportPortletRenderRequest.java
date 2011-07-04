@@ -33,9 +33,9 @@ import net.sf.jasperreports.jsf.Constants;
 
 /**
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
-public class ReportPortletRenderRequest extends ResourceRequestWrapper
+final class ReportPortletRenderRequest extends ResourceRequestWrapper
         implements ReportRenderRequest {
 
     private final String oldViewId;

@@ -34,7 +34,7 @@
     <relativePath>../../build/common-pom.xml</relativePath>
   </parent>
 
-  <name>JasperReports JSF Plugin - Samples - JasperReport N' JSF Use Cases</name>
+  <name>JasperReports JSF Plugin - Use Cases</name>
   <groupId>net.sf.jasperreports.jsf.samples</groupId>
   <artifactId>jrjsf-usecases</artifactId>
   <packaging>war</packaging>

@@ -53,16 +53,16 @@
   <body>
     <head>
     	<script type="text/javascript">
-		  var _gaq = _gaq || [];
-		  _gaq.push(['_setAccount', 'UA-20020459-3']);
-		  _gaq.push(['_trackPageview']);
-		
-		  (function() {
-		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		  })();
-		</script>
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-20020459-3']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
     </head>
     
     <links>      
@@ -104,6 +104,7 @@
     <menu name="Developer Documentation">
       <item name="Build instructions" href="build.html" />
       <item name="Functional Features" href="devel/index.html">
+        <item name="Converters" href="devel/converters.html"/>
         <item name="Fillers" href="devel/filler.html" />
         <item name="Exporters" href="devel/exporter.html" />
         <item name="Resource Loading" href="devel/resource_loading.html" />

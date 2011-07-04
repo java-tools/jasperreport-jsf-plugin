@@ -20,7 +20,7 @@
 ~~ alonsoft@users.sf.net
 ~~ 
 
-            ---
+                        ---
 			Functional Features
 			---
 			A. Alonso Dominguez
@@ -35,14 +35,16 @@ core features.
 
   Following there is a list of the functional features provided as services:
   
-*---------------------------------------------------------+-----------------------------------------+
-| Functional Feature                                      | Description                             |
-*---------------------------------------------------------+-----------------------------------------+
-| {{{./filler.html}Fillers}}                              | Responsible of data-source processing   |
-*---------------------------------------------------------+-----------------------------------------+
-| {{{./exporter.html}Exporters}}                          | Processors for different output formats |
-*---------------------------------------------------------+-----------------------------------------+
-| {{{./resource_loading.html}Resource Loading}}           | Built-in resource loading mechanism     |
-*---------------------------------------------------------+-----------------------------------------+
-| {{{./validators.html}Validators}}                       | Built-in validation framework           |
-*---------------------------------------------------------+-----------------------------------------+
+*---------------------------------------------------------+------------------------------------------------+
+| Functional Feature                                      | Description                                    |
+*---------------------------------------------------------+------------------------------------------------+
+| {{{./converters.html}Converters}}                       | Responsible of user-provided data processing.  |
+*---------------------------------------------------------+------------------------------------------------+
+| {{{./filler.html}Fillers}}                              | Point between user-provided data and output.   |
+*---------------------------------------------------------+------------------------------------------------+
+| {{{./exporter.html}Exporters}}                          | Processors for different output formats.       |
+*---------------------------------------------------------+------------------------------------------------+
+| {{{./resource_loading.html}Resource Loading}}           | Built-in resource resolving mechanism.         |
+*---------------------------------------------------------+------------------------------------------------+
+| {{{./validators.html}Validators}}                       | Built-in validation framework                  |
+*---------------------------------------------------------+------------------------------------------------+

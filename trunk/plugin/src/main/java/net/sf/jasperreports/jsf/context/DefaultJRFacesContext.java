@@ -49,7 +49,7 @@ import net.sf.jasperreports.jsf.util.Services;
  *
  * @author A. Alonso Dominguez
  */
-public final class DefaultJRFacesContext extends JRFacesContext {
+final class DefaultJRFacesContext extends JRFacesContext {
 
     /** Default filler instance. */
     private static final Filler DEFAULT_FILLER = new DefaultFiller();

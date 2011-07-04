@@ -31,7 +31,7 @@ Using Report Sources
   JasperReports JSF Plugin supports many of the data sources supported
 by the {{{http://jasperreports.sf.net}JasperReports}} engine and many others which
 don't need to be directly supported by Jasperreports. This is
-done through the {{{tlddoc/jr/source.html}jr:source}} component.
+done through the {{{../tlddoc/jr/source.html}jr:source}} component.
 Following is an example of how this component can be used. There are some
 issues that affect to each kind of data source, you should go forward to
 the documentation of the one you are planning to use if you need more information.
@@ -108,7 +108,7 @@ that must be used for the <<<type>>> attribute of the data source component.
   If no value is set to the <<<type>>> attribute no data will be injected
 into the generated report.
 
-* Binding a report without a <<<jr:reportSource>>> component.
+* Binding a report without a <<<jr:source>>> component.
 
   There is no mandatory requirement to have a <<<jr:source>>> component
 to provide a report instance with data to be rendered. We can bind the report

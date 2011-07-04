@@ -51,8 +51,6 @@ public class FacesFileResolver implements FileResolver {
             Constants.LOG_MESSAGES_BUNDLE);
 
     private static final int BUFFER_SIZE = 2048;
-
-    private final File tempDir;
     
     private final UIReport report;
 
@@ -62,10 +60,6 @@ public class FacesFileResolver implements FileResolver {
             throw new IllegalArgumentException("'context' can't be null");
         }
         this.report = report;
-        tempDir = new File(System.getProperty("user.home") + "/.jsf");
-        if (!tempDir.exists()) {
-            tempDir.mkdirs();
-        }
     }
 
     public File resolveFile(final String name) {

@@ -79,7 +79,7 @@
   </repositories>
 
   <distributionManagement>
-    <downloadUrl>http://sourceforge.net/projects/jasperreportjsf/files/jasperreportjsf/${project.version}/jasperreports-jsf-${project.version}-bin.zip/download</downloadUrl>
+    <downloadUrl>http://sourceforge.net/projects/jasperreportjsf/files/jasperreportjsf/${project.version}/jasperreports-jsfplugin-${project.version}-bin.zip/download</downloadUrl>
   </distributionManagement>
 
   <properties>
@@ -144,6 +144,13 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>2.7</version>
+          <configuration>
+            <links>
+              <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
+              <link>http://java.sun.com/javaee/5/docs/api</link>
+              <link>http://jasperreports.sourceforge.net/api</link>
+            </links>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>

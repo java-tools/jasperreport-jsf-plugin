@@ -33,6 +33,10 @@ to this list when using any of the functionalities provided.
 
 * 1.0-beta-4
 
+  * Not backwards compatible with previous versions. Plugin design has been completely
+    restructured in order to provide a more robust behaviour and a wider set of
+    features.
+
   * Plugin's lifecycle has been aligned with the standard JSF lifecycle.
 
     ** Now a report render request is a true Faces's request invoked as a
@@ -41,13 +45,16 @@ to this list when using any of the functionalities provided.
     ** Plugin components are validated when reached the PROCESS_VALIDATORS phase,
        not inside the RENDER_RESPONSE phase.
 
-  * Components refactored with better support for nested reports.
+  * Components refactored with support for customizing the way user provided 
+    data is obtained.
   
     ** Report objects are processed by a ReportConverter instance.
     
     ** Source objects are processed by a SourceConverter instance.
-    
-  * Support for <<<.jrxml>>> report files which are compiled on the fly (EXPERIMENTAL).
+  
+  * Support for nested reports (subreport components). (EXPERIMENTAL)
+  
+  * Support for <<<.jrxml>>> report files which are compiled on the fly. (EXPERIMENTAL)
 
   * Components can now receive values from managed beans' binded properties.
 
@@ -58,10 +65,10 @@ to this list when using any of the functionalities provided.
   * Removed support for <<<java.awt.Graphics2D>>> output formal (useless in servlet
 or portlet environments).
 
-  * {{{datasources/xml.html}XML datasource}} now supports <<<org.xml.sax.InputSource>>>
+  * {{{./sources/xml.html}XML datasource}} now supports <<<org.xml.sax.InputSource>>>
 and <<<javax.xml.transform.Source>>> value types.
 
-  * Added support for {{{datasources/xls.html}XLS data sources}}
+  * Added support for {{{./sources/xls.html}XLS data sources}}
 
   * Bug 2943601: <jr:dataSource> doesn't accept <f:attribute>
 

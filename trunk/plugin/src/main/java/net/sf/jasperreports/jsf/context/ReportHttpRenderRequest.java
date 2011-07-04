@@ -35,7 +35,7 @@ import net.sf.jasperreports.jsf.util.Util;
  *
  * @author A. Alonso Dominguez
  */
-public final class ReportHttpRenderRequest extends HttpServletRequestWrapper
+final class ReportHttpRenderRequest extends HttpServletRequestWrapper
         implements ReportRenderRequest {
 
     /** Current request path info. */
