@@ -31,7 +31,7 @@
     <groupId>net.sf.jasperreports.jsf</groupId>
     <artifactId>jasperreports-jsf-common</artifactId>
     <version>1.0-beta-4-SNAPSHOT</version>
-    <relativePath>build/common-pom.xml</relativePath>
+    <relativePath>build/pom.xml</relativePath>
   </parent>
 
   <name>JasperReports JSF Plugin - Root Project</name>
@@ -53,6 +53,7 @@
   </distributionManagement>
 
   <modules>
+    <module>build</module>
     <module>plugin</module>
     <module>samples</module>
   </modules>
