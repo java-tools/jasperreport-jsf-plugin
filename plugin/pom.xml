@@ -34,7 +34,7 @@
     <relativePath>../build/common-pom.xml</relativePath>
   </parent>
 
-  <name>JasperReports JSF Plugin - Implementation</name>
+  <name>JasperReports JSF Plugin - Core</name>
   
   <description><![CDATA[Core implementation of the JasperReports & JSF integration.]]></description>
   
@@ -294,13 +294,6 @@
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-javadoc-plugin</artifactId>
-              <configuration>
-                <links>
-                  <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
-                  <link>http://java.sun.com/javaee/5/docs/api</link>
-                  <link>http://jasperreports.sourceforge.net/api</link>
-                </links>
-              </configuration>
             </plugin>
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>

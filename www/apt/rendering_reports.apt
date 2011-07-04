@@ -39,14 +39,14 @@ Using the report components
     
 * Report Frames (inline reports)
 
-  An inline report is rendered using the {{{tlddoc/jr/reportFrame.html}jr:reportFrame}}
+  An inline report is rendered using the {{{./tlddoc/jr/reportFrame.html}jr:reportFrame}}
 tag. When this component is used, an <<<iframe>>> HTML element
 will be rendered, so many of the attributes available for the <<<iframe>>>
 tag are also available with this component.
 
 * Report Links
 
-  An inline report is rendered using the {{{tlddoc/jr/reportLink.html}jr:reportLink}}
+  An inline report is rendered using the {{{./tlddoc/jr/reportLink.html}jr:reportLink}}
 tag. When this component is used, an <<<a>>> HTML element
 will be rendered, every attribute available for the <<<a>>> tag
 is also available with this component.
@@ -63,7 +63,7 @@ report components. This attributes are shown in the following table:
 *--------------+----------*--------------------------------------------------------------------------------------------------------------------------+
 | name         | true     | Name of the generated report, very useful when working with report links or subreports.                                  |
 *--------------+----------*--------------------------------------------------------------------------------------------------------------------------+
-| source       | true     | Report Source reference id (See {{{datasources/index.html}Report Source documentation}}) or any supported source object. |
+| source       | true     | Report Source reference id (See {{{./sources/index.html}Report Source documentation}}) or any supported source object.   |
 *--------------+----------*--------------------------------------------------------------------------------------------------------------------------+
 | value        | true     | A pointer to the report instance, it can be a path name to a <<<.jasper>>> file, a <<<JasperReport>>> object, etc.       |
 *--------------+----------*--------------------------------------------------------------------------------------------------------------------------+
@@ -72,7 +72,7 @@ report components. This attributes are shown in the following table:
 
   As it is said in the previous table, the common usage uses resources stored
 inside the application context but the plugin has its own resource loading mechanism. 
-Advanced users can use the {{{devel/resource_loading.html}service provider interfaces}} 
+Advanced users can use the {{{./devel/resource_loading.html}service provider interfaces}} 
 to extend functionality to the plugin. 
   
   Report resources can be loaded from the classpath, from the web application context, 
@@ -123,16 +123,18 @@ will be resolved inside the application context.
   Request-relative resources are a special kind of resources that are resolved locally
 against current request. When using this kind of resources.
 
-<<Request-relative resource locally to view id>>
+  <<Request-relative resource locally to view id>>
+
 +--
 <jr:source value="orders.xls" />
 +--
 
-or
+  or
 
 +--
 <jr:reportLink value="orders.jasper" />
 +--
+
 
 ** Report Parameters
 
@@ -145,15 +147,15 @@ the report component tag that you are using.
 </jr:reportFrame>
 +---
 
-* Output Formats
+** Output Formats
 
   JasperReports JSF-Plugin allows rendering reports using different output formats
 by means of the <<<format>>> attribute. The plugin has its own built-in mechanism to be
 aware of different exporters bundled inside the official distribution.
 Advanced users can also provide its own supported output formats, take a 
-look to {{{devel/exporter.html}this link}} to get more information about that.
+look to {{{./devel/exporter.html}this link}} to get more information about that.
 
-  Apart from that, each of the output formats can be cutomized providing some component
+  Apart from that, each of the output formats can be customized providing some component
 attributes using the <<<f:attribute>>> tag nested inside the report component that you are using.
 
 +---
@@ -186,8 +188,30 @@ attributes using the <<<f:attribute>>> tag nested inside the report component th
 | <<<xml>>>          | text/xml                                                                | Exports to a XML document                  |
 *--------------------+-------------------------------------------------------------------------+--------------------------------------------+
 
-  Take a look to the {{{apidocs/index.html}Javadocs}} to get specific information
+  Take a look to the {{{./apidocs/index.html}Javadocs}} to get specific information
 about each exporter and its specific attributes.
+
+* Implicit objects
+
+  When report instances are filled with data some implicit objects are provided to
+the JasperReports engine and thus, they can be used by report code to access
+contextualised information from the web application that is rendering the report.
+
+  The set of implicit objects and its names are showed in following table:
+
+*---------------------------+-----------------------------*----------------------------------------+
+| Parameter name            | Type                        | Description                            |
+*---------------------------+-----------------------------*----------------------------------------+
+| <<<REPORT_CLASS_LOADER>>> | <<<java.lang.ClassLoader>>> | Current context class loader.          |
+*---------------------------+-----------------------------*----------------------------------------+
+| <<<REPORT_LOCALE>>>       | <<<java.util.Locale>>>      | Current view locale.                   |
+*---------------------------+-----------------------------*----------------------------------------+
+| <<<APPLICATION_SCOPE>>>   | <<<java.util.Map>>>         | Servlet/Portlet application scope map. |
+*---------------------------+-----------------------------*----------------------------------------+
+| <<<SESSION_SCOPE>>>       | <<<java.util.Map>>>         | Session scope map.                     |
+*---------------------------+-----------------------------*----------------------------------------+
+| <<<REQUEST_SCOPE>>>       | <<<java.util.Map>>>         | Request scope map.                     |
+*---------------------------+-----------------------------*----------------------------------------+
 
 * Subreports
 
@@ -212,9 +236,9 @@ that can be used to insert data into the <detail> report inside a <master> one.
 *--------------+----------*-----------------------------------------------------------------------------------------------------------------------------+
 | Attribute    | Optional | Description                                                                                                                 |
 *--------------+----------*-----------------------------------------------------------------------------------------------------------------------------+
-| name         | true     | Name of the generated report, very useful when working with report links or subreports.                                     |
+| name         | false    | A subreport should always have a name attribute, it will be used to nest parameter names passed into it.                    |
 *--------------+----------*-----------------------------------------------------------------------------------------------------------------------------+
-| source       | true     | Report Source reference id (See {{{datasources/index.html}Report Source documentation}}), or a any supported source object. |
+| source       | true     | Report Source reference id (See {{{./sources/index.html}Report Source documentation}}), or a any supported source object.   |
 *--------------+----------*-----------------------------------------------------------------------------------------------------------------------------+
 | value        | true     | A pointer to the report instance, it can be a path name to a <<<.jasper>>> file, a <<<JasperReport>>> object, etc.          |
 *--------------+----------*-----------------------------------------------------------------------------------------------------------------------------+

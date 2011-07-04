@@ -20,68 +20,29 @@
 ~~ alonsoft@users.sf.net
 ~~ 
 
-            ---
-			Filler Feature (Data Sources)
+                        ---
+			Filler Feature
 			---
 			A. Alonso Dominguez
 
 
 Filler Feature
 
-  {{{../apidocs/net/sf/jasperreports/jsf/fill/Filler.html}<<<Filler>>>}}s 
-are used to <fill> the contents of a report. In other words, they are
-the data source processors used by the library implementation. Each supported data 
-source must have a <<<Filler>>> implementation in order to be available to the
-library.
+  A {{{../apidocs/net/sf/jasperreports/jsf/engine/Filler.html}<<<Filler>>>}} is a
+intermediate point in the report rendering process. Its work consist on take the
+values established in the report and source components converted to its appropriate
+types (sources and reports) and generate a <<<net.sf.jasperreports.engine.JasperPrint>>> 
+object which represents the final report filled with data. Such an object can be 
+used in further requests to generate human readable output in any format supported
+by the plugin.
 
-  <<<Filler>>>s are loaded using the 
-{{{../apidocs/net/sf/jasperreports/jsf/spi/FillerLoader.html}<<<FillerLoader>>>}}
-class. The loading mechanism is based on locate inside the classpath a
-{{{../apidocs/net/sf/jasperreports/jsf/spi/FillerFactory.html}<<<FillerFactory>>>}}
-suitable to the current report and data source components.
+  The default filler implementation is responsible of processing report parameters,
+subreports (and their parameters) and implicit objects. Users can extend this
+functionality providing <<<Filler>>> implementations that will be loaded following
+the {{{http://java.sun.com/j2se/1.3/docs/guide/jar/jar.html#Service%20Provider}Service Provider}}
+specification.
 
-* Fillers and Filler Factories
-
-  Many data sources are currently supported by the actual version of
-JasperReports JSF-Plugin, but you can provide your owns extending the 
-<<<Filler>>> and <<<FillerFactory>>> API's.
-
-  The recommended way of doing this is extending the 
-{{{../apidocs/net/sf/jasperreports/jsf/fill/AbstractFiller.html}<<<AbstractFiller>>>}} or
-{{{../apidocs/net/sf/jasperreports/jsf/fill/AbstractSQLFiller.html}<<<AbstractSQLFiller>>>}}
-if you want to provide means of accessing SQL data sources.
-
-  <<<FillerFactories>>> should extend the 
-{{{../apidocs/net/sf/jasperreports/jsf/fill/AbstractFillerFactory.html}<<<AbstractFillerFactory>>>}}
-class which provides validation against the given data source component.
-To know more about validations see the {{{validators.html}Validators page}}.
-
-* Offering a new filler to the plugin
-
-  Once you have implemented your own <<<Filler>>> and <<<FilerFactory>>> you will 
-need to provide them as a service which will be loaded from the classpath. The way this is done
-is using the file <<<META-INF/services/net.sf.jasperreports.jsf.spi.FillerFactory>>>
-which must be also in the classpath.
-
-  The information of that file is similar than the specified at 
-{{{http://java.sun.com/j2se/1.3/docs/guide/jar/jar.html#Service%20Provider}Service Provider}}
-but not exactly, there is a bit difference that must be considered. That difference
-consists in each line of the file must be a pair where the first part is the
-data source type and the last one is the <<<FillerFactory>>> implementation class name.
-When no data source type is specified, the provided <<<FillerFactory>>> will be considered
-the default one. Here is a code snippet which is exactly the one provided by default in this plugin:
-
-+---
-:net.sf.jasperreports.jsf.fill.providers.EmptyFillerFactory
-bean:net.sf.jasperreports.jsf.fill.providers.BeanFillerFactory
-csv:net.sf.jasperreports.jsf.fill.providers.CsvFillerFactory
-jdbc:net.sf.jasperreports.jsf.fill.providers.JdbcFillerFactory
-jndi:net.sf.jasperreports.jsf.fill.providers.JndiFillerFactory
-map:net.sf.jasperreports.jsf.fill.providers.MapFillerFactory
-resultset:net.sf.jasperreports.jsf.fill.providers.ResultSetFillerFactory
-xml:net.sf.jasperreports.jsf.fill.providers.XmlFillerFactory
-custom:net.sf.jasperreports.jsf.fill.providers.CustomDataSourceFillerFactory
-+---
-
-  You can also replace one of the provided <<<FillerFactory>>>'s by one written by yourself.
-However, this is not recommended so do it by your own risk.
+  A user provided <<<Filler>>> must extends the class
+{{{../apidocs/net/sf/jasperreports/jsf/engine/fill/FillerWrapper.html}<<<FillerWrapper>>>}}
+so the user provided implementation can delegate its work to the default implementation
+when required.
