@@ -93,8 +93,8 @@
     </dependency>
 
     <dependency>
-      <groupId>net.sf.jsf4portlets</groupId>
-      <artifactId>jsf4portlets-api</artifactId>
+      <groupId>org.apache.myfaces.portlet-bridge</groupId>
+      <artifactId>portlet-bridge-api</artifactId>
     </dependency>
     <dependency>
       <groupId>net.sf.jasperreports</groupId>

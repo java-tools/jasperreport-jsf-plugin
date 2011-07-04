@@ -95,7 +95,6 @@
     <jsf.version>1.2_12</jsf.version>
     <jstl.version>1.2</jstl.version>
 
-    <jsf4portlets.version>2.0-beta-SNAPSHOT</jsf4portlets.version>
     <jasperreports.version>3.7.1</jasperreports.version>
     <jxl.version>2.6</jxl.version>
 
@@ -243,9 +242,9 @@
       </dependency>
 
       <dependency>
-        <groupId>net.sf.jsf4portlets</groupId>
-        <artifactId>jsf4portlets-api</artifactId>
-        <version>${jsf4portlets.version}</version>
+        <groupId>org.apache.myfaces.portlet-bridge</groupId>
+        <artifactId>portlet-bridge-api</artifactId>
+        <version>2.0.0</version>
         <scope>provided</scope>
         <optional>true</optional>
       </dependency>

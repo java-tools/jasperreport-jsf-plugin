@@ -86,13 +86,6 @@
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-javadoc-plugin</artifactId>
-              <configuration>
-                <links>
-                  <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
-                  <link>http://java.sun.com/javaee/5/docs/api</link>
-                  <link>http://jasperreports.sourceforge.net/api</link>
-                </links>
-              </configuration>
             </plugin>
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
@@ -132,21 +125,9 @@
     </dependency>
 
     <dependency>
-      <groupId>net.sf.jsf4portlets</groupId>
-      <artifactId>jsf4portlets-api</artifactId>
+      <groupId>org.apache.myfaces.portlet-bridge</groupId>
+      <artifactId>portlet-bridge-api</artifactId>
     </dependency>
-    <dependency>
-      <groupId>net.sf.jsf4portlets</groupId>
-      <artifactId>jsf4portlets-impl</artifactId>
-      <version>${jsf4portlets.version}</version>
-    </dependency>
-    <!--
-    <dependency>
-      <groupId>net.sf.jsf4portlets</groupId>
-      <artifactId>jsf4portlets-ext</artifactId>
-      <version>${jsf4portlets.version}</version>
-    </dependency>
-    -->
 
     <dependency>
       <groupId>com.sun.facelets</groupId>
