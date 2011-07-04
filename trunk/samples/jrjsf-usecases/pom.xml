@@ -28,7 +28,7 @@
   <parent>
     <groupId>net.sf.jasperreports.jsf</groupId>
     <artifactId>jasperreports-jsf-common</artifactId>
-    <version>1.0-beta-4</version>
+    <version>1.0-beta-5-SNAPSHOT</version>
     <relativePath>../../build/pom.xml</relativePath>
   </parent>
 
@@ -38,9 +38,9 @@
   <packaging>war</packaging>
 
   <scm>
-    <connection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/tags/1.0-beta-4/samples/jrjsf-usecases</connection>
-    <developerConnection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/tags/1.0-beta-4/samples/jrjsf-usecases</developerConnection>
-    <url>http://jasperreportjsf.svn.sourceforge.net/viewvc/jasperreportjsf/tags/1.0-beta-4/samples/jrjsf-usecases</url>
+    <connection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/trunk/samples/jrjsf-usecases</connection>
+    <developerConnection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/trunk/samples/jrjsf-usecases</developerConnection>
+    <url>http://jasperreportjsf.svn.sourceforge.net/viewvc/jasperreportjsf/trunk/samples/jrjsf-usecases</url>
   </scm>
 
   <build>

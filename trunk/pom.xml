@@ -28,7 +28,7 @@
   <parent>
     <groupId>net.sf.jasperreports.jsf</groupId>
     <artifactId>jasperreports-jsf-common</artifactId>
-    <version>1.0-beta-4</version>
+    <version>1.0-beta-5-SNAPSHOT</version>
     <relativePath>build/pom.xml</relativePath>
   </parent>
 
@@ -37,9 +37,9 @@
   <packaging>pom</packaging>
 
   <scm>
-    <connection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/tags/1.0-beta-4</connection>
-    <developerConnection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/tags/1.0-beta-4</developerConnection>
-    <url>http://jasperreportjsf.svn.sourceforge.net/viewvc/jasperreportjsf/tags/1.0-beta-4</url>
+    <connection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/trunk</connection>
+    <developerConnection>scm:svn:https://jasperreportjsf.svn.sourceforge.net/svnroot/jasperreportjsf/trunk</developerConnection>
+    <url>http://jasperreportjsf.svn.sourceforge.net/viewvc/jasperreportjsf/trunk</url>
   </scm>
 
   <distributionManagement>
