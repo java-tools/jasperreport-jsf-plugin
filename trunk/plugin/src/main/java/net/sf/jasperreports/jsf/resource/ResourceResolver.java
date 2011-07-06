@@ -23,7 +23,7 @@ import javax.faces.context.FacesContext;
 
 /**
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
 public interface ResourceResolver {
 
