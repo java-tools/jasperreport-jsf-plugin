@@ -10,17 +10,19 @@
             com.sun.facelets.FaceletViewHandler
         </view-handler>
         <resource-bundle>
+            <base-name>
+                net.sf.jasperreports.jsf.sample.usecases.Messages
+            </base-name>
             <var>Messages</var>
-            <base-name>net.sf.jasperreports.jsf.sample.simple.Messages</base-name>
         </resource-bundle>
     </application>
 
     <managed-bean>
         <managed-bean-name>BooksReport</managed-bean-name>
         <managed-bean-class>
-            net.sf.jasperreports.jsf.sample.simple.BooksReportBean
+            net.sf.jasperreports.jsf.sample.usecases.beans.BooksReportBean
         </managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+    
+        <managed-bean-scope>request</managed-bean-scope></managed-bean>
 
 </faces-config>

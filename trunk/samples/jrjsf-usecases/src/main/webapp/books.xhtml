@@ -1,14 +1,33 @@
-<?xml version="1.0" encoding="MacRoman"?>
-<!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--  
+  JasperReports JSF Plugin
+  Copyright (C) 2011 A. Alonso Dominguez
+ 
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+ 
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  Lesser General Public License for more details.
+ 
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ 
+  A. Alonso Dominguez
+  alonsoft@users.sf.net
 -->
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:jr="http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_0.tld">
+      xmlns:jr="http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_2.tld">
 <body>
 
 <ui:composition template="/resources/template.xhtml">
@@ -18,16 +37,14 @@ and open the template in the editor.
     </ui:define>
 
     <ui:define name="body">
-        <h:panelGrid columns="2">
-            <h:outputText value="#{Messages['books.year']}" />
-            <h:inputText value="#{BooksReport.year}">
-                <f:validateRange minimum="1800" />
-            </h:inputText>
-        </h:panelGrid>
-
-        <h:dataGrid>
-          
-        </h:dataGrid>
+        <h:dataTable value="#{BooksReport.allBooks}" var="book">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="#{Messages['books.title']}" />
+                </f:facet>
+                <h:outputText value="#{book.title}" />
+            </h:column>
+        </h:dataTable>
     </ui:define>
 
 </ui:composition>
