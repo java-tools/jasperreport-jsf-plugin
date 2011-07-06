@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="MacRoman"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <!--
     Document   : BookDB.xml
@@ -32,7 +32,7 @@
     </book>
     <book>
         <id>00004</id>
-        <title>El Señor de los Anillos</title>
+        <title>El Se√±or de los Anillos</title>
         <author>J. R. Tolkien</author>
         <genre>Fantasia</genre>
         <year>1945</year>
