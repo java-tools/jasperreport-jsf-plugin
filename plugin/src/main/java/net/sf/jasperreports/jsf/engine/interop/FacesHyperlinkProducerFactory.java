@@ -35,7 +35,6 @@ public class FacesHyperlinkProducerFactory extends JRHyperlinkProducerFactory {
     /**
      * Instantiates a new faces hyperlink producer factory.
      *
-     * @param context the context
      * @param report the report
      */
     public FacesHyperlinkProducerFactory(final UIComponent report) {
@@ -57,7 +56,7 @@ public class FacesHyperlinkProducerFactory extends JRHyperlinkProducerFactory {
     @Override
     public final JRHyperlinkProducer getHandler(final String linkType) {
         JRHyperlinkProducer producer = null;
-        if (Constants.FACES_HYPERLINK_TYPE.equals(linkType)) {
+        if (Constants.FACES_RESOURCE_HYPERLINK_TYPE.equals(linkType)) {
             producer = new FacesHyperlinkProducer(report);
         }
         return producer;

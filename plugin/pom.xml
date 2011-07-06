@@ -88,6 +88,7 @@
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -158,15 +159,12 @@
     <dependency>
       <groupId>hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
   <build>
     <resources>
-      <resource>
-        <directory>src/main/conf</directory>
-        <targetPath>META-INF</targetPath>
-      </resource>
       <resource>
         <directory>src/main/resources</directory>
         <filtering>true</filtering>

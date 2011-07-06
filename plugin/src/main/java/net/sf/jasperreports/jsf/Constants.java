@@ -55,8 +55,11 @@ public final class Constants {
     /** Base string URI used to recognize Report render requests. */
     public static final String BASE_URI = "/" + PACKAGE_PREFIX + "/render";
 
-    public static final String FACES_HYPERLINK_TYPE = 
-    	PACKAGE_PREFIX + ".link";
+    public static final String FACES_ACTION_HYPERLINK_TYPE = 
+    	PACKAGE_PREFIX + ".action_link";
+    
+    public static final String FACES_RESOURCE_HYPERLINK_TYPE = 
+    	PACKAGE_PREFIX + ".resource_link";
     
     /** Log messages bundle. */
     public static final String LOG_MESSAGES_BUNDLE =

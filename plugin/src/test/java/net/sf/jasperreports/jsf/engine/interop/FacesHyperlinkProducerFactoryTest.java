@@ -46,7 +46,7 @@ public class FacesHyperlinkProducerFactoryTest {
     public static final String EMPTY_LINK_TYPE = "";
 
     @DataPoint
-    public static final String VALID_LINK_TYPE = Constants.FACES_HYPERLINK_TYPE;
+    public static final String VALID_LINK_TYPE = Constants.FACES_RESOURCE_HYPERLINK_TYPE;
     
     @Theory
     public void nullComponentThrowsIllegalArgEx() {
@@ -58,7 +58,7 @@ public class FacesHyperlinkProducerFactoryTest {
     }
 
     public void invalidTypeReturnsNull(final String linkType) {
-    	assumeThat(linkType, not(equalTo(Constants.FACES_HYPERLINK_TYPE)));
+    	assumeThat(linkType, not(equalTo(Constants.FACES_RESOURCE_HYPERLINK_TYPE)));
     	
         UIReport report = new DummyUIReport();
         FacesHyperlinkProducerFactory factory =
@@ -70,7 +70,7 @@ public class FacesHyperlinkProducerFactoryTest {
     
     @Theory
     public void validTypeReturnsProducer(final String linkType) {
-    	assumeThat(linkType, equalTo(Constants.FACES_HYPERLINK_TYPE));
+    	assumeThat(linkType, equalTo(Constants.FACES_RESOURCE_HYPERLINK_TYPE));
         UIReport report = new DummyUIReport();
         FacesHyperlinkProducerFactory factory =
                 new FacesHyperlinkProducerFactory(report);

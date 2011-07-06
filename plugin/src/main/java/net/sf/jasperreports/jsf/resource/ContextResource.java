@@ -89,6 +89,7 @@ public final class ContextResource implements Resource {
                 getFacesContext().getExternalContext(), getName());
     }
 
+    @Override
     public String toString() {
     	return name;
     }

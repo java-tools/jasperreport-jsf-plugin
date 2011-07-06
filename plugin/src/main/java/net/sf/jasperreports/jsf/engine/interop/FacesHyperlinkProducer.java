@@ -45,7 +45,6 @@ public class FacesHyperlinkProducer implements JRHyperlinkProducer {
     /**
      * Instantiates a new faces hyperlink producer.
      *
-     * @param context the context
      * @param report the report
      */
     protected FacesHyperlinkProducer(final UIComponent report) {

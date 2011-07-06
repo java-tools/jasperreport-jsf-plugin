@@ -26,16 +26,23 @@ import java.net.URL;
  * Resource abstraction which can be used to load reports from any kind of
  * source
  * 
- * @author antonio.alonso
+ * @author A. Alonso Dominguez
  * 
  */
 public interface Resource {
 
     /**
      * Name of the resource.
+     * 
+     * @return the complete name of the resource
      */
     public String getName();
 
+    /**
+     * Last part of the resource's name
+     * 
+     * @return the last part of the resource's name
+     */
     public String getSimpleName();
     
     /**
