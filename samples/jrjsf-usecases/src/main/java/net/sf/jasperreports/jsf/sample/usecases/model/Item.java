@@ -30,7 +30,7 @@ import javax.persistence.ManyToMany;
  * @author 501944227
  */
 @Entity
-public abstract class Article implements Serializable {
+public abstract class Item implements Serializable {
     
     @Id
     @GeneratedValue
@@ -38,5 +38,21 @@ public abstract class Article implements Serializable {
     
     @ManyToMany
     private List<Category> categories;
+    
+    public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public List<Category> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
+	}
     
 }

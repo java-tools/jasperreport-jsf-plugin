@@ -44,5 +44,37 @@ public class Order {
     
     @OneToMany(mappedBy="order")
     private List<OrderLine> lines;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Date getOrderedDate() {
+		return orderedDate;
+	}
+
+	public void setOrderedDate(Date orderedDate) {
+		this.orderedDate = orderedDate;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public List<OrderLine> getLines() {
+		return lines;
+	}
+
+	public void setLines(List<OrderLine> lines) {
+		this.lines = lines;
+	}
     
 }

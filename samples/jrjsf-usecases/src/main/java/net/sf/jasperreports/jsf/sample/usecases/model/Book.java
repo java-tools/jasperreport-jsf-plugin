@@ -26,7 +26,7 @@ import javax.persistence.ManyToOne;
  * @author 501944227
  */
 @Entity
-public class Book extends Article {
+public class Book extends Item {
     
     private String title;
     
