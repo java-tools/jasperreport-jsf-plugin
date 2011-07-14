@@ -37,7 +37,12 @@
     </ui:define>
 
     <ui:define name="body">
-        <h:dataTable value="#{BooksReport.allBooks}" var="book">
+        <h:dataTable value="#{booksReport.allBooks}" var="book">
+        	<f:facet name="footer">
+        		<h:outputText value="#{Messages['books.total']}">
+        			<f:param value="#{booksReport.totalBooks}" />
+        		</h:outputText>
+        	</f:facet>
             <h:column>
                 <f:facet name="header">
                     <h:outputText value="#{Messages['books.title']}" />

@@ -31,9 +31,9 @@
     	<el-resolver>
     		org.springframework.web.jsf.el.SpringBeanFacesELResolver
     	</el-resolver>
-        <view-handler>
+        <net.sf.jasperreports.jsf.sample.usecases.view-handler>
             com.sun.facelets.FaceletViewHandler
-        </view-handler>
+        </net.sf.jasperreports.jsf.sample.usecases.view-handler>
         <resource-bundle>
             <base-name>
                 net.sf.jasperreports.jsf.sample.usecases.Messages
@@ -41,21 +41,5 @@
             <var>Messages</var>
         </resource-bundle>
     </application>
-
-    <managed-bean>
-        <managed-bean-name>BooksReport</managed-bean-name>
-        <managed-bean-class>
-            net.sf.jasperreports.jsf.sample.usecases.beans.BooksReportBean
-        </managed-bean-class>
-		<managed-bean-scope>request</managed-bean-scope>
-		
-		<managed-property>
-			<property-name>bookDAO</property-name>
-			<property-class>
-				net.sf.jasperreports.jsf.sample.usecases.dao.BookDAO
-			</property-class>
-			<value>#{bookDAO.jpa}</value>
-		</managed-property>
-	</managed-bean>
 
 </faces-config>

@@ -13,7 +13,7 @@ public class BookDAOImpl implements BookDAO {
 
 	@PersistenceContext(unitName = "jrjsf-usecases")
     private EntityManager em;
-	
+
 	public List<Book> getAllBooks() {
 		TypedQuery<Book> q = em.createQuery("from Book", Book.class);
         return q.getResultList();
