@@ -16,9 +16,11 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.sample.usecases.beans;
+package net.sf.jasperreports.jsf.sample.usecases.view;
 
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import net.sf.jasperreports.jsf.sample.usecases.dao.BookDAO;
 import net.sf.jasperreports.jsf.sample.usecases.model.Book;
@@ -29,18 +31,20 @@ import net.sf.jasperreports.jsf.sample.usecases.model.Book;
  */
 public class BooksReportBean {
 
+	@Autowired
     private BookDAO bookDAO;
-    
-    public BookDAO getBookDAO() {
-		return bookDAO;
-	}
 
-	public void setBookDAO(BookDAO bookDAO) {
-		this.bookDAO = bookDAO;
-	}
-
+	private List<Book> allBooks;
+	
 	public List<Book> getAllBooks() {
-        return bookDAO.getAllBooks();
+		if (allBooks == null) {
+			allBooks = bookDAO.getAllBooks();
+		}
+		return allBooks;
     }
+	
+	public int getTotalBooks() {
+		return getAllBooks().size();
+	}
     
 }
