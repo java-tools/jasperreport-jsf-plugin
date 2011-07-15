@@ -41,5 +41,13 @@
             <var>Messages</var>
         </resource-bundle>
     </application>
+    
+    <navigation-rule>
+    	<from-view-id>/book/bookList.xhtml</from-view-id>
+    	<navigation-case>
+    		<from-action>newBook</from-action>
+    		<to-view-id>/book/editBook.xhtml</to-view-id>
+    	</navigation-case>
+    </navigation-rule>
 
 </faces-config>

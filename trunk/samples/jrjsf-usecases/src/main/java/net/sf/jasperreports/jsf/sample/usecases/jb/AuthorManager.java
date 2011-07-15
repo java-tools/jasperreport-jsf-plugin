@@ -18,6 +18,6 @@
  */
 package net.sf.jasperreports.jsf.sample.usecases.jb;
 
-public class ShoppingCartImpl implements ShoppingCart {
+public interface AuthorManager {
 
 }
