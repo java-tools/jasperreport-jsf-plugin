@@ -16,16 +16,20 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.sample.usecases.dao.jpa;
+package net.sf.jasperreports.jsf.sample.usecases.dao;
 
-import net.sf.jasperreports.jsf.sample.usecases.dao.BookDAO;
-import net.sf.jasperreports.jsf.sample.usecases.model.Book;
+import java.util.List;
 
-public class BookDAOImpl extends AbstractGenericDAOImpl<Long, Book> implements BookDAO {
+public interface GenericDAO<K, T> {
 
-	@Override
-	protected Class<Book> getEntityClass() {
-		return Book.class;
-	}
-
+	public List<T> findAll();
+	
+	public T findById(K id);
+	
+	public void refresh(T instance);
+	
+	public void remove(T instance);
+	
+	public void save(T instance);
+	
 }

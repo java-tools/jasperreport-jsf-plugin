@@ -33,5 +33,9 @@
 	<context:property-placeholder location="classpath:spring.properties" />
 	
 	<context:annotation-config/>
+	
+	<bean class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="jrjsf-usecases"/>
+	</bean>
 
 </beans>
