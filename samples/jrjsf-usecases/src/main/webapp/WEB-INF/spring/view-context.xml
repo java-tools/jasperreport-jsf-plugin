@@ -33,7 +33,10 @@
 		http://www.springframework.org/schema/aop
 		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
-	<bean id="booksReport" scope="request" 
-		class="net.sf.jasperreports.jsf.sample.usecases.view.BooksReportBean" />
+	<bean id="editBookView" scope="request" 
+		class="net.sf.jasperreports.jsf.sample.usecases.view.EditBookView" />
+
+	<bean id="booksReportView" scope="request" 
+		class="net.sf.jasperreports.jsf.sample.usecases.view.BooksReportView" />
 
 </beans>

@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author aalonsodominguez
  */
-public class BooksReportBean {
+public class BooksReportView {
 
 	@Autowired
     private BookManager bookManager;
