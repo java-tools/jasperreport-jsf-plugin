@@ -16,16 +16,8 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.sample.usecases.dao.jpa;
+package net.sf.jasperreports.jsf.sample.usecases.jb;
 
-import net.sf.jasperreports.jsf.sample.usecases.dao.BookDAO;
-import net.sf.jasperreports.jsf.sample.usecases.model.Book;
-
-public class BookDAOImpl extends AbstractGenericDAOImpl<Long, Book> implements BookDAO {
-
-	@Override
-	protected Class<Book> getEntityClass() {
-		return Book.class;
-	}
+public interface ShoppingCart {
 
 }

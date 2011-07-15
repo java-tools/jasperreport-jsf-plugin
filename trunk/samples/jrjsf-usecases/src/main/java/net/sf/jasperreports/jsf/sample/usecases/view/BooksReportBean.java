@@ -20,10 +20,10 @@ package net.sf.jasperreports.jsf.sample.usecases.view;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import net.sf.jasperreports.jsf.sample.usecases.dao.BookDAO;
+import net.sf.jasperreports.jsf.sample.usecases.jb.BookManager;
 import net.sf.jasperreports.jsf.sample.usecases.model.Book;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -32,13 +32,13 @@ import net.sf.jasperreports.jsf.sample.usecases.model.Book;
 public class BooksReportBean {
 
 	@Autowired
-    private BookDAO bookDAO;
+    private BookManager bookManager;
 
 	private List<Book> allBooks;
 	
 	public List<Book> getAllBooks() {
 		if (allBooks == null) {
-			allBooks = bookDAO.getAllBooks();
+			allBooks = bookManager.getAllBooks();
 		}
 		return allBooks;
     }

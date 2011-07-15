@@ -18,14 +18,14 @@
  */
 package net.sf.jasperreports.jsf.sample.usecases.dao.jpa;
 
-import net.sf.jasperreports.jsf.sample.usecases.dao.BookDAO;
-import net.sf.jasperreports.jsf.sample.usecases.model.Book;
+import net.sf.jasperreports.jsf.sample.usecases.dao.ItemDAO;
+import net.sf.jasperreports.jsf.sample.usecases.model.Item;
 
-public class BookDAOImpl extends AbstractGenericDAOImpl<Long, Book> implements BookDAO {
+public class ItemDAOImpl extends AbstractGenericDAOImpl<Long, Item> implements ItemDAO {
 
 	@Override
-	protected Class<Book> getEntityClass() {
-		return Book.class;
+	protected Class<Item> getEntityClass() {
+		return Item.class;
 	}
 
 }

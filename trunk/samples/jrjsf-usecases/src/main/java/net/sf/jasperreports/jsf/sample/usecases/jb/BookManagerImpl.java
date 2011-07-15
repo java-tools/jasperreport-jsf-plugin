@@ -16,16 +16,32 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.sample.usecases.dao.jpa;
+package net.sf.jasperreports.jsf.sample.usecases.jb;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import net.sf.jasperreports.jsf.sample.usecases.dao.BookDAO;
+import net.sf.jasperreports.jsf.sample.usecases.model.Author;
 import net.sf.jasperreports.jsf.sample.usecases.model.Book;
 
-public class BookDAOImpl extends AbstractGenericDAOImpl<Long, Book> implements BookDAO {
+public class BookManagerImpl implements BookManager {
 
-	@Override
-	protected Class<Book> getEntityClass() {
-		return Book.class;
+	@Autowired
+	private BookDAO bookDAO;
+	
+	public Book createBook(String title, int publishedYear, Author author) {
+		Book book = new Book();
+		book.setTitle(title);
+		book.setPublishedYear(publishedYear);
+		book.setAuthor(author);
+		bookDAO.save(book);
+		return book;
 	}
-
+	
+	public List<Book> getAllBooks() {
+		return bookDAO.findAll();
+	}
+	
 }
