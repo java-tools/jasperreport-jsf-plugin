@@ -27,49 +27,35 @@
 "http://java.sun.com/dtd/facelet-taglib_1_0.dtd">
 
 <facelet-taglib>
-    <namespace>
-        http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_2.tld
-    </namespace>
+    <namespace>http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_2.tld</namespace>
 
     <tag>
         <tag-name>source</tag-name>
         <component>
-            <component-type>
-                net.sf.jasperreports.jsf.Source
-            </component-type>
+            <component-type>net.sf.jasperreports.jsf.Source</component-type>
         </component>
     </tag>
 
     <tag>
         <tag-name>subreport</tag-name>
         <component>
-            <component-type>
-                net.sf.jasperreports.jsf.Subreport
-            </component-type>
+            <component-type>net.sf.jasperreports.jsf.Subreport</component-type>
         </component>
     </tag>
 
     <tag>
         <tag-name>reportFrame</tag-name>
         <component>
-            <component-type>
-                net.sf.jasperreports.jsf.HtmlReportFrame
-            </component-type>
-            <renderer-type>
-                net.sf.jasperreports.jsf.Frame
-            </renderer-type>
+            <component-type>net.sf.jasperreports.jsf.HtmlReportFrame</component-type>
+            <renderer-type>net.sf.jasperreports.jsf.Frame</renderer-type>
         </component>
     </tag>
 
     <tag>
         <tag-name>reportLink</tag-name>
         <component>
-            <component-type>
-                net.sf.jasperreports.jsf.HtmlReportLink
-            </component-type>
-            <renderer-type>
-                net.sf.jasperreports.jsf.Link
-            </renderer-type>
+            <component-type>net.sf.jasperreports.jsf.HtmlReportLink</component-type>
+            <renderer-type>net.sf.jasperreports.jsf.Link</renderer-type>
         </component>
     </tag>
 

@@ -28,18 +28,12 @@
               version="1.2">
 
     <application>
-        <state-manager>
-            net.sf.jasperreports.jsf.application.StateManagerImpl
-        </state-manager>
+        <state-manager>net.sf.jasperreports.jsf.application.StateManagerImpl</state-manager>
     </application>
 
     <lifecycle>
-        <phase-listener>
-            net.sf.jasperreports.jsf.lifecycle.RestoreViewPhaseListener
-        </phase-listener>
-        <phase-listener>
-            net.sf.jasperreports.jsf.lifecycle.RenderResponsePhaseListener
-        </phase-listener>
+        <phase-listener>net.sf.jasperreports.jsf.lifecycle.RestoreViewPhaseListener</phase-listener>
+        <phase-listener>net.sf.jasperreports.jsf.lifecycle.RenderResponsePhaseListener</phase-listener>
     </lifecycle>
 
     <component>
@@ -50,12 +44,8 @@ about how to use this tag and its possible locations within
 the Faces tree.
         ]]></description>
         <display-name>Report Source Component</display-name>
-        <component-type>
-            net.sf.jasperreports.jsf.Source
-        </component-type>
-        <component-class>
-            net.sf.jasperreports.jsf.component.UISource
-        </component-class>
+        <component-type>net.sf.jasperreports.jsf.Source</component-type>
+        <component-class>net.sf.jasperreports.jsf.component.UISource</component-class>
         <property>
             <display-name>Data source query</display-name>
             <property-name>query</property-name>
@@ -70,12 +60,8 @@ the Faces tree.
 
     <component>
         <display-name>Subreport Component</display-name>
-        <component-type>
-            net.sf.jasperreports.jsf.Subreport
-        </component-type>
-        <component-class>
-            net.sf.jasperreports.jsf.component.UISubreport
-        </component-class>
+        <component-type>net.sf.jasperreports.jsf.Subreport</component-type>
+        <component-class>net.sf.jasperreports.jsf.component.UISubreport</component-class>
     </component>
 
     <component>
@@ -84,12 +70,8 @@ the Faces tree.
  the report contents inside of it.
     	]]></description>
         <display-name>HTML Report Frame Component</display-name>
-        <component-type>
-            net.sf.jasperreports.jsf.HtmlReportFrame
-        </component-type>
-        <component-class>
-            net.sf.jasperreports.jsf.component.html.HtmlReportFrame
-        </component-class>
+        <component-type>net.sf.jasperreports.jsf.HtmlReportFrame</component-type>
+        <component-class>net.sf.jasperreports.jsf.component.html.HtmlReportFrame</component-class>
         <property>
         	<description><![CDATA[
 Specifies the report output format. The value is identified
@@ -103,30 +85,18 @@ as one of the configured exporters.
 
     <component>
         <display-name>HTML Link Report Component</display-name>
-        <component-type>
-            net.sf.jasperreports.jsf.HtmlReportLink
-        </component-type>
-        <component-class>
-            net.sf.jasperreports.jsf.component.html.HtmlReportLink
-        </component-class>
+        <component-type>net.sf.jasperreports.jsf.HtmlReportLink</component-type>
+        <component-class>net.sf.jasperreports.jsf.component.html.HtmlReportLink</component-class>
     </component>
 
     <validator>
-        <validator-id>
-            net.sf.jasperreports.jsf.Report
-        </validator-id>
-        <validator-class>
-            net.sf.jasperreports.jsf.validation.ReportValidatorBase
-        </validator-class>
+        <validator-id>net.sf.jasperreports.jsf.Report</validator-id>
+        <validator-class>net.sf.jasperreports.jsf.validation.ReportValidatorBase</validator-class>
     </validator>
 
     <validator>
-        <validator-id>
-            net.sf.jasperreports.jsf.Source
-        </validator-id>
-        <validator-class>
-            net.sf.jasperreports.jsf.validation.SourceValidatorBase
-        </validator-class>
+        <validator-id>net.sf.jasperreports.jsf.Source</validator-id>
+        <validator-class>net.sf.jasperreports.jsf.validation.SourceValidatorBase</validator-class>
     </validator>
 
     <render-kit>
@@ -136,27 +106,15 @@ Rendered used to output a frame that contains the
 report contents inside of it.
         	]]></description>
         	<display-name>Frame Renderer</display-name>
-            <component-family>
-                net.sf.jasperreports.jsf.Report
-            </component-family>
-            <renderer-type>
-                net.sf.jasperreports.jsf.Frame
-            </renderer-type>
-            <renderer-class>
-                net.sf.jasperreports.jsf.renderkit.html.FrameRenderer
-            </renderer-class>
+            <component-family>net.sf.jasperreports.jsf.Report</component-family>
+            <renderer-type>net.sf.jasperreports.jsf.Frame</renderer-type>
+            <renderer-class>net.sf.jasperreports.jsf.renderkit.html.FrameRenderer</renderer-class>
         </renderer>
 
         <renderer>
-            <component-family>
-                net.sf.jasperreports.jsf.Report
-            </component-family>
-            <renderer-type>
-                net.sf.jasperreports.jsf.Link
-            </renderer-type>
-            <renderer-class>
-                net.sf.jasperreports.jsf.renderkit.html.OutputLinkRenderer
-            </renderer-class>
+            <component-family>net.sf.jasperreports.jsf.Report</component-family>
+            <renderer-type>net.sf.jasperreports.jsf.Link</renderer-type>
+            <renderer-class>net.sf.jasperreports.jsf.renderkit.html.OutputLinkRenderer</renderer-class>
         </renderer>
 
     </render-kit>
