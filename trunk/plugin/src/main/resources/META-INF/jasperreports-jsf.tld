@@ -34,9 +34,7 @@
     <uri>http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_2.tld</uri>
 
     <listener>
-        <listener-class>
-            net.sf.jasperreports.jsf.config.ConfigurationStartupListener
-        </listener-class>
+        <listener-class>net.sf.jasperreports.jsf.config.ConfigurationStartupListener</listener-class>
     </listener>
 
     <tag>
@@ -48,9 +46,7 @@ the Faces tree.
         ]]></description>
         <display-name>Source Tag</display-name>
         <name>source</name>
-        <tag-class>
-            net.sf.jasperreports.jsf.taglib.SourceTag
-        </tag-class>
+        <tag-class>net.sf.jasperreports.jsf.taglib.SourceTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
             <description><![CDATA[Component identifier]]></description>
@@ -143,9 +139,7 @@ default behaviour of the plugin.
 
     <tag>
         <name>subreport</name>
-        <tag-class>
-            net.sf.jasperreports.jsf.taglib.SubreportTag
-        </tag-class>
+        <tag-class>net.sf.jasperreports.jsf.taglib.SubreportTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
             <description><![CDATA[Component identifier]]></description>
@@ -245,9 +239,7 @@ rendered inside the page.
         ]]></description>
         <display-name>Html Report Frame Tag</display-name>
         <name>reportFrame</name>
-        <tag-class>
-            net.sf.jasperreports.jsf.taglib.html.HtmlReportFrameTag
-        </tag-class>
+        <tag-class>net.sf.jasperreports.jsf.taglib.html.HtmlReportFrameTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
             <description><![CDATA[Component identifier]]></description>
@@ -544,9 +536,7 @@ report contents.
         ]]></description>
         <display-name>Report Link Tag</display-name>
         <name>reportLink</name>
-        <tag-class>
-            net.sf.jasperreports.jsf.taglib.html.HtmlReportLinkTag
-        </tag-class>
+        <tag-class>net.sf.jasperreports.jsf.taglib.html.HtmlReportLinkTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
             <description><![CDATA[Component identifier]]></description>

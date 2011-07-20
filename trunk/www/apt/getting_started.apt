@@ -42,7 +42,7 @@ application is JSP based you should configure your JSP's to enable
 the tag library this way:
 
 +---
-<%@ taglib uri="http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_0.tld" prefix="jr" %>
+<%@ taglib uri="http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_2.tld" prefix="jr" %>
 +---
 
   After adding the <<<taglib>>> declaration you can add your report component
@@ -66,7 +66,7 @@ configured using a XML namespace this way:
 +---
 <html xmlns=".."
       ...
-      xmlns:jr="http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_0.tld"
+      xmlns:jr="http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_2.tld"
 >
   ...
 </html>
