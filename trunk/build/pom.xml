@@ -107,6 +107,7 @@
     <jmock.version>2.5.1</jmock.version>
     <simple-jndi.version>0.11.4.1</simple-jndi.version>
     <hsqldb.version>1.8.0.7</hsqldb.version>
+	<derby.version>10.8.1.2</derby.version>
 
     <slf4j.version>1.6.1</slf4j.version>
   </properties>

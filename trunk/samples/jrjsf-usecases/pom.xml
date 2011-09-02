@@ -147,9 +147,9 @@
             <version>${jsf.version}</version>
           </dependency> -->
           <dependency>
-            <groupId>hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>${hsqldb.version}</version>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derbyclient</artifactId>
+            <version>${derby.version}</version>
           </dependency>
         </dependencies>
       </plugin>

@@ -139,6 +139,9 @@ public class DefaultFiller implements Filler {
         JasperPrint print = null;
         try {
             if (reportSource == null) {
+            	if (logger.isLoggable(Level.FINE)) {
+            		logger.log(Level.FINE, "JRJSF_0045", component.getClientId(context));
+            	}
                 print = jrFiller.fill(parameters);
             } else {
                 Object sourceObj = converter.convertFromSource(context,
