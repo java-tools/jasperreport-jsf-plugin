@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.component.NamingContainer;
 
+import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
@@ -57,9 +58,6 @@ public class SourceConverterBase implements SourceConverter {
             SourceConverterBase.class.getPackage().getName(),
             Constants.LOG_MESSAGES_BUNDLE);
 
-    protected static final Source NULL_SOURCE =
-            new JRDataSourceWrapper(new JREmptyDataSource());
-
     public Source convertFromValue(FacesContext context,
             UIComponent component, Object value)
             throws ConverterException {
@@ -71,7 +69,7 @@ public class SourceConverterBase implements SourceConverter {
         }
 
         if (value == null) {
-            return NULL_SOURCE;
+            return null;
         }
 
         Source source = null;
@@ -132,7 +130,7 @@ public class SourceConverterBase implements SourceConverter {
     protected Source createSource(FacesContext context,
             UIComponent component, Object value)
             throws SourceException {
-        return NULL_SOURCE;
+        return null;
     }
 
     private Source resolveSource(FacesContext context, UIComponent component,
@@ -140,20 +138,34 @@ public class SourceConverterBase implements SourceConverter {
             throws SourceException {
         Source result = null;
         if ((value instanceof String) && (component instanceof UIReport)) {
-            // Look for a UISource component that may have the string value
+        	UIViewRoot viewRoot = context.getViewRoot();
+        	// Look for a UISource component that may have the string value
             // as component id in the same view container
-            UISource source = resolveSourceId(context,
-                                              (UIReport) component,
-                                              (String) value);
-            if (source != null) {
-                result = source.getSubmittedSource();
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.log(Level.FINE, "JRJSF_0036", new Object[]{
-                                component.getClientId(context),
-                                source.getClientId(context)
-                            });
+        	String sourceClientId = resolveSourceClientId(context, 
+        			(UIReport) component, (String) value);
+        	if (sourceClientId != null) {
+        		// Since JRJSF lifecycle is invoked straight over the report component
+        		// and we have here a reference to another component
+        		// we need to invoke the decode process on the source component in order
+        		// to obtain a proper datasource reference.
+        		viewRoot.invokeOnComponent(context, sourceClientId, new ContextCallback() {
+					public void invokeContextCallback(FacesContext context,
+							UIComponent component) {
+						component.processDecodes(context);
+					}
+				});
+        		
+        		UISource source = (UISource) viewRoot.findComponent(sourceClientId);
+        		if (source != null) {
+                    result = source.getSubmittedSource();
+                    if (logger.isLoggable(Level.FINE)) {
+                        logger.log(Level.FINE, "JRJSF_0036", new Object[]{
+                                    component.getClientId(context),
+                                    source.getClientId(context)
+                                });
+                    }
                 }
-            }
+        	}
         }
 
         if (result == null) {
@@ -162,10 +174,10 @@ public class SourceConverterBase implements SourceConverter {
         return result;
     }
 
-    private UISource resolveSourceId(FacesContext context,
-            UIReport report, String sourceId) {
+    private String resolveSourceClientId(FacesContext context, UIReport report, String sourceId) {
     	// Try to find source component using 'sourceId' as an
     	// absolute ID
+    	String clientId = null;
     	UIViewRoot viewRoot = context.getViewRoot();
         UISource result = (UISource) viewRoot.findComponent(sourceId);
         if (result == null) {
@@ -181,7 +193,10 @@ public class SourceConverterBase implements SourceConverter {
 	            }
 	        } while (!(component instanceof UIViewRoot));
         }
-        return result;
+        if (result != null) {
+        	clientId = result.getClientId(context);
+        }
+        return clientId;
     }
 
     private UIComponent getNamingContainer(UIComponent child) {

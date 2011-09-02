@@ -68,8 +68,8 @@ public class SourceConverterBaseTest {
     public static final Object ANY_VALUE = new Object();
 
     @DataPoint
-    public static final Source EMPTY_SOURCE =
-            SourceConverterBase.NULL_SOURCE;
+    public static final Source EMPTY_SOURCE = 
+    	new JRDataSourceWrapper(new JREmptyDataSource());
 
     @DataPoint
     public static final Source NULL_SOURCE = null;
@@ -141,19 +141,14 @@ public class SourceConverterBaseTest {
     }
 
     @Theory
-    public void nullValueReturnsEmptyDS(final Object value) {
+    public void nullValueReturnsNull(final Object value) {
         assumeThat(value, nullValue());
 
         SourceConverter converter = new DummyDefaultSourceConverter();
         Source source = converter.convertFromValue(
                 facesEnv.getFacesContext(), component, value);
 
-        assertThat(source, notNullValue());
-        assertThat(source, is(JRDataSourceWrapper.class));
-
-        JRDataSource ds = ((JRDataSourceWrapper) source).getDataSource();
-        assertThat(ds, notNullValue());
-        assertThat(ds, is(JREmptyDataSource.class));
+        assertThat(source, nullValue());
     }
 
     @Theory

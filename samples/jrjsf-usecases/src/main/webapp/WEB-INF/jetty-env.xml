@@ -31,9 +31,10 @@
         <Arg>jdbc/BookDB</Arg>
         <Arg>
             <New class="com.atomikos.jdbc.nonxa.NonXADataSourceBean">
-                <Set name="Url">jdbc:hsqldb:./target/database/bookdb</Set>
-                <Set name="driverClassName">org.hsqldb.jdbcDriver</Set>
-                <Set name="user">sa</Set>
+                <Set name="Url">jdbc:derby://localhost:1527/jrjsfdb;create=true</Set>
+                <Set name="driverClassName">org.apache.derby.jdbc.ClientDriver</Set>
+                <Set name="user">bookdb</Set>
+				<Set name="password">pwd</Set>
             </New>
         </Arg>
     </New>
