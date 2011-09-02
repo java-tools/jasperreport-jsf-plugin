@@ -26,21 +26,18 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
 
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.config.Configuration;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.context.ContentType;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.util.ComponentUtil;
-import net.sf.jasperreports.jsf.util.Util;
 
 /**
  *
@@ -172,6 +169,7 @@ public abstract class ReportRenderer extends Renderer {
      *
      * @return the report URL.
      */
+    @Deprecated
     public String encodeReportURL(final FacesContext context,
             final UIComponent component) {
         if (context == null) {
@@ -181,43 +179,9 @@ public abstract class ReportRenderer extends Renderer {
             throw new IllegalArgumentException();
         }
 
-        JRFacesContext jrContext = JRFacesContext.getInstance(context);
-        final Configuration config = Configuration.getInstance(
-                context.getExternalContext());
-        final ExternalContextHelper helper = jrContext
-                .getExternalContextHelper(context);
-
-        final StringBuffer reportURI = new StringBuffer(Constants.BASE_URI);
-        String name = ComponentUtil.getStringAttribute(component, "name", null);
-        if (name != null) {
-        	reportURI.append("/").append(name);
-        }
+        ReportURI uri = ReportURIEncoder.encodeReportURI(context, component);
+        String result = uri.toString();
         
-        String mapping = Util.getInvocationPath(context);
-        if (!config.getFacesMappings().contains(mapping)) {
-            if (logger.isLoggable(Level.WARNING)) {
-                logger.log(Level.WARNING, "JRJSF_0021", new Object[]{mapping,
-                            config.getDefaultMapping()});
-            }
-            mapping = config.getDefaultMapping();
-        }
-
-        if (Util.isPrefixMapped(mapping)) {
-            reportURI.insert(0, mapping);
-        } else {
-            reportURI.append(mapping);
-        }
-
-        reportURI.append('?').append(Constants.PARAM_CLIENTID);
-        reportURI.append('=').append(component.getClientId(context));
-        reportURI.append('&').append(Constants.PARAM_VIEWID);
-        reportURI.append('=').append(helper.getViewId(
-                context.getExternalContext()));
-
-        final ViewHandler viewHandler = context.getApplication()
-                .getViewHandler();
-        final String result = context.getExternalContext().encodeResourceURL(
-                viewHandler.getResourceURL(context, reportURI.toString()));
         if (logger.isLoggable(Level.FINER)) {
             logger.log(Level.FINER, "JRJSF_0031", result);
         }

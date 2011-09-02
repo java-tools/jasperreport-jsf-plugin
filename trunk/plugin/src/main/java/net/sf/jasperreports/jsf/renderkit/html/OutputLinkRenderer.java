@@ -26,6 +26,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.renderkit.ReportURI;
+import net.sf.jasperreports.jsf.renderkit.ReportURIEncoder;
 
 /**
  * Renderer for report links.
@@ -72,7 +74,11 @@ public final class OutputLinkRenderer extends HtmlReportRenderer {
 
         logger.log(Level.FINE, "JRJSF_0001", component.getClientId(context));
 
-        final String reportURI = encodeReportURL(context, component);
+        final ReportURI reportURI = ReportURIEncoder.encodeReportURI(
+                context, component);
+        if (logger.isLoggable(Level.FINER)) {
+            logger.log(Level.FINER, "JRJSF_0031", reportURI);
+        }
         final ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("a", component);
