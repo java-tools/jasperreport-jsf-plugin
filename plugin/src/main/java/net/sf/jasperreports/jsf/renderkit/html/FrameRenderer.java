@@ -27,6 +27,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.renderkit.ReportURI;
+import net.sf.jasperreports.jsf.renderkit.ReportURIEncoder;
 
 import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
@@ -84,7 +86,11 @@ public final class FrameRenderer extends HtmlReportRenderer {
     throws IOException {
         logger.log(Level.FINE, "JRJSF_0002", component.getClientId(context));
 
-        final String reportURI = encodeReportURL(context, component);
+        final ReportURI reportURI = ReportURIEncoder.encodeReportURI(
+                context, component);
+        if (logger.isLoggable(Level.FINER)) {
+            logger.log(Level.FINER, "JRJSF_0031", reportURI);
+        }
 
         final ResponseWriter writer = context.getResponseWriter();
 
