@@ -20,7 +20,7 @@ package net.sf.jasperreports.jsf.engine.fill;
 
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.engine.FillerException;
 
@@ -40,7 +40,7 @@ public abstract class FillerWrapper implements Filler {
         this.delegate = delegate;
     }
     
-    public void fill(FacesContext context, UIReport component)
+    public void fill(FacesContext context, UIOutputReport component)
             throws FillerException {
         delegate.fill(context, component);
     }

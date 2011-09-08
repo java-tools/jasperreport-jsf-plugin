@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.config.Configuration;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
@@ -140,7 +141,7 @@ final class ServletContextHelper extends ExternalContextHelper {
      */
     @Override
     public void writeHeaders(final ExternalContext context,
-            final ReportRenderer renderer, final UIReport report)
+            final ReportRenderer renderer, final UIOutputReport report)
             throws IOException {
         final HttpServletResponse response = (HttpServletResponse)
                 context.getResponse();

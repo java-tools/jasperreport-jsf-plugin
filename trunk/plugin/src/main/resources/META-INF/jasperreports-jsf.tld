@@ -468,6 +468,17 @@ X offset inside the outputted report document.
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+ResourceBundle expression injected into the report for
+internacionalization purposes.
+            ]]></description>
+            <name>resourceBundle</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.Object</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
             <name>tabindex</name>
             <required>false</required>
             <deferred-value>
@@ -716,6 +727,17 @@ X offset inside the outputted report document.
             <required>false</required>
             <deferred-value>
                 <type>int</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+ResourceBundle expression injected into the report for
+internacionalization purposes.
+            ]]></description>
+            <name>resourceBundle</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.Object</type>
             </deferred-value>
         </attribute>
         <attribute>

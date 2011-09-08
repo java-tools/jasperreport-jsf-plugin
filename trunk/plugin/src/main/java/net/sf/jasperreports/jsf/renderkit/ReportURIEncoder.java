@@ -18,6 +18,7 @@
  */
 package net.sf.jasperreports.jsf.renderkit;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -46,7 +47,8 @@ public final class ReportURIEncoder {
             ReportURIEncoder.class.getPackage().getName(), 
             Constants.LOG_MESSAGES_BUNDLE);
     
-    public static ReportURI decodeReportURI(FacesContext context, String uri) {
+    public static ReportURI decodeReportURI(FacesContext context, String uri) 
+    throws IOException {
         final Configuration config = Configuration.getInstance(
                 context.getExternalContext());
         
@@ -111,7 +113,8 @@ public final class ReportURIEncoder {
      * @return the report URL.
      */
     public static ReportURI encodeReportURI(
-            FacesContext context, UIComponent component) {
+            FacesContext context, UIComponent component) 
+    throws IOException {
         if (context == null) {
             throw new IllegalArgumentException();
         }
