@@ -30,6 +30,7 @@ import javax.servlet.ServletContext;
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.InvalidEnvironmentException;
 
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 
@@ -257,7 +258,8 @@ public abstract class ExternalContextHelper {
      *         the report headers
      */
     public abstract void writeHeaders(ExternalContext context,
-            ReportRenderer renderer, UIReport report) throws IOException;
+            ReportRenderer renderer, UIOutputReport report) 
+    throws IOException;
 
     /**
      * Writes the report contents into the context response.

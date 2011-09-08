@@ -47,6 +47,8 @@ public abstract class OutputReportTag extends ReportTag {
 
     private ValueExpression offsetY;
 
+    private ValueExpression resourceBundle;
+    
     /**
      * Sets the format.
      *
@@ -84,6 +86,10 @@ public abstract class OutputReportTag extends ReportTag {
         this.startPageIndex = startPageIndex;
     }
 
+    public void setResourceBundle(ValueExpression resourceBundle) {
+        this.resourceBundle = resourceBundle;
+    }
+
     // TagSupport
 
     @Override
@@ -97,6 +103,7 @@ public abstract class OutputReportTag extends ReportTag {
         ignorePageMargins = null;
         offsetX = null;
         offsetY = null;
+        resourceBundle = null;
     }
 
     @Override
@@ -116,6 +123,8 @@ public abstract class OutputReportTag extends ReportTag {
                 ExporterBase.ATTR_IGNORE_PAGE_MARGINS, ignorePageMargins);
         setIntegerAttribute(component, ExporterBase.ATTR_OFFSET_X, offsetX);
         setIntegerAttribute(component, ExporterBase.ATTR_OFFSET_Y, offsetY);
+        
+        setStringAttribute(component, "resourceBundle", resourceBundle);
     }
 
 }

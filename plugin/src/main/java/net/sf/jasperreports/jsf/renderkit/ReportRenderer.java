@@ -31,6 +31,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
 
 import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.Filler;
@@ -65,7 +66,7 @@ public abstract class ReportRenderer extends Renderer {
      * @throws IOException if something happens when encoding the report.
      */
     public void encodeContent(final FacesContext context,
-            final UIReport component)
+            final UIOutputReport component)
             throws IOException {
         if (context == null) {
             throw new IllegalArgumentException("Faces' context is null");
@@ -125,7 +126,7 @@ public abstract class ReportRenderer extends Renderer {
      *                     report file name.
      */
     public String encodeContentDisposition(
-            final UIReport component, final String encoding)
+            final UIOutputReport component, final String encoding)
             throws IOException {
         final StringBuffer disposition = new StringBuffer();
         if (component.getName() != null) {
@@ -145,7 +146,7 @@ public abstract class ReportRenderer extends Renderer {
      * @throws IOException if some error happens writing the headers values.
      */
     public void encodeHeaders(final FacesContext context,
-            final UIReport component)
+            final UIOutputReport component)
             throws IOException {
         if (context == null) {
             throw new IllegalArgumentException("Faces' context is null");
@@ -171,7 +172,8 @@ public abstract class ReportRenderer extends Renderer {
      */
     @Deprecated
     public String encodeReportURL(final FacesContext context,
-            final UIComponent component) {
+            final UIComponent component) 
+    throws IOException {
         if (context == null) {
             throw new IllegalArgumentException();
         }

@@ -20,6 +20,7 @@ package net.sf.jasperreports.jsf.component;
 
 import java.io.IOException;
 
+import java.util.ResourceBundle;
 import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -41,6 +42,8 @@ public class UIOutputReport extends UIReport {
     /** Specified exporter class. */
     private Exporter exporter;
 
+    private Object resourceBundle;
+    
     /** Instantiates a new UIOutputReport. */
     public UIOutputReport() {
         super();
@@ -108,6 +111,27 @@ public class UIOutputReport extends UIReport {
         this.exporter = exporter;
     }
 
+    public Object getResourceBundle() {
+        if (resourceBundle != null) {
+            return resourceBundle;
+        }
+        ValueExpression ve = getValueExpression("resourceBundle");
+        if (ve != null) {
+            try {
+                return ve.getValue(
+                        getFacesContext().getELContext());
+            } catch (ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return resourceBundle;
+        }
+    }
+    
+    public void setResourceBundle(Object resourceBundle) {
+        this.resourceBundle = resourceBundle;
+    }
+    
     // UIOutputReport encode methods
 
     /**
@@ -161,6 +185,25 @@ public class UIOutputReport extends UIReport {
                 }
             }
         }
+    }
+    
+    @Override
+    public void restoreState(FacesContext context, Object state) {
+        Object[] values = (Object[]) state;
+        super.restoreState(context, values[0]);
+        format = (String) values[1];
+        exporter = (Exporter) values[2];
+        resourceBundle = values[3];
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        Object[] values = new Object[4];
+        values[0] = super.saveState(context);
+        values[1] = format;
+        values[2] = exporter;
+        values[3] = resourceBundle;
+        return values;
     }
 
 }

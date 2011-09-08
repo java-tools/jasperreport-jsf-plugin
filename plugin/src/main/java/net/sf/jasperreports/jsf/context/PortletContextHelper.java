@@ -33,6 +33,7 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import net.sf.jasperreports.jsf.Constants;
 
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.config.Configuration;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
@@ -152,7 +153,7 @@ final class PortletContextHelper extends ExternalContextHelper {
      */
     @Override
     public void writeHeaders(final ExternalContext context,
-            final ReportRenderer renderer, final UIReport report)
+            final ReportRenderer renderer, final UIOutputReport report)
             throws IOException {
         if ("2.0".equals(getPortletVersion())) {
             final ResourceResponse response = (ResourceResponse) context.

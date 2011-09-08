@@ -20,7 +20,10 @@ package net.sf.jasperreports.jsf.engine.fill;
 
 import java.sql.Connection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,6 +38,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.fill.JRBaseFiller;
 import net.sf.jasperreports.engine.fill.JRFiller;
 import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.component.UISubreport;
@@ -61,6 +65,9 @@ public class DefaultFiller implements Filler {
     public static final String PARAM_REPORT_CLASSLOADER = "REPORT_CLASS_LOADER";
     /** The Constant PARAM_REPORT_LOCALE. */
     public static final String PARAM_REPORT_LOCALE = "REPORT_LOCALE";
+    
+    public static final String PARAM_REPORT_RESOURCE_BUNDLE = 
+            "REPORT_RESOURCE_BUNDLE";
 
     public static final String PARAM_APPLICATION_SCOPE = "APPLICATION_SCOPE";
     public static final String PARAM_SESSION_SCOPE = "SESSION_SCOPE";
@@ -79,7 +86,7 @@ public class DefaultFiller implements Filler {
      * @param component report component.
      * @throws FillerException if filler throws any exception.
      */
-    public final void fill(final FacesContext context, final UIReport component)
+    public final void fill(final FacesContext context, final UIOutputReport component)
             throws FillerException {
         final String reportName = getStringAttribute(component, "name",
                 component.getClientId(context));
@@ -100,7 +107,7 @@ public class DefaultFiller implements Filler {
      * @return the map<string, object>
      */
     protected Map<String, Object> buildParamMap(final FacesContext context,
-            final UIReport component)
+            final UIOutputReport component)
     throws FillerException {
         final Map<String, Object> parameters = new HashMap<String, Object>();
 
@@ -122,7 +129,7 @@ public class DefaultFiller implements Filler {
      * @return the generated <tt>JasperPrint</tt> result.
      * @throws FillerException if some error happens.
      */
-    protected JasperPrint doFill(FacesContext context, UIReport component,
+    protected JasperPrint doFill(FacesContext context, UIOutputReport component,
             Map<String, Object> parameters)
     throws FillerException {
         JasperReport report = component.getSubmittedReport();
@@ -165,7 +172,7 @@ public class DefaultFiller implements Filler {
         return print;
     }
 
-    private Source findReportSource(UIReport report) {
+    private Source findReportSource(UIOutputReport report) {
         Source result = report.getSubmittedSource();
         if (result == null) {
             UISource source = null;
@@ -184,12 +191,13 @@ public class DefaultFiller implements Filler {
     }
 
     private void processImplicitParameters(FacesContext context,
-            UIReport component, Map<String, Object> parameters) {
+            UIOutputReport component, Map<String, Object> parameters) {
+        ClassLoader classLoader = Util.getClassLoader(component);
+        Locale locale = context.getViewRoot().getLocale();
+        
         // Specific component parameters
-        parameters.put(PARAM_REPORT_CLASSLOADER,
-                Util.getClassLoader(component));
-        parameters.put(PARAM_REPORT_LOCALE,
-                context.getViewRoot().getLocale());
+        parameters.put(PARAM_REPORT_CLASSLOADER, classLoader);
+        parameters.put(PARAM_REPORT_LOCALE, locale);
 
         parameters.put(PARAM_APPLICATION_SCOPE,
                 context.getExternalContext().getApplicationMap());
@@ -197,6 +205,24 @@ public class DefaultFiller implements Filler {
                 context.getExternalContext().getSessionMap());
         parameters.put(PARAM_REQUEST_SCOPE,
                 context.getExternalContext().getRequestMap());
+        
+        ResourceBundle resourceBundle = null;
+        Object resourceBundleValue = component.getResourceBundle();
+        if (resourceBundleValue instanceof ResourceBundle) {
+            resourceBundle = (ResourceBundle) resourceBundleValue;
+        } else if (resourceBundleValue instanceof String) {
+            try {
+                resourceBundle = ResourceBundle.getBundle(
+                        (String) resourceBundleValue, locale, classLoader);
+            } catch (MissingResourceException e) {
+                resourceBundle = context.getApplication().getResourceBundle(
+                        context, (String) resourceBundleValue);
+            }
+        }
+        
+        if (resourceBundle != null) {
+            parameters.put(PARAM_REPORT_RESOURCE_BUNDLE, resourceBundle);
+        }
     }
 
     /**

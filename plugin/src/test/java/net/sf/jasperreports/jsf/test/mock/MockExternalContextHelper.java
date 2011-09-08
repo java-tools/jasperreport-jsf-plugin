@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.util.Collection;
 
 import javax.faces.context.ExternalContext;
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.context.ContentType;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
@@ -67,7 +68,7 @@ public class MockExternalContextHelper extends ExternalContextHelper {
     }
 
     @Override
-    public void writeHeaders(ExternalContext context, ReportRenderer renderer, UIReport report) 
+    public void writeHeaders(ExternalContext context, ReportRenderer renderer, UIOutputReport report) 
     throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
     }

@@ -20,7 +20,7 @@ package net.sf.jasperreports.jsf.engine;
 
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 
 /**
  * The Filler interface.
@@ -38,7 +38,7 @@ public interface Filler {
      *
      * @throws FillerException if some error happens when processing the data.
      */
-    public void fill(final FacesContext context, final UIReport component)
+    public void fill(final FacesContext context, final UIOutputReport component)
             throws FillerException;
     
 }

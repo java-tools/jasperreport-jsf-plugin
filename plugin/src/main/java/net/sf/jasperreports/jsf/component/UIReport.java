@@ -21,6 +21,7 @@ package net.sf.jasperreports.jsf.component;
 import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
@@ -40,7 +41,8 @@ import net.sf.jasperreports.jsf.validation.ReportValidatorBase;
  *
  * @author A. Alonso Dominguez
  */
-public abstract class UIReport extends UIComponentBase {
+public abstract class UIReport extends UIComponentBase 
+implements NamingContainer {
 
     /** Name used to identify the reports component family. */
     public static final String COMPONENT_FAMILY =
