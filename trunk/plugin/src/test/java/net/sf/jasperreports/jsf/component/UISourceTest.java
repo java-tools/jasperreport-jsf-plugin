@@ -28,7 +28,7 @@ import javax.faces.validator.ValidatorException;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.jsf.convert.SourceConverter;
-import net.sf.jasperreports.jsf.engine.Source;
+import net.sf.jasperreports.jsf.convert.Source;
 import net.sf.jasperreports.jsf.engine.JRDataSourceWrapper;
 import net.sf.jasperreports.jsf.engine.ConnectionWrapper;
 import net.sf.jasperreports.jsf.test.JMockTheories;

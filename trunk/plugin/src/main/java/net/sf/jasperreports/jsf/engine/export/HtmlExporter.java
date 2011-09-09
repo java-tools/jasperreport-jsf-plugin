@@ -26,7 +26,7 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRHtmlExporter;
 import net.sf.jasperreports.engine.export.JRHtmlExporterParameter;
-import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.context.ContentType;
 
 /**
@@ -66,7 +66,7 @@ public final class HtmlExporter extends ExporterBase {
      */
     @Override
     protected JRExporter createJRExporter(
-            final FacesContext context, final UIReport component) {
+            final FacesContext context, final UIOutputReport component) {
         final JRHtmlExporter exporter = new JRHtmlExporter();
         setParameterUsingAttribute(component, exporter,
                 JRHtmlExporterParameter.HTML_HEADER, ATTR_HTML_HEADER);

@@ -26,7 +26,7 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporterParameter;
-import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.context.ContentType;
 
 /**
@@ -67,7 +67,7 @@ public final class DocxExporter extends ExporterBase {
      */
     @Override
     protected JRExporter createJRExporter(
-            final FacesContext context, final UIReport component) {
+            final FacesContext context, final UIOutputReport component) {
         final JRDocxExporter exporter = new JRDocxExporter();
         setParameterUsingAttribute(component, exporter,
                 JRDocxExporterParameter.FRAMES_AS_NESTED_TABLES,

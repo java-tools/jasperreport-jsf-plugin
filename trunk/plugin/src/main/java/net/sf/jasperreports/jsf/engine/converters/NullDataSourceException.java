@@ -18,8 +18,6 @@
  */
 package net.sf.jasperreports.jsf.engine.converters;
 
-import net.sf.jasperreports.jsf.engine.SourceException;
-
 /**
  *
  * @author aalonsodominguez

@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.StateManager;
 import javax.faces.application.StateManagerWrapper;
 import javax.faces.context.FacesContext;
@@ -37,6 +39,10 @@ import net.sf.jasperreports.jsf.Constants;
  * @author A. Alonso Dominguez
  */
 public class StateManagerImpl extends StateManagerWrapper {
+
+	private static final Logger logger = Logger.getLogger(
+			StateManagerImpl.class.getPackage().getName(), 
+			Constants.LOG_MESSAGES_BUNDLE);
 
     /** Established size for the buffer used when parsing the response. */
     private static final int BUFFER_SIZE = 128;
@@ -70,24 +76,37 @@ public class StateManagerImpl extends StateManagerWrapper {
     @Override
     public final void writeState(final FacesContext context, final Object state)
     throws IOException {
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+    	if (!Boolean.TRUE.equals(
+                requestMap.get(Constants.ATTR_REPORT_VIEW))) {
+    		super.writeState(context, state);
+    		return;
+    	}
+    	
         final ResponseWriter oldWriter = context.getResponseWriter();
         final StringWriter sw = new StringWriter(BUFFER_SIZE);
         final ResponseWriter newWriter = oldWriter.cloneWithWriter(sw);
+        
+        if (logger.isLoggable(Level.FINE)) {
+        	logger.log(Level.FINE, "JRJSF_0043");
+        }
+        
+        // Replace the ResponseWriter in order to intercept the view state value
         context.setResponseWriter(newWriter);
         super.writeState(context, state);
-
         // Restore the original ResponseWriter
         context.setResponseWriter(oldWriter);
 
         // Obtain the written state
         newWriter.flush();
         final StringBuffer buffer = sw.getBuffer();
-
         oldWriter.write(buffer.toString());
+        
         final String viewState = getViewState(buffer.toString());
         if (viewState != null) {
-            Map<String, Object> requestMap = context
-                    .getExternalContext().getRequestMap();
+        	if (logger.isLoggable(Level.FINER)) {
+        		logger.log(Level.FINER, "JRJSF_0044", viewState);
+        	}
             requestMap.put(Constants.ATTR_VIEW_STATE, viewState);
         }
     }

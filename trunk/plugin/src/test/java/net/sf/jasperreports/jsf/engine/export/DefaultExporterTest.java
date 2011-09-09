@@ -34,10 +34,9 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.context.ContentType;
 import net.sf.jasperreports.jsf.engine.ExporterException;
-import net.sf.jasperreports.jsf.test.dummy.DummyUIReport;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
 
@@ -71,7 +70,7 @@ public class DefaultExporterTest {
 
     private MockFacesEnvironment facesEnv;
     private JRExporter mockExporter;
-    private UIReport report;
+    private UIOutputReport report;
     private OutputStream stream;
     private JasperPrint print;
 
@@ -79,7 +78,7 @@ public class DefaultExporterTest {
     public void init() {
         facesEnv = new MockFacesServletEnvironment();
 
-        report = new DummyUIReport();
+        report = new UIOutputReport();
         report.setId(REPORT_ID);
 
         mockExporter = mockery.mock(JRExporter.class);
@@ -164,7 +163,7 @@ public class DefaultExporterTest {
 
         @Override
         protected JRExporter createJRExporter(FacesContext context, 
-                UIReport component)
+                UIOutputReport component)
         throws ExporterException {
             return mockExporter;
         }

@@ -25,9 +25,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
+import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.convert.ReportConverter;
@@ -51,6 +54,10 @@ import net.sf.jasperreports.jsf.util.Services;
  */
 final class DefaultJRFacesContext extends JRFacesContext {
 
+    private static final Logger logger = Logger.getLogger(
+            DefaultJRFacesContext.class.getPackage().getName(), 
+            Constants.LOG_MESSAGES_BUNDLE);
+    
     /** Default filler instance. */
     private static final Filler DEFAULT_FILLER = new DefaultFiller();
 
@@ -170,8 +177,9 @@ final class DefaultJRFacesContext extends JRFacesContext {
         if (aValue instanceof String) {
             valueStr = (String) aValue;
             String type = valueStr.substring(
-                    valueStr.lastIndexOf("."));
+                    valueStr.lastIndexOf(".") + 1);
             if (type != null && type.length() > 0) {
+                logger.log(Level.FINER, "JRJSF_0041", type);
                 converter = reportConverterMap.get(type);
             }
         }

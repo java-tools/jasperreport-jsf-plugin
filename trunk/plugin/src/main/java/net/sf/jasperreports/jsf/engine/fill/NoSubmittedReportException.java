@@ -26,7 +26,7 @@ import net.sf.jasperreports.jsf.engine.FillerException;
  *
  * @author A. Alonso Dominguez
  */
-public class ReportNotFoundException extends FillerException {
+public class NoSubmittedReportException extends FillerException {
 
     /**
      *
@@ -38,7 +38,7 @@ public class ReportNotFoundException extends FillerException {
      *
      * @param msg the message
      */
-    public ReportNotFoundException(final String msg) {
+    public NoSubmittedReportException(final String msg) {
         super(msg);
     }
 
@@ -48,7 +48,7 @@ public class ReportNotFoundException extends FillerException {
      * @param msg the message
      * @param t the cause
      */
-    public ReportNotFoundException(final String msg, final Throwable t) {
+    public NoSubmittedReportException(final String msg, final Throwable t) {
         super(msg, t);
     }
 }

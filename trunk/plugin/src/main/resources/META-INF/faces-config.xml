@@ -33,6 +33,8 @@
 
     <lifecycle>
         <phase-listener>net.sf.jasperreports.jsf.lifecycle.RestoreViewPhaseListener</phase-listener>
+        <phase-listener>net.sf.jasperreports.jsf.lifecycle.ApplyRequestValuesPhaseListener</phase-listener>
+        <phase-listener>net.sf.jasperreports.jsf.lifecycle.ProcessValidationsPhaseListener</phase-listener>
         <phase-listener>net.sf.jasperreports.jsf.lifecycle.RenderResponsePhaseListener</phase-listener>
     </lifecycle>
 

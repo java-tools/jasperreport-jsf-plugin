@@ -16,39 +16,20 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.component;
-
-import java.io.Serializable;
-
-import net.sf.jasperreports.jsf.convert.Source;
+package net.sf.jasperreports.jsf.convert;
 
 /**
+ * Interface which represents a source instance.
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
-@SuppressWarnings("serial")
-public class SourceTestBean implements Serializable {
+public interface Source {
 
-    private Object myReportSource;
-
-    private Source reportSource;
-
-    public SourceTestBean() { }
-
-    public SourceTestBean(Object myReportSource) {
-        this.myReportSource = myReportSource;
-    }
-
-    public Object getMyReportSource() {
-        return myReportSource;
-    }
-
-    public Source getReportSource() {
-        return reportSource;
-    }
-
-    public void setReportSource(Source reportSource) {
-        this.reportSource = reportSource;
-    }
+    /**
+     * Method used to release the source internal resources.
+     *
+     * @throws Exception if some error happens closing the resources.
+     */
+    public void dispose() throws Exception;
 
 }

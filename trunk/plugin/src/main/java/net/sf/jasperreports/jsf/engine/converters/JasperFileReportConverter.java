@@ -43,11 +43,17 @@ public class JasperFileReportConverter extends ReportConverterBase {
             JasperFileReportConverter.class.getPackage().getName(),
             Constants.LOG_MESSAGES_BUNDLE);
 
+    @Override
     protected JasperReport loadFromResource(FacesContext context,
             UIReport component, Resource resource) throws ConverterException {
         JasperReport aReport = null;
         ObjectInputStream ois = null;
         try {
+            if (logger.isLoggable(Level.FINE)) {
+            	logger.log(Level.FINE, "JRJSF_0042", new Object[]{
+            			resource.getName(), component.getClientId(context)
+            	});
+            }
             ois = new ContextClassLoaderObjectInputStream(
                     resource.getInputStream());
             aReport = (JasperReport) ois.readObject();

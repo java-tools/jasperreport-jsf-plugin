@@ -31,7 +31,6 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import net.sf.jasperreports.jsf.Constants;
 
-import net.sf.jasperreports.jsf.engine.SourceException;
 
 import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 

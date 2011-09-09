@@ -42,8 +42,9 @@ import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.component.UISubreport;
+import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.convert.SourceConverter;
-import net.sf.jasperreports.jsf.engine.Source;
+import net.sf.jasperreports.jsf.convert.Source;
 import net.sf.jasperreports.jsf.engine.FillerException;
 import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.util.Util;
@@ -73,6 +74,11 @@ public class DefaultFiller implements Filler {
     public static final String PARAM_SESSION_SCOPE = "SESSION_SCOPE";
     public static final String PARAM_REQUEST_SCOPE = "REQUEST_SCOPE";
 
+    public static final String PARAM_SUBREPORT_REFERENCE = "__report";
+    public static final String PARAM_SUBREPORT_DATASOURCE = "__dataSource";
+    public static final String PARAM_SUBREPORT_CONNECTION = "__connection";
+    public static final String PARAM_SUBREPORT_SOURCE = "__source";
+    
     /** The logger. */
     private static final Logger logger = Logger.getLogger(
             DefaultFiller.class.getPackage().getName(),
@@ -88,13 +94,24 @@ public class DefaultFiller implements Filler {
      */
     public final void fill(final FacesContext context, final UIOutputReport component)
             throws FillerException {
-        final String reportName = getStringAttribute(component, "name",
-                component.getClientId(context));
+        final String reportName = getStringAttribute(component, "name", 
+                component.getId());
         logger.log(Level.FINE, "JRJSF_0003", reportName);
 
-        final Map<String, Object> params =
-            buildParamMap(context, component);
+        String clientId = component.getClientId(context);
+        final Map<String, Object> params = buildParamMap(context, component);
+        
+        if (logger.isLoggable(Level.FINER)) {
+            logger.log(Level.FINER, "JRJSF_0046", new Object[]{ 
+                clientId, params 
+            });
+        }
+        
         JasperPrint print = doFill(context, component, params);
+        if (print == null) {
+            throw new CouldNotFillReportException(
+                    "No jasper print generated for component: " + clientId);
+        }
     	component.setSubmittedPrint(print);
     }
 
@@ -106,7 +123,7 @@ public class DefaultFiller implements Filler {
      *
      * @return the map<string, object>
      */
-    protected Map<String, Object> buildParamMap(final FacesContext context,
+    private Map<String, Object> buildParamMap(final FacesContext context,
             final UIOutputReport component)
     throws FillerException {
         final Map<String, Object> parameters = new HashMap<String, Object>();
@@ -117,6 +134,9 @@ public class DefaultFiller implements Filler {
         // Include implicit parameters
         processImplicitParameters(context, component, parameters);
 
+        // Include custom parameters that may be provided by an extension of this class
+        processCustomParameters(context, component, parameters);
+        
         return parameters;
     }
 
@@ -133,6 +153,10 @@ public class DefaultFiller implements Filler {
             Map<String, Object> parameters)
     throws FillerException {
         JasperReport report = component.getSubmittedReport();
+        if (report == null) {
+            throw new NoSubmittedReportException(
+                    component.getClientId(context));
+        }
 
         JRBaseFiller jrFiller;
         try {
@@ -142,7 +166,7 @@ public class DefaultFiller implements Filler {
         }
         
         Source reportSource = findReportSource(component);
-        SourceConverter converter = component.getSourceConverter();
+        SourceConverter converter = findSourceConverter(context, component);
         JasperPrint print = null;
         try {
             if (reportSource == null) {
@@ -171,24 +195,9 @@ public class DefaultFiller implements Filler {
         }
         return print;
     }
-
-    private Source findReportSource(UIOutputReport report) {
-        Source result = report.getSubmittedSource();
-        if (result == null) {
-            UISource source = null;
-            for (UIComponent component : report.getChildren()) {
-                if (component instanceof UISource) {
-                    source = (UISource) component;
-                    break;
-                }
-            }
-
-            if (source != null) {
-                result = source.getSubmittedSource();
-            }
-        }
-        return result;
-    }
+    
+    protected void processCustomParameters(FacesContext context,
+            UIOutputReport component, Map<String, Object> parameters) { }
 
     private void processImplicitParameters(FacesContext context,
             UIOutputReport component, Map<String, Object> parameters) {
@@ -236,27 +245,83 @@ public class DefaultFiller implements Filler {
     private void processParameterMap(FacesContext context, UIReport component,
             Map<String, Object> parameters, String prefix) {
         for (final UIComponent kid : component.getChildren()) {
+            StringBuilder paramName = new StringBuilder();
+            if (prefix != null && prefix.length() > 0) {
+                paramName.append(prefix).append(SUBREPORT_PARAMETER_SEPARATOR);
+            }
+            
             if (kid instanceof UISubreport) {
                 final UISubreport subreport = (UISubreport) kid;
-                parameters.put(subreport.getName(),
-                        subreport.getSubmittedReport());
+                paramName.append(subreport.getName());
+                processSubreportParameterMap(context, subreport, 
+                        parameters, paramName.toString());
                 processParameterMap(context, subreport, parameters,
-                        (prefix != null && prefix.length() > 0 ?
-                            prefix + SUBREPORT_PARAMETER_SEPARATOR : "")
-                        + subreport.getName());
+                        paramName.toString());
             } else if (kid instanceof UIParameter) {
                 final UIParameter param = (UIParameter) kid;
-                String paramName;
-                if (prefix != null && prefix.length() > 0) {
-                    paramName = prefix + SUBREPORT_PARAMETER_SEPARATOR +
-                            param.getName();
-                } else {
-                    paramName = param.getName();
-                }
-
-                parameters.put(paramName, param.getValue());
+                paramName.append(param.getName());
+                parameters.put(paramName.toString(), param.getValue());
             }
         }
     }
+    
+    private void processSubreportParameterMap(FacesContext context, 
+            UISubreport subreport,  Map<String, Object> parameters, String prefix) {
+        StringBuilder paramPrefix = new StringBuilder();
+        if (prefix != null && prefix.length() > 0) {
+            paramPrefix.append(prefix).append(SUBREPORT_PARAMETER_SEPARATOR);
+        }
+        
+        StringBuilder helper = new StringBuilder(paramPrefix);
+        helper.append(PARAM_SUBREPORT_REFERENCE);
+        parameters.put(helper.toString(), subreport.getSubmittedReport());
+        
+        Source source = findReportSource(subreport);
+        if (source != null) {
+            helper = new StringBuilder(paramPrefix);
+            SourceConverter converter = findSourceConverter(context, subreport);
+            Object paramValue = converter.convertFromSource(
+                    context, subreport, source);
+            
+            if (source instanceof JRDataSource) {
+                helper.append(PARAM_SUBREPORT_DATASOURCE);
+            } else if (source instanceof Connection) {
+                helper.append(PARAM_SUBREPORT_CONNECTION);
+            } else {
+                helper.append(PARAM_SUBREPORT_SOURCE);
+                paramValue = source;
+            }
+            
+            parameters.put(helper.toString(), paramValue);
+        }
+    }
+    
+    private Source findReportSource(UIReport report) {
+        Source result = report.getSubmittedSource();
+        if (result == null) {
+            UISource source = null;
+            for (UIComponent component : report.getChildren()) {
+                if (component instanceof UISource) {
+                    source = (UISource) component;
+                    break;
+                }
+            }
 
+            if (source != null) {
+                result = source.getSubmittedSource();
+            }
+        }
+        return result;
+    }
+    
+    private SourceConverter findSourceConverter(FacesContext context, 
+            UIReport report) {
+        SourceConverter result = report.getSourceConverter();
+        if (result == null) {
+            JRFacesContext jrContext = JRFacesContext.getInstance(context);
+            result = jrContext.createSourceConverter(context, report);
+        }
+        return result;
+    }
+    
 }
