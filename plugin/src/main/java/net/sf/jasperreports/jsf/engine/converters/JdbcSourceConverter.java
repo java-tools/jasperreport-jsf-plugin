@@ -28,7 +28,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import net.sf.jasperreports.jsf.Constants;
 
-import net.sf.jasperreports.jsf.engine.SourceException;
 
 import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 

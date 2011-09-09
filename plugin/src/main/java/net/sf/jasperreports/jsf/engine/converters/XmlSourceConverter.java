@@ -46,8 +46,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
-import net.sf.jasperreports.jsf.engine.Source;
-import net.sf.jasperreports.jsf.engine.SourceException;
+import net.sf.jasperreports.jsf.convert.Source;
 import net.sf.jasperreports.jsf.resource.Resource;
 
 import org.w3c.dom.Document;

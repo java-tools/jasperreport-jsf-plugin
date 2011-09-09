@@ -18,8 +18,6 @@
  */
 package net.sf.jasperreports.jsf.engine.converters;
 
-import net.sf.jasperreports.jsf.engine.SourceException;
-
 /**
  * Exception thrown when a database source converter throws
  * any database related exception.

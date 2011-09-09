@@ -18,6 +18,7 @@
  */
 package net.sf.jasperreports.jsf.engine;
 
+import net.sf.jasperreports.jsf.convert.Source;
 import net.sf.jasperreports.engine.JRDataSource;
 
 /**

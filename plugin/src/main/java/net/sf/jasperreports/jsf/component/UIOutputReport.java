@@ -20,12 +20,12 @@ package net.sf.jasperreports.jsf.component;
 
 import java.io.IOException;
 
-import java.util.ResourceBundle;
 import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
+import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 
@@ -43,6 +43,8 @@ public class UIOutputReport extends UIReport {
     private Exporter exporter;
 
     private Object resourceBundle;
+    
+    private JasperPrint submittedPrint;
     
     /** Instantiates a new UIOutputReport. */
     public UIOutputReport() {
@@ -130,6 +132,20 @@ public class UIOutputReport extends UIReport {
     
     public void setResourceBundle(Object resourceBundle) {
         this.resourceBundle = resourceBundle;
+    }
+    
+    public JasperPrint getSubmittedPrint() {
+        return submittedPrint;
+    }
+
+    public void setSubmittedPrint(JasperPrint submittedPrint) {
+        this.submittedPrint = submittedPrint;
+    }
+    
+    @Override
+    public void resetValue() {
+        super.resetValue();
+        submittedPrint = null;
     }
     
     // UIOutputReport encode methods

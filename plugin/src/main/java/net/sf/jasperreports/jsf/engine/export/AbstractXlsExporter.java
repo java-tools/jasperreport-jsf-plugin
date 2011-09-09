@@ -24,7 +24,7 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRXlsAbstractExporter;
 import net.sf.jasperreports.engine.export.JRXlsAbstractExporterParameter;
-import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 
 @SuppressWarnings("deprecation")
 abstract class AbstractXlsExporter extends ExporterBase {
@@ -57,7 +57,7 @@ abstract class AbstractXlsExporter extends ExporterBase {
 
     @Override
     protected JRExporter createJRExporter(final FacesContext context,
-            UIReport component) {
+            UIOutputReport component) {
         final JRXlsAbstractExporter exporter = 
                 createJRXlsExporter(context, component);
         setParameterUsingAttribute(component, exporter,
@@ -100,6 +100,6 @@ abstract class AbstractXlsExporter extends ExporterBase {
     }
 
     protected abstract JRXlsAbstractExporter createJRXlsExporter(
-            FacesContext context, UIReport component)
+            FacesContext context, UIOutputReport component)
             throws ExporterException;
 }

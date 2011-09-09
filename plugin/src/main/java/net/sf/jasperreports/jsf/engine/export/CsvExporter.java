@@ -26,7 +26,7 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRCsvExporter;
 import net.sf.jasperreports.engine.export.JRCsvExporterParameter;
-import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.context.ContentType;
 
 /**
@@ -62,7 +62,7 @@ public final class CsvExporter extends ExporterBase {
      */
     @Override
     protected JRExporter createJRExporter(
-            final FacesContext context, final UIReport component) {
+            final FacesContext context, final UIOutputReport component) {
         final JRCsvExporter exporter = new JRCsvExporter();
         setParameterUsingAttribute(component, exporter,
                 JRCsvExporterParameter.FIELD_DELIMITER, ATTR_FIELD_DELIMITER);

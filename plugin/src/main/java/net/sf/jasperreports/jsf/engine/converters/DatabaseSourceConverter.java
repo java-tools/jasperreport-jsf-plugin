@@ -36,8 +36,7 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.jsf.Constants;
-import net.sf.jasperreports.jsf.engine.Source;
-import net.sf.jasperreports.jsf.engine.SourceException;
+import net.sf.jasperreports.jsf.convert.Source;
 
 import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 

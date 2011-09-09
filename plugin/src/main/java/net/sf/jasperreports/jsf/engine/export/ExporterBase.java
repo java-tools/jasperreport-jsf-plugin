@@ -29,7 +29,7 @@ import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRHyperlinkProducerFactory;
 import net.sf.jasperreports.engine.util.FileResolver;
-import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.ExporterException;
 import net.sf.jasperreports.jsf.engine.interop.FacesFileResolver;
@@ -66,7 +66,7 @@ public abstract class ExporterBase implements Exporter {
      * @throws ExporterException the exporter exception
      */
     public final void export(final FacesContext context,
-            final UIReport component, final OutputStream stream)
+            final UIOutputReport component, final OutputStream stream)
     throws IOException, ExporterException {
         JasperPrint print = component.getSubmittedPrint();
         if (print == null) {
@@ -128,11 +128,11 @@ public abstract class ExporterBase implements Exporter {
      * @return the jR exporter
      */
     protected abstract JRExporter createJRExporter(FacesContext context,
-            UIReport component)
+            UIOutputReport component)
             throws ExporterException;
 
     protected void setParameterUsingAttribute(
-            final UIReport component,
+            final UIOutputReport component,
             final JRExporter exporter,
             final JRExporterParameter param,
             final String attr) {

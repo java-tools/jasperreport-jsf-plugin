@@ -16,20 +16,48 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.engine;
+package net.sf.jasperreports.jsf.engine.converters;
+
+import net.sf.jasperreports.jsf.convert.ConverterException;
 
 /**
- * Interface which represents a source instance.
+ * Root exception for source related exceptions.
  *
  * @author A. Alonso Dominguez
  */
-public interface Source {
+public class SourceException extends ConverterException {
 
     /**
-     * Method used to release the source internal resources.
+	 * 
+	 */
+	private static final long serialVersionUID = 8082995472606939922L;
+
+	/**
+     * Constructor with cause.
      *
-     * @throws Exception if some error happens closing the resources.
+     * @param t the cause.
      */
-    public void dispose() throws Exception;
+    public SourceException(final Throwable t) {
+        super(t);
+    }
+
+    /**
+     * Constructor with message.
+     *
+     * @param msg the message.
+     */
+    public SourceException(final String msg) {
+        super(msg);
+    }
+
+    /**
+     * Constructor with message and cause.
+     *
+     * @param msg the message.
+     * @param t the cause.
+     */
+    public SourceException(final String msg, final Throwable t) {
+        super(msg, t);
+    }
 
 }

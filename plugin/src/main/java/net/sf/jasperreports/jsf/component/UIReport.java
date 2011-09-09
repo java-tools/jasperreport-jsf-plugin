@@ -33,7 +33,7 @@ import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.convert.ReportConverter;
 import net.sf.jasperreports.jsf.convert.SourceConverter;
-import net.sf.jasperreports.jsf.engine.Source;
+import net.sf.jasperreports.jsf.convert.Source;
 import net.sf.jasperreports.jsf.validation.ReportValidatorBase;
 
 /**
@@ -84,8 +84,6 @@ implements NamingContainer {
 
     /** Intepretted report instance. */
     private JasperReport submittedReport;
-
-    private JasperPrint submittedPrint;
 
     /**
      * Instantiates a new UIReport.
@@ -327,14 +325,6 @@ implements NamingContainer {
         this.submittedReport = submittedReport;
     }
 
-    public JasperPrint getSubmittedPrint() {
-        return submittedPrint;
-    }
-
-    public void setSubmittedPrint(JasperPrint submittedPrint) {
-        this.submittedPrint = submittedPrint;
-    }
-
     /**
      * Obtains the valid flag.
      *
@@ -405,7 +395,6 @@ implements NamingContainer {
         this.valid = true;
         this.submittedSource = null;
         this.submittedReport = null;
-        this.submittedPrint = null;
     }
 
     /**

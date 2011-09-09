@@ -25,7 +25,7 @@ import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.export.JRXlsAbstractExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
-import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.context.ContentType;
 
 /**
@@ -55,7 +55,7 @@ public final class XlsExporter extends AbstractXlsExporter {
      */
     @Override
     protected JRXlsAbstractExporter createJRXlsExporter(
-            final FacesContext context, final UIReport component) {
+            final FacesContext context, final UIOutputReport component) {
         return new JRXlsExporter();
     }
 }

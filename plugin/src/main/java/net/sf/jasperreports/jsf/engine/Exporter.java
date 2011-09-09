@@ -24,7 +24,7 @@ import java.util.Collection;
 
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.context.ContentType;
 
 /**
@@ -52,7 +52,7 @@ public interface Exporter {
      * @throws ExporterException the exporter exception
      */
     public void export(final FacesContext context,
-            final UIReport component, final OutputStream stream)
+            final UIOutputReport component, final OutputStream stream)
             throws IOException, ExporterException;
 
 }

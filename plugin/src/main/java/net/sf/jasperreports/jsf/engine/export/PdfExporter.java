@@ -26,7 +26,7 @@ import javax.faces.context.FacesContext;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
-import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.context.ContentType;
 
 /**
@@ -57,7 +57,7 @@ public final class PdfExporter extends ExporterBase {
      */
     @Override
     protected JRExporter createJRExporter(
-            final FacesContext context, final UIReport component) {
+            final FacesContext context, final UIOutputReport component) {
         final JRPdfExporter exporter = new JRPdfExporter();
         setParameterUsingAttribute(component, exporter,
                 JRPdfExporterParameter.IS_COMPRESSED, ATTR_IS_COMPRESSED);

@@ -24,7 +24,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import net.sf.jasperreports.jsf.component.UISource;
-import net.sf.jasperreports.jsf.engine.SourceException;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
 

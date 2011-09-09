@@ -23,7 +23,7 @@ import net.sf.jasperreports.jsf.engine.JRDataSourceWrapper;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.engine.Source;
+import net.sf.jasperreports.jsf.convert.Source;
 import net.sf.jasperreports.jsf.test.dummy.DummyUIReport;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;

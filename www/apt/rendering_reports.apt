@@ -56,17 +56,20 @@ is also available with this component.
   There are some attributes you must specify when using any of the
 report components. This attributes are shown in the following table:
 
-*--------------+----------*--------------------------------------------------------------------------------------------------------------------------+
-| Attribute    | Optional | Description                                                                                                              |
-*--------------+----------*--------------------------------------------------------------------------------------------------------------------------+
-| format       | true     | Output format for this report instance.                                                                                  |
-*--------------+----------*--------------------------------------------------------------------------------------------------------------------------+
-| name         | true     | Name of the generated report, very useful when working with report links or subreports.                                  |
-*--------------+----------*--------------------------------------------------------------------------------------------------------------------------+
-| source       | true     | Report Source reference id (See {{{./sources/index.html}Report Source documentation}}) or any supported source object.   |
-*--------------+----------*--------------------------------------------------------------------------------------------------------------------------+
-| value        | true     | A pointer to the report instance, it can be a path name to a <<<.jasper>>> file, a <<<JasperReport>>> object, etc.       |
-*--------------+----------*--------------------------------------------------------------------------------------------------------------------------+
+*----------------+----------*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Attribute      | Optional | Description                                                                                                                                                              |
+*----------------+----------*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| format         | false    | Output format for this report instance.                                                                                                                                  |
+*----------------+----------*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| name           | true     | Name of the generated report, very useful when working with report links or subreports.                                                                                  |
+*----------------+----------*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| source         | true     | Report Source reference id (See {{{./sources/index.html}Report Source documentation}}) or any supported source object.                                                   |
+*----------------+----------*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| resourceBundle | true     | A pointer to a <<<java.util.ResourceBundle>>> instance, a bundle's base name or a Faces' variable for a resource bundle that will be given to the report when rendering. |
+*----------------+----------*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| value          | true     | A pointer to the report instance, it can be a path name to a <<<.jasper>>> file, a <<<JasperReport>>> object, etc.                                                       |
+*----------------+----------*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
 
 ** Resources
 
@@ -224,7 +227,7 @@ that can be used to insert data into the <detail> report inside a <master> one.
 +---
 <jr:reportFrame value="...">
     <f:param name="ORDER_ID" value="..." />
-    <jr:subreport name="orderLines" value="...">
+    <jr:subreport name="orderLines" source="..." value="...">
         <f:param name="FROM_DATE" value="..." />
         <f:param name="TO_DATE" value="..." />
     </jr:subreport>
@@ -246,3 +249,11 @@ that can be used to insert data into the <detail> report inside a <master> one.
   <<Note>>: A subreport can not specify an export format since it will use the
 same export format than the parent report it belongs to. However, it may use a
 different report source than the parent and it can also have its own parameters.
+
+** Aligning your subreport design
+
+  There are too many ways of designing embedded subreports that may work with this
+library without the need of using the <jr:subreport> component in your views. However
+if would like to make use of the benefits provided by this component you may have in
+mind some considerations when designing your report in order to be able to properly
+print the whole report.

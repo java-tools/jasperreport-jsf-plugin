@@ -37,8 +37,7 @@ import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.convert.ConverterException;
 import net.sf.jasperreports.jsf.convert.SourceConverter;
-import net.sf.jasperreports.jsf.engine.Source;
-import net.sf.jasperreports.jsf.engine.SourceException;
+import net.sf.jasperreports.jsf.convert.Source;
 import net.sf.jasperreports.jsf.engine.ConnectionWrapper;
 import net.sf.jasperreports.jsf.engine.JRDataSourceWrapper;
 

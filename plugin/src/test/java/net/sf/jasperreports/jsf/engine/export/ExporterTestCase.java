@@ -29,8 +29,7 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.test.dummy.DummyUIReport;
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.context.ContentType;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
@@ -91,7 +90,7 @@ public abstract class ExporterTestCase {
         Class<? extends ExporterBase> exporterClass =
                 getExporterUnderTestClass();
         ExporterBase exporter = exporterClass.newInstance();
-        UIReport component = createComponent();
+        UIOutputReport component = createComponent();
 
         JRExporter jrExporter = exporter.createJRExporter(
                 facesEnv.getFacesContext(), component);
@@ -113,8 +112,8 @@ public abstract class ExporterTestCase {
     }
 
     @SuppressWarnings("rawtypes")
-	protected UIReport createComponent() {
-        UIReport report = new DummyUIReport();
+    protected UIOutputReport createComponent() {
+        UIOutputReport report = new UIOutputReport();
         Enumeration e = properties.propertyNames();
         while (e.hasMoreElements()) {
             String name = (String) e.nextElement();

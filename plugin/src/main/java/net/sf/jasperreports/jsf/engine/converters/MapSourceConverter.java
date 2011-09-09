@@ -32,7 +32,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.data.JRMapArrayDataSource;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 import net.sf.jasperreports.jsf.Constants;
-import net.sf.jasperreports.jsf.engine.Source;
+import net.sf.jasperreports.jsf.convert.Source;
 
 /**
  * Converter implementation which transforms the received
