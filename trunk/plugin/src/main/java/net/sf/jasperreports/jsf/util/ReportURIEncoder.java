@@ -31,7 +31,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author 501944227
+ * @author A. Alonso Dominguez
  */
 public final class ReportURIEncoder {
     
@@ -41,16 +41,36 @@ public final class ReportURIEncoder {
     
     public static ReportURI decodeReportURI(FacesContext context, String uri) 
     throws IOException {
+        if (context == null) {
+            throw new IllegalArgumentException("'context' can't be null");
+        }
+        if (uri == null || uri.indexOf(Constants.BASE_URI) < 0) {
+            throw new IllegalArgumentException("URI [" + uri +
+                    "] is not a proper report URI.");
+        }
+
         final Configuration config = Configuration.getInstance(
                 context.getExternalContext());
         
+        if (logger.isLoggable(Level.FINER)) {
+            logger.log(Level.FINER, "JRJSF_0046", uri);
+        }
+        
+        // Separate the uri in proper uri and query string
         String queryString = "";
         int i = uri.indexOf("?");
         if (i >= 0) {
             queryString = uri.substring(i + 1);
             uri = uri.substring(0, i);
         }
+
+        // Remove request context path
+        String contextPath = context.getExternalContext().getRequestContextPath();
+        if (uri.startsWith(contextPath)) {
+            uri = uri.substring(contextPath.length());
+        }
         
+        // Guess invocation path for the URI
         String mapping = Util.getInvocationPath(context);
         if (!config.getFacesMappings().contains(mapping)) {
             if (logger.isLoggable(Level.WARNING)) {
@@ -64,25 +84,24 @@ public final class ReportURIEncoder {
             throw new IllegalArgumentException("URI [" + uri + 
                         "] is not a faces' URL");
         }
-        
-        ReportURIImpl reportURI = new ReportURIImpl();
-        reportURI.setFacesMapping(mapping);
-        
+
+        // Remove the faces mapping from the URI
         if (Util.isPrefixMapped(mapping)) {
             uri = uri.substring(mapping.length());
         } else {
-            uri = uri.substring(0, uri.indexOf(mapping));
+            uri = uri.substring(0, uri.indexOf(mapping, Constants.BASE_URI.length()));
         }
-        
-        if (!uri.startsWith(Constants.BASE_URI)) {
-            throw new IllegalArgumentException("URI [" + uri + 
-                    "] is not a proper report URI.");
-        }
-        
-        uri = uri.substring(Constants.BASE_URI.length() + 1);
+
+        // Remove prefix used to build the URI
+        uri = uri.substring(Constants.BASE_URI.length());
+
+        // Now start building the ReportURI instance
+        ReportURIImpl reportURI = new ReportURIImpl();
+        reportURI.setFacesMapping(mapping);
+
         i = uri.indexOf("/");
         if (i < 0) {
-            throw new IllegalArgumentException("URI [" + uri + 
+            throw new IllegalArgumentException("URI [" + uri +
                     "] doesn't contain a report clientId");
         }
         reportURI.setReportClientId(uri.substring(0, i));
@@ -108,10 +127,10 @@ public final class ReportURIEncoder {
             FacesContext context, UIComponent component) 
     throws IOException {
         if (context == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("'context' can't be null");
         }
         if (component == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("'component' can't be null");
         }
         
         JRFacesContext jrContext = JRFacesContext.getInstance(context);

@@ -53,7 +53,7 @@ public final class Constants {
             PACKAGE_PREFIX + ".VIEW_STATE";
 
     /** Base string URI used to recognize Report render requests. */
-    public static final String BASE_URI = "/" + PACKAGE_PREFIX + "/render";
+    public static final String BASE_URI = "/" + PACKAGE_PREFIX + "/render/";
     
     public static final String FACES_PHASE_ID = PACKAGE_PREFIX + ".PHASE_ID";
     

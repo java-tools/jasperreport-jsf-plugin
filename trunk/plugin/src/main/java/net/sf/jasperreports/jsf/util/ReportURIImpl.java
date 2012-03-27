@@ -86,8 +86,8 @@ final class ReportURIImpl implements ReportURI {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder(Constants.BASE_URI);
-        builder.append("/").append(getReportClientId());
-        builder.append("/").append(getViewId());
+        builder.append(getReportClientId());
+        builder.append(getViewId());
 
         if (Util.isPrefixMapped(facesMapping)) {
             builder.insert(0, facesMapping);

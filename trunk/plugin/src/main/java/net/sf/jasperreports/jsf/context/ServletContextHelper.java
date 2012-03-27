@@ -36,6 +36,7 @@ import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.config.Configuration;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
+import net.sf.jasperreports.jsf.util.ReportURI;
 
 /**
  * Servlet implementation of the external context helper.
@@ -153,10 +154,8 @@ final class ServletContextHelper extends ExternalContextHelper {
     }
     
     protected ReportRenderRequest createReportRenderRequest(
-    		ExternalContext context, String defaultMapping, 
-    		String viewId, String viewState) {
+    		ExternalContext context, ReportURI reportURI, String viewState) {
     	HttpServletRequest request = (HttpServletRequest) context.getRequest();
-        return new ReportHttpRenderRequest(request, viewId,
-                defaultMapping, viewState);
+        return new ReportHttpRenderRequest(request, reportURI, viewState);
     }
 }

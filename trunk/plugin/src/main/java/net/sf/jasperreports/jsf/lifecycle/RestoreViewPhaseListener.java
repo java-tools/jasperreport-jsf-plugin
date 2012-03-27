@@ -18,6 +18,7 @@
  */
 package net.sf.jasperreports.jsf.lifecycle;
 
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,6 +28,7 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 
 import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.context.ReportRenderRequest;
@@ -66,15 +68,20 @@ public class RestoreViewPhaseListener extends AbstractReportPhaseListener {
             context.getExternalContext().getRequestMap().put(
                     Constants.ATTR_POSTBACK, Boolean.TRUE);
 
-            final ExternalContextHelper helper =
+            ExternalContextHelper helper =
                     jrContext.getExternalContextHelper(context);
-            final ReportRenderRequest renderRequest = helper
-                    .restoreReportRenderRequest(context.getExternalContext());
+            ReportRenderRequest renderRequest;
+            try {
+                renderRequest = helper
+                        .restoreReportRenderRequest(context.getExternalContext());
+            } catch (IOException e) {
+                throw new JRFacesException(e);
+            }
 
             if (logger.isLoggable(Level.FINE)) {
                 logger.log(Level.FINE, "JRJSF_0030", new Object[]{
-                    renderRequest.getViewId(),
-                    renderRequest.getReportClientId()
+                    renderRequest.getReportURI().getViewId(),
+                    renderRequest.getReportURI().getFacesMapping()
                 });
             }
         }

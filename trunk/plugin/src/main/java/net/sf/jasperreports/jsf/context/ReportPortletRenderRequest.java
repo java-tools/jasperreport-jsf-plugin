@@ -30,6 +30,7 @@ import javax.portlet.faces.Bridge;
 import javax.portlet.filter.ResourceRequestWrapper;
 
 import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.util.ReportURI;
 
 /**
  *
@@ -38,15 +39,17 @@ import net.sf.jasperreports.jsf.Constants;
 final class ReportPortletRenderRequest extends ResourceRequestWrapper
         implements ReportRenderRequest {
 
+    private final ReportURI reportURI;
     private final String oldViewId;
     private final String viewState;
 
     public ReportPortletRenderRequest(ResourceRequest request,
-    		String facesMapping, String viewId, String viewState) {
+    		ReportURI reportURI, String viewState) {
         super(request);
-        
+
+        this.reportURI = reportURI;
         this.oldViewId = (String) request.getAttribute(Bridge.VIEW_ID);
-        request.setAttribute(Bridge.VIEW_ID, viewId);
+        request.setAttribute(Bridge.VIEW_ID, reportURI.getViewId());
         this.viewState = viewState;
     }
 
@@ -77,6 +80,10 @@ final class ReportPortletRenderRequest extends ResourceRequestWrapper
     @Override
     public String[] getParameterValues(String name) {
         return getParameterMap().get(name);
+    }
+
+    public ReportURI getReportURI() {
+        return reportURI;
     }
 
     public String getReportClientId() {
