@@ -18,10 +18,14 @@
  */
 package net.sf.jasperreports.jsf.lifecycle;
 
-import java.io.IOException;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.JRFacesException;
+import net.sf.jasperreports.jsf.component.UIOutputReport;
+import net.sf.jasperreports.jsf.context.ExternalContextHelper;
+import net.sf.jasperreports.jsf.context.JRFacesContext;
+import net.sf.jasperreports.jsf.context.ReportRenderRequest;
+import net.sf.jasperreports.jsf.util.ReportURI;
+import net.sf.jasperreports.jsf.util.Util;
 
 import javax.faces.FacesException;
 import javax.faces.component.ContextCallback;
@@ -31,16 +35,10 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
-
-import net.sf.jasperreports.jsf.Constants;
-import net.sf.jasperreports.jsf.JRFacesException;
-import net.sf.jasperreports.jsf.component.UIOutputReport;
-import net.sf.jasperreports.jsf.context.ExternalContextHelper;
-import net.sf.jasperreports.jsf.context.JRFacesContext;
-import net.sf.jasperreports.jsf.context.ReportRenderRequest;
-import net.sf.jasperreports.jsf.util.ReportURI;
-import net.sf.jasperreports.jsf.util.ReportURIEncoder;
-import net.sf.jasperreports.jsf.util.Util;
+import java.io.IOException;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Implementation of the <tt>RENDER_REPORT</tt> phase.
@@ -99,19 +97,10 @@ public final class RenderResponsePhaseListener extends AbstractReportPhaseListen
 
         final FacesContext context = event.getFacesContext();
         try {
-            final JRFacesContext jrContext =
-                    JRFacesContext.getInstance(context);
-
             final ExternalContext extContext = context.getExternalContext();
-            final ExternalContextHelper helper = jrContext.getExternalContextHelper(context);
 
-            ReportURI reportURI;
-            try {
-                reportURI = ReportURIEncoder.decodeReportURI(context,
-                        helper.getRequestURI(extContext));
-            } catch (IOException e) {
-                throw new JRFacesException(e);
-            }
+            ReportRenderRequest request = (ReportRenderRequest) extContext.getRequest();
+            ReportURI reportURI = request.getReportURI();
 
             final String clientId = reportURI.getReportClientId();
             if (clientId == null) {

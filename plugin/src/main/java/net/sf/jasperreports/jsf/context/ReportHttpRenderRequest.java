@@ -18,17 +18,16 @@
  */
 package net.sf.jasperreports.jsf.context;
 
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import net.sf.jasperreports.jsf.util.ReportURI;
+import net.sf.jasperreports.jsf.util.Util;
 
 import javax.faces.render.ResponseStateManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
-import net.sf.jasperreports.jsf.Constants;
-
-import net.sf.jasperreports.jsf.util.Util;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * HTTP implementation of a <tt>ReportRenderRequest</tt>.
@@ -42,8 +41,7 @@ final class ReportHttpRenderRequest extends HttpServletRequestWrapper
     private String pathInfo;
     /** Current request servlet path. */
     private String servletPath;
-    /** Current request view id. */
-    private String viewId;
+    private ReportURI reportURI;
     /** View state to be restored. */
     private String viewState;
 
@@ -53,17 +51,16 @@ final class ReportHttpRenderRequest extends HttpServletRequestWrapper
      * Instantiates a new HTTP report render request.
      *
      * @param request HTTP request to wrap around.
-     * @param viewId view id to be simulated.
-     * @param facesMapping request faces mapping.
+     * @param reportURI the <tt>ReportURI</tt> that triggered this report render request.
      * @param viewState view state to restore.
      */
     public ReportHttpRenderRequest(final HttpServletRequest request,
-            final String viewId, final String facesMapping,
+            final ReportURI reportURI,
             final String viewState) {
         super(request);
-        this.viewId = viewId;
+        this.reportURI = reportURI;
         this.viewState = viewState;
-        reverseEngineerPaths(facesMapping);
+        reverseEngineerPaths();
     }
 
     /**
@@ -137,7 +134,7 @@ final class ReportHttpRenderRequest extends HttpServletRequestWrapper
      * @return the report component client id.
      */
     public String getReportClientId() {
-        return getRequest().getParameter(Constants.PARAM_CLIENTID);
+        return reportURI.getReportClientId();
     }
 
     /**
@@ -150,13 +147,17 @@ final class ReportHttpRenderRequest extends HttpServletRequestWrapper
         return servletPath;
     }
 
+    public ReportURI getReportURI() {
+        return reportURI;
+    }
+
     /**
      * Obtains the report view id.
      *
      * @return the report view id.
      */
     public String getViewId() {
-        return viewId;
+        return reportURI.getViewId();
     }
 
     /**
@@ -170,10 +171,11 @@ final class ReportHttpRenderRequest extends HttpServletRequestWrapper
     /**
      * Method designed to guess the path info & servlet path data
      * from the view id and the faces mapping.
-     *
-     * @param facesMapping application default faces' mapping.
      */
-    private void reverseEngineerPaths(final String facesMapping) {
+    private void reverseEngineerPaths() {
+        String facesMapping = reportURI.getFacesMapping();
+        String viewId = reportURI.getViewId();
+
         if (Util.isPrefixMapped(facesMapping)) {
             int i = facesMapping.indexOf("/*");
             if (i != -1) {

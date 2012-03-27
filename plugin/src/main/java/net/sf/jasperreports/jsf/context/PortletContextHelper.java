@@ -18,25 +18,17 @@
  */
 package net.sf.jasperreports.jsf.context;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.List;
+import net.sf.jasperreports.jsf.component.UIOutputReport;
+import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
+import net.sf.jasperreports.jsf.util.ReportURI;
 
 import javax.faces.context.ExternalContext;
 import javax.portlet.PortletContext;
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
-import net.sf.jasperreports.jsf.Constants;
-
-import net.sf.jasperreports.jsf.component.UIOutputReport;
-import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.config.Configuration;
-import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Portlet implementation of the external context helper.
@@ -48,8 +40,7 @@ final class PortletContextHelper extends ExternalContextHelper {
     /**
      * Protected constructor to prevent instantiation.
      */
-    protected PortletContextHelper() {
-    }
+    protected PortletContextHelper() { }
 
     @Override
     public Collection<ContentType> getAcceptedContentTypes(
@@ -78,8 +69,8 @@ final class PortletContextHelper extends ExternalContextHelper {
      * @return A representation of the request render request
      */
     @Override
-    public ReportRenderRequest restoreReportRenderRequest(
-            final ExternalContext context) {
+    public ReportRenderRequest restoreReportRenderRequest(final ExternalContext context)
+    throws IOException {
         if (!"2.0".equals(getPortletVersion())) {
         	throw new IllegalStateException(
             	"Only Resource Request/Response state is allowed");
@@ -188,10 +179,10 @@ final class PortletContextHelper extends ExternalContextHelper {
 
 	@Override
 	protected ReportRenderRequest createReportRenderRequest(
-			ExternalContext context, String defaultMapping, String viewId,
+			ExternalContext context, ReportURI reportURI,
 			String viewState) {
 		ResourceRequest request = (ResourceRequest) context.getRequest();
 		return new ReportPortletRenderRequest(request,
-                defaultMapping, viewId, viewState);
+                reportURI, viewState);
 	}
 }

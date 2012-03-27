@@ -18,20 +18,21 @@
  */
 package net.sf.jasperreports.jsf.context;
 
+import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.InvalidEnvironmentException;
+import net.sf.jasperreports.jsf.component.UIOutputReport;
+import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
+import net.sf.jasperreports.jsf.util.ReportURI;
+import net.sf.jasperreports.jsf.util.ReportURIEncoder;
+
+import javax.faces.application.ViewHandler;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.faces.application.ViewHandler;
-import javax.faces.context.ExternalContext;
-import javax.servlet.ServletContext;
-
-import net.sf.jasperreports.jsf.Constants;
-import net.sf.jasperreports.jsf.InvalidEnvironmentException;
-import net.sf.jasperreports.jsf.component.UIOutputReport;
-import net.sf.jasperreports.jsf.config.Configuration;
-import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 
 /**
  * Helper class that will provide with utility methods related with the
@@ -173,23 +174,22 @@ public abstract class ExternalContextHelper {
      * @param context the current ExternalContext
      * @return A representation of the request render request
      */
-    public ReportRenderRequest restoreReportRenderRequest(
-            ExternalContext context) {
-    	final Configuration config = Configuration.getInstance(context);
-        //final ReportURI reportURI = ReportURIEncoder.decodeReportURI(FacesContext.getCurrentInstance(), getRequestURI(context));
+    public ReportRenderRequest restoreReportRenderRequest(ExternalContext context)
+    throws IOException {
+        final ReportURI reportURI = ReportURIEncoder.decodeReportURI(
+                FacesContext.getCurrentInstance(), getRequestURI(context));
     	final String viewId = context.getRequestParameterMap()
 		        .get(Constants.PARAM_VIEWID);
 		final String viewState = getViewCacheMap(context).get(viewId);
 		
 		ReportRenderRequest request = createReportRenderRequest(context, 
-				config.getDefaultMapping(), viewId, viewState);
+				reportURI, viewState);
 		context.setRequest(request);
 		return request;
     }
 
     protected abstract ReportRenderRequest createReportRenderRequest(
-    		ExternalContext context, String defaultMapping, 
-    		String viewId, String viewState);
+    		ExternalContext context, ReportURI reportURI, String viewState);
     
     /**
      * Gets the request uri.

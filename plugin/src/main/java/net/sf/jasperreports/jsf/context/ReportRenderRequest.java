@@ -18,6 +18,8 @@
  */
 package net.sf.jasperreports.jsf.context;
 
+import net.sf.jasperreports.jsf.util.ReportURI;
+
 /**
  * Represents a report render request.
  *
@@ -26,17 +28,28 @@ package net.sf.jasperreports.jsf.context;
 public interface ReportRenderRequest {
 
     /**
+     * Obtains the <tt>ReportURI</tt> that triggered this report render request
+     *
+     * @return the report uri
+     */
+    public ReportURI getReportURI();
+
+    /**
      * Obtains the report client id.
      *
      * @return the report client id.
+     * @deprecated Use <tt>getReportURI().getReportClientId()</tt> instead
      */
+    @Deprecated
     public String getReportClientId();
 
     /**
      * Obtains the view id.
      *
      * @return the view id.
+     * @deprecated Use <tt>getReportURI().getViewId()</tt> instead
      */
+    @Deprecated
     public String getViewId();
 
     /**

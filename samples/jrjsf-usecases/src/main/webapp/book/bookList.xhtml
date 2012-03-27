@@ -46,7 +46,7 @@
             <jr:reportLink id="reportLink" format="pdf" target="blank" source="bookSource"
                            value="/resources/reports/booklist.jrxml">
                 <f:param name="REPORT_RESOURCE_BUNDLE" value="#{Messages}" />
-                <h:outputText value="#{Messages['bookList.showReport']}" />
+                <h:outputText value="#{Messages['bookList.action.show']}" />
             </jr:reportLink>
 
             <h:dataTable value="#{bookList.allBooks}" var="book">
