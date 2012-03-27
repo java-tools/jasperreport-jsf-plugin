@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -20,13 +20,17 @@ package net.sf.jasperreports.jsf.taglib;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
+
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.engine.export.ExporterBase;
+
+import java.util.ResourceBundle;
 
 import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
  *
- * @author antonio.alonso
+ * @author A. Antonio Alonso
  */
 public abstract class OutputReportTag extends ReportTag {
 
@@ -48,14 +52,14 @@ public abstract class OutputReportTag extends ReportTag {
     private ValueExpression offsetY;
 
     private ValueExpression resourceBundle;
-    
+
     /**
      * Sets the format.
      *
      * @param type the new format
      */
-    public void setFormat(final ValueExpression type) {
-        format = type;
+    public void setFormat(final ValueExpression format) {
+        this.format = format;
     }
 
     public void setEncoding(ValueExpression encoding) {
@@ -123,8 +127,17 @@ public abstract class OutputReportTag extends ReportTag {
                 ExporterBase.ATTR_IGNORE_PAGE_MARGINS, ignorePageMargins);
         setIntegerAttribute(component, ExporterBase.ATTR_OFFSET_X, offsetX);
         setIntegerAttribute(component, ExporterBase.ATTR_OFFSET_Y, offsetY);
-        
-        setStringAttribute(component, "resourceBundle", resourceBundle);
+
+        UIOutputReport report = (UIOutputReport) component;
+        if (resourceBundle != null) {
+            if (resourceBundle.isLiteralText()) {
+                ResourceBundle bundle = ResourceBundle.getBundle(
+                        resourceBundle.getExpressionString());
+                report.setResourceBundle(bundle);
+            } else {
+                report.setValueExpression("resourceBundle", resourceBundle);
+            }
+        }
     }
 
 }

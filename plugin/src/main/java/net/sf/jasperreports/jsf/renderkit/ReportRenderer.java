@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -18,11 +18,9 @@
  */
 package net.sf.jasperreports.jsf.renderkit;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,13 +30,13 @@ import javax.faces.render.Renderer;
 
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIOutputReport;
-import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.context.ContentType;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
-import net.sf.jasperreports.jsf.util.ComponentUtil;
+import net.sf.jasperreports.jsf.util.ReportURI;
+import net.sf.jasperreports.jsf.util.ReportURIEncoder;
 
 /**
  *
@@ -84,35 +82,26 @@ public abstract class ReportRenderer extends Renderer {
 
         final ExternalContextHelper helper = jrContext
                 .getExternalContextHelper(context);
-        final Exporter exporter = jrContext
+        Exporter exporter = component.getExporter();
+        if (exporter == null) {
+        	exporter = jrContext
                 .getExporter(context, component);
+        }
         
-        ByteArrayInputStream input = null;
-        final ByteArrayOutputStream output = new ByteArrayOutputStream();
+        final ByteArrayOutputStream stream = new ByteArrayOutputStream();
         try {
+        	ContentType contentType = exporter.getContentType();
             if (logger.isLoggable(Level.FINE)) {
-                logger.log(Level.FINE, "JRJSF_0010", new Object[]{clientId,
-                            exporter.getContentTypes()});
+                logger.log(Level.FINE, "JRJSF_0010", new Object[]{
+                		clientId, contentType});
             }
-            exporter.export(context, component, output);
-            ContentType contentType = findAppropiateContentType(context, 
-            		component, exporter.getContentTypes());
-            if (contentType == null) {
-            	throw new UnsupportedExporterException(exporter.getClass().getName());
-            }
-            
-            input = new ByteArrayInputStream(output.toByteArray());
+            exporter.export(context, component, stream);
             helper.writeResponse(context.getExternalContext(),
-                    contentType, input);
+                    contentType, stream.toByteArray());
         } finally {
             try {
-                output.close();
+            	stream.close();
             } catch (final IOException e) { ; }
-            if (input != null) {
-            	try {
-            		input.close();
-            	} catch (final IOException e) { ; }
-            }
         }
     }
 
@@ -172,7 +161,7 @@ public abstract class ReportRenderer extends Renderer {
      */
     @Deprecated
     public String encodeReportURL(final FacesContext context,
-            final UIComponent component) 
+            final UIComponent component)
     throws IOException {
         if (context == null) {
             throw new IllegalArgumentException();
@@ -190,11 +179,11 @@ public abstract class ReportRenderer extends Renderer {
         return result;
     }
 
-    private ContentType findAppropiateContentType(FacesContext context, UIReport component, 
-    		Collection<ContentType> possibleValues) {
+    /*private ContentType findAppropiateContentType(FacesContext context, 
+    		UIOutputReport component, Exporter exporter) {
     	ContentType result = null;
     	
-    	String formatValue = ComponentUtil.getStringAttribute(component, "format", null);
+    	String formatValue = component.getFormat();
     	if (ContentType.isContentType(formatValue)) {
     		ContentType format = new ContentType(formatValue);
     		if (isContentTypeAccepted(context, format)) {
@@ -203,7 +192,7 @@ public abstract class ReportRenderer extends Renderer {
     	}
     	
     	if (result == null) {
-    		for (ContentType type : possibleValues) {
+    		for (ContentType type : exporter.getContentType()) {
     			if (isContentTypeAccepted(context, type)) {
     				result = type;
     				break;
@@ -217,14 +206,20 @@ public abstract class ReportRenderer extends Renderer {
     private boolean isContentTypeAccepted(FacesContext context, ContentType contentType) {
     	JRFacesContext jrFacesContext = JRFacesContext.getInstance(context);
     	ExternalContextHelper helper = jrFacesContext.getExternalContextHelper(context);
-    	for (ContentType accepted : helper.getAcceptedContentTypes(
-    			context.getExternalContext())) {
+    	Collection<ContentType> limitedTo = helper.getAcceptedContentTypes(
+    			context.getExternalContext());
+    	
+    	if (limitedTo.isEmpty()) {
+    		return true;
+    	}
+    	
+    	for (ContentType accepted : limitedTo) {
     		if (accepted.implies(contentType)) {
     			return true;
     		}
     	}
     	return false;
-    }
+    }*/
     
     /**
      * Establishes some flags into the faces' context so the plugin's lifecycle

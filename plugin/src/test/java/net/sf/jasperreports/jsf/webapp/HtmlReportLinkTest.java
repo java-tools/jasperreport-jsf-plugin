@@ -20,8 +20,9 @@ package net.sf.jasperreports.jsf.webapp;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -29,11 +30,20 @@ import org.junit.runners.Parameterized.Parameters;
 
 import com.meterware.httpunit.WebLink;
 import com.meterware.httpunit.WebResponse;
+
+import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.test.ComponentProfilerTestCase;
+
+import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(Parameterized.class)
 public class HtmlReportLinkTest extends ComponentProfilerTestCase {
 
+	private static final Logger logger = Logger.getLogger(
+			HtmlReportLinkTest.class.getName(), 
+			Constants.LOG_MESSAGES_BUNDLE);
+	
     @Parameters
     public static Collection<?> linkIdentifiers() {
         return Arrays.asList(new Object[][]{{"reportForm:reportLink"}});
@@ -50,12 +60,12 @@ public class HtmlReportLinkTest extends ComponentProfilerTestCase {
         final WebResponse reportView = getComponentView();
         
         final WebLink link = reportView.getLinkWithID(linkId);
-        Assert.assertNotNull("Link '" + linkId + "' is null", link);
+        assertThat(link, notNullValue());
+        assertThat(link.getText(), equalTo("ReportLink"));
         
-        System.out.println("---> Here I click the link");
+        logger.log(Level.INFO, "Clicking link: {0}", link.getID());
         
         final WebResponse reportResponse = link.click();
-        Assert.assertEquals("Report content type is not of expected type",
-                "text/html", reportResponse.getContentType());
+        assertThat(reportResponse.getContentType(), equalTo("text/html"));
     }
 }

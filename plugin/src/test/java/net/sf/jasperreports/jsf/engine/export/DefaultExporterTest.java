@@ -159,7 +159,7 @@ public class DefaultExporterTest {
     
     private class MockDefaultExporter extends ExporterBase {
 
-        private Collection<ContentType> contentTypes;
+        private ContentType contentType;
 
         @Override
         protected JRExporter createJRExporter(FacesContext context, 
@@ -168,13 +168,13 @@ public class DefaultExporterTest {
             return mockExporter;
         }
 
-        public Collection<ContentType> getContentTypes() {
-            return contentTypes;
+        public ContentType getContentType() {
+            return contentType;
         }
 
         @SuppressWarnings("unused")
-		public void setContentTypes(Collection<ContentType> contentTypes) {
-            this.contentTypes = contentTypes;
+		public void setContentType(ContentType contentType) {
+            this.contentType = contentType;
         }
 
     }

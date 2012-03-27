@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -16,33 +16,29 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.engine.fill;
+package net.sf.jasperreports.jsf.util;
 
-import javax.faces.context.FacesContext;
-
-import net.sf.jasperreports.jsf.component.UIOutputReport;
-import net.sf.jasperreports.jsf.engine.Filler;
-import net.sf.jasperreports.jsf.engine.FillerException;
+import java.util.Enumeration;
 
 /**
- * Filler wrapper implementation.
  *
  * @author A. Alonso Dominguez
  */
-public abstract class FillerWrapper implements Filler {
-
-    private final Filler delegate;
+public interface ReportURI {
     
-    public FillerWrapper(Filler delegate) {
-        if (delegate == null) {
-            throw new IllegalArgumentException();
-        }
-        this.delegate = delegate;
-    }
+    public Enumeration<String> getParameterNames();
     
-    public void fill(FacesContext context, UIOutputReport component)
-            throws FillerException {
-        delegate.fill(context, component);
-    }
-
+    public String getParameterValue(String name);
+    
+    public String[] getParameterValues(String name);
+    
+    public String getFacesMapping();
+    
+    public String getReportClientId();
+    
+    public String getViewId();
+    
+    @Override
+    public String toString();
+    
 }

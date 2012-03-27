@@ -34,9 +34,7 @@
     <uri>http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_2.tld</uri>
 
     <listener>
-        <listener-class>
-            net.sf.jasperreports.jsf.config.ConfigurationStartupListener
-        </listener-class>
+        <listener-class>net.sf.jasperreports.jsf.config.ConfigurationStartupListener</listener-class>
     </listener>
 
     <tag>
@@ -46,22 +44,33 @@ the data needed for rendering. Consult library documentation
 about how to use this tag and its possible locations within
 the Faces tree.
         ]]></description>
-        <display-name>Data Broker Tag</display-name>
-        <name>dataSource</name>
-        <tag-class>
-            net.sf.jasperreports.jsf.taglib.DataBrokerTag
-        </tag-class>
+        <display-name>Source Tag</display-name>
+        <name>source</name>
+        <tag-class>net.sf.jasperreports.jsf.taglib.SourceTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
+            <description><![CDATA[Component identifier]]></description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
         </attribute>
         <attribute>
+            <description><![CDATA[Component binding]]></description>
             <name>binding</name>
             <required>false</required>
             <deferred-value>
                 <type>javax.faces.component.UIComponent</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Specific source converter instance used to override the
+default behaviour of the plugin.
+            ]]></description>
+            <name>converter</name>
+            <required>false</required>
+            <deferred-value>
+                <type>net.sf.jasperreports.jsf.convert.SourceConverter</type>
             </deferred-value>
         </attribute>
         <attribute>
@@ -106,33 +115,40 @@ library documentation.
         </attribute>
         <attribute>
             <description><![CDATA[
+Source value representing the source for the data
+to be supplied to other report components.
             ]]></description>
             <name>value</name>
-            <required>false</required>
+            <required>true</required>
             <deferred-value>
                 <type>java.lang.Object</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Specific validator instance used to override the
+default behaviour of the plugin.
+            ]]></description>
+            <name>validator</name>
+            <required>false</required>
+            <deferred-value>
+                <type>net.sf.jasperreports.jsf.validation.Validator</type>
             </deferred-value>
         </attribute>
     </tag>
 
     <tag>
-        <description><![CDATA[
-Faces component tag used to insert an inline report
-within a faces component tree. Component will be
-rendered inside the page.
-        ]]></description>
-        <display-name>Html Report Frame Tag</display-name>
-        <name>reportFrame</name>
-        <tag-class>
-            net.sf.jasperreports.jsf.taglib.html.HtmlReportFrameTag
-        </tag-class>
+        <name>subreport</name>
+        <tag-class>net.sf.jasperreports.jsf.taglib.SubreportTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
+            <description><![CDATA[Component identifier]]></description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
         </attribute>
         <attribute>
+            <description><![CDATA[Component binding]]></description>
             <name>binding</name>
             <required>false</required>
             <deferred-value>
@@ -148,10 +164,32 @@ rendered inside the page.
         </attribute>
         <attribute>
             <description><![CDATA[
+Specific source converter instance used to override the
+default behaviour of the plugin.
+            ]]></description>
+            <name>sourceConverter</name>
+            <required>false</required>
+            <deferred-value>
+                <type>net.sf.jasperreports.jsf.convert.SourceConverter</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Specific report converter instance used to override the
+default behaviour of the plugin.
+            ]]></description>
+            <name>reportConverter</name>
+            <required>false</required>
+            <deferred-value>
+                <type>net.sf.jasperreports.jsf.convert.ReportConverter</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
 Data source ID reference used to obtain the data
 needed to render the report.
             ]]></description>
-            <name>dataBroker</name>
+            <name>source</name>
             <required>false</required>
             <deferred-value>
                 <type>java.lang.Object</type>
@@ -171,26 +209,122 @@ header when rendering the report contents.
         </attribute>
         <attribute>
             <description><![CDATA[
-Path to the report resource that should be rendered.
-Values of this attribute depend on available resource
-loaders. Consult library documentation to know more
-about the built-in resource loading mechanism.
+Any value representing the source for the report
+file, source or compiled to be processed.
             ]]></description>
-            <name>path</name>
+            <name>value</name>
             <required>true</required>
+            <deferred-value>
+                <type>java.lang.Object</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Specific validator instance used to override the
+default behaviour of the plugin.
+            ]]></description>
+            <name>validator</name>
+            <required>false</required>
+            <deferred-value>
+                <type>net.sf.jasperreports.jsf.validation.Validator</type>
+            </deferred-value>
+        </attribute>
+    </tag>
+
+    <tag>
+        <description><![CDATA[
+Faces component tag used to insert an inline report
+within a faces component tree. Component will be
+rendered inside the page.
+        ]]></description>
+        <display-name>Html Report Frame Tag</display-name>
+        <name>reportFrame</name>
+        <tag-class>net.sf.jasperreports.jsf.taglib.html.HtmlReportFrameTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description><![CDATA[Component identifier]]></description>
+            <name>id</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Component binding]]></description>
+            <name>binding</name>
+            <required>false</required>
+            <deferred-value>
+                <type>javax.faces.component.UIComponent</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+HTML <tt>dir</tt> attribute.
+            ]]></description>
+            <name>dir</name>
+            <required>false</required>
             <deferred-value>
                 <type>java.lang.String</type>
             </deferred-value>
         </attribute>
         <attribute>
             <description><![CDATA[
-Path to the sub report location needed by the report 
-that should be rendered. Values of this attribute 
-depend on available resource loaders. Consult library 
-documentation to know more about the built-in resource 
-loading mechanism.
+HTML <tt>lang</tt> attribute.
             ]]></description>
-            <name>subreportDir</name>
+            <name>lang</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Should this report frame be rendered?
+            ]]></description>
+            <name>rendered</name>
+            <required>false</required>
+            <deferred-value>
+                <type>boolean</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Specific source converter instance used to override the
+default behaviour of the plugin.
+            ]]></description>
+            <name>sourceConverter</name>
+            <required>false</required>
+            <deferred-value>
+                <type>net.sf.jasperreports.jsf.convert.SourceConverter</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Specific report converter instance used to override the
+default behaviour of the plugin.
+            ]]></description>
+            <name>reportConverter</name>
+            <required>false</required>
+            <deferred-value>
+                <type>net.sf.jasperreports.jsf.convert.ReportConverter</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Data source ID reference used to obtain the data
+needed to render the report.
+            ]]></description>
+            <name>source</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.Object</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+File name of the exported report. This value will
+be used inside the <tt>Content-Disposition</tt>
+header when rendering the report contents.
+            ]]></description>
+            <name>name</name>
             <required>false</required>
             <deferred-value>
                 <type>java.lang.String</type>
@@ -209,13 +343,41 @@ values of this attribute.
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Output encoding of the report. Used to override
+the character encoding found by default int the request.
+            ]]></description>
+            <name>encoding</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Width of the border to be rendered around the report
+frame. A value of 0 is no border.
+            ]]></description>
             <name>frameborder</name>
+            <required>false</required>
+            <deferred-value>
+                <type>int</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Omit page margins in the exported report document.
+            ]]></description>
+            <name>ignorePageMargins</name>
             <required>false</required>
             <deferred-value>
                 <type>boolean</type>
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Internal HTML frame margin height.
+            ]]></description>
             <name>marginheight</name>
             <required>false</required>
             <deferred-value>
@@ -223,6 +385,9 @@ values of this attribute.
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Internal HTML frame margin width.
+            ]]></description>
             <name>marginwidth</name>
             <required>false</required>
             <deferred-value>
@@ -230,6 +395,7 @@ values of this attribute.
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[HTML frame height.]]></description>
             <name>height</name>
             <required>false</required>
             <deferred-value>
@@ -238,6 +404,78 @@ values of this attribute.
         </attribute>
         <attribute>
             <name>layout</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Specific report page to be rendered. Use this
+attribute when interested in outputting a single
+page report.
+            ]]></description>
+            <name>pageIndex</name>
+            <required>false</required>
+            <deferred-value>
+                <type>int</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+First page of the report to be rendered. Use this
+attribute when interested in outputting a range
+of pages from the report. The <tt>endPageIndex</tt>
+is mandatory when using this attribute.
+            ]]></description>
+            <name>startPageIndex</name>
+            <required>false</required>
+            <deferred-value>
+                <type>int</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+End page of the report to be rendered. Use this
+attribute when interested in outputting a range
+of pages from the report. The <tt>startPageIndex</tt>
+is mandatory when using this attribute.
+            ]]></description>
+            <name>endPageIndex</name>
+            <required>false</required>
+            <deferred-value>
+                <type>int</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+X offset inside the outputted report document.
+            ]]></description>
+            <name>offsetX</name>
+            <required>false</required>
+            <deferred-value>
+                <type>int</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+X offset inside the outputted report document.
+            ]]></description>
+            <name>offsetY</name>
+            <required>false</required>
+            <deferred-value>
+                <type>int</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>tabindex</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>title</name>
             <required>false</required>
             <deferred-value>
                 <type>java.lang.String</type>
@@ -258,10 +496,33 @@ values of this attribute.
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[HTML frame width.]]></description>
             <name>width</name>
             <required>false</required>
             <deferred-value>
                 <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Any value representing the source for the report
+file, source or compiled to be processed.
+            ]]></description>
+            <name>value</name>
+            <required>true</required>
+            <deferred-value>
+                <type>java.lang.Object</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Specific validator instance used to override the
+default behaviour of the plugin.
+            ]]></description>
+            <name>validator</name>
+            <required>false</required>
+            <deferred-value>
+                <type>net.sf.jasperreports.jsf.validation.Validator</type>
             </deferred-value>
         </attribute>
     </tag>
@@ -275,16 +536,16 @@ report contents.
         ]]></description>
         <display-name>Report Link Tag</display-name>
         <name>reportLink</name>
-        <tag-class>
-            net.sf.jasperreports.jsf.taglib.html.HtmlReportLinkTag
-        </tag-class>
+        <tag-class>net.sf.jasperreports.jsf.taglib.html.HtmlReportLinkTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
+            <description><![CDATA[Component identifier]]></description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
         </attribute>
         <attribute>
+            <description><![CDATA[Component binding]]></description>
             <name>binding</name>
             <required>false</required>
             <deferred-value>
@@ -292,6 +553,20 @@ report contents.
             </deferred-value>
         </attribute>
         <attribute>
+        	<description><![CDATA[
+Output encoding of the report. Used to override
+the character encoding found by default int the request.
+            ]]></description>
+            <name>encoding</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+HTML <tt>dir</tt> attribute.
+            ]]></description>
             <name>dir</name>
             <required>false</required>
             <deferred-value>
@@ -299,6 +574,9 @@ report contents.
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+HTML <tt>lang</tt> attribute.
+            ]]></description>
             <name>lang</name>
             <required>false</required>
             <deferred-value>
@@ -306,6 +584,9 @@ report contents.
             </deferred-value>
         </attribute>
         <attribute>
+            <description><![CDATA[
+Should this report frame be rendered?
+            ]]></description>
             <name>rendered</name>
             <required>false</required>
             <deferred-value>
@@ -314,10 +595,32 @@ report contents.
         </attribute>
         <attribute>
             <description><![CDATA[
-Data source ID reference used to obtain the data
+Specific source converter instance used to override the
+default behaviour of the plugin.
+            ]]></description>
+            <name>sourceConverter</name>
+            <required>false</required>
+            <deferred-value>
+                <type>net.sf.jasperreports.jsf.convert.SourceConverter</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Specific report converter instance used to override the
+default behaviour of the plugin.
+            ]]></description>
+            <name>reportConverter</name>
+            <required>false</required>
+            <deferred-value>
+                <type>net.sf.jasperreports.jsf.convert.ReportConverter</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Report source ID reference used to obtain the data
 needed to render the report.
             ]]></description>
-            <name>dataBroker</name>
+            <name>source</name>
             <required>false</required>
             <deferred-value>
                 <type>java.lang.Object</type>
@@ -337,33 +640,6 @@ header when rendering the report contents.
         </attribute>
         <attribute>
             <description><![CDATA[
-Path to the report resource that should be rendered.
-Values of this attribute depend on available resource
-loaders. Consult library documentation to know more
-about the built-in resource loading mechanism.
-            ]]></description>
-            <name>path</name>
-            <required>true</required>
-            <deferred-value>
-                <type>java.lang.String</type>
-            </deferred-value>
-        </attribute>
-        <attribute>
-            <description><![CDATA[
-Path to the sub report location needed by the report 
-that should be rendered. Values of this attribute 
-depend on available resource loaders. Consult library 
-documentation to know more about the built-in resource 
-loading mechanism.
-            ]]></description>
-            <name>subreportDir</name>
-            <required>false</required>
-            <deferred-value>
-                <type>java.lang.String</type>
-            </deferred-value>
-        </attribute>
-        <attribute>
-            <description><![CDATA[
 Output format of the rendered report. Consult
 library documentation to know the possible
 values of this attribute.
@@ -372,6 +648,74 @@ values of this attribute.
             <required>false</required>
             <deferred-value>
                 <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Omit page margins in the exported report document.
+            ]]></description>
+            <name>ignorePageMargins</name>
+            <required>false</required>
+            <deferred-value>
+                <type>boolean</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Specific report page to be rendered. Use this
+attribute when interested in outputting a single
+page report.
+            ]]></description>
+            <name>pageIndex</name>
+            <required>false</required>
+            <deferred-value>
+                <type>int</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+First page of the report to be rendered. Use this
+attribute when interested in outputting a range
+of pages from the report. The <tt>endPageIndex</tt>
+is mandatory when using this attribute.
+            ]]></description>
+            <name>startPageIndex</name>
+            <required>false</required>
+            <deferred-value>
+                <type>int</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+End page of the report to be rendered. Use this
+attribute when interested in outputting a range
+of pages from the report. The <tt>startPageIndex</tt>
+is mandatory when using this attribute.
+            ]]></description>
+            <name>endPageIndex</name>
+            <required>false</required>
+            <deferred-value>
+                <type>int</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+X offset inside the outputted report document.
+            ]]></description>
+            <name>offsetX</name>
+            <required>false</required>
+            <deferred-value>
+                <type>int</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+X offset inside the outputted report document.
+            ]]></description>
+            <name>offsetY</name>
+            <required>false</required>
+            <deferred-value>
+                <type>int</type>
             </deferred-value>
         </attribute>
         <attribute>
@@ -438,6 +782,13 @@ values of this attribute.
             </deferred-value>
         </attribute>
         <attribute>
+            <name>tabindex</name>
+            <required>false</required>
+            <deferred-value>
+                <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
             <name>target</name>
             <required>false</required>
             <deferred-value>
@@ -449,6 +800,24 @@ values of this attribute.
             <required>false</required>
             <deferred-value>
                 <type>java.lang.String</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+Any value representing the source for the report
+file, source or compiled to be processed.
+            ]]></description>
+            <name>value</name>
+            <required>true</required>
+            <deferred-value>
+                <type>java.lang.Object</type>
+            </deferred-value>
+        </attribute>
+        <attribute>
+            <name>validator</name>
+            <required>false</required>
+            <deferred-value>
+                <type>net.sf.jasperreports.jsf.validation.Validator</type>
             </deferred-value>
         </attribute>
     </tag>

@@ -1,6 +1,6 @@
 ~~ 
 ~~ JasperReports JSF Plugin
-~~ Copyright (C) 2011 A. Alonso Dominguez
+~~ Copyright (C) 2012 A. Alonso Dominguez
 ~~
 ~~ This library is free software; you can redistribute it and/or
 ~~ modify it under the terms of the GNU Lesser General Public
@@ -30,6 +30,15 @@ Features for last versions
   This page is dedicated to showing fixes and features added (or improved) in 
 each release of JasperReports JSF Plugin. When using the library pay attention
 to this list when using any of the functionalities provided.
+
+* 1.0
+
+  * Bookmarkable URLs for reports
+
+  * Root reports (frames and links) now support setting a specific resource bundle
+    for report internationalization.
+
+  * Provided complete samples at the use cases sample application.
 
 * 1.0-beta-4
 

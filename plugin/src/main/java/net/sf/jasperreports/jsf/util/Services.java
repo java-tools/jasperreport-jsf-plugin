@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -20,6 +20,7 @@ package net.sf.jasperreports.jsf.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.net.URL;
@@ -233,6 +234,79 @@ public final class Services {
             }
         }
         return Collections.unmodifiableSet(serviceSet);
+    }
+    
+    public static <T> T single(final Class<T> clazz, final T defaultInstance)
+        throws ServiceException {
+        final ClassLoader loader = Util.getClassLoader(null);
+        
+        // Try to find a system property defining the class name of the service
+        // provider requested
+        String providerClassName = System.getProperty(clazz.getName());
+        
+        // If no system property has been provided, try to load the value from the
+        // services configuration files.
+        if (providerClassName == null) {
+            String serviceResource = SERVICES_ROOT + clazz.getName();
+            InputStream stream = loader.getResourceAsStream(serviceResource);
+            if (stream != null) {
+                BufferedReader reader = null;
+                try {
+                    String line;
+                    reader = new BufferedReader(new InputStreamReader(stream));
+                    while (null != (line = reader.readLine())) {
+                        if (line.startsWith("#")) {
+                            continue;
+                        }
+                        
+                        providerClassName = line;
+                        break;
+                    }
+                } catch (IOException e) {
+                    final LogRecord logRecord = new LogRecord(Level.SEVERE,
+                            "JRJSF_0012");
+                    logRecord.setParameters(new Object[]{serviceResource});
+                    logRecord.setThrown(e);
+                    logger.log(logRecord);
+                } finally {
+                    if (reader != null) {
+                        try {
+                            reader.close();
+                        } catch (IOException e) { }
+                        reader = null;
+                    }
+                }
+            }
+        }
+
+        T serviceProvider = defaultInstance;
+        if (providerClassName != null && providerClassName.length() > 0) {
+            // We found a class name, try to load the class and to create an instance of it
+            Class<T> providerClass = null;
+            try {
+                providerClass = (Class<T>) loader.loadClass(providerClassName);
+            } catch (ClassNotFoundException e) {
+                final LogRecord logRecord = new LogRecord(Level.SEVERE,
+                        "JRJSF_0014");
+                logRecord.setParameters(new Object[]{providerClassName});
+                logRecord.setThrown(e);
+                logger.log(logRecord);
+                throw new ServiceException(e);
+            }
+
+            // If the class could be loaded, then instantiate it
+            try {
+                serviceProvider = providerClass.newInstance();
+            } catch (Exception e) {
+                final LogRecord logRecord = new LogRecord(Level.SEVERE,
+                        "JRJSF_0015");
+                logRecord.setParameters(new Object[]{providerClassName});
+                logRecord.setThrown(e);
+                logger.log(logRecord);
+                throw new ServiceException(e);
+            }
+        }
+        return serviceProvider;
     }
 
     /**

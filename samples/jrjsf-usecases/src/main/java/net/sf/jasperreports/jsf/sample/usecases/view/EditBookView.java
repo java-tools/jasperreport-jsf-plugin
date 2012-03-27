@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -22,23 +22,22 @@ import javax.faces.event.ActionEvent;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import net.sf.jasperreports.jsf.sample.usecases.jb.AuthorManager;
 import net.sf.jasperreports.jsf.sample.usecases.jb.BookManager;
-import net.sf.jasperreports.jsf.sample.usecases.model.Author;
 
 public class EditBookView {
 
 	@Autowired
 	private BookManager bookManager;
 	
-	@Autowired
-	private AuthorManager authorManager;
-	
 	private String title;
 	
-	private Integer publishedYear;
+	private String publishedYear;
 	
-	private Author author;
+	private String author;
+    
+    private String genre;
+    
+    private double price;
 	
 	public String getTitle() {
 		return title;
@@ -48,19 +47,19 @@ public class EditBookView {
 		this.title = title;
 	}
 
-	public Integer getPublishedYear() {
+	public String getPublishedYear() {
 		return publishedYear;
 	}
 
-	public void setPublishedYear(Integer publishedYear) {
+	public void setPublishedYear(String publishedYear) {
 		this.publishedYear = publishedYear;
 	}
 
-	public Author getAuthor() {
+	public String getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(Author author) {
+	public void setAuthor(String author) {
 		this.author = author;
 	}
 	

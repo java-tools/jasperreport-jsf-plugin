@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -16,29 +16,35 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.renderkit;
+package net.sf.jasperreports.jsf.sample.usecases.view;
 
-import java.util.Enumeration;
+import java.util.List;
+
+import net.sf.jasperreports.jsf.sample.usecases.jb.BookManager;
+import net.sf.jasperreports.jsf.sample.usecases.model.Book;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
- * @author 501944227
+ * @author A. Alonso Dominguez
  */
-public interface ReportURI {
-    
-    public Enumeration<String> getParameterNames();
-    
-    public String getParameterValue(String name);
-    
-    public String[] getParameterValues(String name);
-    
-    public String getFacesMapping();
-    
-    public String getReportClientId();
-    
-    public String getViewId();
-    
-    @Override
-    public String toString();
+public class BookListView {
+
+	@Autowired
+    private BookManager bookManager;
+
+	private List<Book> allBooks;
+	
+	public List<Book> getAllBooks() {
+		if (allBooks == null) {
+			allBooks = bookManager.getAllBooks();
+		}
+		return allBooks;
+    }
+	
+	public int getTotalBooks() {
+		return getAllBooks().size();
+	}
     
 }

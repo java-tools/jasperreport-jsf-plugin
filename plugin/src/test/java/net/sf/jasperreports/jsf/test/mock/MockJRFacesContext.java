@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -24,6 +24,7 @@ import java.util.Set;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.context.ContentType;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
@@ -38,7 +39,7 @@ import net.sf.jasperreports.jsf.resource.UnresolvedResourceException;
 
 /**
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
 public class MockJRFacesContext extends JRFacesContext {
 
@@ -96,7 +97,7 @@ public class MockJRFacesContext extends JRFacesContext {
     }
 
     public Filler getFiller(
-            FacesContext context, UIReport component) {
+            FacesContext context, UIOutputReport component) {
         if (filler != null) {
             return filler;
         }
@@ -117,7 +118,7 @@ public class MockJRFacesContext extends JRFacesContext {
     }
 
     public Exporter getExporter(
-            FacesContext context, UIReport component) {
+            FacesContext context, UIOutputReport component) {
         if (exporter != null) {
             return exporter;
         }

@@ -18,9 +18,6 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
-import java.util.Arrays;
-import java.util.Collection;
-
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRXmlExporter;
 import net.sf.jasperreports.jsf.context.ContentType;
@@ -32,8 +29,8 @@ import net.sf.jasperreports.jsf.context.ContentType;
 public class XmlExporterTest extends ExporterTestCase {
 
     @Override
-    public Collection<ContentType> getExpectedContentType() {
-        return Arrays.asList(XmlExporter.CONTENT_TYPES);
+    public ContentType getExpectedContentType() {
+        return XmlExporter.CONTENT_TYPE;
     }
 
     @Override

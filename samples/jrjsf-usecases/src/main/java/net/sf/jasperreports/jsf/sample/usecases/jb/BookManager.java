@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -20,12 +20,11 @@ package net.sf.jasperreports.jsf.sample.usecases.jb;
 
 import java.util.List;
 
-import net.sf.jasperreports.jsf.sample.usecases.model.Author;
 import net.sf.jasperreports.jsf.sample.usecases.model.Book;
 
 public interface BookManager {
 
-	public Book createBook(String title, int publishedYear, Author author);
+	public Book createBook(String title, String publishedYear, String author);
 	
 	public List<Book> getAllBooks();
 	

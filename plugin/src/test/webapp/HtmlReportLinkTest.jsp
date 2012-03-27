@@ -36,12 +36,11 @@
 
     <body>
         <f:view>
-            <h:form id="reportForm">
-                <jr:reportLink id="reportLink" format="html"
-                               path="/WEB-INF/report/Factura.jasper"
-                               subreportDir="/WEB-INF/report/">
-                    <h:outputText>Report</h:outputText>
-                </jr:reportLink>
+        	<h:form id="reportForm">
+	            <jr:reportLink id="reportLink" format="html"
+	                           value="/WEB-INF/report/Factura.jasper">
+	                <h:outputText>ReportLink</h:outputText>
+	            </jr:reportLink>
             </h:form>
         </f:view>
     </body>

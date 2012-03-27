@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -275,10 +275,8 @@ public class UISource extends UIComponentBase {
     }
 
     public void resetValue() {
-        setValue(null);
-        setValid(true);
+        setValid(false);
         setSubmittedSource(null);
-        valueSet = false;
     }
 
     /*
@@ -298,6 +296,8 @@ public class UISource extends UIComponentBase {
         converter = (SourceConverter) values[4];
         validator = (Validator) values[5];
         valid = ((Boolean) values[6]).booleanValue();
+        value = values[7];
+        valueSet = ((Boolean) values[8]).booleanValue();
     }
 
     /*
@@ -308,7 +308,7 @@ public class UISource extends UIComponentBase {
      */
     @Override
     public Object saveState(final FacesContext context) {
-        final Object[] values = new Object[7];
+        final Object[] values = new Object[9];
         values[0] = super.saveState(context);
         values[1] = query;
         values[2] = type;
@@ -316,6 +316,8 @@ public class UISource extends UIComponentBase {
         values[4] = converter;
         values[5] = validator;
         values[6] = valid;
+        values[7] = value;
+        values[8] = valueSet;
         return values;
     }
 
@@ -325,9 +327,7 @@ public class UISource extends UIComponentBase {
             throw new IllegalArgumentException();
         }
 
-        setValid(false);
-        setSubmittedSource(null);
-        
+        resetValue();
         super.processDecodes(context);
 
         try {
@@ -336,26 +336,6 @@ public class UISource extends UIComponentBase {
         } catch (RuntimeException e) {
             context.renderResponse();
             throw e;
-        }
-    }
-
-    @Override
-    public void processUpdates(FacesContext context) {
-        if (context == null) {
-            throw new IllegalArgumentException();
-        }
-        
-        super.processUpdates(context);
-
-        try {
-            updateModel(context);
-        } catch(RuntimeException e) {
-            context.renderResponse();
-            throw e;
-        }
-
-        if (!isValid()) {
-            context.renderResponse();
         }
     }
 
@@ -383,31 +363,6 @@ public class UISource extends UIComponentBase {
         Source source = aConverter.convertFromValue(
                 context, this, getValue());
         setSubmittedSource(source);
-    }
-
-    public void updateModel(FacesContext context) {
-        if (context == null) {
-            throw new IllegalArgumentException();
-        }
-
-        if (!isValid()) {
-            return;
-        }
-
-        ValueExpression ve = getValueExpression("value");
-        if (valueSet && (ve != null) && (getSubmittedSource() != null)) {
-            try {
-                ve.setValue(getFacesContext().getELContext(),
-                        getSubmittedSource());
-            } catch (ELException e) {
-                throw new FacesException(e);
-            }
-        } else {
-            // Send report source as a request attribute
-            String clientId = getClientId(context);
-            context.getExternalContext().getRequestMap()
-                    .put(clientId, submittedSource);
-        }
     }
 
     public void validate(FacesContext context) throws ValidatorException {

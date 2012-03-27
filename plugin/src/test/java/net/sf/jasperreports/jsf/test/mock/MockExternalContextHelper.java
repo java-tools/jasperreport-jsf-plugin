@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -19,10 +19,10 @@
 package net.sf.jasperreports.jsf.test.mock;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collection;
 
 import javax.faces.context.ExternalContext;
+
 import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.context.ContentType;
@@ -42,11 +42,6 @@ public class MockExternalContextHelper extends ExternalContextHelper {
 	public Collection<ContentType> getAcceptedContentTypes(ExternalContext context) {
 		throw new UnsupportedOperationException("Not supported yet");
 	}
-
-	@Override
-    public ReportRenderRequest restoreReportRequest(ExternalContext context) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
     @Override
     public String getRequestURI(ExternalContext context) {
@@ -68,15 +63,22 @@ public class MockExternalContextHelper extends ExternalContextHelper {
     }
 
     @Override
-    public void writeHeaders(ExternalContext context, ReportRenderer renderer, UIOutputReport report) 
+    public void writeHeaders(ExternalContext context, ReportRenderer renderer, UIOutputReport report)
     throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void writeResponse(ExternalContext context, ContentType contentType, InputStream stream) 
+    public void writeResponse(ExternalContext context, ContentType contentType, byte[] data) 
     throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+	@Override
+	protected ReportRenderRequest createReportRenderRequest(
+			ExternalContext context, String defaultMapping, String viewId,
+			String viewState) {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
 }

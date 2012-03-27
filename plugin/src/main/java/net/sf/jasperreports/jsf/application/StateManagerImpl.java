@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -21,16 +21,20 @@ package net.sf.jasperreports.jsf.application;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.StateManager;
+import javax.faces.application.StateManager.SerializedView;
 import javax.faces.application.StateManagerWrapper;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.ResponseStateManager;
 
 import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.util.Util;
 
 /**
  * JSF's StateManagerWrapper implementation used to cache the
@@ -43,7 +47,7 @@ public class StateManagerImpl extends StateManagerWrapper {
 	private static final Logger logger = Logger.getLogger(
 			StateManagerImpl.class.getPackage().getName(), 
 			Constants.LOG_MESSAGES_BUNDLE);
-
+	
     /** Established size for the buffer used when parsing the response. */
     private static final int BUFFER_SIZE = 128;
 
@@ -76,7 +80,7 @@ public class StateManagerImpl extends StateManagerWrapper {
     @Override
     public final void writeState(final FacesContext context, final Object state)
     throws IOException {
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+    	Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
     	if (!Boolean.TRUE.equals(
                 requestMap.get(Constants.ATTR_REPORT_VIEW))) {
     		super.writeState(context, state);
@@ -111,7 +115,46 @@ public class StateManagerImpl extends StateManagerWrapper {
         }
     }
 
-    /**
+	@Override
+	@SuppressWarnings("deprecation")
+	public void writeState(FacesContext context, SerializedView state)
+			throws IOException {
+    	Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+    	if (!Boolean.TRUE.equals(
+                requestMap.get(Constants.ATTR_REPORT_VIEW))) {
+    		super.writeState(context, state);
+    		return;
+    	}
+    	
+        final ResponseWriter oldWriter = context.getResponseWriter();
+        final StringWriter sw = new StringWriter(BUFFER_SIZE);
+        final ResponseWriter newWriter = oldWriter.cloneWithWriter(sw);
+        
+        if (logger.isLoggable(Level.FINE)) {
+        	logger.log(Level.FINE, "JRJSF_0043");
+        }
+        
+        // Replace the ResponseWriter in order to intercept the view state value
+        context.setResponseWriter(newWriter);
+        super.writeState(context, state);
+        // Restore the original ResponseWriter
+        context.setResponseWriter(oldWriter);
+
+        // Obtain the written state
+        newWriter.flush();
+        final StringBuffer buffer = sw.getBuffer();
+        oldWriter.write(buffer.toString());
+        
+        final String viewState = getViewState(buffer.toString());
+        if (viewState != null) {
+        	if (logger.isLoggable(Level.FINER)) {
+        		logger.log(Level.FINER, "JRJSF_0044", viewState);
+        	}
+            requestMap.put(Constants.ATTR_VIEW_STATE, viewState);
+        }
+	}
+
+	/**
      * Obtains the first delegate in the implementation chain.
      *
      * @return first delegate in the chain.

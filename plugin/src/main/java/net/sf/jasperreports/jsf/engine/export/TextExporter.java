@@ -18,9 +18,6 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRExporter;
@@ -53,10 +50,10 @@ public final class TextExporter extends ExporterBase {
     public static final String ATTR_PAGE_WIDTH = "PAGE_WIDTH";
 
     /**
-     * @see net.sf.jasperreports.jsf.engine.Exporter#getContentTypes()
+     * @see net.sf.jasperreports.jsf.engine.Exporter#getContentType()
      */
-    public Collection<ContentType> getContentTypes() {
-        return Collections.singleton(CONTENT_TYPE);
+    public ContentType getContentType() {
+        return CONTENT_TYPE;
     }
 
     /*

@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -16,52 +16,14 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.sample.usecases.model;
-
-import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+package net.sf.jasperreports.jsf.sample.usecases;
 
 /**
  *
- * @author 501944227
+ * @author A. Alonso Dominguez
  */
-@Entity
-public class Category {
-    
-    @Id
-    @GeneratedValue
-    private Long id;
-    
-    private String name;
-    
-    @ManyToMany
-    private List<Item> items;
+public final class Constants {
 
-	public Long getId() {
-		return id;
-	}
+    private Constants() { }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public List<Item> getItems() {
-		return items;
-	}
-
-	public void setItems(List<Item> items) {
-		this.items = items;
-	}
-    
 }

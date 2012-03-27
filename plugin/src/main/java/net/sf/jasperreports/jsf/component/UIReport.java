@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -56,7 +56,7 @@ implements NamingContainer {
 
     /**
      * Valid flag to determine if the component has been
-     * correclty configured.
+     * correctly configured.
      */
     private boolean valid = true;
 
@@ -231,7 +231,7 @@ implements NamingContainer {
     /**
      * Establishes a new source sourceConverter instance.
      *
-     * @param sourceConverter a new sourceConverter instance.
+     * @param converter a new sourceConverter instance.
      */
     public final void setSourceConverter(final SourceConverter converter) {
         this.sourceConverter = converter;
@@ -390,8 +390,6 @@ implements NamingContainer {
      * Resets the report component state.
      */
     public void resetValue() {
-        this.value = null;
-        this.valueSet = false;
         this.valid = true;
         this.submittedSource = null;
         this.submittedReport = null;
@@ -407,7 +405,7 @@ implements NamingContainer {
         if (context == null) {
             throw new IllegalArgumentException();
         }
-
+        
         if (!isRendered()) {
             return;
         }
@@ -467,15 +465,26 @@ implements NamingContainer {
         if (context == null) {
             throw new IllegalArgumentException();
         }
-
-        ReportConverter aConverter = getReportConverter();
-        if (aConverter == null) {
-            aConverter = getJRFacesContext()
-                    .createReportConverter(context, this);
+        
+        Object aValue = getValue();
+        if (aValue == null) {
+            throw new IllegalStateException(
+                    "Attribute 'value' is required");
+        }
+        
+        JasperReport aReport;
+        if (aValue instanceof JasperReport) {
+            aReport = (JasperReport) aValue;
+        } else {
+            ReportConverter aConverter = getReportConverter();
+            if (aConverter == null) {
+                aConverter = getJRFacesContext()
+                        .createReportConverter(context, this);
+            }
+            aReport = aConverter.convertFromValue(
+                context, this, aValue);
         }
 
-        JasperReport aReport = aConverter.convertFromValue(
-                context, this, getValue());
         setSubmittedReport(aReport);
     }
 

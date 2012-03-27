@@ -102,30 +102,6 @@ public class SourceConverterBase implements SourceConverter {
         return source;
     }
 
-    public Object convertFromSource(FacesContext context,
-            UIComponent component, Source source)
-            throws ConverterException {
-        if (context == null) {
-            throw new IllegalArgumentException("'context'");
-        }
-        if (component == null) {
-            throw new IllegalArgumentException("'context'");
-        }
-
-        if (source == null) {
-            return null;
-        }
-
-        if (source instanceof ConnectionWrapper) {
-            return ((ConnectionWrapper) source).getConnection();
-        } else if (source instanceof JRDataSourceWrapper) {
-            return ((JRDataSourceWrapper) source).getDataSource();
-        } else {
-            throw new ConverterException("Unrecognized source type: " + source.
-                    getClass().getName());
-        }
-    }
-
     protected Source createSource(FacesContext context,
             UIComponent component, Object value)
             throws SourceException {

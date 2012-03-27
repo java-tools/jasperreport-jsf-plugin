@@ -18,9 +18,6 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRExporter;
@@ -54,8 +51,8 @@ public final class DocxExporter extends ExporterBase {
      *
      * @return the exporter content type.
      */
-    public Collection<ContentType> getContentTypes() {
-        return Collections.singleton(CONTENT_TYPE);
+    public ContentType getContentType() {
+        return CONTENT_TYPE;
     }
 
     /**

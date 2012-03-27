@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -48,28 +48,6 @@ final class ServletContextHelper extends ExternalContextHelper {
      * Private constructor to prevent instantiation.
      */
     protected ServletContextHelper() { }
-
-    /**
-     * Creates a <code>ReportRenderRequest</code> based on the data code in the
-     * current ExternalContext.
-     *
-     * @param context the current ExternalContext
-     * @return A representation of the request render request
-     */
-    @Override
-    public ReportRenderRequest restoreReportRequest(
-            final ExternalContext context) {
-        final Configuration config = Configuration.getInstance(context);
-        final String viewId = context.getRequestParameterMap()
-                .get(Constants.PARAM_VIEWID);
-        final String viewState = getViewCacheMap(context).get(viewId);
-
-        HttpServletRequest request = (HttpServletRequest) context.getRequest();
-        request = new ReportHttpRenderRequest(request, viewId,
-                config.getDefaultMapping(), viewState);
-        context.setRequest(request);
-        return (ReportRenderRequest) request;
-    }
 
     @Override
     @SuppressWarnings("unchecked")
@@ -165,20 +143,20 @@ final class ServletContextHelper extends ExternalContextHelper {
      */
     @Override
     public void writeResponse(final ExternalContext context,
-            final ContentType contentType, final InputStream stream) 
+            final ContentType contentType, final byte[] data) 
     throws IOException {
         final HttpServletResponse response = (HttpServletResponse)
-                context.getResponse();        
+                context.getResponse();
         response.setContentType(contentType.toString());
-        
-        int contentLength = 0;
-        byte[] data = new byte[BUFFER_SIZE];
-        int bytesRead;
-        while (-1 != (bytesRead = stream.read(data))) {
-        	response.getOutputStream().write(data, 0, bytesRead);
-        	contentLength += bytesRead;
-        }
-        
-        response.setContentLength(contentLength);
+        response.getOutputStream().write(data);
+        response.setContentLength(data.length);
+    }
+    
+    protected ReportRenderRequest createReportRenderRequest(
+    		ExternalContext context, String defaultMapping, 
+    		String viewId, String viewState) {
+    	HttpServletRequest request = (HttpServletRequest) context.getRequest();
+        return new ReportHttpRenderRequest(request, viewId,
+                defaultMapping, viewState);
     }
 }

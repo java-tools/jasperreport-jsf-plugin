@@ -2,7 +2,7 @@
 
 <!--  
   JasperReports JSF Plugin
-  Copyright (C) 2011 A. Alonso Dominguez
+  Copyright (C) 2012 A. Alonso Dominguez
  
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -38,26 +38,55 @@
     </ui:define>
 
     <ui:define name="body">
-    	<t:commandButton action="newBook" value="#{Messages['bookList.action.new']}" />
-        <h:dataTable value="#{booksReportView.allBooks}" var="book">
-        	<f:facet name="footer">
-        		<h:outputText value="#{Messages['bookList.total']}">
-        			<f:param value="#{booksReportView.totalBooks}" />
-        		</h:outputText>
-        	</f:facet>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="#{Messages['bookList.title']}" />
+        <h:form>
+            <t:commandButton action="newBook" value="#{Messages['bookList.action.new']}" />
+
+            <jr:source id="bookSource" type="jndi" value="java:comp/env/jdbc/BookDB" />
+
+            <jr:reportLink id="reportLink" format="pdf" target="blank" source="bookSource"
+                           value="/resources/reports/booklist.jrxml">
+                <f:param name="REPORT_RESOURCE_BUNDLE" value="#{Messages}" />
+                <h:outputText value="#{Messages['bookList.showReport']}" />
+            </jr:reportLink>
+
+            <h:dataTable value="#{bookList.allBooks}" var="book">
+                <f:facet name="footer">
+                    <h:outputText value="#{Messages['bookList.total']}">
+                        <f:param value="#{booksReportView.totalBooks}" />
+                    </h:outputText>
                 </f:facet>
-                <h:outputText value="#{book.title}" />
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="#{Messages['bookList.year']}" />
-                </f:facet>
-                <h:outputText value="#{book.publishedYear}" />
-            </h:column>
-        </h:dataTable>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{Messages['bookList.title']}" />
+                    </f:facet>
+                    <h:outputText value="#{book.title}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{Messages['bookList.author']}" />
+                    </f:facet>
+                    <h:outputText value="#{book.author}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{Messages['bookList.year']}" />
+                    </f:facet>
+                    <h:outputText value="#{book.publishedYear}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{Messages['bookList.genre']}" />
+                    </f:facet>
+                    <h:outputText value="#{book.genre}" />
+                </h:column>
+            </h:dataTable>
+
+            <jr:reportFrame id="reportFrame" source="bookSource"
+                            value="/resources/reports/booklist.jrxml"
+                            format="pdf" height="400px" width="80%"
+                    />
+
+        </h:form>
     </ui:define>
 
 </ui:composition>

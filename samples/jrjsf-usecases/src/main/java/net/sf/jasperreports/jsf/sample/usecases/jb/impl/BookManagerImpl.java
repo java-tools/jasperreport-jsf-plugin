@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -24,15 +24,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import net.sf.jasperreports.jsf.sample.usecases.dao.BookDAO;
 import net.sf.jasperreports.jsf.sample.usecases.jb.BookManager;
-import net.sf.jasperreports.jsf.sample.usecases.model.Author;
 import net.sf.jasperreports.jsf.sample.usecases.model.Book;
+import org.springframework.stereotype.Component;
 
+@Component
 public class BookManagerImpl implements BookManager {
 
 	@Autowired
 	private BookDAO bookDAO;
 	
-	public Book createBook(String title, int publishedYear, Author author) {
+	public Book createBook(String title, String publishedYear, String author) {
 		Book book = new Book();
 		book.setTitle(title);
 		book.setPublishedYear(publishedYear);

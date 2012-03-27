@@ -1,6 +1,6 @@
 ~~
 ~~ JasperReports JSF Plugin
-~~ Copyright (C) 2011 A. Alonso Dominguez
+~~ Copyright (C) 2012 A. Alonso Dominguez
 ~~
 ~~ This library is free software; you can redistribute it and/or
 ~~ modify it under the terms of the GNU Lesser General Public
@@ -25,4 +25,37 @@
 			---
 			A. Alonso Dominguez
 
-Sample Applications
+Use Cases Sample Application
+
+  The JasperReports JSF Plugin distribution comes with a sample application
+showing the different use cases of the plugin in a simple online book store
+web application. The sample war file can be found in the samples directory
+of the distribution.
+
+* Installing the sample application
+
+  The provided sample application has been designed to be deployable out-of-the-box
+in both {{{http://tomcat.apache.org}Apache Tomcat}} and {{{http://jetty.codehaus.org/jetty/}Jetty}}
+servlet containers.
+
+  Once installed in either container, the application can be accessed from
+an URL like the following one:
+
++---
+http://localhost:8080/jrjsf-usecases
++---
+
+** Installing on Apache Tomcat
+
+  Start your Tomcat installation and just copy the provided war file inside the
+webapps folder. After a few seconds you should see at Tomcat log file that the
+context has been correctly initialized.
+
+** Installing on Jetty
+
+* Samples documentation
+
+  The is an {{{http://codenibbles.wordpress.com/category/web-development/jasperreports-jsf-plugin/}article}}
+series dedicated exclusively for this application. Those articles go through
+the process of building the same web application step by step. Check it out
+to understand some of the common usages of the plugin.

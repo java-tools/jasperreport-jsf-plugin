@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -22,6 +22,7 @@ import java.util.Collection;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.convert.ReportConverter;
 import net.sf.jasperreports.jsf.convert.SourceConverter;
@@ -124,7 +125,7 @@ public abstract class JRFacesContext {
      * @return a filler instance.
      */
     public abstract Filler getFiller(
-            FacesContext context, UIReport component);
+            FacesContext context, UIOutputReport component);
 
     /**
      * Obtains the report's exporter instance.
@@ -134,6 +135,6 @@ public abstract class JRFacesContext {
      * @return an exporter instance.
      */
     public abstract Exporter getExporter(
-            FacesContext context, UIReport component);
+            FacesContext context, UIOutputReport component);
 
 }

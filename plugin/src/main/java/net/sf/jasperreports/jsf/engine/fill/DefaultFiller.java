@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -19,15 +19,12 @@
 package net.sf.jasperreports.jsf.engine.fill;
 
 import java.sql.Connection;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIOutput;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 
@@ -43,8 +40,10 @@ import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.component.UISubreport;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
-import net.sf.jasperreports.jsf.convert.SourceConverter;
 import net.sf.jasperreports.jsf.convert.Source;
+import net.sf.jasperreports.jsf.convert.SourceConverter;
+import net.sf.jasperreports.jsf.engine.ConnectionWrapper;
+import net.sf.jasperreports.jsf.engine.JRDataSourceWrapper;
 import net.sf.jasperreports.jsf.engine.FillerException;
 import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.util.Util;
@@ -66,9 +65,8 @@ public class DefaultFiller implements Filler {
     public static final String PARAM_REPORT_CLASSLOADER = "REPORT_CLASS_LOADER";
     /** The Constant PARAM_REPORT_LOCALE. */
     public static final String PARAM_REPORT_LOCALE = "REPORT_LOCALE";
-    
-    public static final String PARAM_REPORT_RESOURCE_BUNDLE = 
-            "REPORT_RESOURCE_BUNDLE";
+
+    public static final String PARAM_REPORT_RESOURCE_BUNDLE = "REPORT_RESOURCE_BUNDLE";
 
     public static final String PARAM_APPLICATION_SCOPE = "APPLICATION_SCOPE";
     public static final String PARAM_SESSION_SCOPE = "SESSION_SCOPE";
@@ -94,21 +92,10 @@ public class DefaultFiller implements Filler {
      */
     public final void fill(final FacesContext context, final UIOutputReport component)
             throws FillerException {
-        final String reportName = getStringAttribute(component, "name", 
-                component.getId());
-        logger.log(Level.FINE, "JRJSF_0003", reportName);
-
-        String clientId = component.getClientId(context);
         final Map<String, Object> params = buildParamMap(context, component);
-        
-        if (logger.isLoggable(Level.FINER)) {
-            logger.log(Level.FINER, "JRJSF_0046", new Object[]{ 
-                clientId, params 
-            });
-        }
-        
         JasperPrint print = doFill(context, component, params);
         if (print == null) {
+            String clientId = component.getClientId(context);
             throw new CouldNotFillReportException(
                     "No jasper print generated for component: " + clientId);
         }
@@ -116,16 +103,23 @@ public class DefaultFiller implements Filler {
     }
 
     /**
-     * Builds the param map.
+     * Builds the parameter map that will be given to the JasperEngine when
+     * generating the report.
+     * <p>
+     * The parameter map is built using
      *
-     * @param context the context
-     * @param component the component
+     * @param context the faces' context
+     * @param component the report component
      *
-     * @return the map<string, object>
+     * @return the parameter map analyzed from the component parameters.
      */
-    private Map<String, Object> buildParamMap(final FacesContext context,
+    protected Map<String, Object> buildParamMap(final FacesContext context,
             final UIOutputReport component)
     throws FillerException {
+    	final String reportName = getStringAttribute(component, "name",
+                component.getClientId(context));
+        logger.log(Level.FINER, "JRJSF_0003", reportName);
+    	
         final Map<String, Object> parameters = new HashMap<String, Object>();
 
         // Build param map using component's child parameters and subreports
@@ -139,6 +133,10 @@ public class DefaultFiller implements Filler {
         
         return parameters;
     }
+    
+    protected void processCustomParameters(FacesContext context,
+                                           UIOutputReport component,
+                                           Map<String, Object> parameters) { }
 
     /**
      * Performs the internal fill operation.
@@ -154,8 +152,7 @@ public class DefaultFiller implements Filler {
     throws FillerException {
         JasperReport report = component.getSubmittedReport();
         if (report == null) {
-            throw new NoSubmittedReportException(
-                    component.getClientId(context));
+        	throw new IllegalStateException("Found a null report object previous to fill it.");
         }
 
         JRBaseFiller jrFiller;
@@ -166,7 +163,6 @@ public class DefaultFiller implements Filler {
         }
         
         Source reportSource = findReportSource(component);
-        SourceConverter converter = findSourceConverter(context, component);
         JasperPrint print = null;
         try {
             if (reportSource == null) {
@@ -175,13 +171,7 @@ public class DefaultFiller implements Filler {
             	}
                 print = jrFiller.fill(parameters);
             } else {
-                Object sourceObj = converter.convertFromSource(context,
-                        component, reportSource);
-                if (reportSource instanceof JRDataSource) {
-                    print = jrFiller.fill(parameters, (JRDataSource) sourceObj);
-                } else if (reportSource instanceof Connection) {
-                    print = jrFiller.fill(parameters, (Connection) sourceObj);
-                }
+                print = printWithFiller(context, jrFiller, reportSource, parameters);
             }
         } catch (final JRException e) {
             throw new FillerException(e);
@@ -189,19 +179,33 @@ public class DefaultFiller implements Filler {
         	if (reportSource != null) {
                 try {
                     reportSource.dispose();
-                    reportSource = null;
-                } catch (Exception e) { ; }  
+                } catch (Exception e) { ; }
+                reportSource = null;
             }
         }
+        
+        if (print == null) {
+        	throw new FillerException("Couldn't fill report template with data.");
+        }
+        
         return print;
     }
     
-    protected void processCustomParameters(FacesContext context,
-            UIOutputReport component, Map<String, Object> parameters) { }
+    protected JasperPrint printWithFiller(FacesContext context, 
+    		JRBaseFiller filler, Source source, Map<String, Object> parameters) 
+    throws JRException {
+    	JasperPrint print = null;
+    	if (source instanceof ConnectionWrapper) {
+    		print = filler.fill(parameters, ((ConnectionWrapper) source).getConnection());
+    	} else if (source instanceof JRDataSourceWrapper) {
+    		print = filler.fill(parameters, ((JRDataSourceWrapper) source).getDataSource());
+    	}
+    	return print;
+    }
 
     private void processImplicitParameters(FacesContext context,
-            UIOutputReport component, Map<String, Object> parameters) {
-        ClassLoader classLoader = Util.getClassLoader(component);
+                                           UIOutputReport component, Map<String, Object> parameters) {
+        ClassLoader classLoader = Util.getClassLoader(this);
         Locale locale = context.getViewRoot().getLocale();
         
         // Specific component parameters
@@ -255,8 +259,11 @@ public class DefaultFiller implements Filler {
                 paramName.append(subreport.getName());
                 processSubreportParameterMap(context, subreport, 
                         parameters, paramName.toString());
-                processParameterMap(context, subreport, parameters,
-                        paramName.toString());
+                
+                String newPrefix = (prefix != null && prefix.length() > 0 ?
+                		prefix + SUBREPORT_PARAMETER_SEPARATOR : "")
+                        + subreport.getName(); 
+                processParameterMap(context, subreport, parameters, newPrefix);
             } else if (kid instanceof UIParameter) {
                 final UIParameter param = (UIParameter) kid;
                 paramName.append(param.getName());
@@ -278,6 +285,8 @@ public class DefaultFiller implements Filler {
         
         Source source = findReportSource(subreport);
         if (source != null) {
+            /* EXPERIMENTAL: trying to feed the subreport with the unwrapped data source
+
             helper = new StringBuilder(paramPrefix);
             SourceConverter converter = findSourceConverter(context, subreport);
             Object paramValue = converter.convertFromSource(
@@ -293,6 +302,7 @@ public class DefaultFiller implements Filler {
             }
             
             parameters.put(helper.toString(), paramValue);
+            */
         }
     }
     

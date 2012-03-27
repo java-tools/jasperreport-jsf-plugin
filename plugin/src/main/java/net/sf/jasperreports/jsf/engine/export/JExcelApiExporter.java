@@ -44,10 +44,10 @@ public final class JExcelApiExporter extends AbstractXlsExporter {
             "CREATE_CUSTOM_PALETTE";
 
     /**
-     * @see net.sf.jasperreports.jsf.engine.Exporter#getContentTypes()
+     * @see net.sf.jasperreports.jsf.engine.Exporter#getContentType()
      */
-    public Collection<ContentType> getContentTypes() {
-        return Collections.singleton(CONTENT_TYPE);
+    public ContentType getContentType() {
+        return CONTENT_TYPE;
     }
 
     @Override

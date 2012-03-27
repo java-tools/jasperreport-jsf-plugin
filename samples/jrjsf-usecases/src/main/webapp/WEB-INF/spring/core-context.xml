@@ -2,7 +2,7 @@
 
 <!--  
   JasperReports JSF Plugin
-  Copyright (C) 2011 A. Alonso Dominguez
+  Copyright (C) 2012 A. Alonso Dominguez
  
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -33,6 +33,8 @@
 	<context:property-placeholder location="classpath:spring.properties" />
 	
 	<context:annotation-config/>
+
+    <context:component-scan base-package="net.sf.jasperreports.jsf.sample.usecases" />
 	
 	<bean class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
 		<property name="persistenceUnitName" value="jrjsf-usecases"/>

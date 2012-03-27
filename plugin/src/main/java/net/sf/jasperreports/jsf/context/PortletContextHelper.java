@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -78,24 +78,13 @@ final class PortletContextHelper extends ExternalContextHelper {
      * @return A representation of the request render request
      */
     @Override
-    public ReportRenderRequest restoreReportRequest(
+    public ReportRenderRequest restoreReportRenderRequest(
             final ExternalContext context) {
-        if ("2.0".equals(getPortletVersion())) {
-            final Configuration config = Configuration.getInstance(context);
-            ResourceRequest request = (ResourceRequest) context.getRequest();
-            final String viewId = context.getRequestParameterMap().get(
-                    Constants.PARAM_VIEWID);
-            final String viewState = getViewCacheMap(context).get(viewId);
-
-            request = new ReportPortletRenderRequest(request,
-                                                     config.getDefaultMapping(),
-                                                     viewId, viewState);
-            context.setRequest(request);
-            return (ReportRenderRequest) request;
-        } else {
-            throw new IllegalStateException(
-                    "Only Resource Request/Response state is allowed");
+        if (!"2.0".equals(getPortletVersion())) {
+        	throw new IllegalStateException(
+            	"Only Resource Request/Response state is allowed");
         }
+        return super.restoreReportRenderRequest(context);
     }
 
     /**
@@ -183,25 +172,26 @@ final class PortletContextHelper extends ExternalContextHelper {
      */
     @Override
     public void writeResponse(final ExternalContext context,
-            final ContentType contentType, final InputStream stream) 
+            final ContentType contentType, final byte[] data) 
     throws IOException {
         if ("2.0".equals(getPortletVersion())) {
             final ResourceResponse response = (ResourceResponse) context.
                     getResponse();
             response.setContentType(contentType.toString());
-            
-            int contentLength = 0;
-            byte[] data = new byte[BUFFER_SIZE];
-            int bytesRead;
-            while (-1 != (bytesRead = stream.read(data))) {
-            	response.getPortletOutputStream().write(data, 0, bytesRead);
-            	contentLength += bytesRead;
-            }
-            
-            response.setContentLength(contentLength);
+            response.getPortletOutputStream().write(data);
+            response.setContentLength(data.length);
         } else {
             throw new IllegalStateException(
                     "Only Resource Request/Response state is allowed");
         }
     }
+
+	@Override
+	protected ReportRenderRequest createReportRenderRequest(
+			ExternalContext context, String defaultMapping, String viewId,
+			String viewState) {
+		ResourceRequest request = (ResourceRequest) context.getRequest();
+		return new ReportPortletRenderRequest(request,
+                defaultMapping, viewId, viewState);
+	}
 }
