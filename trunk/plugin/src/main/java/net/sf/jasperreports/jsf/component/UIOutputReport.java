@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -19,6 +19,7 @@
 package net.sf.jasperreports.jsf.component;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 import javax.el.ELException;
 import javax.el.ValueExpression;
@@ -42,10 +43,10 @@ public class UIOutputReport extends UIReport {
     /** Specified exporter class. */
     private Exporter exporter;
 
-    private Object resourceBundle;
-    
+    private ResourceBundle resourceBundle;
+
     private JasperPrint submittedPrint;
-    
+
     /** Instantiates a new UIOutputReport. */
     public UIOutputReport() {
         super();
@@ -113,14 +114,14 @@ public class UIOutputReport extends UIReport {
         this.exporter = exporter;
     }
 
-    public Object getResourceBundle() {
+    public ResourceBundle getResourceBundle() {
         if (resourceBundle != null) {
             return resourceBundle;
         }
         ValueExpression ve = getValueExpression("resourceBundle");
         if (ve != null) {
             try {
-                return ve.getValue(
+                return (ResourceBundle) ve.getValue(
                         getFacesContext().getELContext());
             } catch (ELException e) {
                 throw new FacesException(e);
@@ -129,11 +130,11 @@ public class UIOutputReport extends UIReport {
             return resourceBundle;
         }
     }
-    
-    public void setResourceBundle(Object resourceBundle) {
+
+    public void setResourceBundle(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
     }
-    
+
     public JasperPrint getSubmittedPrint() {
         return submittedPrint;
     }
@@ -141,13 +142,7 @@ public class UIOutputReport extends UIReport {
     public void setSubmittedPrint(JasperPrint submittedPrint) {
         this.submittedPrint = submittedPrint;
     }
-    
-    @Override
-    public void resetValue() {
-        super.resetValue();
-        submittedPrint = null;
-    }
-    
+
     // UIOutputReport encode methods
 
     /**
@@ -174,43 +169,14 @@ public class UIOutputReport extends UIReport {
         renderer.encodeHeaders(context, this);
     }
 
-    /**
-     * Updates the provided bean property with the
-     * interpretted report instance.
-     *
-     * @param context current faces' context.
-     */
-    public void updateModel(final FacesContext context) {
-        if (context == null) {
-            throw new NullPointerException();
-        }
-
-        if (isLocalValueSet() || !isValid()) {
-            return;
-        }
-
-        Object providedValue = getValue();
-        if (providedValue == null) {
-            ValueExpression ve = getValueExpression("value");
-            if (ve != null) {
-                try {
-                    ve.setValue(getFacesContext().getELContext(),
-                            getSubmittedReport());
-                } catch (ELException e) {
-                    throw new FacesException(e);
-                }
-            }
-        }
-    }
-    
-    @Override
-    public void restoreState(FacesContext context, Object state) {
-        Object[] values = (Object[]) state;
-        super.restoreState(context, values[0]);
-        format = (String) values[1];
-        exporter = (Exporter) values[2];
-        resourceBundle = values[3];
-    }
+	@Override
+	public void restoreState(FacesContext context, Object state) {
+		Object[] values = (Object[]) state;
+		super.restoreState(context, values[0]);
+		format = (String) values[1];
+		exporter = (Exporter) values[2];
+        resourceBundle = (ResourceBundle) values[3];
+	}
 
     @Override
     public Object saveState(FacesContext context) {

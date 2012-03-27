@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -18,24 +18,60 @@
  */
 package net.sf.jasperreports.jsf.sample.usecases.model;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 /**
  *
- * @author 501944227
+ * @author A. Alonso Dominguez
  */
 @Entity
-public class Book extends Item {
-    
-    private String title;
-    
-    private int publishedYear;
-    
-    @ManyToOne
-    private Author author;
+public class Book {
 
-	public String getTitle() {
+    @Id
+    @GeneratedValue
+    @Column(name = "book_id")
+    private Long id;
+
+    @Column(nullable = false)
+    private String title;
+
+    @Column(name = "published_year", length = 4, nullable = false)
+    private String publishedYear;
+
+    @Column(nullable = false)
+    private String author;
+
+    @Column(nullable = false)
+    private String genre;
+
+    @Column(nullable = true)
+    private double price;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getTitle() {
 		return title;
 	}
 
@@ -43,19 +79,19 @@ public class Book extends Item {
 		this.title = title;
 	}
 
-	public int getPublishedYear() {
+	public String getPublishedYear() {
 		return publishedYear;
 	}
 
-	public void setPublishedYear(int publishedYear) {
+	public void setPublishedYear(String publishedYear) {
 		this.publishedYear = publishedYear;
 	}
 
-	public Author getAuthor() {
+	public String getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(Author author) {
+	public void setAuthor(String author) {
 		this.author = author;
 	}
     

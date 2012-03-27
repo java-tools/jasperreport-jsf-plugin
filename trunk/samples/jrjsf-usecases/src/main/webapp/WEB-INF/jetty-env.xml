@@ -2,7 +2,7 @@
 
 <!--  
   JasperReports JSF Plugin
-  Copyright (C) 2011 A. Alonso Dominguez
+  Copyright (C) 2012 A. Alonso Dominguez
  
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -28,13 +28,13 @@
 
   <!-- an XADataSource                                                -->
     <New id="bookdbds" class="org.mortbay.jetty.plus.naming.Resource">
-        <Arg>jdbc/BookDB</Arg>
+        <Arg>jdbc/BookStoreDB</Arg>
         <Arg>
             <New class="com.atomikos.jdbc.nonxa.NonXADataSourceBean">
-                <Set name="Url">jdbc:derby://localhost:1527/jrjsfdb;create=true</Set>
+                <Set name="Url">jdbc:derby://localhost:1527/bookstoredb;create=true</Set>
                 <Set name="driverClassName">org.apache.derby.jdbc.ClientDriver</Set>
-                <Set name="user">bookdb</Set>
-				<Set name="password">pwd</Set>
+                <Set name="user">app</Set>
+				<Set name="password">app</Set>
             </New>
         </Arg>
     </New>

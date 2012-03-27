@@ -16,16 +16,37 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.sample.usecases.dao.jpa;
+package net.sf.jasperreports.jsf.context;
 
-import net.sf.jasperreports.jsf.sample.usecases.dao.AuthorDAO;
-import net.sf.jasperreports.jsf.sample.usecases.model.Author;
+import java.util.Arrays;
+import java.util.Collection;
 
-public class AuthorDAOImpl extends AbstractGenericDAOImpl<Long, Author> implements AuthorDAO {
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
-	@Override
-	protected Class<Author> getEntityClass() {
-		return Author.class;
-	}
+import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
 
+@RunWith(Parameterized.class)
+public class ContentTypeTest {
+
+	@Parameters
+    public static Collection<Object[]> parameters() {
+    	return Arrays.asList(new Object[][]{ {"text/html"}, {"text/html;encoding=utf-8"} });
+    }
+	
+    private String contentType;
+    
+    public ContentTypeTest(String contentType) {
+    	this.contentType = contentType;
+    }
+    
+    @Test
+    public void properlyParsed() {
+    	ContentType ct = new ContentType(contentType);
+    	assertThat(ct.toString(), equalTo(contentType));
+    }
+    
 }

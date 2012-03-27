@@ -1,6 +1,6 @@
 ~~ 
 ~~ JasperReports JSF Plugin
-~~ Copyright (C) 2011 A. Alonso Dominguez
+~~ Copyright (C) 2012 A. Alonso Dominguez
 ~~
 ~~ This library is free software; you can redistribute it and/or
 ~~ modify it under the terms of the GNU Lesser General Public
@@ -92,7 +92,7 @@ the <<<value>>> attribute:
 </jr:reportFrame>
 +-- 
 
-  <<Note>>: Since 1.0-RC version classpath resources can be specified also without
+  <<Note>>: Since 1.0-beta-4 version classpath resources can be specified also without
 the <<<classpath:>>> prefix. This is done in order to address some issues found when
 those resources are looked up from inside the JasperReports engine. However, the
 prefered way to specify this kind of resources is still prepending the <<<classpath:>>>
@@ -124,7 +124,8 @@ will be resolved inside the application context.
 *** Request-relative Resources
 
   Request-relative resources are a special kind of resources that are resolved locally
-against current request. When using this kind of resources.
+against current request. When using this kind of resources be sure that your report and all
+its dependencies are accessible relative to the faces' view that is consuming them.
 
   <<Request-relative resource locally to view id>>
 

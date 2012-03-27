@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -21,10 +21,7 @@ package net.sf.jasperreports.jsf.lifecycle;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseListener;
 
-import net.sf.jasperreports.jsf.Constants;
-import net.sf.jasperreports.jsf.context.ExternalContextHelper;
-import net.sf.jasperreports.jsf.context.JRFacesContext;
-import net.sf.jasperreports.jsf.context.ReportRenderRequest;
+import net.sf.jasperreports.jsf.util.Util;
 
 /**
  * The listener interface for receiving reportPhase events. The class that is
@@ -43,20 +40,9 @@ abstract class AbstractReportPhaseListener implements PhaseListener {
 	 */
 	private static final long serialVersionUID = 5217054276289258005L;
 
+	@Deprecated
 	protected boolean isReportRequest(final FacesContext context) {
-        final JRFacesContext jrContext = JRFacesContext.getInstance(context);
-
-        Object request = context.getExternalContext().getRequest();
-        if (request instanceof ReportRenderRequest) {
-            return true;
-        } else {
-            final ExternalContextHelper helper = jrContext
-                    .getExternalContextHelper(context);
-
-            final String uri = helper.getRequestURI(
-                    context.getExternalContext());
-            return (uri != null && uri.indexOf(Constants.BASE_URI) > -1);
-        }
+        return Util.isReportRenderRequest();
     }
 
 }

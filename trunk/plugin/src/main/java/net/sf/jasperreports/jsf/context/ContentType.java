@@ -1,3 +1,21 @@
+/*
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
+ *
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1 of the License, or (at
+ * your option) any later version. This library is distributed in the hope
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place, Suite 330, Boston, MA 02111-1307 USA A.
+ *
+ * Alonso Dominguez
+ * alonsoft@users.sf.net
+ */
 package net.sf.jasperreports.jsf.context;
 
 import java.io.Serializable;
@@ -14,7 +32,7 @@ public final class ContentType implements Serializable, Comparable<ContentType> 
     private static final long serialVersionUID = 5337880747998334976L;
 
     private static final Pattern PATTERN = 
-            Pattern.compile("(.+)/(.+)(;(.+)=(.+))*");
+            Pattern.compile("(.+)\\/(.+)(;(.+)=(.+))*");
 
     public static boolean isContentType(String value) {
         return PATTERN.matcher(value).matches();
@@ -33,10 +51,10 @@ public final class ContentType implements Serializable, Comparable<ContentType> 
                                                + "' is not a valid MIME type.");
         }
         
-        this.type = matcher.group(0);
-        this.subtype = matcher.group(1);
+        this.type = matcher.group(1);
+        this.subtype = matcher.group(2);
         
-        for (int i = 2;i < matcher.groupCount();i+=3) {
+        for (int i = 3;(i + 2) < matcher.groupCount();i+=3) {
             String pname = matcher.group(i + 1);
             String pvalue = matcher.group(i + 2);
             parameters.put(pname, pvalue);

@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -16,26 +16,18 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.renderkit;
-
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.faces.application.ViewHandler;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
+package net.sf.jasperreports.jsf.util;
 
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.config.Configuration;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
-import net.sf.jasperreports.jsf.util.Util;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -74,7 +66,7 @@ public final class ReportURIEncoder {
         }
         
         ReportURIImpl reportURI = new ReportURIImpl();
-        reportURI.facesMapping = mapping;
+        reportURI.setFacesMapping(mapping);
         
         if (Util.isPrefixMapped(mapping)) {
             uri = uri.substring(mapping.length());
@@ -93,10 +85,10 @@ public final class ReportURIEncoder {
             throw new IllegalArgumentException("URI [" + uri + 
                     "] doesn't contain a report clientId");
         }
-        reportURI.reportClientId = uri.substring(0, i);
+        reportURI.setReportClientId(uri.substring(0, i));
         uri = uri.substring(i);
         
-        reportURI.viewId = uri;
+        reportURI.setViewId(uri);
         
         // TODO parse queryString
         
@@ -139,95 +131,13 @@ public final class ReportURIEncoder {
             mapping = config.getDefaultMapping();
         }
         
-        reportURI.facesMapping = mapping;
-        reportURI.reportClientId = component.getClientId(context);
-        reportURI.viewId = helper.getViewId(context.getExternalContext());
+        reportURI.setFacesMapping(mapping);
+        reportURI.setReportClientId(component.getClientId(context));
+        reportURI.setViewId(helper.getViewId(context.getExternalContext()));
         
         return reportURI;
     }
     
     private ReportURIEncoder() { }
-    
-    private static class ReportURIImpl implements ReportURI {
-
-        private String facesMapping;
-        private String reportClientId;
-        private String viewId;
-        
-        private Map<String, List<String>> parameters =
-                new HashMap<String, List<String>>();
-        
-        public Enumeration<String> getParameterNames() {
-            return Collections.enumeration(parameters.keySet());
-        }
-        
-        public String getParameterValue(String name) {
-            String result = null;
-            if (parameters.containsKey(name)) {
-                List<String> values = parameters.get(name);
-                if (values != null && !values.isEmpty()) {
-                    result = values.get(0);
-                }
-            }
-            return result;
-        }
-        
-        public String[] getParameterValues(String name) {
-            String[] result = null;
-            if (parameters.containsKey(name)) {
-                List<String> values = parameters.get(name);
-                if (values != null) {
-                    result = values.toArray(new String[values.size()]);
-                }
-            }
-            return result;
-        }
-        
-        public String getFacesMapping() {
-            return facesMapping;
-        }
-        
-        public String getReportClientId() {
-            return reportClientId;
-        }
-
-        public String getViewId() {
-            return viewId;
-        }
-        
-        @Override
-        public String toString() {
-            StringBuilder builder = new StringBuilder(Constants.BASE_URI);
-            builder.append("/").append(getReportClientId());
-            builder.append("/").append(getViewId());
-            
-            if (Util.isPrefixMapped(facesMapping)) {
-                builder.insert(0, facesMapping);
-            } else {
-                builder.append(facesMapping);
-            }
-            
-            if (!parameters.isEmpty()) {
-                StringBuilder params = new StringBuilder();
-                for (Map.Entry<String, List<String>> entry : parameters.entrySet()) {
-                    for (String v : entry.getValue()) {
-                        if (params.length() > 0) {
-                            params.append("&");
-                        }
-                        params.append(entry.getKey());
-                        params.append("=");
-                        params.append(v);
-                    }
-                }
-                builder.append("?").append(params);
-            }
-            
-            FacesContext context = FacesContext.getCurrentInstance();
-            ViewHandler viewHandler = context.getApplication().getViewHandler();            
-            return context.getExternalContext().encodeResourceURL(
-                    viewHandler.getResourceURL(context, builder.toString()));
-        }
-        
-    }
     
 }

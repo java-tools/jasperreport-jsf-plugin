@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -20,29 +20,27 @@ package net.sf.jasperreports.jsf.sample.usecases.model;
 
 import java.sql.Date;
 import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 /**
  *
- * @author 501944227
+ * @author A. Alonso Dominguez
  */
 @Entity
 public class Order {
     
     @Id
     @GeneratedValue
+    @Column(name = "order_id")
     private Long id;
     
-    private Date orderedDate;
+    private Date createdDate;
     
     @ManyToOne
+    @JoinColumn(name = "customer_id")
     private Customer customer;
     
-    @OneToMany(mappedBy="order")
+    @OneToMany(mappedBy = "order")
     private List<OrderLine> lines;
 
 	public Long getId() {
@@ -53,12 +51,12 @@ public class Order {
 		this.id = id;
 	}
 
-	public Date getOrderedDate() {
-		return orderedDate;
+	public Date getCreatedDate() {
+		return createdDate;
 	}
 
-	public void setOrderedDate(Date orderedDate) {
-		this.orderedDate = orderedDate;
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 
 	public Customer getCustomer() {

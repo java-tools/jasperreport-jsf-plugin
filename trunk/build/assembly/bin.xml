@@ -2,7 +2,7 @@
 
 <!--  
   JasperReports JSF Plugin
-  Copyright (C) 2011 A. Alonso Dominguez
+  Copyright (C) 2012 A. Alonso Dominguez
  
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -30,7 +30,7 @@
   <moduleSets>
     <moduleSet>
       <includes>
-        <include>net.sf.jasperreports:jasperreports-jsf</include>
+        <include>net.sf.jasperreports.jsf:jasperreports-jsf</include>
       </includes>
       <binaries>
         <outputDirectory>/</outputDirectory>

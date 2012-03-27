@@ -18,19 +18,19 @@
  */
 package net.sf.jasperreports.jsf.component;
 
-import java.sql.Connection;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
+import static net.sf.jasperreports.jsf.util.MessagesFactory.*;
 
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
+import static org.junit.Assume.*;
+
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
-import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.jsf.convert.SourceConverter;
 import net.sf.jasperreports.jsf.convert.Source;
-import net.sf.jasperreports.jsf.engine.JRDataSourceWrapper;
-import net.sf.jasperreports.jsf.engine.ConnectionWrapper;
 import net.sf.jasperreports.jsf.test.JMockTheories;
 import net.sf.jasperreports.jsf.test.mock.MockFacesEnvironment;
 import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
@@ -39,7 +39,6 @@ import net.sf.jasperreports.jsf.validation.IllegalSourceTypeException;
 import net.sf.jasperreports.jsf.validation.MissingAttributeException;
 
 import org.apache.shale.test.el.MockValueExpression;
-
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
@@ -48,11 +47,6 @@ import org.junit.Before;
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
-import static org.hamcrest.Matchers.*;
-import static net.sf.jasperreports.jsf.util.MessagesFactory.*;
 
 /**
  *
@@ -108,11 +102,9 @@ public final class UISourceTest {
 
     // Mock proxy instances
     
-    private Connection connection;
     private Source reportSource;
     private SourceConverter sourceConverter;
     private Validator reportSourceValidator;
-    private JRDataSource dataSource;
 
     // Test lifecycle methods
 
@@ -120,11 +112,9 @@ public final class UISourceTest {
     public void init() {
         facesEnv = new MockFacesServletEnvironment();
 
-        connection = mockery.mock(Connection.class);
         reportSource = mockery.mock(Source.class);
         sourceConverter = mockery.mock(SourceConverter.class);
         reportSourceValidator = mockery.mock(Validator.class);
-        dataSource = mockery.mock(JRDataSource.class);
 
         jrContext = new MockJRFacesContext(facesEnv.getFacesContext());
         jrContext.getAvailableSourceTypes().add(VALID_TYPE);
@@ -134,11 +124,9 @@ public final class UISourceTest {
     public void dispose() {
         jrContext = null;
 
-        connection = null;
         reportSource = null;
         sourceConverter = null;
         reportSourceValidator = null;
-        dataSource = null;
 
         facesEnv.release();
         facesEnv = null;
@@ -177,147 +165,6 @@ public final class UISourceTest {
             assertTrue("Component remains valid after validation exception,",
                     !component.isValid());
         }        
-    }
-
-    @Theory
-    public void withNullValueExprSendReportSourceUsingRequest(String type, 
-            final Object data, MockValueExpression value) {
-        assumeThat(type, is(not(nullValue())));
-        assumeTrue(jrContext.getAvailableSourceTypes().contains(type));
-        assumeThat(data, is(not(nullValue())));
-        assumeThat(value, is(nullValue()));
-        
-        final UISource component = createComponent(type, data, value);
-        final FacesContext facesContext = facesEnv.getFacesContext();
-        final String clientId = component.getClientId(facesContext);
-
-        mockery.checking(new Expectations(){{
-            oneOf(reportSourceValidator).validate(facesContext, component, data);
-            oneOf(sourceConverter).convertFromValue(facesContext, component, data);
-            will(returnValue(reportSource));
-        }});
-
-        component.processDecodes(facesContext);
-        component.processValidators(facesContext);
-        component.processUpdates(facesContext);
-
-        assertTrue(facesContext.getExternalContext()
-                .getRequestMap().containsKey(clientId));
-        Object source = facesContext.getExternalContext()
-                .getRequestMap().get(clientId);
-        assertThat(source, is(not(nullValue())));
-        assertThat(source, instanceOf(Source.class));
-        assertThat((Source) source, sameInstance(reportSource));
-    }
-
-    @Theory
-    public void updateModelUsingValueExpr(String type, final Object data,
-            MockValueExpression value) {
-        assumeTrue(jrContext.getAvailableSourceTypes().contains(type));
-        assumeThat(data, is(not(nullValue())));
-        assumeThat(value, is(not(nullValue())));
-        
-        final FacesContext facesContext = facesEnv.getFacesContext();
-        final SourceTestBean reportSourceBean = new SourceTestBean();
-        final ExternalContext context = facesEnv.getExternalContext();
-        context.getRequestMap().put(DATA_BEAN_NAME, reportSourceBean);
-
-        final UISource component = createComponent(type, data, value);
-        final String clientId = component.getClientId(facesContext);
-
-        assumeTrue(!value.isReadOnly(facesContext.getELContext()));
-
-        mockery.checking(new Expectations(){{
-            oneOf(reportSourceValidator).validate(facesContext, component, data);
-            oneOf(sourceConverter).convertFromValue(facesContext, component, data);
-            will(returnValue(reportSource));
-        }});
-
-        component.processDecodes(facesContext);
-        component.processValidators(facesContext);
-        component.processUpdates(facesContext);
-        
-        assertTrue(!facesContext.getExternalContext()
-                .getRequestMap().containsKey(clientId));
-        
-        Source actualValue = (Source) value.getValue(
-                facesContext.getELContext());
-        assertThat(actualValue, is(not(nullValue())));
-        assertThat(actualValue, sameInstance(reportSource));
-
-        Source source = component.getSubmittedSource();
-        assertThat(source, is(not(nullValue())));
-        assertThat(source, sameInstance(reportSource));
-    }
-
-    @Theory
-    public void whenDataSourceProvidedSendDataSourceHolderInRequest(String type,
-            final Object data, MockValueExpression value) {
-        assumeThat(data, is(nullValue()));
-        assumeThat(value, is(not(nullValue())));
-        assumeThat(value.getExpressionString(), containsString("myReportSource"));
-        assumeTrue(jrContext.getAvailableSourceTypes().contains(type));
-
-        final UISource component = createComponent(type, data, value);
-        final FacesContext facesContext = facesEnv.getFacesContext();
-        final String clientId = component.getClientId(facesContext);
-
-        final SourceTestBean reportSourceBean =
-                new SourceTestBean(dataSource);
-        ExternalContext context = facesEnv.getExternalContext();
-        context.getRequestMap().put(DATA_BEAN_NAME, reportSourceBean);
-
-        mockery.checking(new Expectations(){{
-            oneOf(reportSourceValidator).validate(facesContext,
-                    component, dataSource);
-            oneOf(sourceConverter).convertFromValue(facesContext, 
-                    component, dataSource);
-            will(returnValue(new JRDataSourceWrapper(dataSource)));
-        }});
-
-        component.processDecodes(facesContext);
-        component.processValidators(facesContext);
-        component.processUpdates(facesContext);
-
-        Object source = facesContext.getExternalContext()
-                .getRequestMap().get(clientId);
-        assertThat(source, is(not(nullValue())));
-        assertThat(source, is(JRDataSourceWrapper.class));
-    }
-
-    @Theory
-    public void whenConnectionProvidedSendConnectionHolderInRequest(String type,
-            final Object data, MockValueExpression value) {
-        assumeThat(data, is(nullValue()));
-        assumeThat(value, is(not(nullValue())));
-        assumeThat(value.getExpressionString(), containsString("myReportSource"));
-        assumeTrue(jrContext.getAvailableSourceTypes().contains(type));
-
-        final UISource component = createComponent(type, data, value);
-        final FacesContext facesContext = facesEnv.getFacesContext();
-        final String clientId = component.getClientId(facesContext);
-
-        final SourceTestBean reportSourceBean =
-                new SourceTestBean(connection);
-        ExternalContext context = facesEnv.getExternalContext();
-        context.getRequestMap().put(DATA_BEAN_NAME, reportSourceBean);
-
-        mockery.checking(new Expectations(){{
-            oneOf(reportSourceValidator).validate(facesContext,
-                    component, connection);
-            oneOf(sourceConverter).convertFromValue(facesContext,
-                    component, connection);
-            will(returnValue(new ConnectionWrapper(connection)));
-        }});
-
-        component.processDecodes(facesContext);
-        component.processValidators(facesContext);
-        component.processUpdates(facesContext);
-
-        Object source = facesContext.getExternalContext()
-                .getRequestMap().get(clientId);
-        assertThat(source, is(not(nullValue())));
-        assertThat(source, is(ConnectionWrapper.class));
     }
 
     @Theory

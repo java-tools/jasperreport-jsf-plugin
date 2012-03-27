@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -25,7 +25,7 @@ import javax.persistence.ManyToOne;
 
 /**
  *
- * @author 501944227
+ * @author A. Alonso Dominguez
  */
 @Entity
 public class OrderLine {
@@ -34,13 +34,13 @@ public class OrderLine {
     @GeneratedValue
     private Long id;
     
-    @ManyToOne(optional=false)
+    @ManyToOne(optional = false)
     private Order order;
     
-    @ManyToOne(optional=false)
-    private Item item;
+    @ManyToOne(optional = false)
+    private Book book;
     
-    private int units;
+    private int itemCount;
 
 	public Long getId() {
 		return id;
@@ -58,20 +58,19 @@ public class OrderLine {
 		this.order = order;
 	}
 
-	public Item getItem() {
-		return item;
-	}
+    public int getItemCount() {
+        return itemCount;
+    }
 
-	public void setItem(Item item) {
-		this.item = item;
-	}
+    public void setItemCount(int itemCount) {
+        this.itemCount = itemCount;
+    }
 
-	public int getUnits() {
-		return units;
-	}
+    public Book getBook() {
+        return book;
+    }
 
-	public void setUnits(int units) {
-		this.units = units;
-	}
-    
+    public void setBook(Book book) {
+        this.book = book;
+    }
 }

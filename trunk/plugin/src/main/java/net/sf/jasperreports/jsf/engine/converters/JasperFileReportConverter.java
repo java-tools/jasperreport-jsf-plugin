@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -35,7 +35,7 @@ import net.sf.jasperreports.jsf.resource.Resource;
 
 /**
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
 public class JasperFileReportConverter extends ReportConverterBase {
 
@@ -56,6 +56,11 @@ public class JasperFileReportConverter extends ReportConverterBase {
             }
             ois = new ContextClassLoaderObjectInputStream(
                     resource.getInputStream());
+            if (logger.isLoggable(Level.FINE)) {
+            	logger.log(Level.FINE, "JRJSF_0042", new Object[]{
+            			resource.getName(), component.getClientId(context)
+            	});
+            }
             aReport = (JasperReport) ois.readObject();
         } catch (IOException e) {
             if (logger.isLoggable(Level.SEVERE)) {

@@ -18,9 +18,6 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.jsf.context.ContentType;
@@ -35,8 +32,8 @@ import org.junit.Ignore;
 public class XlsExporterTest extends ExporterTestCase {
 
     @Override
-    public Collection<ContentType> getExpectedContentType() {
-        return Collections.singleton(XlsExporter.CONTENT_TYPE);
+    public ContentType getExpectedContentType() {
+        return XlsExporter.CONTENT_TYPE;
     }
 
     @Override

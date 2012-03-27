@@ -107,13 +107,6 @@ public class SourceConverterBaseTest {
         } catch (Exception e) {
             assertThat(e, is(IllegalArgumentException.class));
         }
-
-        Object value;
-        try {
-            value = converter.convertFromSource(null, component, null);
-        } catch (Exception e) {
-            assertThat(e, is(IllegalArgumentException.class));
-        }
     }
 
     @Theory
@@ -129,14 +122,6 @@ public class SourceConverterBaseTest {
         } catch (Exception e) {
             assertThat(e, is(IllegalArgumentException.class));
         }
-
-        Object value;
-        try {
-            value = converter.convertFromSource(
-                    facesEnv.getFacesContext(), null, null);
-        } catch (Exception e) {
-            assertThat(e, is(IllegalArgumentException.class));
-        }
     }
 
     @Theory
@@ -148,27 +133,6 @@ public class SourceConverterBaseTest {
                 facesEnv.getFacesContext(), component, value);
 
         assertThat(source, nullValue());
-    }
-
-    @Theory
-    public void nullSourceReturnsNull(final Source source) {
-        assumeThat(source, nullValue());
-
-        SourceConverter converter = new DummyDefaultSourceConverter();
-        Object value = converter.convertFromSource(
-                facesEnv.getFacesContext(), component, source);
-        assertThat(value, nullValue());
-    }
-
-    @Theory
-    public void emptySourceReturnsNonNull(final Source source) {
-        assumeThat(source, sameInstance(EMPTY_SOURCE));
-
-        SourceConverter converter = new DummyDefaultSourceConverter();
-        Object value = converter.convertFromSource(
-                facesEnv.getFacesContext(), component, source);
-        assertThat(value, not(nullValue()));
-        assertThat(value, is(JRDataSource.class));
     }
 
     @Theory
@@ -319,22 +283,6 @@ public class SourceConverterBaseTest {
         } catch (Exception e) {
             assertThat(e, is(ConverterException.class));
         }
-    }
-
-    @Theory
-    public void withConnectionWrapperReturnConnection() {
-        final Connection expectedConn = mockery.mock(Connection.class);
-        final ConnectionWrapper wrapper = new ConnectionWrapper(expectedConn);
-
-        DummyDefaultSourceConverter converter =
-                new DummyDefaultSourceConverter();
-        Object value = converter.convertFromSource(facesEnv.getFacesContext(),
-                component, wrapper);
-        assertThat(value, notNullValue());
-        assertThat(value, is(Connection.class));
-
-        Connection conn = (Connection) value;
-        assertThat(conn, sameInstance(expectedConn));
     }
 
     @SuppressWarnings("serial")

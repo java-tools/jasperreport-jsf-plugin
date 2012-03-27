@@ -26,8 +26,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import net.sf.jasperreports.jsf.Constants;
-import net.sf.jasperreports.jsf.renderkit.ReportURI;
-import net.sf.jasperreports.jsf.renderkit.ReportURIEncoder;
+import net.sf.jasperreports.jsf.util.ReportURI;
+import net.sf.jasperreports.jsf.util.ReportURIEncoder;
 
 /**
  * Renderer for report links.

@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -19,19 +19,18 @@
 package net.sf.jasperreports.jsf.context;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.faces.application.ViewHandler;
 import javax.faces.context.ExternalContext;
-
 import javax.servlet.ServletContext;
+
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.InvalidEnvironmentException;
-
 import net.sf.jasperreports.jsf.component.UIOutputReport;
-import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.config.Configuration;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
 
 /**
@@ -51,8 +50,6 @@ public abstract class ExternalContextHelper {
 
     /** Name of the Bridge class. */
     private static final String BRIDGE_CLASS = "javax.portlet.faces.Bridge";
-    
-    protected static final int BUFFER_SIZE = 2014;
 
     /**
      * Obtains the application local instance of the ExternalContextHelper.
@@ -176,9 +173,24 @@ public abstract class ExternalContextHelper {
      * @param context the current ExternalContext
      * @return A representation of the request render request
      */
-    public abstract ReportRenderRequest restoreReportRequest(
-            ExternalContext context);
+    public ReportRenderRequest restoreReportRenderRequest(
+            ExternalContext context) {
+    	final Configuration config = Configuration.getInstance(context);
+        //final ReportURI reportURI = ReportURIEncoder.decodeReportURI(FacesContext.getCurrentInstance(), getRequestURI(context));
+    	final String viewId = context.getRequestParameterMap()
+		        .get(Constants.PARAM_VIEWID);
+		final String viewState = getViewCacheMap(context).get(viewId);
+		
+		ReportRenderRequest request = createReportRenderRequest(context, 
+				config.getDefaultMapping(), viewId, viewState);
+		context.setRequest(request);
+		return request;
+    }
 
+    protected abstract ReportRenderRequest createReportRenderRequest(
+    		ExternalContext context, String defaultMapping, 
+    		String viewId, String viewState);
+    
     /**
      * Gets the request uri.
      *
@@ -266,13 +278,13 @@ public abstract class ExternalContextHelper {
      *
      * @param context the context
      * @param contentType the content type
-     * @param stream source from which read the data
+     * @param data byte array containing the data to be written
      * @throws IOException Signals that an I/O exception has occurred.
      */
     public abstract void writeResponse(
     		final ExternalContext context,
             final ContentType contentType, 
-            final InputStream stream) 
+            final byte[] data) 
     throws IOException;
 
 }

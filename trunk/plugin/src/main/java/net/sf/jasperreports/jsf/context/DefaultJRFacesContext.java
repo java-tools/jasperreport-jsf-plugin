@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -24,13 +24,17 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-
 import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.JRFacesException;
+
+import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.component.UISource;
 import net.sf.jasperreports.jsf.convert.ReportConverter;
@@ -90,12 +94,10 @@ final class DefaultJRFacesContext extends JRFacesContext {
         exporterMap = Services.map(Exporter.class);
         contentTypeMap = new HashMap<ContentType, String>();
         for (Map.Entry<String, Exporter> entry : exporterMap.entrySet()) {
-        	for (ContentType ct : entry.getValue().getContentTypes()) {
-        		contentTypeMap.put(ct, entry.getKey());
-        	}
+        	contentTypeMap.put(entry.getValue().getContentType(), entry.getKey());
         }
         
-        filler = Services.chain(Filler.class, DEFAULT_FILLER);
+        filler = Services.single(Filler.class, DEFAULT_FILLER);
         resourceResolver = Services.chain(
                 ResourceResolver.class, DEFAULT_RESOURCE_RESOLVER);
     }
@@ -177,7 +179,7 @@ final class DefaultJRFacesContext extends JRFacesContext {
         if (aValue instanceof String) {
             valueStr = (String) aValue;
             String type = valueStr.substring(
-                    valueStr.lastIndexOf(".") + 1);
+                    valueStr.lastIndexOf(".")+1);
             if (type != null && type.length() > 0) {
                 logger.log(Level.FINER, "JRJSF_0041", type);
                 converter = reportConverterMap.get(type);
@@ -185,7 +187,8 @@ final class DefaultJRFacesContext extends JRFacesContext {
         }
 
         if (converter == null) {
-            converter = new ReportConverterBase();
+            throw new JRFacesException(
+                    "No report converter for value: " + aValue);
         }
 
         return converter;
@@ -219,7 +222,7 @@ final class DefaultJRFacesContext extends JRFacesContext {
      */
     @Override
     public Filler getFiller(final FacesContext context,
-            final UIReport component) {
+            final UIOutputReport component) {
         return filler;
     }
 
@@ -232,8 +235,8 @@ final class DefaultJRFacesContext extends JRFacesContext {
      */
     @Override
     public Exporter getExporter(final FacesContext context,
-            final UIReport component) {
-        String format = getStringAttribute(component, "format", null);
+            final UIOutputReport component) {
+        String format = component.getFormat();
         if (format != null) {
             Exporter exporter;
             if (ContentType.isContentType(format)) {

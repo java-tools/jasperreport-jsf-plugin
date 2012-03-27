@@ -79,7 +79,7 @@ public abstract class ExporterTestCase {
         properties.load(stream);
     }
 
-    public abstract Collection<ContentType> getExpectedContentType();
+    public abstract ContentType getExpectedContentType();
 
     public abstract Class<? extends JRExporter> getExpectedJRExporterClass();
 
@@ -106,9 +106,9 @@ public abstract class ExporterTestCase {
                 getExporterUnderTestClass();
         ExporterBase exporter = exporterClass.newInstance();
 
-        Collection<ContentType> contentTypes = exporter.getContentTypes();
-        assertThat(contentTypes, notNullValue());
-        assertThat(contentTypes, equalTo(getExpectedContentType()));
+        ContentType contentType = exporter.getContentType();
+        assertThat(contentType, notNullValue());
+        assertThat(contentType, equalTo(getExpectedContentType()));
     }
 
     @SuppressWarnings("rawtypes")

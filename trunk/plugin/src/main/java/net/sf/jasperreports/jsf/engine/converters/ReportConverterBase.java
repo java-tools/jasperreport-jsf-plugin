@@ -30,7 +30,7 @@ import net.sf.jasperreports.jsf.resource.Resource;
  *
  * @author aalonsodominguez
  */
-public class ReportConverterBase implements ReportConverter {
+public abstract class ReportConverterBase implements ReportConverter {
 
     public boolean accepts(Object value) {
         if (value == null) return true;
@@ -47,15 +47,9 @@ public class ReportConverterBase implements ReportConverter {
             throw new IllegalArgumentException("component can't be null");
         }
 
+        JasperReport aReport = null;
         Object aValue = component.getValue();
-        if (aValue == null) {
-            return null;
-        }
-
-        JasperReport aReport;
-        if (aValue instanceof JasperReport) {
-            aReport = (JasperReport) aValue;
-        } else {
+        if (aValue != null) {
             String valueStr;
             if (aValue instanceof String) {
                 valueStr = (String) aValue;
@@ -68,14 +62,18 @@ public class ReportConverterBase implements ReportConverter {
 
             aReport = loadFromResource(context, component, resource);
         }
+        
+        if (aReport == null) {
+            throw new ConverterException(
+                    "Couldn't convert report value: " + aValue);
+        }
+        
         return aReport;
     }
 
-    protected JasperReport loadFromResource(FacesContext context,
+    protected abstract JasperReport loadFromResource(FacesContext context,
             UIReport component, Resource resource)
-    throws ConverterException {
-        return null;
-    }
+    throws ConverterException;
 
     protected final FacesContext getFacesContext() {
         FacesContext context = FacesContext.getCurrentInstance();

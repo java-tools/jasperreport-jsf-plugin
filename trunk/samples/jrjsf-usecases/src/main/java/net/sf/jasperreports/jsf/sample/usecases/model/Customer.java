@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -18,24 +18,24 @@
  */
 package net.sf.jasperreports.jsf.sample.usecases.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 /**
  *
- * @author 501944227
+ * @author A. Alonso Dominguez
  */
 @Entity
 public class Customer {
     
     @Id
     @GeneratedValue
+    @Column(name = "customer_id")
     private Long id;
     
     private String name;
-    
-    private String surname;
 
 	public Long getId() {
 		return id;
@@ -51,14 +51,6 @@ public class Customer {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getSurname() {
-		return surname;
-	}
-
-	public void setSurname(String surname) {
-		this.surname = surname;
 	}
     
 }

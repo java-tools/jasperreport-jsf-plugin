@@ -47,6 +47,8 @@ final class ReportHttpRenderRequest extends HttpServletRequestWrapper
     /** View state to be restored. */
     private String viewState;
 
+    private Map<String, String[]> parameterMap;
+    
     /**
      * Instantiates a new HTTP report render request.
      *
@@ -89,11 +91,13 @@ final class ReportHttpRenderRequest extends HttpServletRequestWrapper
     @Override
     @SuppressWarnings("unchecked")
     public Map<String, String[]> getParameterMap() {
-        Map<String, String[]> paramMap = new HashMap<String, String[]>();
-        paramMap.putAll(super.getParameterMap());
-        paramMap.put(ResponseStateManager.VIEW_STATE_PARAM,
-                new String[]{viewState});
-        return Collections.unmodifiableMap(paramMap);
+    	if (parameterMap == null) {
+    		parameterMap = new HashMap<String, String[]>();
+    		parameterMap.putAll(super.getParameterMap());
+    		parameterMap.put(ResponseStateManager.VIEW_STATE_PARAM,
+                    new String[]{viewState});
+    	}
+        return Collections.unmodifiableMap(parameterMap);
     }
 
     /**

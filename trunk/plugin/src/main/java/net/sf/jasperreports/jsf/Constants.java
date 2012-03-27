@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -54,12 +54,8 @@ public final class Constants {
 
     /** Base string URI used to recognize Report render requests. */
     public static final String BASE_URI = "/" + PACKAGE_PREFIX + "/render";
-
-    public static final String FACES_ACTION_HYPERLINK_TYPE = 
-    	PACKAGE_PREFIX + ".action_link";
     
-    public static final String FACES_RESOURCE_HYPERLINK_TYPE = 
-    	PACKAGE_PREFIX + ".resource_link";
+    public static final String FACES_PHASE_ID = PACKAGE_PREFIX + ".PHASE_ID";
     
     /** Log messages bundle. */
     public static final String LOG_MESSAGES_BUNDLE =
@@ -68,6 +64,12 @@ public final class Constants {
     /** Parameter identifying the component which sended the request. */
     public static final String PARAM_CLIENTID =
             PACKAGE_PREFIX + ".clientId";
+
+    public static final String FACES_ACTION_HYPERLINK_TYPE =
+            PACKAGE_PREFIX + ".action_link";
+
+    public static final String FACES_RESOURCE_HYPERLINK_TYPE =
+            PACKAGE_PREFIX + ".resource_link";
 
     /**
      * Parameter indetinfying the viewId of the faces' view that needs

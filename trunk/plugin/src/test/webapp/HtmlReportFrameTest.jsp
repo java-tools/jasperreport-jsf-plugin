@@ -38,8 +38,7 @@
         <f:view>
             <h:form>
                 <jr:reportFrame format="pdf"
-                           path="/WEB-INF/report/Factura.jasper"
-                           subreportDir="/WEB-INF/report/">
+                           value="/WEB-INF/report/Factura.jasper">
                 </jr:reportFrame>
             </h:form>
         </f:view>

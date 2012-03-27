@@ -38,59 +38,60 @@ import static net.sf.jasperreports.jsf.test.Matchers.*;
 @RunWith(Parameterized.class)
 public class URLResourceTest {
 
-	@Parameters
-	public static Collection<Object[]> parameters() {
-		Object[][] params;
-		try {
-			URL exists = new URL("http", "jasperreportjsf.sourceforge.net",
-	        	"/tld/jasperreports-jsf-1_0.tld");
-			URL nonExists = new URL("http", "jasperreportjsf.sourceforge.net",
-	        	"/tld/jasperreports-jsf-1_0.xml");
-			params = new Object[][] { { exists }, { nonExists } };
-		} catch (MalformedURLException e) {
-			params = new Object[0][0];
-		}
-		return Arrays.asList(params);
-	}
-	
-	private final URL url;
-	private final URLResource resource;
-	
-	public URLResourceTest(URL url) {
-		this.url = url;
-		resource = new URLResource(url);
-	}
-	
-	@Test
-	public void checkGetName() {
-		String expectedName = url.toExternalForm();
-		assertThat(resource.getName(), equalTo(expectedName));
-	}
-	
-	@Test
-	public void checkGetSimpleName() {
-		String expectedName = url.getPath().substring(
-				url.getPath().lastIndexOf('/'));
-		assertThat(resource.getSimpleName(), equalTo(expectedName));
-	}
-	
-	@Test
-	public void checkGetLocation() throws Exception {
-		assertThat(resource.getLocation(), sameInstance(url));
-	}
-	
-	@Test
-	public void checkGetPath() throws Exception {
-		String expectedPath = url.getPath().substring(0, 
-        		url.getPath().lastIndexOf('/'));
-		assertThat(resource.getPath(), equalTo(expectedPath));
-	}
-	
-	@Test
-	public void checkGetInputStreamWithValidResource() throws Exception {
-		assumeThat(url, existsURL());
-		
-		InputStream stream = null;
+    @Parameters
+    public static Collection<Object[]> parameters() {
+        Object[][] params;
+        try {
+            URL exists = new URL("http", "jasperreportjsf.sourceforge.net",
+                                 "/tld/jasperreports-jsf-1_0.tld");
+            URL nonExists = new URL("http", "jasperreportjsf.sourceforge.net",
+                                    "/tld/jasperreports-jsf-1_0.xml");
+            params = new Object[][]{{exists}, {nonExists}};
+        } catch (MalformedURLException e) {
+            params = new Object[0][0];
+        }
+        return Arrays.asList(params);
+    }
+    
+    private final URL url;
+    private final URLResource resource;
+
+    public URLResourceTest(URL url) {
+        this.url = url;
+        resource = new URLResource(url);
+    }
+
+    @Test
+    public void checkGetName() {
+        String expectedName = url.toExternalForm();
+        assertThat(resource.getName(), equalTo(expectedName));
+    }
+
+    @Test
+    public void checkGetSimpleName() {
+        String expectedName = url.getPath().substring(
+                url.getPath().lastIndexOf('/'));
+        assertThat(resource.getSimpleName(), equalTo(expectedName));
+    }
+
+    @Test
+    public void checkGetLocation() throws Exception {
+        assertThat(resource.getLocation(), sameInstance(url));
+    }
+
+    @Test
+    public void checkGetPath() throws Exception {
+        String expectedPath = url.getPath().substring(0,
+                                                      url.getPath().lastIndexOf(
+                '/'));
+        assertThat(resource.getPath(), equalTo(expectedPath));
+    }
+
+    @Test
+    public void checkGetInputStreamWithValidResource() throws Exception {
+        assumeThat(url, existsURL());
+
+        InputStream stream = null;
         try {
             stream = resource.getInputStream();
         } catch (Exception e) {
@@ -100,21 +101,21 @@ public class URLResourceTest {
 
         try {
             stream.close();
-        } catch (IOException e) { }
-	}
-	
-	@Test
-	@SuppressWarnings("unused")
-	public void checkGetInputStreamWithUnexistantResource() {
-		assumeThat(url, not(existsURL()));
-		
-		InputStream stream = null;
+        } catch (IOException e) {
+        }
+    }
+
+    @Test
+    @SuppressWarnings("unused")
+    public void checkGetInputStreamWithUnexistantResource() {
+        assumeThat(url, not(existsURL()));
+
+        InputStream stream = null;
         try {
             stream = resource.getInputStream();
             fail("A I/O exception should be thrown.");
         } catch (Exception e) {
             assertThat(e, is(IOException.class));
         }
-	}
-	
+    }
 }

@@ -18,9 +18,6 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.export.JRXlsAbstractExporter;
@@ -40,10 +37,10 @@ public final class XlsExporter extends AbstractXlsExporter {
     	new ContentType("application/vnd.ms-excel");
 
     /**
-     * @see net.sf.jasperreports.jsf.engine.Exporter#getContentTypes()
+     * @see net.sf.jasperreports.jsf.engine.Exporter#getContentType()
      */
-    public Collection<ContentType> getContentTypes() {
-        return Collections.singleton(CONTENT_TYPE);
+    public ContentType getContentType() {
+        return CONTENT_TYPE;
     }
 
     /*

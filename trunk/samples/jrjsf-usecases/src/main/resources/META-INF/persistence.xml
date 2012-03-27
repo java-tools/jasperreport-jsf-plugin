@@ -2,7 +2,7 @@
 
 <!--  
   JasperReports JSF Plugin
-  Copyright (C) 2011 A. Alonso Dominguez
+  Copyright (C) 2012 A. Alonso Dominguez
  
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -30,10 +30,9 @@
     <persistence-unit name="jrjsf-usecases" transaction-type="RESOURCE_LOCAL">
         <description></description>
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
-        <non-jta-data-source>java:comp/env/jdbc/BookDB</non-jta-data-source>
+        <non-jta-data-source>java:comp/env/jdbc/BookStoreDB</non-jta-data-source>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyDialect" />
-            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
         </properties>
     </persistence-unit>
 

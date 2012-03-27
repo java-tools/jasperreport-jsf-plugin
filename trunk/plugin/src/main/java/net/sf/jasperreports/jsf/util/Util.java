@@ -27,6 +27,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.config.IllegalFacesMappingException;
+import net.sf.jasperreports.jsf.context.ExternalContextHelper;
+import net.sf.jasperreports.jsf.context.JRFacesContext;
+import net.sf.jasperreports.jsf.context.ReportRenderRequest;
 
 /**
  * The Class Util.
@@ -138,6 +141,32 @@ public final class Util {
                     "'mapping' can't be null or empty");
         }
         return mapping.charAt(0) == '/';
+    }
+
+    /**
+     * Checks if current request is a <em>report render request</em>.
+     *
+     * @return <tt>true</tt> if invoked during a faces' report render request. <tt>false</tt> otherwise.
+     */
+    public static boolean isReportRenderRequest() {
+    	FacesContext context = FacesContext.getCurrentInstance();
+        if (context == null) {
+            return false;
+        }
+
+    	final JRFacesContext jrContext = JRFacesContext.getInstance(context);
+
+        Object request = context.getExternalContext().getRequest();
+        if (request instanceof ReportRenderRequest) {
+            return true;
+        } else {
+            final ExternalContextHelper helper = jrContext
+                    .getExternalContextHelper(context);
+
+            final String uri = helper.getRequestURI(
+                    context.getExternalContext());
+            return (uri != null && uri.indexOf(Constants.BASE_URI) > -1);
+        }
     }
 
     /**

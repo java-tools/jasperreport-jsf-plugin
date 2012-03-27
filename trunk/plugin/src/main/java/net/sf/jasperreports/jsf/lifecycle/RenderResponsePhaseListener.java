@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -35,10 +35,12 @@ import javax.faces.event.PhaseId;
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.JRFacesException;
 import net.sf.jasperreports.jsf.component.UIOutputReport;
-import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.context.ReportRenderRequest;
+import net.sf.jasperreports.jsf.util.ReportURI;
+import net.sf.jasperreports.jsf.util.ReportURIEncoder;
+import net.sf.jasperreports.jsf.util.Util;
 
 /**
  * Implementation of the <tt>RENDER_REPORT</tt> phase.
@@ -52,6 +54,7 @@ public final class RenderResponsePhaseListener extends AbstractReportPhaseListen
 	 * 
 	 */
 	private static final long serialVersionUID = -7619710717020985138L;
+
 	/** The logger instance. */
     private static final Logger logger = Logger.getLogger(
             RenderResponsePhaseListener.class.getPackage().getName(),
@@ -63,7 +66,7 @@ public final class RenderResponsePhaseListener extends AbstractReportPhaseListen
         final FacesContext context = event.getFacesContext();
         Map<String, Object> requestMap = context
                 .getExternalContext().getRequestMap();
-        if (!isReportRequest(context) && Boolean.TRUE.equals(
+        if (!Util.isReportRenderRequest() && Boolean.TRUE.equals(
                 requestMap.get(Constants.ATTR_REPORT_VIEW))) {
             final JRFacesContext jrContext =
                     JRFacesContext.getInstance(context);
@@ -77,10 +80,12 @@ public final class RenderResponsePhaseListener extends AbstractReportPhaseListen
                     Constants.ATTR_VIEW_STATE);
 
             if (logger.isLoggable(Level.FINER)) {
-                logger.log(Level.FINER, "JRJSF_0032", viewId);
+                logger.log(Level.FINER, "JRJSF_0032", new Object[]{
+                		viewId, viewState
+                });
             }
             viewCacheMap.put(viewId, viewState);
-        } else if (isReportRequest(context)) {
+        } else if (Util.isReportRenderRequest()) {
             ReportRenderRequest request = (ReportRenderRequest) context
                     .getExternalContext().getRequest();
             request.release();
@@ -88,15 +93,27 @@ public final class RenderResponsePhaseListener extends AbstractReportPhaseListen
     }
 
     public void beforePhase(PhaseEvent event) throws FacesException {
-        FacesContext context = event.getFacesContext();
-        if (!isReportRequest(context)) {
+        if (!Util.isReportRenderRequest()) {
             return;
         }
 
+        final FacesContext context = event.getFacesContext();
         try {
+            final JRFacesContext jrContext =
+                    JRFacesContext.getInstance(context);
+
             final ExternalContext extContext = context.getExternalContext();
-            final String clientId = extContext
-                    .getRequestParameterMap().get(Constants.PARAM_CLIENTID);
+            final ExternalContextHelper helper = jrContext.getExternalContextHelper(context);
+
+            ReportURI reportURI;
+            try {
+                reportURI = ReportURIEncoder.decodeReportURI(context,
+                        helper.getRequestURI(extContext));
+            } catch (IOException e) {
+                throw new JRFacesException(e);
+            }
+
+            final String clientId = reportURI.getReportClientId();
             if (clientId == null) {
                 throw new MalformedReportURLException("Missed parameter: "
                         + Constants.PARAM_CLIENTID);
@@ -122,9 +139,9 @@ public final class RenderResponsePhaseListener extends AbstractReportPhaseListen
         if (target == null) {
             throw new IllegalArgumentException("'target' can't be null");
         }
-        if (!(target instanceof UIReport)) {
+        if (!(target instanceof UIOutputReport)) {
             throw new IllegalArgumentException(
-                    "'target' must be a report component");
+                    "'target' must be a report output component");
         }
 
         String clientId = target.getClientId(context);

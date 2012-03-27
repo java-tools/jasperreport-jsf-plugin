@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -30,12 +30,13 @@ import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.context.ReportRenderRequest;
+import net.sf.jasperreports.jsf.util.Util;
 
 /**
  * Establishes some changes in the request wrapping it and
  * forcing the faces' lifecycle to restore the lastest view.
  *
- * @author A- Alonso Dominguez
+ * @author A. Alonso Dominguez
  */
 public class RestoreViewPhaseListener extends AbstractReportPhaseListener {
 
@@ -51,7 +52,7 @@ public class RestoreViewPhaseListener extends AbstractReportPhaseListener {
 
     public void afterPhase(PhaseEvent event) throws FacesException {
         FacesContext context = event.getFacesContext();
-        if (isReportRequest(context) && (null == context.getViewRoot())) {
+        if (Util.isReportRenderRequest() && (null == context.getViewRoot())) {
             throw new ReportLifecycleException(
                     "Report holder view couldn't be restored");
         }
@@ -60,7 +61,7 @@ public class RestoreViewPhaseListener extends AbstractReportPhaseListener {
     public void beforePhase(PhaseEvent event) throws FacesException {
         FacesContext context = event.getFacesContext();
         JRFacesContext jrContext = JRFacesContext.getInstance(context);
-        if (isReportRequest(context)) {
+        if (Util.isReportRenderRequest()) {
             // Mark request as a postback to force view restoring
             context.getExternalContext().getRequestMap().put(
                     Constants.ATTR_POSTBACK, Boolean.TRUE);
@@ -68,7 +69,7 @@ public class RestoreViewPhaseListener extends AbstractReportPhaseListener {
             final ExternalContextHelper helper =
                     jrContext.getExternalContextHelper(context);
             final ReportRenderRequest renderRequest = helper
-                    .restoreReportRequest(context.getExternalContext());
+                    .restoreReportRenderRequest(context.getExternalContext());
 
             if (logger.isLoggable(Level.FINE)) {
                 logger.log(Level.FINE, "JRJSF_0030", new Object[]{

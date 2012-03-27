@@ -18,9 +18,6 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRExporter;
@@ -44,8 +41,8 @@ public final class PdfExporter extends ExporterBase {
     public static final String ATTR_IS_ENCRYPTED = "IS_ENCRYPTED";
     public static final String ATTR_IS_TAGGED = "IS_TAGGED";
 
-    public Collection<ContentType> getContentTypes() {
-        return Collections.singleton(CONTENT_TYPE);
+    public ContentType getContentType() {
+        return CONTENT_TYPE;
     }
 
     /*

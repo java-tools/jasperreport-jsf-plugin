@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -31,9 +31,13 @@ public abstract class AbstractGenericDAOImpl<K, T> implements GenericDAO<K, T> {
 	@PersistenceContext(unitName = "jrjsf-usecases")
     protected EntityManager em;
 
+    public String getEntityName() {
+        return getEntityClass().getSimpleName();
+    }
+
 	public List<T> findAll() {
 		StringBuilder query = new StringBuilder();
-		query.append("from ").append(getEntityClass().getSimpleName());
+		query.append("from ").append(getEntityName());
 		TypedQuery<T> q = em.createQuery(query.toString(), getEntityClass());
 		return q.getResultList();
 	}

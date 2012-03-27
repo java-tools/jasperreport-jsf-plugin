@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -20,7 +20,9 @@ package net.sf.jasperreports.jsf.sample.usecases.dao.jpa;
 
 import net.sf.jasperreports.jsf.sample.usecases.dao.BookDAO;
 import net.sf.jasperreports.jsf.sample.usecases.model.Book;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class BookDAOImpl extends AbstractGenericDAOImpl<Long, Book> implements BookDAO {
 
 	@Override

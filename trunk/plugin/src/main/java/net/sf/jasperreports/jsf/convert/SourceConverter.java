@@ -44,17 +44,4 @@ public interface SourceConverter extends Serializable {
             UIComponent component, Object value)
     throws ConverterException;
 
-    /**
-     * Converts the received source into its original form.
-     *
-     * @param context current faces' context.
-     * @param component faces' component asking for conversion.
-     * @param source the source instance.
-     * @return a original source value.
-     * @throws ConverterException if source can't be converted.
-     */
-    public Object convertFromSource(FacesContext context,
-            UIComponent component, Source source)
-    throws ConverterException;
-
 }
