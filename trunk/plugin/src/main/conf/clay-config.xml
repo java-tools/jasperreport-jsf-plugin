@@ -23,82 +23,105 @@
 -->
 
 <!DOCTYPE view PUBLIC
-"-//Apache Software Foundation//DTD Shale Clay View Configuration 1.0//EN"
-"http://shale.apache.org/dtds/clay-config_1_0.dtd">
+        "-//Apache Software Foundation//DTD Shale Clay View Configuration 1.0//EN"
+        "http://shale.apache.org/dtds/clay-config_1_0.dtd">
 
 <view>
 
     <component jsfid="jr:source"
-        componentType="net.sf.jasperreports.jsf.Source"
-        extends="baseComponent">
+               componentType="net.sf.jasperreports.jsf.Source"
+               extends="baseComponent">
         <attributes>
-            <set name="data" bindingType="VB" />
-            <set name="query" bindingType="VB" />
-            <set name="type" bindingType="VB" />
-            <set name="value" bindingType="VB" />
+            <set name="data" bindingType="VB"/>
+            <set name="query" bindingType="VB"/>
+            <set name="type" bindingType="VB"/>
+            <set name="value" bindingType="VB"/>
         </attributes>
     </component>
 
     <component jsfid="jr:subreport"
-        componentType="net.sf.jasperreports.jsf.Subreport"
-        extends="baseComponent">
+               componentType="net.sf.jasperreports.jsf.Subreport"
+               extends="baseComponent">
         <attributes>
-            <set name="converter" bindingType="VB" />
-            <set name="name" bindingType="VB" />
-            <set name="source" bindingType="VB" />
-            <set name="value" bindingType="VB" />
-            <set name="validator" bindingType="VB" />
+            <set name="converter" bindingType="VB"/>
+            <set name="name" bindingType="VB"/>
+            <set name="source" bindingType="VB"/>
+            <set name="value" bindingType="VB"/>
+            <set name="validator" bindingType="VB"/>
+        </attributes>
+    </component>
+
+    <component jsfid="jr:url"
+               componentType="net.sf.jasperreports.jsf.Url"
+               extends="baseComponent">
+        <attributes>
+            <set name="var" bindingType="None"/>
+            <set name="converter" bindingType="VB"/>
+            <set name="name" bindingType="VB"/>
+            <set name="source" bindingType="VB"/>
+            <set name="format" bindingType="VB"/>
+            <set name="resourceBundle" bindingType="VB"/>
+            <set name="value" bindingType="VB"/>
+            <set name="validator" bindingType="VB"/>
+            <!-- Exporter attributes -->
+            <set name="encoding" bindingType="VB"/>
+            <set name="ignorePageMargins" bindingType="VB"/>
+            <set name="pageIndex" bindingType="VB"/>
+            <set name="startPageIndex" bindingType="VB"/>
+            <set name="endPageIndex" bindingType="VB"/>
+            <set name="offsetX" bindingType="VB"/>
+            <set name="offsetY" bindingType="VB"/>
         </attributes>
     </component>
 
     <component jsfid="jr:reportFrame"
-        componentType="net.sf.jasperreports.jsf.HtmlReportFrame"
-        extends="baseHtml">
+               componentType="net.sf.jasperreports.jsf.HtmlReportFrame"
+               extends="baseHtml">
         <attributes>
-            <set name="converter" bindingType="VB" />
-            <set name="name" bindingType="VB" />
-            <set name="source" bindingType="VB" />
-            <set name="format" bindingType="VB" />
-            <set name="resourceBundle" bindingType="VB" />
-            <set name="value" bindingType="VB" />
-            <set name="validator" bindingType="VB" />
+            <set name="converter" bindingType="VB"/>
+            <set name="name" bindingType="VB"/>
+            <set name="source" bindingType="VB"/>
+            <set name="format" bindingType="VB"/>
+            <set name="resourceBundle" bindingType="VB"/>
+            <set name="value" bindingType="VB"/>
+            <set name="validator" bindingType="VB"/>
             <!-- Exporter attributes -->
-            <set name="encoding" bindingType="VB" />
-            <set name="ignorePageMargins" bindingType="VB" />
-            <set name="pageIndex" bindingType="VB" />
-            <set name="startPageIndex" bindingType="VB" />
-            <set name="endPageIndex" bindingType="VB" />
-            <set name="offsetX" bindingType="VB" />
-            <set name="offsetY" bindingType="VB" />
+            <set name="encoding" bindingType="VB"/>
+            <set name="ignorePageMargins" bindingType="VB"/>
+            <set name="pageIndex" bindingType="VB"/>
+            <set name="startPageIndex" bindingType="VB"/>
+            <set name="endPageIndex" bindingType="VB"/>
+            <set name="offsetX" bindingType="VB"/>
+            <set name="offsetY" bindingType="VB"/>
             <!-- HTML iframe attributes -->
-            <set name="layout" bindingType="VB" />
-            <set name="frameborder" bindingType="VB" />
-            <set name="marginheight" bindingType="VB" />
-            <set name="marginwidth" bindingType="VB" />
-            <set name="height" bindingType="VB" />
-            <set name="width" bindingType="VB" />
+            <set name="layout" bindingType="VB"/>
+            <set name="frameborder" bindingType="VB"/>
+            <set name="marginheight" bindingType="VB"/>
+            <set name="marginwidth" bindingType="VB"/>
+            <set name="height" bindingType="VB"/>
+            <set name="width" bindingType="VB"/>
         </attributes>
     </component>
 
     <component jsfid="jr:reportLink"
-        componentType="net.sf.jasperreports.HtmlReportLink"
-        extends="baseHtml">
+               componentType="net.sf.jasperreports.HtmlReportLink"
+               extends="baseHtml">
         <attributes>
-            <set name="converter" bindingType="VB" />
-            <set name="name" bindingType="VB" />
-            <set name="source" bindingType="VB" />
-            <set name="format" bindingType="VB" />
-            <set name="resourceBundle" bindingType="VB" />
-            <set name="value" bindingType="VB" />
-            <set name="validator" bindingType="VB" />
+            <set name="converter" bindingType="VB"/>
+            <set name="name" bindingType="VB"/>
+            <set name="source" bindingType="VB"/>
+            <set name="format" bindingType="VB"/>
+            <set name="resourceBundle" bindingType="VB"/>
+            <set name="value" bindingType="VB"/>
+            <set name="validator" bindingType="VB"/>
             <!-- Exporter attributes -->
-            <set name="encoding" bindingType="VB" />
-            <set name="ignorePageMargins" bindingType="VB" />
-            <set name="pageIndex" bindingType="VB" />
-            <set name="startPageIndex" bindingType="VB" />
-            <set name="endPageIndex" bindingType="VB" />
-            <set name="offsetX" bindingType="VB" />
-            <set name="offsetY" bindingType="VB" />
+            <set name="encoding" bindingType="VB"/>
+            <set name="ignorePageMargins" bindingType="VB"/>
+            <set name="pageIndex" bindingType="VB"/>
+            <set name="startPageIndex" bindingType="VB"/>
+            <set name="endPageIndex" bindingType="VB"/>
+            <set name="offsetX" bindingType="VB"/>
+            <set name="offsetY" bindingType="VB"/>
         </attributes>
     </component>
 
