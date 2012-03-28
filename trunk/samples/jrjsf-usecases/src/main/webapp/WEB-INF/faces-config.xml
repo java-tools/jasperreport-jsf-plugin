@@ -28,6 +28,7 @@
     version="1.2">
 
     <application>
+        <default-renderkit-id>org.apache.myfaces.trinidad.core</default-renderkit-id>
     	<el-resolver>
     		org.springframework.web.jsf.el.SpringBeanFacesELResolver
     	</el-resolver>

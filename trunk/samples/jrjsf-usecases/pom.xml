@@ -47,9 +47,11 @@
 
   <properties>
     <logging.conf>${basedir}/src/etc/logging.properties</logging.conf>
+    <jasperreports.outputDirectory>${project.build.directory}/jasperreports/jasper</jasperreports.outputDirectory>
     
     <hibernate.version>3.5.6-Final</hibernate.version>
     <spring.version>3.0.5.RELEASE</spring.version>
+    <trinidad.version>1.2.14</trinidad.version>
   </properties>
 
   <build>
@@ -74,6 +76,9 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <outputDirectory>${jasperreports.outputDirectory}</outputDirectory>
+        </configuration>
         <dependencies>
           <dependency>
             <groupId>net.sf.jasperreports</groupId>
@@ -120,7 +125,14 @@
               <includes>
                 <include>**/*.jrxml</include>
               </includes>
-              <targetPath>resources/reports</targetPath>
+              <targetPath>resources/reports/sources</targetPath>
+            </resource>
+            <resource>
+              <directory>${jasperreports.outputDirectory}</directory>
+              <includes>
+                <include>**/*.jasper</include>
+              </includes>
+              <targetPath>resources/reports/jasper</targetPath>
             </resource>
           </webResources>
         </configuration>
@@ -236,9 +248,19 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.myfaces.tomahawk</groupId>
-      <artifactId>tomahawk</artifactId>
-      <version>1.1.11</version>
+      <groupId>org.apache.myfaces.trinidad</groupId>
+      <artifactId>trinidad-api</artifactId>
+      <version>${trinidad.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.myfaces.trinidad</groupId>
+      <artifactId>trinidad-impl</artifactId>
+      <version>${trinidad.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.myfaces.trinidad</groupId>
+      <artifactId>trinidad-partial-lifecycle</artifactId>
+      <version>${trinidad.version}</version>
     </dependency>
 
     <dependency>

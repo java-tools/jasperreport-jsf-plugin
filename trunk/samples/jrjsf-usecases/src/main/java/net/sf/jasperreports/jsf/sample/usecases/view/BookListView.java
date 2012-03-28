@@ -18,12 +18,17 @@
  */
 package net.sf.jasperreports.jsf.sample.usecases.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.sample.usecases.jb.BookManager;
 import net.sf.jasperreports.jsf.sample.usecases.model.Book;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 /**
  *
@@ -35,6 +40,8 @@ public class BookListView {
     private BookManager bookManager;
 
 	private List<Book> allBooks;
+
+    private String reportFormat = "pdf";
 	
 	public List<Book> getAllBooks() {
 		if (allBooks == null) {
@@ -42,7 +49,25 @@ public class BookListView {
 		}
 		return allBooks;
     }
-	
+
+    public String getReportFormat() {
+        return reportFormat;
+    }
+
+    public void setReportFormat(String reportFormat) {
+        this.reportFormat = reportFormat;
+    }
+
+    public List<SelectItem> getReportFormats() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        JRFacesContext jrContext = JRFacesContext.getInstance(context);
+        List<SelectItem> list = new ArrayList<SelectItem>();
+        for (String format : jrContext.getAvailableExportFormats()) {
+            list.add(new SelectItem(format, format));
+        }
+        return list;
+    }
+
 	public int getTotalBooks() {
 		return getAllBooks().size();
 	}

@@ -24,20 +24,16 @@ import java.net.URLEncoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
 
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIOutputReport;
-import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.context.ContentType;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
-import net.sf.jasperreports.jsf.util.ReportURI;
-import net.sf.jasperreports.jsf.util.ReportURIEncoder;
 
 /**
  *
@@ -77,10 +73,12 @@ public abstract class ReportRenderer extends Renderer {
         JRFacesContext jrContext = JRFacesContext.getInstance(context);
         final String clientId = component.getClientId(context);
 
+        // Obtain a filler instance and fill report contents
         final Filler filler = jrContext.getFiller(context, component);
         logger.log(Level.FINE, "JRJSF_0006", clientId);
         filler.fill(context, component);
 
+        // Obtain an exporter instance
         final ExternalContextHelper helper = jrContext
                 .getExternalContextHelper(context);
         Exporter exporter = component.getExporter();
@@ -88,10 +86,15 @@ public abstract class ReportRenderer extends Renderer {
         	exporter = jrContext
                 .getExporter(context, component);
         }
+
+        // Check exporter provides with a non-null content type
+        ContentType contentType = exporter.getContentType();
+        if (contentType == null) {
+            throw new NullExporterContentTypeException(exporter.getClass().getName());
+        }
         
         final ByteArrayOutputStream stream = new ByteArrayOutputStream();
         try {
-        	ContentType contentType = exporter.getContentType();
             if (logger.isLoggable(Level.FINE)) {
                 logger.log(Level.FINE, "JRJSF_0010", new Object[]{
                 		clientId, contentType});
@@ -150,48 +153,6 @@ public abstract class ReportRenderer extends Renderer {
                 .getExternalContextHelper(context);
         helper.writeHeaders(context.getExternalContext(), this, component);
     }
-
-    /*private ContentType findAppropiateContentType(FacesContext context, 
-    		UIOutputReport component, Exporter exporter) {
-    	ContentType result = null;
-    	
-    	String formatValue = component.getFormat();
-    	if (ContentType.isContentType(formatValue)) {
-    		ContentType format = new ContentType(formatValue);
-    		if (isContentTypeAccepted(context, format)) {
-    			result = format;
-    		}
-    	}
-    	
-    	if (result == null) {
-    		for (ContentType type : exporter.getContentType()) {
-    			if (isContentTypeAccepted(context, type)) {
-    				result = type;
-    				break;
-    			}
-    		}
-    	}
-    	
-    	return result;
-    }
-    
-    private boolean isContentTypeAccepted(FacesContext context, ContentType contentType) {
-    	JRFacesContext jrFacesContext = JRFacesContext.getInstance(context);
-    	ExternalContextHelper helper = jrFacesContext.getExternalContextHelper(context);
-    	Collection<ContentType> limitedTo = helper.getAcceptedContentTypes(
-    			context.getExternalContext());
-    	
-    	if (limitedTo.isEmpty()) {
-    		return true;
-    	}
-    	
-    	for (ContentType accepted : limitedTo) {
-    		if (accepted.implies(contentType)) {
-    			return true;
-    		}
-    	}
-    	return false;
-    }*/
     
     /**
      * Establishes some flags into the faces' context so the plugin's lifecycle

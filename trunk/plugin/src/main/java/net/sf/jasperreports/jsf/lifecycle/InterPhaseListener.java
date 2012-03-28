@@ -25,6 +25,7 @@ import javax.faces.event.PhaseEvent;
 
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.context.ReportRenderRequest;
+import net.sf.jasperreports.jsf.util.Util;
 
 abstract class InterPhaseListener extends AbstractReportPhaseListener
         implements ContextCallback {
@@ -33,14 +34,14 @@ abstract class InterPhaseListener extends AbstractReportPhaseListener
 
     public void beforePhase(PhaseEvent event) {
         FacesContext context = event.getFacesContext();
-        if (isReportRequest(context)) {
+        if (Util.isReportRenderRequest()) {
             ReportRenderRequest request = (ReportRenderRequest) 
                     context.getExternalContext().getRequest();
             UIViewRoot viewRoot = context.getViewRoot();
             if (!viewRoot.invokeOnComponent(context, 
-                    request.getReportClientId(), this)) {
+                    request.getReportURI().getReportClientId(), this)) {
                 throw new NoSuchReportComponentInViewException(
-                        request.getReportClientId());
+                        request.getReportURI().getReportClientId());
             }
         }
     }

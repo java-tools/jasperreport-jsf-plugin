@@ -31,8 +31,6 @@ import net.sf.jasperreports.jsf.component.UIReport;
  * @author A. Alonso Dominguez
  */
 public interface ReportConverter extends Serializable {
-
-    public boolean accepts(Object value);
     
     /**
      * Obtains a <tt>JasperReport</tt> instance from the value

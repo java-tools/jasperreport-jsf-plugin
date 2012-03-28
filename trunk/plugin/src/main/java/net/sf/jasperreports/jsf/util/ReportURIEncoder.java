@@ -25,6 +25,7 @@ import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 
 import javax.faces.context.FacesContext;
+import javax.faces.render.ResponseStateManager;
 import java.io.IOException;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -187,6 +188,10 @@ public final class ReportURIEncoder {
         Map<String, String[]> parameterMap = context.getExternalContext()
                 .getRequestParameterValuesMap();
         for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
+            // View state should not be encoded as a parameter of the report URI
+            if (ResponseStateManager.VIEW_STATE_PARAM.equals(entry.getKey())) {
+                continue;
+            }
             reportURI.setParameter(entry.getKey(), entry.getValue());
         }
         

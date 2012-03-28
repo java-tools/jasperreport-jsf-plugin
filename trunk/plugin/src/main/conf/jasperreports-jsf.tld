@@ -108,7 +108,7 @@ data source types provided by means of the
 library documentation. 
             ]]></description>
             <name>type</name>
-            <required>false</required>
+            <required>true</required>
             <deferred-value>
                 <type>java.lang.String</type>
             </deferred-value>
