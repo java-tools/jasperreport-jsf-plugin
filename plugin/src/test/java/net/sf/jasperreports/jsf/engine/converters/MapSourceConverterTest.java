@@ -104,8 +104,8 @@ public class MapSourceConverterTest {
             fail("'Returned reportSource is not JasperReport's data source wrapper");
         }
 
-        JRDataSource dataSource = ((JRDataSourceWrapper) reportSource)
-                .getDataSource();
+        JRDataSource dataSource = (JRDataSource) ((JRDataSourceWrapper) reportSource)
+                .getWrappedSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JRMapArrayDataSource.class));
 
@@ -132,8 +132,8 @@ public class MapSourceConverterTest {
             fail("'Returned reportSource is not JasperReport's data source wrapper");
         }
 
-        JRDataSource dataSource = ((JRDataSourceWrapper) reportSource)
-                .getDataSource();
+        JRDataSource dataSource = (JRDataSource) ((JRDataSourceWrapper) reportSource)
+                .getWrappedSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JRMapCollectionDataSource.class));
 
@@ -154,8 +154,8 @@ public class MapSourceConverterTest {
             fail("'Returned reportSource is not JasperReport's data source wrapper");
         }
 
-        JRDataSource dataSource = ((JRDataSourceWrapper) reportSource)
-                .getDataSource();
+        JRDataSource dataSource = (JRDataSource) ((JRDataSourceWrapper) reportSource)
+                .getWrappedSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JREmptyDataSource.class));
     }

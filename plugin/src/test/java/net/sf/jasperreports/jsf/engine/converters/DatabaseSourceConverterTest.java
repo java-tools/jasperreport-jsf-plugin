@@ -106,7 +106,7 @@ public class DatabaseSourceConverterTest {
         assertThat(source, notNullValue());
         assertThat(source, is(JRDataSourceWrapper.class));
 
-        JRDataSource ds = ((JRDataSourceWrapper) source).getDataSource();
+        JRDataSource ds = (JRDataSource) source.getWrappedSource();
         assertThat(ds, notNullValue());
         assertThat(ds, is(JREmptyDataSource.class));
     }
@@ -124,7 +124,7 @@ public class DatabaseSourceConverterTest {
         assertThat(source, notNullValue());
         assertThat(source, is(ConnectionWrapper.class));
 
-        Connection connection = ((ConnectionWrapper) source).getConnection();
+        Connection connection = (Connection) source.getWrappedSource();
         assertThat(connection, notNullValue());
         assertThat(connection, sameInstance(expectedConnection));
     }
@@ -144,7 +144,7 @@ public class DatabaseSourceConverterTest {
         assertThat(source, notNullValue());
         assertThat(source, is(ConnectionWrapper.class));
 
-        Connection connection = ((ConnectionWrapper) source).getConnection();
+        Connection connection = (Connection) source.getWrappedSource();
         assertThat(connection, notNullValue());
         assertThat(connection, sameInstance(expectedConnection));
     }
@@ -176,7 +176,7 @@ public class DatabaseSourceConverterTest {
         assertThat(source, notNullValue());
         assertThat(source, is(JRDataSourceWrapper.class));
 
-        JRDataSource ds = ((JRDataSourceWrapper) source).getDataSource();
+        JRDataSource ds = (JRDataSource) source.getWrappedSource();
         assertThat(ds, notNullValue());
         assertThat(ds, is(JRResultSetDataSource.class));
     }
@@ -214,7 +214,7 @@ public class DatabaseSourceConverterTest {
         assertThat(source, notNullValue());
         assertThat(source, is(JRDataSourceWrapper.class));
 
-        JRDataSource ds = ((JRDataSourceWrapper) source).getDataSource();
+        JRDataSource ds = (JRDataSource) source.getWrappedSource();
         assertThat(ds, notNullValue());
         assertThat(ds, is(JRResultSetDataSource.class));
     }
@@ -254,7 +254,7 @@ public class DatabaseSourceConverterTest {
         assertThat(source, notNullValue());
         assertThat(source, is(JRDataSourceWrapper.class));
 
-        JRDataSource ds = ((JRDataSourceWrapper) source).getDataSource();
+        JRDataSource ds = (JRDataSource) source.getWrappedSource();
         assertThat(ds, notNullValue());
         assertThat(ds, is(JRResultSetDataSource.class));
     }

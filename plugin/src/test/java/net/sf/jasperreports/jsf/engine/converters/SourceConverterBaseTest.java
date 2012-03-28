@@ -156,7 +156,7 @@ public class SourceConverterBaseTest {
         assertThat(source, notNullValue());
         assertThat(source, is(ConnectionWrapper.class));
 
-        Connection conn = ((ConnectionWrapper) source).getConnection();
+        Connection conn = (Connection) source.getWrappedSource();
         assertThat(conn, notNullValue());
         assertThat(conn, sameInstance(expectedConn));
     }
@@ -178,7 +178,7 @@ public class SourceConverterBaseTest {
         assertThat(source, notNullValue());
         assertThat(source, is(ConnectionWrapper.class));
 
-        Connection conn = ((ConnectionWrapper) source).getConnection();
+        Connection conn = (Connection) source.getWrappedSource();
         assertThat(conn, notNullValue());
         assertThat(conn, sameInstance(expectedConn));
     }
@@ -222,8 +222,7 @@ public class SourceConverterBaseTest {
         assertThat(source, notNullValue());
         assertThat(source, is(JRDataSourceWrapper.class));
 
-        JRDataSource dataSource =
-                ((JRDataSourceWrapper) source).getDataSource();
+        JRDataSource dataSource = (JRDataSource) source.getWrappedSource();
         assertThat(dataSource, notNullValue());
         assertThat(dataSource, sameInstance(expectedDS));
     }

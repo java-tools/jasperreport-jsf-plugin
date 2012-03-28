@@ -184,7 +184,7 @@ public class CsvSourceConverterTest {
                 facesEnv.getFacesContext(), component, data);
         assertThat(source, is(not(nullValue())));
 
-        JRDataSource dataSource = ((JRDataSourceWrapper) source).getDataSource();
+        JRDataSource dataSource = (JRDataSource) source.getWrappedSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JREmptyDataSource.class));
     }
@@ -316,7 +316,7 @@ public class CsvSourceConverterTest {
         assertThat(source, is(not(nullValue())));
         assertThat(source, is(JRDataSourceWrapper.class));
 
-        JRDataSource dataSource = ((JRDataSourceWrapper) source).getDataSource();
+        JRDataSource dataSource = (JRDataSource) source.getWrappedSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JRCsvDataSource.class));
     }

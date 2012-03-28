@@ -93,7 +93,7 @@ public class ResultSetSourceConverterTest {
                 facesEnv.getFacesContext(), component, resultSet);
         assertThat(source, is(not(nullValue())));
 
-        JRDataSource dataSource = ((JRDataSourceWrapper) source).getDataSource();
+        JRDataSource dataSource = (JRDataSource) source.getWrappedSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JREmptyDataSource.class));
     }
@@ -108,7 +108,7 @@ public class ResultSetSourceConverterTest {
                 facesEnv.getFacesContext(), component, resultSet);
         assertThat(source, is(not(nullValue())));
 
-        JRDataSource dataSource = ((JRDataSourceWrapper) source).getDataSource();
+        JRDataSource dataSource = (JRDataSource) source.getWrappedSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JRResultSetDataSource.class));
     }

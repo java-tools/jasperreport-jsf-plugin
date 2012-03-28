@@ -48,12 +48,12 @@ public class ConnectionWrapperTest {
             oneOf(expectedConn).close();
         }});
 
-        Connection conn = wrapper.getConnection();
+        Connection conn = (Connection) wrapper.getWrappedSource();
         assertThat(conn, notNullValue());
         assertThat(conn, sameInstance(expectedConn));
 
         wrapper.dispose();
-        assertThat(wrapper.getConnection(), nullValue());
+        assertThat(wrapper.getWrappedSource(), nullValue());
     }
 
     @Test

@@ -27,7 +27,7 @@
 "http://java.sun.com/dtd/facelet-taglib_1_0.dtd">
 
 <facelet-taglib>
-    <namespace>http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_2.tld</namespace>
+    <namespace>http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_3.tld</namespace>
 
     <tag>
         <tag-name>source</tag-name>

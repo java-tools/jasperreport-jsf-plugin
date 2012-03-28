@@ -65,7 +65,7 @@
             <taglib-location>/WEB-INF/tld/html_basic.tld</taglib-location>
         </taglib>
         <taglib>
-            <taglib-uri>http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_2.tld</taglib-uri>
+            <taglib-uri>http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_3.tld</taglib-uri>
             <taglib-location>/WEB-INF/tld/jasperreports-jsf.tld</taglib-location>
         </taglib>
     </jsp-config>
