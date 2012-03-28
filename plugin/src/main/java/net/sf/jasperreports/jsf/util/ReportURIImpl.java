@@ -33,6 +33,15 @@ final class ReportURIImpl implements ReportURI {
     private Map<String, List<String>> parameters =
             new HashMap<String, List<String>>();
 
+    public void addParameter(String name, String value) {
+        List<String> values = parameters.get(name);
+        if (values == null) {
+            values = new ArrayList<String>();
+            parameters.put(name, values);
+        }
+        values.add(value);
+    }
+
     public Enumeration<String> getParameterNames() {
         return Collections.enumeration(parameters.keySet());
     }
@@ -57,6 +66,12 @@ final class ReportURIImpl implements ReportURI {
             }
         }
         return result;
+    }
+
+    public void setParameter(String name, String value[]) {
+        List<String> values = new ArrayList<String>();
+        values.addAll(Arrays.asList(value));
+        parameters.put(name, values);
     }
 
     public String getFacesMapping() {

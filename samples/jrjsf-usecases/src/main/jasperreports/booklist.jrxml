@@ -30,7 +30,7 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<queryString>
-		<![CDATA[select * from books]]>
+		<![CDATA[select * from book]]>
 	</queryString>
 	<field name="BOOK_ID" class="java.lang.Integer"/>
 	<field name="TITLE" class="java.lang.String"/>

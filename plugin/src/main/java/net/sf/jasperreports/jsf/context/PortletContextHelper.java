@@ -69,13 +69,13 @@ final class PortletContextHelper extends ExternalContextHelper {
      * @return A representation of the request render request
      */
     @Override
-    public ReportRenderRequest restoreReportRenderRequest(final ExternalContext context)
+    public ReportRenderRequest buildReportRenderRequest(final ExternalContext context)
     throws IOException {
         if (!"2.0".equals(getPortletVersion())) {
         	throw new IllegalStateException(
             	"Only Resource Request/Response state is allowed");
         }
-        return super.restoreReportRenderRequest(context);
+        return super.buildReportRenderRequest(context);
     }
 
     /**

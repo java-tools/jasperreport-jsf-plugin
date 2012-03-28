@@ -26,6 +26,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.util.ReportURI;
 import net.sf.jasperreports.jsf.util.ReportURIEncoder;
 
@@ -71,11 +72,17 @@ public final class OutputLinkRenderer extends HtmlReportRenderer {
     @Override
     public void encodeBegin(final FacesContext context,
             final UIComponent component) throws IOException {
+        if (context == null) {
+            throw new IllegalArgumentException("'context' can't be null");
+        }
+        if (component == null) {
+            throw new IllegalArgumentException("'component' can't be null");
+        }
 
         logger.log(Level.FINE, "JRJSF_0001", component.getClientId(context));
 
         final ReportURI reportURI = ReportURIEncoder.encodeReportURI(
-                context, component);
+                context, (UIReport) component);
         if (logger.isLoggable(Level.FINER)) {
             logger.log(Level.FINER, "JRJSF_0031", reportURI);
         }
@@ -98,6 +105,13 @@ public final class OutputLinkRenderer extends HtmlReportRenderer {
     @Override
     public void encodeEnd(final FacesContext context,
             final UIComponent component) throws IOException {
+        if (context == null) {
+            throw new IllegalArgumentException("'context' can't be null");
+        }
+        if (component == null) {
+            throw new IllegalArgumentException("'component' can't be null");
+        }
+
         final ResponseWriter writer = context.getResponseWriter();
         writer.endElement("a");
 

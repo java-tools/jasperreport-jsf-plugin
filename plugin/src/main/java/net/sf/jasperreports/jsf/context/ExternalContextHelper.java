@@ -174,13 +174,11 @@ public abstract class ExternalContextHelper {
      * @param context the current ExternalContext
      * @return A representation of the request render request
      */
-    public ReportRenderRequest restoreReportRenderRequest(ExternalContext context)
+    public ReportRenderRequest buildReportRenderRequest(ExternalContext context)
     throws IOException {
         final ReportURI reportURI = ReportURIEncoder.decodeReportURI(
                 FacesContext.getCurrentInstance(), getRequestURI(context));
-    	final String viewId = context.getRequestParameterMap()
-		        .get(Constants.PARAM_VIEWID);
-		final String viewState = getViewCacheMap(context).get(viewId);
+		final String viewState = getViewCacheMap(context).get(reportURI.getViewId());
 		
 		ReportRenderRequest request = createReportRenderRequest(context, 
 				reportURI, viewState);

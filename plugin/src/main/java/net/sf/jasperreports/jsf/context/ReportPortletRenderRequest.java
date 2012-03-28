@@ -42,6 +42,8 @@ final class ReportPortletRenderRequest extends ResourceRequestWrapper
     private final ReportURI reportURI;
     private final String oldViewId;
     private final String viewState;
+    
+    private Map<String, String[]> parameterMap;
 
     public ReportPortletRenderRequest(ResourceRequest request,
     		ReportURI reportURI, String viewState) {
@@ -65,11 +67,18 @@ final class ReportPortletRenderRequest extends ResourceRequestWrapper
 
     @Override
     public Map<String, String[]> getParameterMap() {
-        Map<String, String[]> paramMap = new HashMap<String, String[]>();
-        paramMap.putAll(super.getParameterMap());
-        paramMap.put(ResponseStateManager.VIEW_STATE_PARAM,
-                new String[]{viewState});
-        return Collections.unmodifiableMap(paramMap);
+        if (parameterMap == null) {
+            parameterMap = new HashMap<String, String[]>();
+            parameterMap.putAll(super.getParameterMap());
+            Enumeration<String> reportParamNames = reportURI.getParameterNames();
+            while (reportParamNames.hasMoreElements()) {
+                String paramName = reportParamNames.nextElement();
+                parameterMap.put(paramName, reportURI.getParameterValues(paramName));
+            }
+            parameterMap.put(ResponseStateManager.VIEW_STATE_PARAM,
+                    new String[]{viewState});
+        }
+        return Collections.unmodifiableMap(parameterMap);
     }
 
     @Override

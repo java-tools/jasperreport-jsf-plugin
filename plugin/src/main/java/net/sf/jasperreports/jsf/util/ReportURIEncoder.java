@@ -19,13 +19,15 @@
 package net.sf.jasperreports.jsf.util;
 
 import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.config.Configuration;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
+import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,7 +40,15 @@ public final class ReportURIEncoder {
     private static final Logger logger = Logger.getLogger(
             ReportURIEncoder.class.getPackage().getName(), 
             Constants.LOG_MESSAGES_BUNDLE);
-    
+
+    /**
+     * Decodes the URI string into a formal representation of a report URI.
+     *
+     * @param context the faces' context
+     * @param uri the request uri
+     * @return a formal representation of the report URI.
+     * @throws IOException if any I/O error happens when decoding the uri string.
+     */
     public static ReportURI decodeReportURI(FacesContext context, String uri) 
     throws IOException {
         if (context == null) {
@@ -55,10 +65,17 @@ public final class ReportURIEncoder {
         if (logger.isLoggable(Level.FINER)) {
             logger.log(Level.FINER, "JRJSF_0046", uri);
         }
+
+        // First of all, check if there is any 'jsessionid' in the url and
+        // get rid of it if so
+        int i = uri.indexOf(";jsessionid=");
+        if (i >= 0) {
+            uri = uri.substring(0, i);
+        }
         
         // Separate the uri in proper uri and query string
         String queryString = "";
-        int i = uri.indexOf("?");
+        i = uri.indexOf("?");
         if (i >= 0) {
             queryString = uri.substring(i + 1);
             uri = uri.substring(0, i);
@@ -89,7 +106,8 @@ public final class ReportURIEncoder {
         if (Util.isPrefixMapped(mapping)) {
             uri = uri.substring(mapping.length());
         } else {
-            uri = uri.substring(0, uri.indexOf(mapping, Constants.BASE_URI.length()));
+            int mappingStart = uri.length() - mapping.length();
+            uri = uri.substring(0, mappingStart);
         }
 
         // Remove prefix used to build the URI
@@ -109,22 +127,33 @@ public final class ReportURIEncoder {
         
         reportURI.setViewId(uri);
         
-        // TODO parse queryString
+        // parse query string and decode parameters from the URI
+        StringTokenizer tokenizer = new StringTokenizer(queryString, "&");
+        while (tokenizer.hasMoreTokens()) {
+            String token = tokenizer.nextToken();
+            int eq = token.indexOf("=");
+            if (eq == -1) {
+                reportURI.addParameter(token, "");
+            } else {
+                reportURI.addParameter(token.substring(0, eq),
+                        token.substring(eq + 1));
+            }
+        }
         
         return reportURI;
     }
     
     /**
      * Builds the report URL which will trigger the <code>RENDER_REPORT</code>
-     * phase of the plugin's lifecycle.
+     * phase of the plug-in's lifecycle.
      *
      * @param context the faces' context.
      * @param component the report component.
-     *
      * @return the report URL.
+     * @throws IOException if an I/O error happens when encoding the URI.
      */
     public static ReportURI encodeReportURI(
-            FacesContext context, UIComponent component) 
+            FacesContext context, UIReport component)
     throws IOException {
         if (context == null) {
             throw new IllegalArgumentException("'context' can't be null");
@@ -153,6 +182,13 @@ public final class ReportURIEncoder {
         reportURI.setFacesMapping(mapping);
         reportURI.setReportClientId(component.getClientId(context));
         reportURI.setViewId(helper.getViewId(context.getExternalContext()));
+        
+        // Encode request parameters into the report URI
+        Map<String, String[]> parameterMap = context.getExternalContext()
+                .getRequestParameterValuesMap();
+        for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
+            reportURI.setParameter(entry.getKey(), entry.getValue());
+        }
         
         return reportURI;
     }

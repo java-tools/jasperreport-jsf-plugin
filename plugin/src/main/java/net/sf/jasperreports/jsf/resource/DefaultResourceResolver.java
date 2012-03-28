@@ -37,7 +37,7 @@ import static org.apache.commons.io.FilenameUtils.*;
 
 /**
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
 public final class DefaultResourceResolver implements ResourceResolver {
 

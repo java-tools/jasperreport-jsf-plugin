@@ -91,10 +91,8 @@ public abstract class DatabaseSourceConverter
      * Execute query.
      *
      * @param conn the conn
-     *
      * @return the result set
-     *
-     * @throws ReportSourceException if some error happens when executing
+     * @throws SourceException if some error happens when executing
      *         the sql statement
      */
     protected ResultSet executeQuery(final FacesContext context,

@@ -56,7 +56,7 @@ public abstract class OutputReportTag extends ReportTag {
     /**
      * Sets the format.
      *
-     * @param type the new format
+     * @param format the new format
      */
     public void setFormat(final ValueExpression format) {
         this.format = format;

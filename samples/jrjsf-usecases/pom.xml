@@ -137,7 +137,7 @@
             </systemProperty>
             <systemProperty>
               <name>slf4j</name>
-              <value>false</value>
+              <value>true</value>
             </systemProperty>
           </systemProperties>
         </configuration>
