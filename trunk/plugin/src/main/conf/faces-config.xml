@@ -2,7 +2,7 @@
 
 <!--  
   JasperReports JSF Plugin
-  Copyright (C) 2012 A. Alonso Dominguez
+  Copyright (C) 2011 A. Alonso Dominguez
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -67,6 +67,12 @@ the Faces tree.
     </component>
 
     <component>
+        <display-name>Bookmarkable URL</display-name>
+        <component-type>net.sf.jasperreports.jsf.Url</component-type>
+        <component-class>net.sf.jasperreports.jsf.component.UIUrl</component-class>
+    </component>
+
+    <component>
     	<description><![CDATA[
  Embeded report component. Outputs a frame that contains
  the report contents inside of it.
@@ -119,6 +125,11 @@ report contents inside of it.
             <renderer-class>net.sf.jasperreports.jsf.renderkit.html.OutputLinkRenderer</renderer-class>
         </renderer>
 
+        <renderer>
+            <component-family>net.sf.jasperreports.jsf.Report</component-family>
+            <renderer-type>net.sf.jasperreports.jsf.Url</renderer-type>
+            <renderer-class>net.sf.jasperreports.jsf.renderkit.UrlRenderer</renderer-class>
+        </renderer>
     </render-kit>
 
 </faces-config>

@@ -102,8 +102,7 @@ public class BeanSourceConverterTest {
             fail("'Returned reportSource is not JasperReport's data source wrapper");
         }
 
-        JRDataSource dataSource = ((JRDataSourceWrapper) reportSource)
-                .getDataSource();
+        JRDataSource dataSource = (JRDataSource) reportSource.getWrappedSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JRBeanArrayDataSource.class));
 
@@ -130,8 +129,7 @@ public class BeanSourceConverterTest {
             fail("'Returned reportSource is not JasperReport's data source wrapper");
         }
 
-        JRDataSource dataSource = ((JRDataSourceWrapper) reportSource)
-                .getDataSource();
+        JRDataSource dataSource = (JRDataSource) reportSource.getWrappedSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JRBeanCollectionDataSource.class));
 
@@ -152,8 +150,7 @@ public class BeanSourceConverterTest {
             fail("'Returned reportSource is not JasperReport's data source wrapper");
         }
         
-        JRDataSource dataSource = ((JRDataSourceWrapper) reportSource)
-                .getDataSource();
+        JRDataSource dataSource = (JRDataSource) reportSource.getWrappedSource();
         assertThat(dataSource, is(not(nullValue())));
         assertThat(dataSource, is(JREmptyDataSource.class));
     }

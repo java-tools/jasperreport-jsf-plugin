@@ -29,6 +29,7 @@ import net.sf.jasperreports.jsf.context.ContentType;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.ReportRenderRequest;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
+import net.sf.jasperreports.jsf.util.ReportURI;
 
 /**
  *
@@ -76,7 +77,7 @@ public class MockExternalContextHelper extends ExternalContextHelper {
 
 	@Override
 	protected ReportRenderRequest createReportRenderRequest(
-			ExternalContext context, String defaultMapping, String viewId,
+			ExternalContext context, ReportURI reportURI,
 			String viewState) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}

@@ -42,12 +42,12 @@ public class JRDataSourceWrapperTest {
         final JRDataSource expectedDs = mockery.mock(JRDataSource.class);
         final JRDataSourceWrapper wrapper = new JRDataSourceWrapper(expectedDs);
 
-        JRDataSource ds = wrapper.getDataSource();
+        JRDataSource ds = (JRDataSource) wrapper.getWrappedSource();
         assertThat(ds, notNullValue());
         assertThat(ds, sameInstance(expectedDs));
 
         wrapper.dispose();
-        assertThat(wrapper.getDataSource(), nullValue());
+        assertThat(wrapper.getWrappedSource(), nullValue());
     }
 
     @Test

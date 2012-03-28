@@ -76,7 +76,7 @@ public class XmlSourceConverterTest {
         assertThat(source, notNullValue());
         assertThat(source, is(JRDataSourceWrapper.class));
 
-        JRDataSource ds = ((JRDataSourceWrapper) source).getDataSource();
+        JRDataSource ds = (JRDataSource) source.getWrappedSource();
         assertThat(ds, notNullValue());
         assertThat(ds, is(JREmptyDataSource.class));
     }
