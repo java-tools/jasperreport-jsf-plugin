@@ -173,6 +173,8 @@ public final class Services {
      * @param <T>   Service type to be obtained.
      * @param clazz Service interface class object.
      * @return a set of services of the requested type.
+     * @throws ServiceException If any error happens when loading the
+     *         service chain.
      */
     @SuppressWarnings("unchecked")
     public static <T> Set<T> set(final Class<T> clazz) throws ServiceException {
@@ -201,6 +203,8 @@ public final class Services {
                                 "JRJSF_0014");
                         logRecord.setParameters(new Object[]{line});
                         logRecord.setThrown(e);
+                        logRecord.setResourceBundleName(logger.getResourceBundleName());
+                        logRecord.setResourceBundle(logger.getResourceBundle());
                         logger.log(logRecord);
                         continue;
                     }
@@ -213,6 +217,8 @@ public final class Services {
                                 "JRJSF_0015");
                         logRecord.setParameters(new Object[]{line});
                         logRecord.setThrown(e);
+                        logRecord.setResourceBundleName(logger.getResourceBundleName());
+                        logRecord.setResourceBundle(logger.getResourceBundle());
                         logger.log(logRecord);
                         continue;
                     }
@@ -224,6 +230,8 @@ public final class Services {
                         "JRJSF_0012");
                 logRecord.setParameters(new Object[]{url});
                 logRecord.setThrown(e);
+                logRecord.setResourceBundleName(logger.getResourceBundleName());
+                logRecord.setResourceBundle(logger.getResourceBundle());
                 logger.log(logRecord);
             } finally {
                 if (reader != null) {
@@ -235,7 +243,28 @@ public final class Services {
         }
         return Collections.unmodifiableSet(serviceSet);
     }
-    
+
+    /**
+     * Loads a singleton instance for the service interface given.
+     * <p>
+     * This method first tries to find a System property in the form
+     * <tt>com.example.ServiceInterface</tt> pointing to the specific
+     * implementation of the service.
+     * <p>
+     * If such property doesn't exist then the services is looked up
+     * following convention <tt>META-INF/services/[serviceClassName]</tt>
+     * but using a resource immediately inside the current application
+     * classpath.
+     *
+     * @param clazz service interface class object
+     * @param defaultInstance default service instance to be used if
+     *                        no suitable provider is found.
+     * @param <T> service type to be obtained
+     * @return an instance of a service provider implementing the given
+     *         interface
+     * @throws ServiceException If any error happens when loading the
+     *         service chain.
+     */
     public static <T> T single(final Class<T> clazz, final T defaultInstance)
         throws ServiceException {
         final ClassLoader loader = Util.getClassLoader(null);
@@ -267,6 +296,8 @@ public final class Services {
                             "JRJSF_0012");
                     logRecord.setParameters(new Object[]{serviceResource});
                     logRecord.setThrown(e);
+                    logRecord.setResourceBundleName(logger.getResourceBundleName());
+                    logRecord.setResourceBundle(logger.getResourceBundle());
                     logger.log(logRecord);
                 } finally {
                     if (reader != null) {
@@ -290,6 +321,8 @@ public final class Services {
                         "JRJSF_0014");
                 logRecord.setParameters(new Object[]{providerClassName});
                 logRecord.setThrown(e);
+                logRecord.setResourceBundleName(logger.getResourceBundleName());
+                logRecord.setResourceBundle(logger.getResourceBundle());
                 logger.log(logRecord);
                 throw new ServiceException(e);
             }
@@ -302,6 +335,8 @@ public final class Services {
                         "JRJSF_0015");
                 logRecord.setParameters(new Object[]{providerClassName});
                 logRecord.setThrown(e);
+                logRecord.setResourceBundleName(logger.getResourceBundleName());
+                logRecord.setResourceBundle(logger.getResourceBundle());
                 logger.log(logRecord);
                 throw new ServiceException(e);
             }
@@ -352,6 +387,8 @@ public final class Services {
                         logRecord.setParameters(new Object[]{record[1],
                                     record[0]});
                         logRecord.setThrown(e);
+                        logRecord.setResourceBundleName(logger.getResourceBundleName());
+                        logRecord.setResourceBundle(logger.getResourceBundle());
                         logger.log(logRecord);
                         continue;
                     }
@@ -364,6 +401,8 @@ public final class Services {
                                 "JRJSF_0015");
                         logRecord.setParameters(new Object[]{record[1]});
                         logRecord.setThrown(e);
+                        logRecord.setResourceBundleName(logger.getResourceBundleName());
+                        logRecord.setResourceBundle(logger.getResourceBundle());
                         logger.log(logRecord);
                         continue;
                     }
@@ -376,6 +415,8 @@ public final class Services {
                         "JRJSF_0012");
                 logRecord.setParameters(new Object[]{url});
                 logRecord.setThrown(e);
+                logRecord.setResourceBundleName(logger.getResourceBundleName());
+                logRecord.setResourceBundle(logger.getResourceBundle());
                 logger.log(logRecord);
                 continue;
             } finally {

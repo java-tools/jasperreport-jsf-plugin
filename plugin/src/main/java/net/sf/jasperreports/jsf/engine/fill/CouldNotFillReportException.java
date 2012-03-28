@@ -22,7 +22,7 @@ import net.sf.jasperreports.jsf.engine.FillerException;
 
 /**
  *
- * @author 501944227
+ * @author A. Alonso Dominguez
  */
 public class CouldNotFillReportException extends FillerException {
 

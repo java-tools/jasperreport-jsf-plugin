@@ -47,6 +47,18 @@ public class UrlRenderer extends ReportRenderer {
         return CONTENT_DISPOSITION;
     }
 
+    /*
+    * (non-Javadoc)
+    *
+    * @see
+    * javax.faces.render.Renderer#encodeChildren(javax.faces.context.
+    * FacesContext, javax.faces.component.UIComponent)
+    */
+    @Override
+    public void encodeChildren(final FacesContext context,
+                               final UIComponent component)
+            throws IOException { }
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         if (context == null) {
