@@ -48,7 +48,7 @@ public class ConnectionWrapper implements Source {
      *
      * @return the wrapped connection.
      */
-    public final Connection getConnection() {
+    public final Object getWrappedSource() {
         return connection;
     }
 

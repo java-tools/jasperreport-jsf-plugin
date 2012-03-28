@@ -91,6 +91,11 @@ final class ReportHttpRenderRequest extends HttpServletRequestWrapper
     	if (parameterMap == null) {
     		parameterMap = new HashMap<String, String[]>();
     		parameterMap.putAll(super.getParameterMap());
+            Enumeration<String> reportParamNames = reportURI.getParameterNames();
+            while (reportParamNames.hasMoreElements()) {
+                String paramName = reportParamNames.nextElement();
+                parameterMap.put(paramName, reportURI.getParameterValues(paramName));
+            }
     		parameterMap.put(ResponseStateManager.VIEW_STATE_PARAM,
                     new String[]{viewState});
     	}

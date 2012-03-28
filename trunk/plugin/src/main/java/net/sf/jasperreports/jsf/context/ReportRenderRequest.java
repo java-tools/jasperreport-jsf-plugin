@@ -53,7 +53,7 @@ public interface ReportRenderRequest {
     public String getViewId();
 
     /**
-     * Release the request.
+     * Release the request any resource related with it.
      */
     public void release();
 

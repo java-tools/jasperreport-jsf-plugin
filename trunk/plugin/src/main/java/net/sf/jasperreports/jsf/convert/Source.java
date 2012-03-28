@@ -25,6 +25,8 @@ package net.sf.jasperreports.jsf.convert;
  */
 public interface Source {
 
+    public Object getWrappedSource();
+
     /**
      * Method used to release the source internal resources.
      *

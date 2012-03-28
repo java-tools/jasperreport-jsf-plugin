@@ -24,9 +24,8 @@
 
 <!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
 
-<Configure class="org.mortbay.jetty.webapp.WebAppContext">
+<Configure id="jrjsf-usecases" class="org.mortbay.jetty.webapp.WebAppContext">
 
-  <!-- an XADataSource                                                -->
     <New id="bookdbds" class="org.mortbay.jetty.plus.naming.Resource">
         <Arg>jdbc/BookStoreDB</Arg>
         <Arg>

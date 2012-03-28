@@ -27,8 +27,9 @@ import net.sf.jasperreports.jsf.convert.ReportConverter;
 import net.sf.jasperreports.jsf.resource.Resource;
 
 /**
+ * Base class for report converters
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
 public abstract class ReportConverterBase implements ReportConverter {
 

@@ -30,6 +30,7 @@ import javax.faces.render.Renderer;
 
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIOutputReport;
+import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.engine.Exporter;
 import net.sf.jasperreports.jsf.engine.Filler;
 import net.sf.jasperreports.jsf.context.ContentType;
@@ -148,35 +149,6 @@ public abstract class ReportRenderer extends Renderer {
         final ExternalContextHelper helper = jrContext
                 .getExternalContextHelper(context);
         helper.writeHeaders(context.getExternalContext(), this, component);
-    }
-
-    /**
-     * Builds the report URL which will trigger the <code>RENDER_REPORT</code>
-     * phase of the plugin's lifecycle.
-     *
-     * @param context the faces' context.
-     * @param component the report component.
-     *
-     * @return the report URL.
-     */
-    @Deprecated
-    public String encodeReportURL(final FacesContext context,
-            final UIComponent component)
-    throws IOException {
-        if (context == null) {
-            throw new IllegalArgumentException();
-        }
-        if (component == null) {
-            throw new IllegalArgumentException();
-        }
-
-        ReportURI uri = ReportURIEncoder.encodeReportURI(context, component);
-        String result = uri.toString();
-        
-        if (logger.isLoggable(Level.FINER)) {
-            logger.log(Level.FINER, "JRJSF_0031", result);
-        }
-        return result;
     }
 
     /*private ContentType findAppropiateContentType(FacesContext context, 

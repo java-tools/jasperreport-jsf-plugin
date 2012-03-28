@@ -73,7 +73,7 @@ public class RestoreViewPhaseListener extends AbstractReportPhaseListener {
             ReportRenderRequest renderRequest;
             try {
                 renderRequest = helper
-                        .restoreReportRenderRequest(context.getExternalContext());
+                        .buildReportRenderRequest(context.getExternalContext());
             } catch (IOException e) {
                 throw new JRFacesException(e);
             }

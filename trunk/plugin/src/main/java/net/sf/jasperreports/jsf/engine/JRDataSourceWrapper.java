@@ -48,7 +48,7 @@ public class JRDataSourceWrapper implements Source {
      *
      * @return the wrapped data source.
      */
-    public final JRDataSource getDataSource() {
+    public final Object getWrappedSource() {
         return dataSource;
     }
 
