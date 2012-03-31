@@ -96,6 +96,8 @@
     <filter-mapping>
         <filter-name>TrinidadFilter</filter-name>
         <servlet-name>FacesServlet</servlet-name>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 
     <welcome-file-list>
