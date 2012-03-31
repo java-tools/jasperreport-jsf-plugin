@@ -57,7 +57,7 @@ public class FacesFileResolver implements FileResolver {
     public FacesFileResolver(final UIReport report) {
         super();
         if (report == null) {
-            throw new IllegalArgumentException("'context' can't be null");
+            throw new IllegalArgumentException("'report' can't be null");
         }
         this.report = report;
     }

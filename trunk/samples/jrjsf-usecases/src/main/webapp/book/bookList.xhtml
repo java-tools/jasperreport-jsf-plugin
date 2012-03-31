@@ -44,7 +44,7 @@
 
             <tr:panelTabbed>
                 <tr:showDetailItem text="#{Messages['tab.jsfView']}">
-                    <tr:commandButton action="newBook" value="#{Messages['bookList.action.new']}"/>
+                    <tr:commandButton action="newBook" text="#{Messages['bookList.action.new']}"/>
                     <jr:reportLink id="reportLink" format="#{bookList.reportFormat}"
                                    target="blank" source="bookSource"
                                    value="/resources/reports/jasper/booklist.jasper"
@@ -93,6 +93,7 @@
                             <f:selectItems value="#{bookList.reportFormats}" />
                         </h:selectOneMenu>
                     </h:panelGroup>
+                    <br />
 
                     <jr:reportFrame id="reportFrame" source="bookSource"
                                     value="/resources/reports/jasper/booklist.jasper"
