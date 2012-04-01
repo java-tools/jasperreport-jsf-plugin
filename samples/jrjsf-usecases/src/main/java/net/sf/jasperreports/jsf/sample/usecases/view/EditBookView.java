@@ -26,7 +26,7 @@ import net.sf.jasperreports.jsf.sample.usecases.jb.BookManager;
 
 public class EditBookView {
 
-	@Autowired
+    @Autowired
 	private BookManager bookManager;
 	
 	private String title;
@@ -38,8 +38,8 @@ public class EditBookView {
     private String genre;
     
     private double price;
-	
-	public String getTitle() {
+
+    public String getTitle() {
 		return title;
 	}
 
@@ -62,9 +62,25 @@ public class EditBookView {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-	
-	public void saveBook(ActionEvent event) {
-		
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String saveBook() {
+        return null;
 	}
 	
 }

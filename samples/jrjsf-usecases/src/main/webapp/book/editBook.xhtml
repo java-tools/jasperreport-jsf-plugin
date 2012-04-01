@@ -27,6 +27,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:tr="http://myfaces.apache.org/trinidad"
       xmlns:jr="http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_3.tld">
 <body>
 
@@ -37,7 +38,25 @@
     </ui:define>
 
     <ui:define name="body">
-        
+        <h:form id="bookForm">
+            <tr:messages />
+            <h:panelGrid columns="1">
+                <tr:inputText id="title" label="#{Messages['bookList.title']}"
+                             required="true" value="#{bookEdit.title}" />
+                <tr:inputText id="author" label="#{Messages['bookList.author']}"
+                              required="true" value="#{bookEdit.author}" />
+                <tr:inputText id="genre" label="#{Messages['bookList.genre']}"
+                              required="true" value="#{bookEdit.genre}" />
+                <tr:inputText id="publishedYear" label="#{Messages['bookList.year']}"
+                              required="true" value="#{bookEdit.publishedYear}" />
+                <tr:inputText id="price" label="#{Messages['bookList.price']}"
+                              required="true" value="#{bookEdit.price}" />
+            </h:panelGrid>
+            <h:panelGrid columns="2">
+                <tr:commandButton action="#{bookEdit.saveBook}" text="#{Messages['bookEdit.action.save']}" />
+                <tr:commandButton immediate="true" action="cancel" text="#{Messages['action.cancel']}" />
+            </h:panelGrid>
+        </h:form>
     </ui:define>
 
 </ui:composition>

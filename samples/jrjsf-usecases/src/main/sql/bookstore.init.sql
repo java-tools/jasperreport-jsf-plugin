@@ -1,4 +1,10 @@
-insert into book(title, author, published_year, genre, price) values('Congreso de Futurologia', 'Stanislaw Lem', '1978', 'Ciencia Ficcion', 2.5);
-insert into book(title, author, published_year, genre, price) values('Un Mundo Feliz', 'H. G. Wells', '1975', 'Ciencia Ficcion', 3.99);
-insert into book(title, author, published_year, genre, price) values('La Isla del Tesoro', 'Robert Lewis Stevenson', '1948', 'Aventuras', 4.45);
-insert into book(title, author, published_year, genre, price) values('El Señor de los Anillos', 'J. R. Tolkien', '1945', 'Fantasia', 12.23);
+insert into book(title, author, published_year, genre, price)
+    values('The Futurogical Congress', 'Stanislaw Lem', '1978', 'SciFi', 2.5);
+insert into book(title, author, published_year, genre, price)
+    values('Brave New World', 'H. G. Wells', '1975', 'SciFi', 3.99);
+insert into book(title, author, published_year, genre, price)
+    values('Treasure Island', 'Robert Lewis Stevenson', '1948', 'Adventures', 4.45);
+insert into book(title, author, published_year, genre, price)
+    values('The Lord of the Rings', 'J. R. Tolkien', '1945', 'Fantasy', 12.23);
+insert into book(title, author, published_year, genre, price)
+    values('In Cold Blood', 'Truman Capote', '1966', 'Nonfiction', 9.50);

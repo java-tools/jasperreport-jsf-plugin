@@ -76,6 +76,8 @@ web frameworks which extend the JSF functionality are supported:
 runtime stacks:
 
 	* {{{http://tomcat.apache.org}Apache Tomcat 6.x}} + {{{http://javaserverfaces.dev.java.net}JSF 1.2}}
+
+	* {{{http://jetty.codehaus.org/jetty}Jetty 6.x}} + {{{http://javaserverfaces.dev.java.net}JSF 1.2}}
 	
 	* {{{http://tomcat.apache.org}Apache Tomcat 6.x}} +
 {{{http://javaserverfaces.dev.java.net}JSF 1.2}} +
