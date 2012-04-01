@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -76,10 +76,6 @@ public final class DefaultResourceResolver implements ResourceResolver {
 
     private Resource resolveRelative(FacesContext context, 
             UIComponent component, String name) {
-    	if (logger.isLoggable(Level.FINE)) {
-    		logger.log(Level.FINE, "JRJSF_0039", name);
-    	}
-    	
         Resource resource = null;
         JRFacesContext jrContext = JRFacesContext.getInstance(context);
         ExternalContextHelper helper =
@@ -95,7 +91,7 @@ public final class DefaultResourceResolver implements ResourceResolver {
             	String valueStr = (String) value;
             	if (!valueStr.equals(name)) {
             		// If the resource we are trying to resolve is the one
-            		// established in the report itself then resolve it
+            		// established as the value of the report itself then resolve it
             		// using the current viewRoot
 	                rootPath = helper.getResourceRealPath(
 	                    context.getExternalContext(),
@@ -108,13 +104,16 @@ public final class DefaultResourceResolver implements ResourceResolver {
             // If caller component is not a report-based component or
             // there is not any component at all, resolve the resource
             // name relative to the current view.
-
             String viewId = context.getViewRoot().getViewId();
             rootPath = helper.getResourceRealPath(
                     context.getExternalContext(), "/" + getPath(viewId));
         }
 
         if (rootPath != null) {
+            if (logger.isLoggable(Level.FINE)) {
+                logger.log(Level.FINE, "JRJSF_0039", new Object[]{ name, rootPath });
+            }
+
             String resourceFileName = rootPath + File.separator + name;
             File resourceFile = new File(normalize(resourceFileName));
             if (resourceFile.exists()) {

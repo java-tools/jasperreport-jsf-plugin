@@ -44,19 +44,19 @@
 
             <tr:panelTabbed>
                 <tr:showDetailItem text="#{Messages['tab.jsfView']}">
-                    <tr:commandButton action="newBook" text="#{Messages['bookList.action.new']}"/>
-                    <jr:reportLink id="reportLink" format="#{bookList.reportFormat}"
-                                   target="blank" source="bookSource"
-                                   value="/resources/reports/jasper/booklist.jasper"
-                                   resourceBundle="#{Messages}">
-                        <h:outputText value="#{Messages['bookList.action.show']}"/>
-                    </jr:reportLink>
+                    <h:panelGrid columns="2">
+                        <tr:commandButton action="newBook" text="#{Messages['bookList.action.new']}"/>
+                        <jr:reportLink id="reportLink" format="#{bookList.reportFormat}"
+                                       target="blank" source="bookSource"
+                                       value="/resources/reports/jasper/booklist.jasper"
+                                       resourceBundle="#{Messages}">
+                            <h:outputText value="#{Messages['bookList.action.show']}"/>
+                        </jr:reportLink>
+                    </h:panelGrid>
 
                     <h:dataTable value="#{bookList.allBooks}" var="book">
                         <f:facet name="footer">
-                            <h:outputText value="#{Messages['bookList.total']}">
-                                <f:param value="#{bookList.totalBooks}"/>
-                            </h:outputText>
+                            <h:outputText value="#{bookList.totalBooksText}" />
                         </f:facet>
                         <h:column>
                             <f:facet name="header">
@@ -97,7 +97,8 @@
 
                     <jr:reportFrame id="reportFrame" source="bookSource"
                                     value="/resources/reports/jasper/booklist.jasper"
-                                    format="#{bookList.reportFormat}" height="400px" width="80%" />
+                                    format="#{bookList.reportFormat}" height="400px" width="80%"
+                                    resourceBundle="#{Messages}" />
                 </tr:showDetailItem>
             </tr:panelTabbed>
 

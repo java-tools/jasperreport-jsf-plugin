@@ -32,6 +32,10 @@
     	<el-resolver>
     		org.springframework.web.jsf.el.SpringBeanFacesELResolver
     	</el-resolver>
+        <locale-config>
+            <default-locale>en</default-locale>
+            <supported-locale>es</supported-locale>
+        </locale-config>
         <resource-bundle>
             <var>Messages</var>
             <base-name>net.sf.jasperreports.jsf.sample.usecases.Messages</base-name>
@@ -45,6 +49,14 @@
     		<to-view-id>/book/editBook.xhtml</to-view-id>
             <redirect />
     	</navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/book/editBook.xhtml</from-view-id>
+        <navigation-case>
+            <to-view-id>/book/bookList.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
     </navigation-rule>
 
 </faces-config>

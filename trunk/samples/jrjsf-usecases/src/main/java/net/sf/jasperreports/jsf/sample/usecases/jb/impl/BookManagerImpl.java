@@ -27,7 +27,7 @@ import net.sf.jasperreports.jsf.sample.usecases.jb.BookManager;
 import net.sf.jasperreports.jsf.sample.usecases.model.Book;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("defaultBookManager")
 public class BookManagerImpl implements BookManager {
 
 	@Autowired

@@ -28,22 +28,60 @@
       title="Frequently Asked Questions - Troubleshooting"
       toplink="false">
 
-    <part id="build">
-        <title>Build questions</title>
+    <part id="runtime">
+        <title>Runtime questions</title>
 
-        <faq id="jasperreports-missing">
+        <faq id="serialization-exception-loading-report">
             <question>
-                Maven complains about JasperReports 3.7.1 missing dependency
+                Just before rendering the report, a SerializationException is shown
             </question>
             <answer>
-                <p>JasperReports JSF Plugin needs to be compiled with JasperReports
-                3.7.1. This is required to offer some features which just available
-                at that version of JasperReports.</p>
-                <p>Unfortunately, that version is not available at Maven 2 central
-                repository and that's why Maven 2 is complaining about the missing
-                dependency. To solve it, download that version of JasperReports
-                manually and install it into your local repository using the command:</p>
-                <source>mvn install:install-file</source>
+                <p>This usually happens when the report has been compiled with a different
+                version of JasperReports than the one being used in the web application.This
+                is likely to happen when compiling reports using iReport with a different
+                version than the one for JasperReports and copying the compiled report to
+                the web application sources as they are. There are two possible solutions
+                for this:</p>
+                <ol>
+                    <li>Design your report with iReport (or whatever other tool) and keep
+                    the source of your template with your project sources. Then use a build
+                    tool like Ant or Maven to compile the report using the same version of
+                    JasperReports as the one you have in your classpath and deploy just the
+                    compiled template with its associated resources rather than the source.</li>
+                    <li>As with the first option, you can use whatever tool you prefer to
+                    design the report template and deploy the source of the template (with
+                    its associated resources) with your web application. Then make the report
+                    components point to the template sources, the plugin engine will compile
+                    the report on the fly. However this approach has worse performance than
+                    the previous one.</li>
+                </ol>
+            </answer>
+        </faq>
+
+        <faq id="empty-report-rendered">
+            <question>
+                The report view shows an empty report.
+            </question>
+            <answer>
+                <p>First, check that no exception has been thrown during the rendering
+                process as that may be the first cause of the empty report.</p>
+                <p>Second, some versions of JasperReports tend to show a report without
+                pages when no data has been found to show. If that is your case then
+                look for a way of hiding the report link or frame when there is no data
+                and you will avoid showing empty pages to your users.</p>
+            </answer>
+        </faq>
+
+        <faq id="null-image-links-html">
+            <question>
+                When exporting the report to HTML the result shows null images.
+            </question>
+            <answer>
+                <p>JasperReports uses an empty image to make margins in HTML exports.
+                to avoid showing those awful null links to your users the best option
+                is to do an HTML preview of your report with iReport and copy all the
+                resources generated (except the .html view of the report) relative to
+                your compiled report in your application.</p>
             </answer>
         </faq>
     </part>

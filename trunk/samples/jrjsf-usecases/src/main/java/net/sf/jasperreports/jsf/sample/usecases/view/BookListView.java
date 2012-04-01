@@ -18,8 +18,10 @@
  */
 package net.sf.jasperreports.jsf.sample.usecases.view;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.sample.usecases.jb.BookManager;
@@ -31,23 +33,22 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 /**
- *
  * @author A. Alonso Dominguez
  */
 public class BookListView {
 
-	@Autowired
+    @Autowired
     private BookManager bookManager;
 
-	private List<Book> allBooks;
+    private List<Book> allBooks;
 
     private String reportFormat = "pdf";
-	
-	public List<Book> getAllBooks() {
-		if (allBooks == null) {
-			allBooks = bookManager.getAllBooks();
-		}
-		return allBooks;
+
+    public List<Book> getAllBooks() {
+        if (allBooks == null) {
+            allBooks = bookManager.getAllBooks();
+        }
+        return allBooks;
     }
 
     public String getReportFormat() {
@@ -68,8 +69,14 @@ public class BookListView {
         return list;
     }
 
-	public int getTotalBooks() {
-		return getAllBooks().size();
-	}
-    
+    public int getTotalBooks() {
+        return getAllBooks().size();
+    }
+
+    public String getTotalBooksText() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ResourceBundle bundle = context.getApplication().getResourceBundle(context, "Messages");
+        return MessageFormat.format(bundle.getString("bookList.total"), getTotalBooks());
+    }
+
 }

@@ -92,7 +92,7 @@ public class FacesFileResolver implements FileResolver {
                 getFacesContext(), report, name);
     }
 
-    protected File downloadResource(Resource resource) throws IOException {
+    private File downloadResource(Resource resource) throws IOException {
     	File tempFile = File.createTempFile(resource.getSimpleName(), null);
         if (logger.isLoggable(Level.FINE)) {
             logger.log(Level.FINE, "JRJSF_0035", new Object[]{
@@ -125,11 +125,15 @@ public class FacesFileResolver implements FileResolver {
         return tempFile;
     }
 
-    protected FacesContext getFacesContext() {
-        return FacesContext.getCurrentInstance();
+    protected final FacesContext getFacesContext() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (context == null) {
+            throw new IllegalStateException("No faces context available");
+        }
+        return context;
     }
 
-    protected JRFacesContext getJRFacesContext() {
+    protected final JRFacesContext getJRFacesContext() {
         return JRFacesContext.getInstance(getFacesContext());
     }
 
