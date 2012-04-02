@@ -49,7 +49,7 @@
                 <textElement>
                     <font size="18" isBold="true"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$R{bookList.pagetitle}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$R{bookList.pageTitle}]]></textFieldExpression>
             </textField>
         </band>
     </title>

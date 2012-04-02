@@ -119,10 +119,10 @@ public class SourceConverterBase implements SourceConverter {
         	String sourceClientId = resolveSourceClientId(context, 
         			(UIReport) component, (String) value);
         	if (sourceClientId != null) {
-        		// Since JRJSF lifecycle is invoked straight over the report component
+        		// Since JR-JSF lifecycle is invoked straight over the report component
         		// and we have here a reference to another component
         		// we need to invoke the decode process on the source component in order
-        		// to obtain a proper datasource reference.
+        		// to obtain a proper data source reference.
         		viewRoot.invokeOnComponent(context, sourceClientId, new ContextCallback() {
 					public void invokeContextCallback(FacesContext context,
 							UIComponent component) {
