@@ -1,0 +1,69 @@
+~~
+~~ JasperReports JSF Plugin
+~~ Copyright (C) 2012 A. Alonso Dominguez
+~~
+~~ This library is free software; you can redistribute it and/or
+~~ modify it under the terms of the GNU Lesser General Public
+~~ License as published by the Free Software Foundation; either
+~~ version 2.1 of the License, or (at your option) any later version.
+~~
+~~ This library is distributed in the hope that it will be useful,
+~~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+~~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+~~ Lesser General Public License for more details.
+~~
+~~ You should have received a copy of the GNU Lesser General Public
+~~ License along with this library; if not, write to the Free Software
+~~ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+~~
+~~ A. Alonso Dominguez
+~~ alonsoft@users.sf.net
+~~
+
+			---
+			Using the subreports
+			---
+			A. Alonso Dominguez
+
+
+Using the subreports
+
+  It's very common working with reports which contain other mini-reports inside
+as a master-detail view. JasperReports JSF Plugin provides with a subreport component
+that can be used to insert data into the <detail> report inside a <master> one.
+
+  This component should be used this way:
+
++---
+<jr:reportFrame value="...">
+    <f:param name="ORDER_ID" value="..." />
+    <jr:subreport name="orderLines" source="..." value="...">
+        <f:param name="FROM_DATE" value="..." />
+        <f:param name="TO_DATE" value="..." />
+    </jr:subreport>
+</jr:reportFrame>
++---
+
+* Subreport attributes
+
+*--------------+----------*-----------------------------------------------------------------------------------------------------------------------------+
+| Attribute    | Optional | Description                                                                                                                 |
+*--------------+----------*-----------------------------------------------------------------------------------------------------------------------------+
+| name         | false    | A subreport should always have a name attribute, it will be used to nest parameter names passed into it.                    |
+*--------------+----------*-----------------------------------------------------------------------------------------------------------------------------+
+| source       | true     | Report Source reference id (See {{{./sources/index.html}Report Source documentation}}), or a any supported source object.   |
+*--------------+----------*-----------------------------------------------------------------------------------------------------------------------------+
+| value        | true     | A pointer to the report instance, it can be a path name to a <<<.jasper>>> file, a <<<JasperReport>>> object, etc.          |
+*--------------+----------*-----------------------------------------------------------------------------------------------------------------------------+
+
+  <<Note>>: A subreport can not specify an export format since it will use the
+same export format than the parent report it belongs to. However, it may use a
+different report source than the parent and it can also have its own parameters.
+
+* Aligning your subreport design
+
+  There are too many ways of designing embedded subreports that may work with this
+library without the need of using the <jr:subreport> component in your views. However
+if would like to make use of the benefits provided by this component you may have in
+mind some considerations when designing your report in order to be able to properly
+print the whole report.
