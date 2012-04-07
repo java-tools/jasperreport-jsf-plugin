@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -63,8 +63,8 @@ public final class JdbcSourceConverter extends DatabaseSourceConverter {
         if (connectionURL == null) {
             return null;
         } else {
-            final String driverClass = (String) component.getAttributes().get(
-                    ATTR_DRIVER_CLASS_NAME);
+            final String driverClass = getStringAttribute(component,
+                    ATTR_DRIVER_CLASS_NAME, null);
             if ((driverClass == null) || (driverClass.length() == 0)) {
                 throw new InvalidDatabaseDriverException(
                         "jdbc report source type requires a driverClassName value!");
@@ -78,10 +78,10 @@ public final class JdbcSourceConverter extends DatabaseSourceConverter {
             }
             logger.log(Level.FINE, "JRJSF_0004", driverClass);
 
-            final String username = (String) component.getAttributes().get(
-                    ATTR_USERNAME);
-            final String password = (String) component.getAttributes().get(
-                    ATTR_PASSWORD);
+            final String username = getStringAttribute(component,
+                    ATTR_USERNAME, null);
+            final String password = getStringAttribute(component,
+                    ATTR_PASSWORD, null);
 
             Connection conn = null;
             try {

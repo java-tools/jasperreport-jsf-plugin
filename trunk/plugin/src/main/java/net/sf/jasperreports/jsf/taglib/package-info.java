@@ -16,26 +16,9 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.validation;
 
-import javax.faces.application.FacesMessage;
 
 /**
- * The Class IllegalOutputFormatException.
+ * Top tag library package.
  */
-public class IllegalOutputFormatException extends IllegalAttributeValueException {
-
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 5471756531676463998L;
-
-	public IllegalOutputFormatException(FacesMessage message) {
-        super(message);
-    }
-
-    public IllegalOutputFormatException(FacesMessage message, Throwable cause) {
-        super(message, cause);
-    }
-    
-}
+package net.sf.jasperreports.jsf.taglib;

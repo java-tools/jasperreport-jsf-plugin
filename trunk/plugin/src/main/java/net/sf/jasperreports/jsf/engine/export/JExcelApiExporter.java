@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -18,16 +18,13 @@
  */
 package net.sf.jasperreports.jsf.engine.export;
 
-import java.util.Collection;
-import java.util.Collections;
-
-import net.sf.jasperreports.jsf.engine.ExporterException;
-import javax.faces.context.FacesContext;
-
 import net.sf.jasperreports.engine.export.JExcelApiExporterParameter;
 import net.sf.jasperreports.engine.export.JRXlsAbstractExporter;
 import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.context.ContentType;
+import net.sf.jasperreports.jsf.engine.ExporterException;
+
+import javax.faces.context.FacesContext;
 
 /**
  * Exports the report contents to an Excel file using the JExcel API.

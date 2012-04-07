@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -41,7 +41,7 @@ import net.sf.jasperreports.jsf.resource.ResourceException;
 
 /**
  * Converter implementation which obtains a CSV data source
- * from an existant resource.
+ * from an existent resource.
  * 
  * @author A. Alonso Dominguez
  */
