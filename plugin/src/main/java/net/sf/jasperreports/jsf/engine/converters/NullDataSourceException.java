@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -20,7 +20,7 @@ package net.sf.jasperreports.jsf.engine.converters;
 
 /**
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
 public class NullDataSourceException extends SourceException {
 

@@ -1,5 +1,5 @@
 /*
- * JaspertReports JSF Plugin Copyright (C) 2011 A. Alonso Dominguez
+ * JaspertReports JSF Plugin Copyright (C) 2012 A. Alonso Dominguez
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -57,7 +57,7 @@ import static net.sf.jasperreports.jsf.util.ComponentUtil.*;
 
 /**
  * Converter implementation which obtains an XML data source
- * from an existant resource.
+ * from an existent resource.
  *
  * @author A. Alonso Dominguez
  */
@@ -67,6 +67,7 @@ public final class XmlSourceConverter extends SourceConverterBase {
 	 * 
 	 */
 	private static final long serialVersionUID = -5512987093226353550L;
+
 	private static final Logger logger = Logger.getLogger(
             XmlSourceConverter.class.getPackage().getName(),
             Constants.LOG_MESSAGES_BUNDLE);

@@ -27,7 +27,7 @@ import java.net.URL;
 
 /**
  *
- * @author aalonsodominguez
+ * @author A. Alonso Dominguez
  */
 public final class FileResource implements Resource {
 
