@@ -81,7 +81,7 @@ public class RestoreViewPhaseListener extends AbstractReportPhaseListener {
             if (logger.isLoggable(Level.FINE)) {
                 logger.log(Level.FINE, "JRJSF_0030", new Object[]{
                     renderRequest.getReportURI().getViewId(),
-                    renderRequest.getReportURI().getFacesMapping()
+                    renderRequest.getReportURI().getReportClientId()
                 });
             }
         }

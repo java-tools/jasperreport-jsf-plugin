@@ -232,6 +232,10 @@
               <value>${test.context.dir}</value>
             </property>
             <property>
+              <name>contextPath</name>
+              <value>/jrjsf-test</value>
+            </property>
+            <property>
               <name>hsqldbPath</name>
               <value>${basedir}/src/test/hsqldb</value>
             </property>
@@ -256,7 +260,7 @@
               <exclude>net/sf/jasperreports/jsf/**/*Exception.class</exclude>
             </excludes>
           </instrumentation>
-          <check/>
+          <check>true</check>
         </configuration>
       </plugin>
 

@@ -140,6 +140,7 @@ final class ReportHttpRenderRequest extends HttpServletRequestWrapper
      *
      * @return the report component client id.
      */
+    @Deprecated
     public String getReportClientId() {
         return reportURI.getReportClientId();
     }
@@ -163,6 +164,7 @@ final class ReportHttpRenderRequest extends HttpServletRequestWrapper
      *
      * @return the report view id.
      */
+    @Deprecated
     public String getViewId() {
         return reportURI.getViewId();
     }
@@ -192,8 +194,8 @@ final class ReportHttpRenderRequest extends HttpServletRequestWrapper
             }
             pathInfo = viewId;
         } else {
-            servletPath = viewId.substring(0, viewId.lastIndexOf('.'))
-                    + facesMapping.substring(facesMapping.indexOf('.'));
+            servletPath = viewId.substring(0,
+                    viewId.lastIndexOf('.')) + facesMapping;
             pathInfo = null;
         }
     }

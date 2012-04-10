@@ -121,12 +121,10 @@ public final class ReportURIEncoder {
         i = uri.indexOf("/");
         if (i < 0) {
             throw new IllegalArgumentException("URI [" + uri +
-                    "] doesn't contain a report clientId");
+                    "] doesn't contain a view id");
         }
         reportURI.setReportClientId(uri.substring(0, i));
-        uri = uri.substring(i);
-        
-        reportURI.setViewId(uri);
+        reportURI.setViewId(uri.substring(i));
         
         // parse query string and decode parameters from the URI
         String[] tokens = queryString.split("&");

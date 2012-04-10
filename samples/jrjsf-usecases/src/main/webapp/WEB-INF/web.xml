@@ -40,7 +40,7 @@
     
     <context-param>
         <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-        <param-value>client</param-value>
+        <param-value>server</param-value>
     </context-param>
     
     <context-param>
@@ -49,17 +49,13 @@
     </context-param>
 
     <context-param>
-        <param-name>org.apache.myfaces.trinidad.ALTERNATE_VIEW_HANDLER</param-name>
-        <!-- TrinidadFaceletViewHander must be the alternate view handler if SessionChangeManager is used -->
-        <param-value>org.apache.myfaces.trinidadinternal.facelets.TrinidadFaceletViewHandler</param-value>
+        <param-name>org.richfaces.SKIN</param-name>
+        <param-value>blueSky</param-value>
     </context-param>
-
+    
     <context-param>
-        <!--Unfortunately, Facelets provides no hook for plugging the PageResolver into the logic
-            handling "facelets.VIEW_MAPPINGS". You should leave "facelets.VIEW_MAPPINGS"
-            unset and use "org.apache.myfaces.trinidad.FACELETS_VIEW_MAPPINGS" instead.-->
-        <param-name>org.apache.myfaces.trinidad.FACELETS_VIEW_MAPPINGS</param-name>
-        <param-value>*.xhtml</param-value>
+        <param-name>org.richfaces.CONTROL_SKINNING</param-name>
+        <param-value>enable</param-value>
     </context-param>
     
     <listener>
@@ -72,32 +68,23 @@
         <servlet-name>FacesServlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
     </servlet>
-
-    <servlet>
-        <servlet-name>TrinidadResourcesServlet</servlet-name>
-        <servlet-class>org.apache.myfaces.trinidad.webapp.ResourceServlet</servlet-class>
-    </servlet>
     
     <filter>
-        <filter-name>TrinidadFilter</filter-name>
-        <filter-class>org.apache.myfaces.trinidad.webapp.TrinidadFilter</filter-class>
+        <filter-name>RichFacesFilter</filter-name>
+        <filter-class>org.ajax4jsf.Filter</filter-class>
     </filter>
 
     <servlet-mapping>
         <servlet-name>FacesServlet</servlet-name>
         <url-pattern>*.jsf</url-pattern>
     </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>TrinidadResourcesServlet</servlet-name>
-        <url-pattern>/adf/*</url-pattern>
-    </servlet-mapping>
     
     <filter-mapping>
-        <filter-name>TrinidadFilter</filter-name>
+        <filter-name>RichFacesFilter</filter-name>
         <servlet-name>FacesServlet</servlet-name>
         <dispatcher>FORWARD</dispatcher>
         <dispatcher>REQUEST</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
     </filter-mapping>
 
     <welcome-file-list>

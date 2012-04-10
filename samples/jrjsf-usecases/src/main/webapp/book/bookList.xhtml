@@ -27,89 +27,90 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:tr="http://myfaces.apache.org/trinidad"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
       xmlns:jr="http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_3.tld">
 <body>
 
 <ui:composition template="/resources/template.xhtml">
 
     <ui:define name="title">
-        <tr:outputText value="#{Messages['bookList.pageTitle']}"/>
+        <h:outputText value="#{Messages['bookList.pageTitle']}"/>
     </ui:define>
 
     <ui:define name="body">
-        <tr:form id="bookListForm">
+        <h:form id="bookListForm">
             <jr:source id="bookSource" type="jndi" value="java:comp/env/jdbc/BookStoreDB"/>
 
-            <tr:panelTabbed position="above">
-                <tr:showDetailItem text="#{Messages['tab.jsfView']}">
-                    <tr:panelButtonBar>
-                        <tr:commandButton action="#{bookList.editor}" text="#{Messages['bookList.action.new']}"/>
+            <rich:tabPanel>
+                <rich:tab label="#{Messages['tab.jsfView']}">
+                    <rich:toolBar>
+                        <h:commandButton action="#{bookList.editor}" value="#{Messages['bookList.action.new']}"/>
                         <jr:reportLink id="bookListReportLink" format="#{bookList.reportFormat}"
                                        target="blank" source="bookSource"
                                        value="/resources/reports/jasper/booklist.jasper"
                                        resourceBundle="#{Messages}">
-                            <tr:outputText value="#{Messages['bookList.action.show']}"/>
+                            <h:outputText value="#{Messages['bookList.action.show']}"/>
                         </jr:reportLink>
-                    </tr:panelButtonBar>
+                    </rich:toolBar>
 
-                    <tr:table id="bookTable" value="#{bookList.allBooks}" var="book">
+                    <rich:dataTable id="bookTable" value="#{bookList.allBooks}" var="book">
                         <f:facet name="footer">
-                            <tr:outputText value="#{bookList.totalBooksText}"/>
+                            <h:outputText value="#{bookList.totalBooksText}"/>
                         </f:facet>
-                        <tr:column>
+                        <rich:column>
                             <f:facet name="header">
-                                <tr:outputText value="#{Messages['bookList.title']}"/>
+                                <h:outputText value="#{Messages['bookList.title']}"/>
                             </f:facet>
-                            <tr:commandLink action="#{bookList.editor}">
+                            <h:commandLink action="#{bookList.editor}">
                                 <f:param name="bookId" value="#{book.id}"/>
-                                <tr:outputText value="#{book.title}"/>
-                            </tr:commandLink>
-                        </tr:column>
-                        <tr:column>
+                                <h:outputText value="#{book.title}"/>
+                            </h:commandLink>
+                        </rich:column>
+                        <rich:column>
                             <f:facet name="header">
-                                <tr:outputText value="#{Messages['bookList.author']}"/>
+                                <h:outputText value="#{Messages['bookList.author']}"/>
                             </f:facet>
-                            <tr:outputText value="#{book.author}"/>
-                        </tr:column>
-                        <tr:column>
+                            <h:outputText value="#{book.author}"/>
+                        </rich:column>
+                        <rich:column>
                             <f:facet name="header">
-                                <tr:outputText value="#{Messages['bookList.year']}"/>
+                                <h:outputText value="#{Messages['bookList.year']}"/>
                             </f:facet>
-                            <tr:outputText value="#{book.publishedYear}"/>
-                        </tr:column>
-                        <tr:column>
+                            <h:outputText value="#{book.publishedYear}"/>
+                        </rich:column>
+                        <rich:column>
                             <f:facet name="header">
-                                <tr:outputText value="#{Messages['bookList.genre']}"/>
+                                <h:outputText value="#{Messages['bookList.genre']}"/>
                             </f:facet>
-                            <tr:outputText value="#{book.genre}"/>
-                        </tr:column>
-                        <tr:column>
+                            <h:outputText value="#{book.genre}"/>
+                        </rich:column>
+                        <rich:column>
                             <jr:reportLink id="singleBookLink" format="pdf" target="blank" source="bookStore"
                                            value="/resources/reports/jasper/simple_book.jasper"
                                            resourceBundle="#{Messages}">
                                 <f:param name="BOOK_ID" value="#{book.id}"/>
-                                <tr:outputText value="#{Messages['bookList.action.show']}"/>
+                                <h:outputText value="#{Messages['bookList.action.show']}"/>
                             </jr:reportLink>
-                        </tr:column>
-                    </tr:table>
-                </tr:showDetailItem>
+                        </rich:column>
+                    </rich:dataTable>
+                </rich:tab>
 
-                <tr:showDetailItem text="#{Messages['tab.reportView']}">
+                <rich:tab label="#{Messages['tab.reportView']}">
                     <h:panelGrid columns="2">
                         <h:outputLabel for="reportFormat" value="#{Messages['report.format.select']}"/>
-                        <tr:selectOneChoice id="reportFormat" value="#{bookList.reportFormat}"
-                                            onchange="document.bookListForm.submit();">
+                        <h:selectOneMenu id="reportFormat" value="#{bookList.reportFormat}"
+                                         onchange="document.bookListForm.submit();">
                             <f:selectItems value="#{bookList.reportFormats}"/>
-                        </tr:selectOneChoice>
+                        </h:selectOneMenu>
                     </h:panelGrid>
                     <jr:reportFrame id="bookListReportFrame" source="bookSource"
                                     value="/resources/reports/jasper/booklist.jasper"
                                     format="#{bookList.reportFormat}" height="400px" width="80%"
                                     resourceBundle="#{Messages}"/>
-                </tr:showDetailItem>
-            </tr:panelTabbed>
-        </tr:form>
+                </rich:tab>
+            </rich:tabPanel>
+        </h:form>
     </ui:define>
 
 </ui:composition>
