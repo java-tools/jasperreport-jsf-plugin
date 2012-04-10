@@ -18,12 +18,14 @@
  */
 package net.sf.jasperreports.jsf.sample.usecases.view;
 
+import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import net.sf.jasperreports.jsf.context.JRFacesContext;
+import net.sf.jasperreports.jsf.sample.usecases.Constants;
 import net.sf.jasperreports.jsf.sample.usecases.jb.BookManager;
 import net.sf.jasperreports.jsf.sample.usecases.model.Book;
 
@@ -35,14 +37,17 @@ import javax.faces.model.SelectItem;
 /**
  * @author A. Alonso Dominguez
  */
-public class BookListView {
+public class BookListView implements Serializable {
 
-    @Autowired
     private BookManager bookManager;
 
     private List<Book> allBooks;
 
     private String reportFormat = "pdf";
+
+    public void setBookManager(BookManager bookManager) {
+        this.bookManager = bookManager;
+    }
 
     public List<Book> getAllBooks() {
         if (allBooks == null) {
@@ -77,6 +82,10 @@ public class BookListView {
         FacesContext context = FacesContext.getCurrentInstance();
         ResourceBundle bundle = context.getApplication().getResourceBundle(context, "Messages");
         return MessageFormat.format(bundle.getString("bookList.total"), getTotalBooks());
+    }
+
+    public String editor() {
+        return Constants.EDITOR_OUTCOME;
     }
 
 }

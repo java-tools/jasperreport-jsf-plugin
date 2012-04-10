@@ -18,17 +18,23 @@
  */
 package net.sf.jasperreports.jsf.sample.usecases.view;
 
-import javax.faces.event.ActionEvent;
-
+import net.sf.jasperreports.jsf.sample.usecases.Constants;
+import net.sf.jasperreports.jsf.sample.usecases.jb.BookManager;
+import net.sf.jasperreports.jsf.sample.usecases.model.Book;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import net.sf.jasperreports.jsf.sample.usecases.jb.BookManager;
+import java.io.Serializable;
 
-public class EditBookView {
+public class EditBookView implements Serializable {
+
+	private BookManager bookManager;
 
     @Autowired
-	private BookManager bookManager;
-	
+    private Mapper mapper;
+
+    private Long bookId;
+
 	private String title;
 	
 	private String publishedYear;
@@ -38,6 +44,22 @@ public class EditBookView {
     private String genre;
     
     private double price;
+
+    public void setBookManager(BookManager bookManager) {
+        this.bookManager = bookManager;
+    }
+
+    public Long getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(Long bookId) {
+        this.bookId = bookId;
+        if (bookId != null) {
+            Book book = bookManager.loadBook(bookId);
+            mapper.map(book, this);
+        }
+    }
 
     public String getTitle() {
 		return title;
@@ -79,8 +101,19 @@ public class EditBookView {
         this.price = price;
     }
 
+    public String cancel() {
+        return Constants.CANCELLED_OUTCOME;
+    }
+
     public String saveBook() {
-        return null;
+        if (bookId == null) {
+            bookManager.createBook(title, publishedYear, author, genre, price);
+        } else {
+            Book book = bookManager.loadBook(bookId);
+            mapper.map(this, book);
+            bookManager.updateBook(book);
+        }
+        return Constants.SUCCESS_OUTCOME;
 	}
 	
 }

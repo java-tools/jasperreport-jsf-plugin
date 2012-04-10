@@ -24,8 +24,13 @@ import net.sf.jasperreports.jsf.sample.usecases.model.Book;
 
 public interface BookManager {
 
-	public Book createBook(String title, String publishedYear, String author);
-	
+	public Book createBook(String title, String publishedYear, String author,
+                           String genre, double price);
+
+    public Book loadBook(long bookId);
+
 	public List<Book> getAllBooks();
+
+    public void updateBook(Book book);
 	
 }

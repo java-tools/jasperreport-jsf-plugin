@@ -16,20 +16,9 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.sample.usecases;
+package net.sf.jasperreports.jsf.sample.usecases.dao;
 
-/**
- *
- * @author A. Alonso Dominguez
- */
-public final class Constants {
+import net.sf.jasperreports.jsf.sample.usecases.model.Order;
 
-    public static final String EDITOR_OUTCOME = "editor";
-
-    public static final String SUCCESS_OUTCOME = "success";
-
-    public static final String CANCELLED_OUTCOME = "cancelled";
-
-    private Constants() { }
-
+public interface OrderDAO extends GenericDAO<Long, Order> {
 }

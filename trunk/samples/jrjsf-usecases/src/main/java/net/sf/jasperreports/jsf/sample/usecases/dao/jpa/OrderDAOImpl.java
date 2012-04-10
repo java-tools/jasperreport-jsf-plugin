@@ -16,20 +16,17 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.sample.usecases;
+package net.sf.jasperreports.jsf.sample.usecases.dao.jpa;
 
-/**
- *
- * @author A. Alonso Dominguez
- */
-public final class Constants {
+import net.sf.jasperreports.jsf.sample.usecases.dao.OrderDAO;
+import net.sf.jasperreports.jsf.sample.usecases.model.Order;
+import org.springframework.stereotype.Repository;
 
-    public static final String EDITOR_OUTCOME = "editor";
+public class OrderDAOImpl extends AbstractGenericDAOImpl<Long, Order>
+        implements OrderDAO {
 
-    public static final String SUCCESS_OUTCOME = "success";
-
-    public static final String CANCELLED_OUTCOME = "cancelled";
-
-    private Constants() { }
-
+    @Override
+    protected Class<Order> getEntityClass() {
+        return Order.class;
+    }
 }

@@ -33,11 +33,13 @@
 	<context:property-placeholder location="classpath:spring.properties" />
 	
 	<context:annotation-config/>
-
-    <context:component-scan base-package="net.sf.jasperreports.jsf.sample.usecases" />
 	
 	<bean class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
 		<property name="persistenceUnitName" value="jrjsf-usecases"/>
 	</bean>
+
+    <bean class="org.dozer.spring.DozerBeanMapperFactoryBean" scope="singleton">
+        <property name="mappingFiles" value="/WEB-INF/dozer/*-mapping.xml" />
+    </bean>
 
 </beans>
