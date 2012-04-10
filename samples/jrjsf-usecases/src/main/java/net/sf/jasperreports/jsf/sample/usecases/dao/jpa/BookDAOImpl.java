@@ -22,7 +22,6 @@ import net.sf.jasperreports.jsf.sample.usecases.dao.BookDAO;
 import net.sf.jasperreports.jsf.sample.usecases.model.Book;
 import org.springframework.stereotype.Repository;
 
-@Repository
 public class BookDAOImpl extends AbstractGenericDAOImpl<Long, Book> implements BookDAO {
 
 	@Override

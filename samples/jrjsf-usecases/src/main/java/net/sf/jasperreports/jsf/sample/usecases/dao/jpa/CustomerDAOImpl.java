@@ -22,7 +22,6 @@ import net.sf.jasperreports.jsf.sample.usecases.dao.CustomerDAO;
 import net.sf.jasperreports.jsf.sample.usecases.model.Customer;
 import org.springframework.stereotype.Repository;
 
-@Repository
 public class CustomerDAOImpl extends AbstractGenericDAOImpl<Long, Customer> implements CustomerDAO {
 
 	@Override

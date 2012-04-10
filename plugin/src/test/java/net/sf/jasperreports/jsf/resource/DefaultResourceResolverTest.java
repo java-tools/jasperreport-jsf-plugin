@@ -92,7 +92,7 @@ public class DefaultResourceResolverTest {
             "jasperreports-jsf-1_0.tld";
 
     @DataPoint
-    public static final String UNEXISTANT_RESOURCE = "resource/doesnt/exists";
+    public static final String NON_EXISTENT_RESOURCE = "resource/doesnt/exists";
 
     // Instance attributes
 

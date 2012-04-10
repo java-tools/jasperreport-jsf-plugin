@@ -67,18 +67,18 @@ public final class ReportURIEncoder {
             logger.log(Level.FINER, "JRJSF_0046", uri);
         }
 
-        // First of all, check if there is any 'jsessionid' in the url and
-        // get rid of it if so
-        int i = uri.indexOf(";jsessionid=");
-        if (i >= 0) {
-            uri = uri.substring(0, i);
-        }
-        
         // Separate the uri in proper uri and query string
         String queryString = "";
-        i = uri.indexOf("?");
+        int i = uri.indexOf("?");
         if (i >= 0) {
             queryString = uri.substring(i + 1);
+            uri = uri.substring(0, i);
+        }
+
+        // Now, check if there is any 'jsessionid' in the url and
+        // get rid of it
+        i = uri.indexOf(";jsessionid=");
+        if (i >= 0) {
             uri = uri.substring(0, i);
         }
 
@@ -129,9 +129,8 @@ public final class ReportURIEncoder {
         reportURI.setViewId(uri);
         
         // parse query string and decode parameters from the URI
-        StringTokenizer tokenizer = new StringTokenizer(queryString, "&");
-        while (tokenizer.hasMoreTokens()) {
-            String token = tokenizer.nextToken();
+        String[] tokens = queryString.split("&");
+        for (String token : tokens) {
             int eq = token.indexOf("=");
             if (eq == -1) {
                 reportURI.addParameter(token, "");

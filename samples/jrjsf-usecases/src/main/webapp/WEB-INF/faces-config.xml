@@ -37,15 +37,43 @@
             <supported-locale>es</supported-locale>
         </locale-config>
         <resource-bundle>
-            <var>Messages</var>
             <base-name>net.sf.jasperreports.jsf.sample.usecases.Messages</base-name>
+            <var>Messages</var>
         </resource-bundle>
     </application>
+
+    <managed-bean>
+        <managed-bean-name>bookList</managed-bean-name>
+        <managed-bean-class>
+            net.sf.jasperreports.jsf.sample.usecases.view.BookListView
+        </managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+        <managed-property>
+            <property-name>bookManager</property-name>
+            <value>#{bookManager}</value>
+        </managed-property>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>editBook</managed-bean-name>
+        <managed-bean-class>
+            net.sf.jasperreports.jsf.sample.usecases.view.EditBookView
+        </managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+        <managed-property>
+            <property-name>bookManager</property-name>
+            <value>#{bookManager}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>bookId</property-name>
+            <value>#{param.bookId}</value>
+        </managed-property>
+    </managed-bean>
     
     <navigation-rule>
     	<from-view-id>/book/bookList.xhtml</from-view-id>
     	<navigation-case>
-    		<from-action>newBook</from-action>
+            <from-outcome>editor</from-outcome>
     		<to-view-id>/book/editBook.xhtml</to-view-id>
             <redirect />
     	</navigation-case>
@@ -54,6 +82,7 @@
     <navigation-rule>
         <from-view-id>/book/editBook.xhtml</from-view-id>
         <navigation-case>
+            <from-outcome>*</from-outcome>
             <to-view-id>/book/bookList.xhtml</to-view-id>
             <redirect />
         </navigation-case>

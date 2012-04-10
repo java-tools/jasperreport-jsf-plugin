@@ -27,23 +27,34 @@ import net.sf.jasperreports.jsf.sample.usecases.jb.BookManager;
 import net.sf.jasperreports.jsf.sample.usecases.model.Book;
 import org.springframework.stereotype.Component;
 
-@Component("defaultBookManager")
 public class BookManagerImpl implements BookManager {
 
-	@Autowired
 	private BookDAO bookDAO;
-	
-	public Book createBook(String title, String publishedYear, String author) {
+
+    public void setBookDAO(BookDAO bookDAO) {
+        this.bookDAO = bookDAO;
+    }
+
+    public Book createBook(String title, String publishedYear, String author, String genre, double price) {
 		Book book = new Book();
 		book.setTitle(title);
+        book.setGenre(genre);
 		book.setPublishedYear(publishedYear);
 		book.setAuthor(author);
+        book.setPrice(price);
 		bookDAO.save(book);
 		return book;
 	}
+
+    public Book loadBook(long bookId) {
+        return bookDAO.findById(bookId);
+    }
 	
 	public List<Book> getAllBooks() {
 		return bookDAO.findAll();
 	}
-	
+
+    public void updateBook(Book book) {
+        bookDAO.save(book);
+    }
 }

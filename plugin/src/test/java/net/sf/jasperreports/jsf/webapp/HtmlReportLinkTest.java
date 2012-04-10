@@ -18,54 +18,34 @@
  */
 package net.sf.jasperreports.jsf.webapp;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import net.sf.jasperreports.jsf.Constants;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 
-import com.meterware.httpunit.WebLink;
-import com.meterware.httpunit.WebResponse;
+import java.io.File;
+import java.util.logging.Logger;
 
-import net.sf.jasperreports.jsf.Constants;
-import net.sf.jasperreports.jsf.test.ComponentProfilerTestCase;
-
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
-
-@RunWith(Parameterized.class)
-public class HtmlReportLinkTest extends ComponentProfilerTestCase {
+@RunWith(Arquillian.class)
+public class HtmlReportLinkTest {
 
 	private static final Logger logger = Logger.getLogger(
 			HtmlReportLinkTest.class.getName(), 
 			Constants.LOG_MESSAGES_BUNDLE);
-	
-    @Parameters
-    public static Collection<?> linkIdentifiers() {
-        return Arrays.asList(new Object[][]{{"reportForm:reportLink"}});
-    }
-    
-    private final String linkId;
 
-    public HtmlReportLinkTest(final String linkId) {
-        this.linkId = linkId;
+    @Deployment
+    public static WebArchive createDeployment() {
+        return ShrinkWrap.create(WebArchive.class, "test.war")
+                .setWebXML(new File("src/test/webapp/WEB-INF/web.xml"))
+                .addAsResource(new File("src/test/webapp", "HtmlReportLinkTest.jsp"))
+                .addAsWebInfResource(new File("src/test/webapp/WEB-INF", "faces-config.xml"));
     }
 
     @Test
     public void clickOnLink() throws Exception {
-        final WebResponse reportView = getComponentView();
-        
-        final WebLink link = reportView.getLinkWithID(linkId);
-        assertThat(link, notNullValue());
-        assertThat(link.getText(), equalTo("ReportLink"));
-        
-        logger.log(Level.INFO, "Clicking link: {0}", link.getID());
-        
-        final WebResponse reportResponse = link.click();
-        assertThat(reportResponse.getContentType(), equalTo("text/html"));
+
     }
 }
