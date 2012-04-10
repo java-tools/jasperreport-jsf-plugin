@@ -103,11 +103,6 @@ public final class RenderResponsePhaseListener extends AbstractReportPhaseListen
             ReportURI reportURI = request.getReportURI();
 
             final String clientId = reportURI.getReportClientId();
-            if (clientId == null) {
-                throw new MalformedReportURLException("Missed parameter: "
-                        + Constants.PARAM_CLIENTID);
-            }
-
             UIViewRoot viewRoot = context.getViewRoot();
             if (!viewRoot.invokeOnComponent(context, clientId, this)) {
                 throw new NoSuchReportComponentInViewException(clientId);

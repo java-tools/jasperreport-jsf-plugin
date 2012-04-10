@@ -51,7 +51,7 @@
     
     <hibernate.version>3.5.6-Final</hibernate.version>
     <spring.version>3.0.5.RELEASE</spring.version>
-    <trinidad.version>1.2.14</trinidad.version>
+    <richfaces.version>3.3.3.Final</richfaces.version>
   </properties>
 
   <build>
@@ -254,19 +254,14 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.myfaces.trinidad</groupId>
-      <artifactId>trinidad-api</artifactId>
-      <version>${trinidad.version}</version>
+      <groupId>org.richfaces.framework</groupId>
+      <artifactId>richfaces-impl</artifactId>
+      <version>${richfaces.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.myfaces.trinidad</groupId>
-      <artifactId>trinidad-impl</artifactId>
-      <version>${trinidad.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.myfaces.trinidad</groupId>
-      <artifactId>trinidad-partial-lifecycle</artifactId>
-      <version>${trinidad.version}</version>
+      <groupId>org.richfaces.ui</groupId>
+      <artifactId>richfaces-ui</artifactId>
+      <version>${richfaces.version}</version>
     </dependency>
 
     <dependency>

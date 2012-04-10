@@ -97,12 +97,14 @@ final class ReportPortletRenderRequest extends ResourceRequestWrapper
         return reportURI;
     }
 
+    @Deprecated
     public String getReportClientId() {
-        return getRequest().getParameter(Constants.PARAM_CLIENTID);
+        return reportURI.getReportClientId();
     }
 
+    @Deprecated
     public String getViewId() {
-        return (String) getRequest().getAttribute(Bridge.VIEW_ID);
+        return reportURI.getViewId();
     }
 
     public void release() {

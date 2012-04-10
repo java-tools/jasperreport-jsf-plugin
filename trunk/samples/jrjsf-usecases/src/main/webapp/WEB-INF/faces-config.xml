@@ -28,7 +28,6 @@
     version="1.2">
 
     <application>
-        <default-render-kit-id>org.apache.myfaces.trinidad.core</default-render-kit-id>
     	<el-resolver>
     		org.springframework.web.jsf.el.SpringBeanFacesELResolver
     	</el-resolver>
@@ -40,6 +39,7 @@
             <base-name>net.sf.jasperreports.jsf.sample.usecases.Messages</base-name>
             <var>Messages</var>
         </resource-bundle>
+        <view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
     </application>
 
     <managed-bean>
