@@ -34,6 +34,7 @@
 
   <name>JasperReports JSF Plugin - Root Project</name>
   <artifactId>jasperreports-jsf-root</artifactId>
+  <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <scm>
