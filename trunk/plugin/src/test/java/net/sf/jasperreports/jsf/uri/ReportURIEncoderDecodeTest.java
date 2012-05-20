@@ -16,10 +16,12 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.util;
+package net.sf.jasperreports.jsf.uri;
 
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.test.mock.MockFacesServletEnvironment;
+import net.sf.jasperreports.jsf.uri.ReportURI;
+import net.sf.jasperreports.jsf.uri.ReportURIEncoder;
 import org.apache.shale.test.mock.MockHttpServletRequest;
 import org.junit.Before;
 import org.junit.experimental.theories.DataPoints;
@@ -39,7 +41,9 @@ public class ReportURIEncoderDecodeTest {
 
     private static final String REPORT_ID = "fooForm:fooReport";
 
-    private static final String VIEW_ID = "/view.xhtml";
+    private static final String VIEW_PATH = "/view";
+
+    private static final String VIEW_ID = VIEW_PATH + ".xhtml";
 
     private static final String PREFIX_MAPPING = "/faces";
 
@@ -49,9 +53,9 @@ public class ReportURIEncoderDecodeTest {
     public static String[] reportURIs() {
         List<String> uris = new ArrayList<String>();
         uris.add("/invalid/uri/" + REPORT_ID);
-        uris.add(Constants.BASE_URI + REPORT_ID + VIEW_ID + SUFFIX_MAPPING +
+        uris.add(Constants.BASE_URI + REPORT_ID + VIEW_PATH + SUFFIX_MAPPING +
                 ";jsessionid=7832873287328");
-        uris.add(PREFIX_MAPPING + Constants.BASE_URI + REPORT_ID + VIEW_ID);
+        uris.add(PREFIX_MAPPING + Constants.BASE_URI + REPORT_ID + VIEW_PATH);
         return uris.toArray(new String[uris.size()]);
     }
 

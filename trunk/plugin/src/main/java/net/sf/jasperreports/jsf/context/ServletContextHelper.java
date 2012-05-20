@@ -19,7 +19,6 @@
 package net.sf.jasperreports.jsf.context;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -31,12 +30,9 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIOutputReport;
-import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.config.Configuration;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
-import net.sf.jasperreports.jsf.util.ReportURI;
+import net.sf.jasperreports.jsf.uri.ReportURI;
 
 /**
  * Servlet implementation of the external context helper.

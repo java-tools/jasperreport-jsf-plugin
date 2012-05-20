@@ -18,7 +18,7 @@
  */
 package net.sf.jasperreports.jsf.context;
 
-import net.sf.jasperreports.jsf.util.ReportURI;
+import net.sf.jasperreports.jsf.uri.ReportURI;
 
 /**
  * Represents a report render request.

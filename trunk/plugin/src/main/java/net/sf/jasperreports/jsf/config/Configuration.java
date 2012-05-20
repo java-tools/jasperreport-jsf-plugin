@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.ViewHandler;
 import javax.faces.context.ExternalContext;
 
 import javax.faces.webapp.FacesServlet;
@@ -56,6 +57,12 @@ public final class Configuration {
     /** Faces' servlet class name. */
     private static final String FACES_SERVLET_CLASS =
             FacesServlet.class.getName();
+
+    private static final String TAG_CONTEXT_PARAM = "context-param";
+
+    private static final String TAG_PARAM_NAME = "param-name";
+
+    private static final String TAG_PARAM_VALUE = "param-value";
 
     /** <tt>url-pattern</tt> tag. */
     private static final String TAG_URL_PATTERN = "url-pattern";
@@ -102,6 +109,8 @@ public final class Configuration {
     /** Faces' default mapping. */
     private String defaultMapping;
 
+    private String viewSuffix;
+
     /**
      * Constructor from a servlet context.
      *
@@ -145,6 +154,10 @@ public final class Configuration {
         return Collections.unmodifiableList(facesMappings);
     }
 
+    public String getViewSuffix() {
+        return viewSuffix;
+    }
+
     /**
      * Parses the <tt>web.xml</tt> file from a stream.
      *
@@ -171,9 +184,21 @@ public final class Configuration {
      */
     private void loadMappings(final Document webXml)
     throws ConfigurationException {
-        final List<Element> servletList = XmlHelper.getChildElements(webXml
+        List<Element> elements = XmlHelper.getChildElements(
+                webXml.getDocumentElement(), TAG_CONTEXT_PARAM);
+        for (final Element contextParam : elements) {
+            String paramName = XmlHelper.getChildText(contextParam, TAG_PARAM_NAME);
+            if (!ViewHandler.DEFAULT_SUFFIX_PARAM_NAME.equals(paramName)) {
+                continue;
+            }
+
+            viewSuffix = XmlHelper.getChildText(contextParam, TAG_PARAM_VALUE);
+            break;
+        }
+
+        elements = XmlHelper.getChildElements(webXml
                 .getDocumentElement(), TAG_SERVLET);
-        for (final Element servlet : servletList) {
+        for (final Element servlet : elements) {
             final String servletName = XmlHelper.getChildText(servlet,
                     TAG_SERVLET_NAME);
             final String servletClass = XmlHelper.getChildText(servlet,
@@ -222,6 +247,10 @@ public final class Configuration {
         if (defaultMapping == null) {
             throw new FacesServletNotFoundException();
         }
+
+        if (viewSuffix == null) {
+            viewSuffix = ViewHandler.DEFAULT_SUFFIX;
+        }
     }
 
     /**
@@ -235,7 +264,7 @@ public final class Configuration {
         if (Util.isPrefixMapped(urlPattern)) {
             mapping = urlPattern.substring(0, urlPattern.lastIndexOf("/"));
         } else {
-            mapping = urlPattern.substring(urlPattern.indexOf("."));
+            mapping = urlPattern.substring(urlPattern.lastIndexOf("."));
         }
         return mapping;
     }

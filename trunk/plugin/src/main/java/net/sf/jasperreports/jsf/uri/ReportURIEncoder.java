@@ -16,19 +16,21 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.util;
+package net.sf.jasperreports.jsf.uri;
 
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.config.Configuration;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
+import net.sf.jasperreports.jsf.util.Util;
 
+import javax.faces.application.ViewHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.render.ResponseStateManager;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -107,7 +109,7 @@ public final class ReportURIEncoder {
         if (Util.isPrefixMapped(mapping)) {
             uri = uri.substring(mapping.length());
         } else {
-            int mappingStart = uri.length() - mapping.length();
+            int mappingStart = uri.lastIndexOf(mapping);
             uri = uri.substring(0, mappingStart);
         }
 
@@ -124,7 +126,9 @@ public final class ReportURIEncoder {
                     "] doesn't contain a view id");
         }
         reportURI.setReportClientId(uri.substring(0, i));
-        reportURI.setViewId(uri.substring(i));
+
+        String viewId = uri.substring(i).concat(config.getViewSuffix());
+        reportURI.setViewId(viewId);
         
         // parse query string and decode parameters from the URI
         String[] tokens = queryString.split("&");
@@ -146,53 +150,54 @@ public final class ReportURIEncoder {
      * phase of the plug-in's lifecycle.
      *
      * @param context the faces' context.
-     * @param component the report component.
-     * @return the report URL.
+     * @param uri the report URI instance.
+     * @return a encoded report URL.
      * @throws IOException if an I/O error happens when encoding the URI.
      */
-    public static ReportURI encodeReportURI(
-            FacesContext context, UIReport component)
-    throws IOException {
+    public static String encodeReportURI(FacesContext context, ReportURI uri) {
         if (context == null) {
             throw new IllegalArgumentException("'context' can't be null");
         }
-        if (component == null) {
-            throw new IllegalArgumentException("'component' can't be null");
+        if (uri == null) {
+            throw new IllegalArgumentException("'uri' can't be null");
         }
-        
-        JRFacesContext jrContext = JRFacesContext.getInstance(context);
-        final Configuration config = Configuration.getInstance(
+
+        Configuration config = Configuration.getInstance(
                 context.getExternalContext());
-        final ExternalContextHelper helper = jrContext
-                .getExternalContextHelper(context);
-        
-        ReportURIImpl reportURI = new ReportURIImpl();
-        
-        String mapping = Util.getInvocationPath(context);
-        if (!config.getFacesMappings().contains(mapping)) {
-            if (logger.isLoggable(Level.WARNING)) {
-                logger.log(Level.WARNING, "JRJSF_0021", new Object[]{mapping,
-                            config.getDefaultMapping()});
-            }
-            mapping = config.getDefaultMapping();
+
+        StringBuilder builder = new StringBuilder(Constants.BASE_URI);
+        builder.append(uri.getReportClientId());
+
+        String viewId = uri.getViewId();
+        viewId = viewId.substring(0, viewId.length() - config.getViewSuffix().length());
+        builder.append(viewId);
+
+        String facesMapping = uri.getFacesMapping();
+        if (Util.isPrefixMapped(facesMapping)) {
+            builder.insert(0, facesMapping);
+        } else {
+            builder.append(facesMapping);
         }
-        
-        reportURI.setFacesMapping(mapping);
-        reportURI.setReportClientId(component.getClientId(context));
-        reportURI.setViewId(helper.getViewId(context.getExternalContext()));
-        
-        // Encode request parameters into the report URI
-        Map<String, String[]> parameterMap = context.getExternalContext()
-                .getRequestParameterValuesMap();
-        for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
-            // View state should not be encoded as a parameter of the report URI
-            if (ResponseStateManager.VIEW_STATE_PARAM.equals(entry.getKey())) {
-                continue;
+
+        Map<String, String[]> parameters = uri.getParameterMap();
+        if (!parameters.isEmpty()) {
+            StringBuilder params = new StringBuilder();
+            for (Map.Entry<String, String[]> entry : parameters.entrySet()) {
+                for (String v : entry.getValue()) {
+                    if (params.length() > 0) {
+                        params.append("&");
+                    }
+                    params.append(entry.getKey());
+                    params.append("=");
+                    params.append(v);
+                }
             }
-            reportURI.setParameter(entry.getKey(), entry.getValue());
+            builder.append("?").append(params);
         }
-        
-        return reportURI;
+
+        ViewHandler viewHandler = context.getApplication().getViewHandler();
+        return context.getExternalContext().encodeResourceURL(
+                viewHandler.getResourceURL(context, builder.toString()));
     }
     
     private ReportURIEncoder() { }

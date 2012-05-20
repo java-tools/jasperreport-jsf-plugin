@@ -24,12 +24,11 @@ import java.util.Collection;
 import javax.faces.context.ExternalContext;
 
 import net.sf.jasperreports.jsf.component.UIOutputReport;
-import net.sf.jasperreports.jsf.component.UIReport;
 import net.sf.jasperreports.jsf.context.ContentType;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.ReportRenderRequest;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
-import net.sf.jasperreports.jsf.util.ReportURI;
+import net.sf.jasperreports.jsf.uri.ReportURI;
 
 /**
  *
