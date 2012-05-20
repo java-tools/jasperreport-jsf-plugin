@@ -57,8 +57,10 @@ public final class ConfigurationStartupListener
         }
 
         ServletContext context = sce.getServletContext();
-        Configuration config = new Configuration(context);
-        context.setAttribute(Configuration.INSTANCE_KEY, config);
+        if (null == context.getAttribute(Configuration.INSTANCE_KEY)) {
+            Configuration config = new Configuration(context);
+            context.setAttribute(Configuration.INSTANCE_KEY, config);
+        }
 
         if (logger.isLoggable(Level.INFO)) {
             logger.log(Level.INFO, "JRJSF_0023");

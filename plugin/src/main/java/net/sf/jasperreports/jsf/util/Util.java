@@ -111,13 +111,13 @@ public final class Util {
         }
 
         if (mapping != null) {
-            if (logger.isLoggable(Level.FINER)) {
-                logger.log(Level.FINER, "JRJSF_0018", mapping);
+            if (logger.isLoggable(Level.FINEST)) {
+                logger.log(Level.FINEST, "JRJSF_0018", mapping);
             }
             extContext.getRequestMap().put(INVOCATION_PATH, mapping);
         } else {
-            if (logger.isLoggable(Level.FINER)) {
-                logger.log(Level.FINER, "JRJSF_0019");
+            if (logger.isLoggable(Level.FINEST)) {
+                logger.log(Level.FINEST, "JRJSF_0019");
             }
         }
 
@@ -154,12 +154,11 @@ public final class Util {
             return false;
         }
 
-    	final JRFacesContext jrContext = JRFacesContext.getInstance(context);
-
         Object request = context.getExternalContext().getRequest();
         if (request instanceof ReportRenderRequest) {
             return true;
         } else {
+            final JRFacesContext jrContext = JRFacesContext.getInstance(context);
             final ExternalContextHelper helper = jrContext
                     .getExternalContextHelper(context);
 

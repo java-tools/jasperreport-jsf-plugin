@@ -29,8 +29,7 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.faces.Bridge;
 import javax.portlet.filter.ResourceRequestWrapper;
 
-import net.sf.jasperreports.jsf.Constants;
-import net.sf.jasperreports.jsf.util.ReportURI;
+import net.sf.jasperreports.jsf.uri.ReportURI;
 
 /**
  *

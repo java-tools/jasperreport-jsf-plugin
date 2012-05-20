@@ -21,9 +21,10 @@ package net.sf.jasperreports.jsf.context;
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.InvalidEnvironmentException;
 import net.sf.jasperreports.jsf.component.UIOutputReport;
+import net.sf.jasperreports.jsf.config.Configuration;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
-import net.sf.jasperreports.jsf.util.ReportURI;
-import net.sf.jasperreports.jsf.util.ReportURIEncoder;
+import net.sf.jasperreports.jsf.uri.ReportURI;
+import net.sf.jasperreports.jsf.uri.ReportURIEncoder;
 
 import javax.faces.application.ViewHandler;
 import javax.faces.context.ExternalContext;
@@ -242,14 +243,11 @@ public abstract class ExternalContextHelper {
      * @return the view identifier
      */
     public final String getViewId(final ExternalContext context) {
+        Configuration config = Configuration.getInstance(context);
         String pathInfo = context.getRequestPathInfo();
         String servletPath = context.getRequestServletPath();
         if (pathInfo == null) {
-            String suffix = context.getInitParameter(
-                    ViewHandler.DEFAULT_SUFFIX_PARAM_NAME);
-            if (suffix == null || suffix.length() == 0) {
-                suffix = ViewHandler.DEFAULT_SUFFIX;
-            }
+            String suffix = config.getViewSuffix();
             return servletPath.substring(0, servletPath
                     .lastIndexOf('.')) + suffix;
         } else {

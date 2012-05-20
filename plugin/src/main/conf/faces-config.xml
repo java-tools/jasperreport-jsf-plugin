@@ -29,13 +29,14 @@
 
     <application>
         <state-manager>net.sf.jasperreports.jsf.application.StateManagerImpl</state-manager>
+        <view-handler>net.sf.jasperreports.jsf.application.ReportViewHandler</view-handler>
     </application>
 
     <lifecycle>
         <phase-listener>net.sf.jasperreports.jsf.lifecycle.RestoreViewPhaseListener</phase-listener>
-        <phase-listener>net.sf.jasperreports.jsf.lifecycle.ApplyRequestValuesPhaseListener</phase-listener>
+        <!--phase-listener>net.sf.jasperreports.jsf.lifecycle.ApplyRequestValuesPhaseListener</phase-listener>
         <phase-listener>net.sf.jasperreports.jsf.lifecycle.ProcessValidationsPhaseListener</phase-listener>
-        <phase-listener>net.sf.jasperreports.jsf.lifecycle.RenderResponsePhaseListener</phase-listener>
+        <phase-listener>net.sf.jasperreports.jsf.lifecycle.RenderResponsePhaseListener</phase-listener-->
     </lifecycle>
 
     <component>

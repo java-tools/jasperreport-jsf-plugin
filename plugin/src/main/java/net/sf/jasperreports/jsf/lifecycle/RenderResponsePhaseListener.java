@@ -24,7 +24,7 @@ import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.context.ExternalContextHelper;
 import net.sf.jasperreports.jsf.context.JRFacesContext;
 import net.sf.jasperreports.jsf.context.ReportRenderRequest;
-import net.sf.jasperreports.jsf.util.ReportURI;
+import net.sf.jasperreports.jsf.uri.ReportURI;
 import net.sf.jasperreports.jsf.util.Util;
 
 import javax.faces.FacesException;

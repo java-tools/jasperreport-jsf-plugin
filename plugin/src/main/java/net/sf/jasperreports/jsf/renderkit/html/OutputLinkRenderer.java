@@ -18,17 +18,17 @@
  */
 package net.sf.jasperreports.jsf.renderkit.html;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.uri.ReportURI;
+import net.sf.jasperreports.jsf.uri.ReportURIFactory;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import net.sf.jasperreports.jsf.Constants;
-import net.sf.jasperreports.jsf.component.UIReport;
-import net.sf.jasperreports.jsf.util.ReportURI;
-import net.sf.jasperreports.jsf.util.ReportURIEncoder;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Renderer for report links.
@@ -81,7 +81,7 @@ public final class OutputLinkRenderer extends HtmlReportRenderer {
 
         logger.log(Level.FINE, "JRJSF_0001", component.getClientId(context));
 
-        final ReportURI reportURI = ReportURIEncoder.encodeReportURI(
+        final ReportURI reportURI = ReportURIFactory.createReportURI(
                 context, (UIReport) component);
         if (logger.isLoggable(Level.FINER)) {
             logger.log(Level.FINER, "JRJSF_0031", reportURI);

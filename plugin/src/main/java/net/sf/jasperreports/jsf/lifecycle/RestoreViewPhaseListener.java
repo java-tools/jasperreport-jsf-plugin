@@ -61,9 +61,10 @@ public class RestoreViewPhaseListener extends AbstractReportPhaseListener {
     }
 
     public void beforePhase(PhaseEvent event) throws FacesException {
-        FacesContext context = event.getFacesContext();
-        JRFacesContext jrContext = JRFacesContext.getInstance(context);
         if (Util.isReportRenderRequest()) {
+            FacesContext context = event.getFacesContext();
+            JRFacesContext jrContext = JRFacesContext.getInstance(context);
+
             // Mark request as a post-back to force view restoring
             context.getExternalContext().getRequestMap().put(
                     Constants.ATTR_POSTBACK, Boolean.TRUE);

@@ -16,9 +16,10 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.util;
+package net.sf.jasperreports.jsf.uri;
 
 import net.sf.jasperreports.jsf.Constants;
+import net.sf.jasperreports.jsf.util.Util;
 
 import javax.faces.application.ViewHandler;
 import javax.faces.context.FacesContext;
@@ -40,6 +41,15 @@ final class ReportURIImpl implements ReportURI {
             parameters.put(name, values);
         }
         values.add(value);
+    }
+
+    public Map<String, String[]> getParameterMap() {
+        Map<String, String[]> result = new HashMap<String, String[]>();
+        for (Map.Entry<String, List<String>> entry : parameters.entrySet()) {
+            List<String> values = entry.getValue();
+            result.put(entry.getKey(), values.toArray(new String[values.size()]));
+        }
+        return Collections.unmodifiableMap(result);
     }
 
     public Enumeration<String> getParameterNames() {
@@ -100,35 +110,8 @@ final class ReportURIImpl implements ReportURI {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder(Constants.BASE_URI);
-        builder.append(getReportClientId());
-        builder.append(getViewId());
-
-        if (Util.isPrefixMapped(facesMapping)) {
-            builder.insert(0, facesMapping);
-        } else {
-            builder.append(facesMapping);
-        }
-
-        if (!parameters.isEmpty()) {
-            StringBuilder params = new StringBuilder();
-            for (Map.Entry<String, List<String>> entry : parameters.entrySet()) {
-                for (String v : entry.getValue()) {
-                    if (params.length() > 0) {
-                        params.append("&");
-                    }
-                    params.append(entry.getKey());
-                    params.append("=");
-                    params.append(v);
-                }
-            }
-            builder.append("?").append(params);
-        }
-
         FacesContext context = FacesContext.getCurrentInstance();
-        ViewHandler viewHandler = context.getApplication().getViewHandler();
-        return context.getExternalContext().encodeResourceURL(
-                viewHandler.getResourceURL(context, builder.toString()));
+        return ReportURIEncoder.encodeReportURI(context, this);
     }
 
 }

@@ -20,9 +20,9 @@ package net.sf.jasperreports.jsf.renderkit;
 
 import net.sf.jasperreports.jsf.Constants;
 import net.sf.jasperreports.jsf.component.UIReport;
+import net.sf.jasperreports.jsf.uri.ReportURI;
+import net.sf.jasperreports.jsf.uri.ReportURIFactory;
 import net.sf.jasperreports.jsf.util.ComponentUtil;
-import net.sf.jasperreports.jsf.util.ReportURI;
-import net.sf.jasperreports.jsf.util.ReportURIEncoder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -70,7 +70,7 @@ public class UrlRenderer extends ReportRenderer {
 
         String var = ComponentUtil.getStringAttribute(component, "var", null);
         if (var != null && var.length() > 0) {
-            ReportURI uri = ReportURIEncoder.encodeReportURI(context, (UIReport) component);
+            ReportURI uri = ReportURIFactory.createReportURI(context, (UIReport) component);
             context.getExternalContext().getRequestMap().put(var, uri);
         }
 

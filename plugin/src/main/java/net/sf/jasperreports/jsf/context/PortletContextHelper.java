@@ -20,7 +20,7 @@ package net.sf.jasperreports.jsf.context;
 
 import net.sf.jasperreports.jsf.component.UIOutputReport;
 import net.sf.jasperreports.jsf.renderkit.ReportRenderer;
-import net.sf.jasperreports.jsf.util.ReportURI;
+import net.sf.jasperreports.jsf.uri.ReportURI;
 
 import javax.faces.context.ExternalContext;
 import javax.portlet.PortletContext;

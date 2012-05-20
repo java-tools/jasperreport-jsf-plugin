@@ -16,16 +16,19 @@
  * Alonso Dominguez
  * alonsoft@users.sf.net
  */
-package net.sf.jasperreports.jsf.util;
+package net.sf.jasperreports.jsf.uri;
 
 import java.util.Enumeration;
+import java.util.Map;
 
 /**
  *
  * @author A. Alonso Dominguez
  */
 public interface ReportURI {
-    
+
+    public Map<String, String[]> getParameterMap();
+
     public Enumeration<String> getParameterNames();
     
     public String getParameterValue(String name);
