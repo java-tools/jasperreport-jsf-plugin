@@ -100,6 +100,11 @@
       <artifactId>portlet-bridge-api</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.sun.facelets</groupId>
+      <artifactId>jsf-facelets</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>net.sf.jasperreports</groupId>
       <artifactId>jasperreports</artifactId>
     </dependency>
