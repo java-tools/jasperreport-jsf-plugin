@@ -194,6 +194,46 @@
     </plugins>
   </build>
 
+  <profiles>
+    <profile>
+      <id>tomcat7x</id>
+      <properties>
+        <container.id>tomcat7x</container.id>
+        <catalina.version>7.0.1</catalina.version>
+        <catalina.home>/opt/local/share/tomcat-${catalina.version}</catalina.home>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.cargo</groupId>
+            <artifactId>cargo-maven2-plugin</artifactId>
+            <version>1.2.1</version>
+            <configuration>
+              <container>
+                <containerId>${container.id}</containerId>
+                <type>installed</type>
+                <home>${catalina.home}</home>
+              </container>
+              <configuration>
+                <type>existing</type>
+                <home>${catalina.home}</home>
+              </configuration>
+            </configuration>
+            <executions>
+              <execution>
+                <id>deploy</id>
+                <phase>install</phase>
+                <goals>
+                  <goal>deployer-redeploy</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
   <dependencies>
     <dependency>
       <groupId>javax.servlet</groupId>
