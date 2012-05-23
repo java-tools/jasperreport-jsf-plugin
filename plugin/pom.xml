@@ -331,6 +331,9 @@
             <plugin>
               <groupId>net.sourceforge.maven-taglib</groupId>
               <artifactId>maven-taglib-plugin</artifactId>
+              <configuration>
+                <taglib.src.dir>src/main/conf</taglib.src.dir>
+              </configuration>
             </plugin>
             <plugin>
               <groupId>org.codehaus.mojo</groupId>
